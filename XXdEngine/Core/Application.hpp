@@ -1,9 +1,11 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
+#include "XXd.hpp"
+
 namespace xxd
 {
-class Application
+class XXD_API Application
 {
 public:
 	Application();
