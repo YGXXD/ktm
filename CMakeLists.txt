@@ -26,7 +26,6 @@ if(APPLE)
     	XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER YGXXD.${ENGINE_DLL_NAME}
     )
     target_link_libraries(${ENGINE_DLL_NAME} PUBLIC "-framework Metal" "-framework Foundation" "-framework QuartzCore")
-    target_include_directories(${ENGINE_DLL_NAME} PUBLIC ${XXD_ENGINE_SOURCE_DIR})
 
 elseif(WIN32)
 	set(XXD_PLATFORM XXD_PLATFORM_WINDOWS)
@@ -34,6 +33,7 @@ elseif(WIN32)
 
 endif()
 
+target_include_directories(${ENGINE_DLL_NAME} PUBLIC ${XXD_ENGINE_SOURCE_DIR})
 target_compile_definitions(${ENGINE_DLL_NAME} PRIVATE ${XXD_PLATFORM})
 target_compile_definitions(${ENGINE_DLL_NAME} PRIVATE XXD_BUILD_DLL)
 

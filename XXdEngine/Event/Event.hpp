@@ -26,12 +26,12 @@ enum EventCategory : unsigned char
 };
 
 #define EVENT_TYPE(type) \
-static EventType GetStaticType() { return xxd::EventType::##type; } \
-virtual EventType GetEventType() const { return xxd::EventType::##type; } \
-virtual const char* GetName() const { return #type; }
+static EventType GetStaticType() { return xxd::EventType::type; } \
+virtual EventType GetEventType() const override { return xxd::EventType::type; } \
+virtual const char* GetName() const override { return #type; }
 
 #define EVENT_CATEGORY(category) \
-virtual unsigned char GetCategoryFlags() const { return xxd::##category; }
+virtual unsigned char GetCategoryFlags() const override { return xxd::category; }
 
 class Event
 {
@@ -64,7 +64,7 @@ public:
 	{
 		if (eventRef.GetEventType() == T::GetStaticType())
 		{
-			eventRef.handled |= func(static_cast<T&>(eventRef));
+			eventRef.handled = func(static_cast<T&>(eventRef));
 			return true;
 		}
 		return false;

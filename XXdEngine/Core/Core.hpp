@@ -6,5 +6,9 @@
 #include <thread>
 #include "Application.hpp"
 #include "EntryPoint.hpp"
+#include "Event/AppEvent.hpp"
+#include "Event/KeyEvent.hpp"
+#include "Event/MouseEvent.hpp"
+#include "Log/Logger.hpp"
 
 #endif

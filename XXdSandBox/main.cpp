@@ -1,5 +1,4 @@
 #include "Core/Core.hpp"
-#include "Log/Logger.hpp"
 
 class AppTest : public xxd::Application
 {

@@ -93,8 +93,8 @@ private:
         }
 
     private:
-    	uint32_t timeStrLen;
-    	char timeStr[32];
+        char timeStr[64];
+    	size_t timeStrLen;
     	int64_t sysSec;
     	int64_t sysMin;
 	};
