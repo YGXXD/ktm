@@ -3,7 +3,7 @@
 
 extern xxd::Application* xxd::CreateApplication();
 
-int main(int argc, char* argv[])
+int main(int argc, const char* argv[])
 {
 	auto App = xxd::CreateApplication();
 	App->Run();

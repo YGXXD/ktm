@@ -12,7 +12,7 @@ set(ENGINE_DLL_NAME XXdEngine)
 
 if(APPLE)
 	set(XXD_PLATFORM XXD_PLATFORM_APPLE)
-	set(CMAKE_CXX_COMPILER /usr/bin/clang++)
+	set(CMAKE_CXX_COMPILER clang++)
 	set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 	# add_compile_options(-fobjc-arc)
 	# add_compile_options(-x objective-c++)
@@ -30,6 +30,16 @@ if(APPLE)
 elseif(WIN32)
 	set(XXD_PLATFORM XXD_PLATFORM_WINDOWS)
     add_library(${ENGINE_DLL_NAME} SHARED ${XXD_ENGINE_SOURCE_FILES})	
+
+elseif(LINUX)
+	set(XXD_PLATFORM XXD_PLATFORM_LINUX)
+	add_library(${ENGINE_DLL_NAME} SHARED ${XXD_ENGINE_SOURCE_FILES})
+
+elseif(ANDROID)
+	set(XXD_PLATFORM XXD_PLATFORM_ANDROID)
+	add_library(${ENGINE_DLL_NAME} SHARED ${XXD_ENGINE_SOURCE_FILES})
+
+elseif(IOS)
 
 endif()
 

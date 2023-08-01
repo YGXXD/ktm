@@ -8,11 +8,11 @@ namespace xxd
 class WindowResizeEvent : public Event
 {
 public:
-	WindowResizeEvent(unsigned int width, unsigned int height)
+	WindowResizeEvent(uint32_t width, uint32_t height)
 		: w(width), h(height) {}
 
-	unsigned int GetWidth() const { return w; }
-	unsigned int GetHeight() const { return h; }
+	uint32_t GetWidth() const { return w; }
+	uint32_t GetHeight() const { return h; }
 
 	std::string ToString() const override
 	{
@@ -23,7 +23,7 @@ public:
 	EVENT_TYPE(WindowResize)
 	EVENT_CATEGORY(EventCategoryApplication)
 private:
-	unsigned int w, h;
+	uint32_t w, h;
 };
 
 class WindowCloseEvent : public Event
