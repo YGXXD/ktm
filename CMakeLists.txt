@@ -5,7 +5,7 @@ set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_STANDARD 17)
 
 set(XXD_ENGINE_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/XXdEngine)
-file(GLOB XXD_ENGINE_SOURCE_FILES ${XXD_ENGINE_SOURCE_DIR}/**/*.cpp)
+file(GLOB_RECURSE XXD_ENGINE_SOURCE_FILES ${XXD_ENGINE_SOURCE_DIR}/*.cpp)
 
 set(EXECUTABLE_NAME XXdSandBox)
 set(ENGINE_DLL_NAME XXdEngine)
@@ -43,7 +43,8 @@ elseif(IOS)
 
 endif()
 
-target_include_directories(${ENGINE_DLL_NAME} PUBLIC ${XXD_ENGINE_SOURCE_DIR})
+target_include_directories(${ENGINE_DLL_NAME} PRIVATE ${XXD_ENGINE_SOURCE_DIR}/Platform)
+target_include_directories(${ENGINE_DLL_NAME} PUBLIC ${XXD_ENGINE_SOURCE_DIR}/Engine)
 target_compile_definitions(${ENGINE_DLL_NAME} PRIVATE ${XXD_PLATFORM})
 target_compile_definitions(${ENGINE_DLL_NAME} PRIVATE XXD_BUILD_DLL)
 

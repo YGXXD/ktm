@@ -1,7 +1,7 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
-#include "XXd.hpp"
+#include "XXd.h"
 
 namespace xxd
 {

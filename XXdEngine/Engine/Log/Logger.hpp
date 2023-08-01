@@ -8,11 +8,7 @@
 #define ERROR_LOG(...) XXD_LOG(xxd::LogLevel::Error, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
 #define FATAL_LOG(...) XXD_LOG(xxd::LogLevel::Fatal, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
 
-#include "XXd.hpp"
-#include <memory>
-#include <stdint.h>
-#include <iostream>
-#include <sstream>
+#include "XXd.h"
 
 namespace xxd
 {

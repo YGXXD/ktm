@@ -46,5 +46,12 @@
 
 #endif
 
+#include <iostream>
+#include <memory>
+#include <cstdint>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <thread>
 
 #endif
