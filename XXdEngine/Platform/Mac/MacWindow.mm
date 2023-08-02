@@ -4,11 +4,11 @@
 
 #import <AppKit/AppKit.h>
 
-DECLARE_FUNCTION_DELEGATE(PoolEventDelegate, void, xxd::Event&)
+DECLARE_FUNCTION_DELEGATE(DespatchEventDelegate, void, xxd::Event&)
 
 @interface MacWindowDelegate : NSObject<NSWindowDelegate>
 
-@property(readonly) PoolEventDelegate pollEvent;
+@property(readonly) DespatchEventDelegate despatchEvent;
 
 @end
 
@@ -80,7 +80,7 @@ void xxd::MacWindow::SetEventCallback(void(* callback)(Event&))
 {
     MacWindowDelegate* del = (MacWindowDelegate*)window.delegate;
     if(del != nil)
-        del.pollEvent.BindFunction(callback);
+        del.despatchEvent.BindFunction(callback);
 }
 
 void xxd::MacWindow::SetVSync(bool enabled)
