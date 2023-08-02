@@ -1,7 +1,7 @@
-#ifndef MOUSE_EVENT_HPP
-#define MOUSE_EVENT_HPP
+#ifndef _MOUSE_EVENT_H_
+#define _MOUSE_EVENT_H_
 
-#include "Event.hpp"
+#include "Event.h"
 
 namespace xxd
 {

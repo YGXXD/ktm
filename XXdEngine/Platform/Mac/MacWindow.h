@@ -1,13 +1,18 @@
-#ifndef MAC_WINDOW_HPP
-#define MAC_WINDOW_HPP
+#ifndef _MAC_WINDOW_H_
+#define _MAC_WINDOW_H_
 
-#include "Core/Window.hpp"
+#include "Core/Window.h"
+
+@class NSWindow;
 
 namespace xxd
 {
 class MacWindow : public Window
 {
 public:
+	MacWindow(const WindowProps& props);
+	~MacWindow();
+
 	virtual void OnUpdate() override;
 
     virtual uint32_t GetWidth() const override;
@@ -18,6 +23,13 @@ public:
 	virtual bool IsVSync() const override;
 
   	virtual void *GetNativeWindow() const override;
+private:
+	void Init(const WindowProps& props);
+	
+	uint32_t width;
+	uint32_t height;
+	::NSWindow* window;
+	std::string title;
 } ;
 }
 

@@ -1,5 +1,5 @@
-#ifndef EVENT_HPP
-#define EVENT_HPP
+#ifndef _EVENT_H_
+#define _EVENT_H_
 
 #include <iostream>
 #include <string>

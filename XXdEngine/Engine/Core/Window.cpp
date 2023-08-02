@@ -1,12 +1,12 @@
-#include "Window.hpp"
+#include "Window.h"
 
 #if defined(XXD_PLATFORM_APPLE)
-    #include "Mac/MacWindow.hpp"
+    #include "Mac/MacWindow.h"
 #elif defined(XXD_PLATFORM_WINDOWS)
 
 #endif
 
-xxd::Window* xxd::Window::Create(const WindowProps &props)
+xxd::Window* xxd::Window::Create(const WindowProps& props)
 {
-    return nullptr;
+    return new xxd::MacWindow(props);
 }

@@ -1,8 +1,8 @@
-#ifndef WINDOW_HPP
-#define WINDOW_HPP
+#ifndef _WINDOW_H_
+#define _WINDOW_H_
 
 #include <XXd.h>
-#include "Event/Event.hpp"
+#include "Event/Event.h"
 
 namespace xxd
 {
@@ -12,7 +12,7 @@ struct WindowProps
     uint32_t width;
     uint32_t height;
 
-    WindowProps(const std::string &title = "XXd Engine", uint32_t width = 1600, uint32_t height = 900)
+    WindowProps(const std::string& title = "XXd Engine", uint32_t width = 1600, uint32_t height = 900)
         : title(title), width(width), height(height)
     {
     }
@@ -21,7 +21,7 @@ struct WindowProps
 class XXD_API Window
 {
 public:
-  virtual ~Window() = default;
+  virtual ~Window() { };
 
   virtual void OnUpdate() = 0;
 

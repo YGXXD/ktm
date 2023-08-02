@@ -1,5 +1,5 @@
-#ifndef INPUT_HPP
-#define INPUT_HPP
+#ifndef _INPUT_H_
+#define _INPUT_H_
 
 #include <cstdint>
 

@@ -1,7 +1,7 @@
-#ifndef KEY_EVENT_HPP
-#define KEY_EVENT_HPP
+#ifndef _KEY_EVENT_H_
+#define _KEY_EVENT_H_
 
-#include "Event.hpp"
+#include "Event.h"
 
 namespace xxd
 {

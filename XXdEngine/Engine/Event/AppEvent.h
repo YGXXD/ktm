@@ -1,7 +1,7 @@
-#ifndef APP_EVENT_HPP
-#define APP_EVENT_HPP
+#ifndef _APP_EVENT_H_
+#define _APP_EVENT_H_
 
-#include "Event.hpp"
+#include "Event.h"
 
 namespace xxd
 {
