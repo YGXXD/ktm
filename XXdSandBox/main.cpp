@@ -1,10 +1,10 @@
 #include "Core/EntryPoint.h"
 
-class AppTest : public xxd::Application
+class SandBox : public xxd::Application
 {
 public:
-	AppTest() { };
-	~AppTest() { };
+	SandBox() { };
+	~SandBox() { };
 
 	virtual void Run() override
 	{
@@ -14,7 +14,7 @@ public:
 
 xxd::Application* xxd::CreateApplication()
 {
-	return new AppTest();
+	return new SandBox();
 }
 
 int main(int argc, const char* argv[])
