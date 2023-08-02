@@ -1,5 +1,29 @@
 #include "MacWindow.h"
+#include "Log/Logger.h"
+#include "Core/Delegate.h"
+
 #import <AppKit/AppKit.h>
+
+DECLARE_FUNCTION_DELEGATE(PoolEventDelegate, void, xxd::Event&)
+
+@interface MacWindowDelegate : NSObject<NSWindowDelegate>
+
+@property(readonly) PoolEventDelegate pollEvent;
+
+@end
+
+@implementation MacWindowDelegate
+- (void)windowWillClose:(NSNotification *)notification
+{
+    DEBUG_LOG("窗口关闭");
+}
+
+- (void)windowDidResize:(NSNotification *)notification 
+{
+    DEBUG_LOG("窗口大小改变");
+}
+
+@end
 
 xxd::MacWindow::MacWindow(const WindowProps& props)
 {
@@ -23,17 +47,22 @@ void xxd::MacWindow::Init(const WindowProps& props)
     [window setTitle:title];
     [window makeKeyWindow];
     [window orderFrontRegardless];
-    [window setBackgroundColor:NSColor.blueColor];
+    [window setBackgroundColor:NSColor.whiteColor];
+
+    MacWindowDelegate* del = [[MacWindowDelegate alloc] init];
+    [window setDelegate:del];
+
 }
 
 void xxd::MacWindow::OnUpdate()
 {
-    NSEvent* event = [NSApp nextEventMatchingMask:NSEventMaskAny untilDate:[NSDate distantPast] inMode:NSDefaultRunLoopMode dequeue:true];
+    // nil 会指定 [NSDate distantPast]
+    NSEvent* event = [NSApp nextEventMatchingMask:NSEventMaskAny untilDate:nil inMode:NSDefaultRunLoopMode dequeue:true];
 
     while(event != nil)
     {
         [NSApp sendEvent:event];
-        event = [NSApp nextEventMatchingMask:NSEventMaskAny untilDate:[NSDate distantPast] inMode:NSDefaultRunLoopMode dequeue:true];
+        event = [NSApp nextEventMatchingMask:NSEventMaskAny untilDate:nil inMode:NSDefaultRunLoopMode dequeue:true];
     }
 }
 
@@ -49,7 +78,9 @@ uint32_t xxd::MacWindow::GetHeight() const
 
 void xxd::MacWindow::SetEventCallback(void(* callback)(Event&))
 {
-
+    MacWindowDelegate* del = (MacWindowDelegate*)window.delegate;
+    if(del != nil)
+        del.pollEvent.BindFunction(callback);
 }
 
 void xxd::MacWindow::SetVSync(bool enabled)
