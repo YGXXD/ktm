@@ -26,10 +26,10 @@ public:
 private:
 	void Init(const WindowProps& props);
 	
+	std::string title;
 	uint32_t width;
 	uint32_t height;
 	::NSWindow* window;
-	std::string title;
 } ;
 }
 

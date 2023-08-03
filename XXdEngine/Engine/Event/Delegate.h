@@ -18,7 +18,7 @@ namespace xxd
 {
 
 typedef struct{
-    uint8_t tdlgt; // 代理类型
+    uint32_t tdlgt; // 代理类型
     uint32_t idlgt; // 代理id
     void* pdlgt; // 代理类
     void* bind; // 绑定地址
@@ -349,7 +349,7 @@ template<typename ...ArgsT>
 template<class ClassT>
 inline xxd::DelegateHandle xxd::MultiDelegate<ArgsT...>::AddObject(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunT& objFun)
 {
-    DelegateHandle handle = { 1, dlgtId++, this, (void*)obj };
+    DelegateHandle handle = { 0x1, dlgtId++, this, (void*)obj };
     dlgtMap[DelegateInterface::HandleToString(handle)] = std::make_shared<DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...> >(obj, objFun);
     
     return handle;
@@ -359,7 +359,7 @@ template<typename ...ArgsT>
 template<class ClassT>
 inline xxd::DelegateHandle xxd::MultiDelegate<ArgsT...>::AddSafeObj(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunT& objFun)
 {
-    DelegateHandle handle = { 2, dlgtId++, this, (void*)objShared.get() };
+    DelegateHandle handle = { 0x2, dlgtId++, this, (void*)objShared.get() };
     dlgtMap[DelegateInterface::HandleToString(handle)] = std::make_shared<DelegateInterface::ObjFuncSafeDelegate<ClassT, void, ArgsT...> >(objShared, objFun);
     
     return handle;
@@ -369,7 +369,7 @@ template<typename ...ArgsT>
 template<class ClassT>
 inline xxd::DelegateHandle xxd::MultiDelegate<ArgsT...>::AddSafeObj(const std::weak_ptr<ClassT>& objWeak, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunT& objFun)
 {
-    DelegateHandle handle = { 2, dlgtId++, this, (void*)objWeak.lock().get() };
+    DelegateHandle handle = { 0x2, dlgtId++, this, (void*)objWeak.lock().get() };
     dlgtMap[DelegateInterface::HandleToString(handle)] = std::make_shared<DelegateInterface::ObjFuncSafeDelegate<ClassT, void, ArgsT...> >(objWeak, objFun);
     
     return handle;
@@ -379,7 +379,7 @@ template<typename ...ArgsT>
 template<class LambdaT>
 inline xxd::DelegateHandle xxd::MultiDelegate<ArgsT...>::AddLambda(const LambdaT& lambda)
 {
-    DelegateHandle handle = { 3, dlgtId++, this, 0 };
+    DelegateHandle handle = { 0x4, dlgtId++, this, 0 };
     dlgtMap[DelegateInterface::HandleToString(handle)] = std::make_shared<DelegateInterface::LambdaDelegate<LambdaT, void, ArgsT...> >(lambda);
     
     return handle;

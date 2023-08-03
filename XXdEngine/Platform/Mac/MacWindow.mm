@@ -1,14 +1,14 @@
 #include "MacWindow.h"
 #include "Log/Logger.h"
-#include "Core/Delegate.h"
+#include "Event/Delegate.h"
 
 #import <AppKit/AppKit.h>
 
-DECLARE_FUNCTION_DELEGATE(DespatchEventDelegate, void, xxd::Event&)
+DECLARE_FUNCTION_DELEGATE(EventCallbackDelegate, void, xxd::Event&)
 
 @interface MacWindowDelegate : NSObject<NSWindowDelegate>
 
-@property(readonly) DespatchEventDelegate despatchEvent;
+@property(readonly) EventCallbackDelegate eventCallback;
 
 @end
 
@@ -80,7 +80,7 @@ void xxd::MacWindow::SetEventCallback(void(* callback)(Event&))
 {
     MacWindowDelegate* del = (MacWindowDelegate*)window.delegate;
     if(del != nil)
-        del.despatchEvent.BindFunction(callback);
+        del.eventCallback.BindFunction(callback);
 }
 
 void xxd::MacWindow::SetVSync(bool enabled)
