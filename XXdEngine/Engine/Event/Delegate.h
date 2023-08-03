@@ -4,25 +4,14 @@
 #include <memory>
 #include <sstream>
 
-#ifndef DECLARE_FUNCTION_DELEGATE
 #define DECLARE_FUNCTION_DELEGATE(DelegateName, ReturnValueType, ...) typedef xxd::SingleDelegate<ReturnValueType, __VA_ARGS__> (DelegateName);
 #define DECLARE_FUNCTION_DELEGATE_NO_PARAMETER(DelegateName, ReturnValueType) typedef xxd::SingleDelegate<ReturnValueType> (DelegateName);
-#endif
 
-#ifndef DECLARE_FUNCTION_MULTICAST_DELEGATE
 #define DECLARE_FUNCTION_MULTICAST_DELEGATE(DelegateName, ...) typedef xxd::MultiDelegate<__VA_ARGS__> (DelegateName);
 #define DECLARE_FUNCTION_MULTICAST_DELEGATE_NO_PARAMETER(DelegateName) typedef xxd::MultiDelegate<> (DelegateName);
-#endif
 
 namespace xxd
 {
-
-typedef struct{
-    uint32_t tdlgt; // 代理类型
-    uint32_t idlgt; // 代理id
-    void* pdlgt; // 代理类
-    void* bind; // 绑定地址
-}DelegateHandle;
 
 class DelegateInterface final
 {
@@ -116,13 +105,6 @@ private:
         LambdaT lambda;
     };
     
-    // Handle转化为字符串函数
-    inline static std::string HandleToString(const DelegateHandle& handle)
-    {
-        std::stringstream ss;
-        ss << handle.tdlgt << handle.idlgt << handle.pdlgt << handle.bind;
-        return ss.str();
-    };
 };
 
 template<typename ReturnT, typename ...ArgsT>
@@ -173,6 +155,13 @@ public:
 private:
     std::shared_ptr<DelegateInterface::IDelegate<ReturnT, ArgsT...> > dlgtPtr;
 };
+
+typedef struct{
+    uint32_t tdlgt; // 代理类型
+    uint32_t idlgt; // 代理id
+    void* pdlgt; // 代理类
+    void* bind; // 绑定地址
+}DelegateHandle;
 
 template<typename ...ArgsT>
 class MultiDelegate final
@@ -228,6 +217,16 @@ private:
     
     uint32_t dlgtId;
     std::unordered_map<std::string, std::shared_ptr<DelegateInterface::IDelegate<void, ArgsT...> > > dlgtMap;
+
+    // Handle转化为字符串函数
+    inline static std::string HandleToString(const DelegateHandle& handle)
+    {
+        static std::stringstream ss;
+        ss << handle.tdlgt << handle.idlgt << handle.pdlgt << handle.bind;
+        std::string key = ss.str();
+        ss.str("");
+        return key;
+    };
 };
 
 }
@@ -279,7 +278,6 @@ inline xxd::SingleDelegate<ReturnT, ArgsT...> xxd::SingleDelegate<ReturnT, ArgsT
 template<typename ReturnT, typename ...ArgsT>
 inline void xxd::SingleDelegate<ReturnT, ArgsT...>::BindFunction(typename DelegateInterface::FuncDelegate<ReturnT, ArgsT...>::FunT fun)
 {
-    UnBind();
     dlgtPtr = std::make_shared<DelegateInterface::FuncDelegate<ReturnT, ArgsT...> >(fun);
 }
 
@@ -287,7 +285,6 @@ template<typename ReturnT, typename ...ArgsT>
 template<class ClassT>
 inline void xxd::SingleDelegate<ReturnT, ArgsT...>::BindObject(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun)
 {
-    UnBind();
     dlgtPtr = std::make_shared<DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...> >(obj, objFun);
 }
 
@@ -295,7 +292,6 @@ template<typename ReturnT, typename ...ArgsT>
 template<class ClassT>
 inline void xxd::SingleDelegate<ReturnT, ArgsT...>::BindSafeObj(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun)
 {
-    UnBind();
     dlgtPtr = std::make_shared<DelegateInterface::ObjFuncSafeDelegate<ClassT, ReturnT, ArgsT...> >(objShared, objFun);
 }
 
@@ -303,7 +299,6 @@ template<typename ReturnT, typename ...ArgsT>
 template<class ClassT>
 inline void xxd::SingleDelegate<ReturnT, ArgsT...>::BindSafeObj(const std::weak_ptr<ClassT>& objWeak, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun)
 {
-    UnBind();
     dlgtPtr = std::make_shared<DelegateInterface::ObjFuncSafeDelegate<ClassT, ReturnT, ArgsT...> >(objWeak, objFun);
 }
 
@@ -311,7 +306,6 @@ template<typename ReturnT, typename ...ArgsT>
 template<class LambdaT>
 inline void xxd::SingleDelegate<ReturnT, ArgsT...>::BindLambda(const LambdaT& lambda)
 {
-    UnBind();
     dlgtPtr = std::make_shared<DelegateInterface::LambdaDelegate<LambdaT, ReturnT, ArgsT...> >(lambda);
 }
 
@@ -340,7 +334,7 @@ template<typename ...ArgsT>
 inline xxd::DelegateHandle xxd::MultiDelegate<ArgsT...>::AddFunction(typename DelegateInterface::FuncDelegate<void, ArgsT...>::FunT fun)
 {
     DelegateHandle handle = { 0, dlgtId++, this, (void*)fun };
-    dlgtMap[DelegateInterface::HandleToString(handle)] = std::make_shared<DelegateInterface::FuncDelegate<void, ArgsT...> >(fun);
+    dlgtMap[HandleToString(handle)] = std::make_shared<DelegateInterface::FuncDelegate<void, ArgsT...> >(fun);
     
     return handle;
 }
@@ -350,7 +344,7 @@ template<class ClassT>
 inline xxd::DelegateHandle xxd::MultiDelegate<ArgsT...>::AddObject(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunT& objFun)
 {
     DelegateHandle handle = { 0x1, dlgtId++, this, (void*)obj };
-    dlgtMap[DelegateInterface::HandleToString(handle)] = std::make_shared<DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...> >(obj, objFun);
+    dlgtMap[HandleToString(handle)] = std::make_shared<DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...> >(obj, objFun);
     
     return handle;
 }
@@ -360,7 +354,7 @@ template<class ClassT>
 inline xxd::DelegateHandle xxd::MultiDelegate<ArgsT...>::AddSafeObj(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunT& objFun)
 {
     DelegateHandle handle = { 0x2, dlgtId++, this, (void*)objShared.get() };
-    dlgtMap[DelegateInterface::HandleToString(handle)] = std::make_shared<DelegateInterface::ObjFuncSafeDelegate<ClassT, void, ArgsT...> >(objShared, objFun);
+    dlgtMap[HandleToString(handle)] = std::make_shared<DelegateInterface::ObjFuncSafeDelegate<ClassT, void, ArgsT...> >(objShared, objFun);
     
     return handle;
 }
@@ -370,7 +364,7 @@ template<class ClassT>
 inline xxd::DelegateHandle xxd::MultiDelegate<ArgsT...>::AddSafeObj(const std::weak_ptr<ClassT>& objWeak, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunT& objFun)
 {
     DelegateHandle handle = { 0x2, dlgtId++, this, (void*)objWeak.lock().get() };
-    dlgtMap[DelegateInterface::HandleToString(handle)] = std::make_shared<DelegateInterface::ObjFuncSafeDelegate<ClassT, void, ArgsT...> >(objWeak, objFun);
+    dlgtMap[HandleToString(handle)] = std::make_shared<DelegateInterface::ObjFuncSafeDelegate<ClassT, void, ArgsT...> >(objWeak, objFun);
     
     return handle;
 }
@@ -380,7 +374,7 @@ template<class LambdaT>
 inline xxd::DelegateHandle xxd::MultiDelegate<ArgsT...>::AddLambda(const LambdaT& lambda)
 {
     DelegateHandle handle = { 0x4, dlgtId++, this, 0 };
-    dlgtMap[DelegateInterface::HandleToString(handle)] = std::make_shared<DelegateInterface::LambdaDelegate<LambdaT, void, ArgsT...> >(lambda);
+    dlgtMap[HandleToString(handle)] = std::make_shared<DelegateInterface::LambdaDelegate<LambdaT, void, ArgsT...> >(lambda);
     
     return handle;
 }
@@ -403,7 +397,7 @@ inline void xxd::MultiDelegate<ArgsT...>::operator()(ArgsT ...args)
 template<typename ...ArgsT>
 inline bool xxd::MultiDelegate<ArgsT...>::Remove(const xxd::DelegateHandle& handle)
 {
-    std::string key = DelegateInterface::HandleToString(handle);
+    std::string key = HandleToString(handle);
     if(dlgtMap.count(key))
     {
         dlgtMap.erase(key);

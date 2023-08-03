@@ -4,11 +4,9 @@
 
 #import <AppKit/AppKit.h>
 
-DECLARE_FUNCTION_DELEGATE(EventCallbackDelegate, void, xxd::Event&)
-
 @interface MacWindowDelegate : NSObject<NSWindowDelegate>
 
-@property(readonly) EventCallbackDelegate eventCallback;
+@property(readonly) xxd::SingleDelegate<void, xxd::Event&> eventCallback;
 
 @end
 
@@ -25,6 +23,27 @@ DECLARE_FUNCTION_DELEGATE(EventCallbackDelegate, void, xxd::Event&)
 
 @end
 
+@implementation NSWindow (Event)
+
+- (void)keyDown:(NSEvent *)event 
+{
+    [super keyDown:event];
+    DEBUG_LOG("Key");
+}
+
+- (void)mouseDown:(NSEvent *)event 
+{
+    DEBUG_LOG("MouseDown");
+    
+}
+
+- (void)mouseUp:(NSEvent *)event 
+{
+     DEBUG_LOG("MouseUp");
+}
+
+@end
+
 xxd::MacWindow::MacWindow(const WindowProps& props)
 {
     Init(props);
@@ -37,9 +56,17 @@ xxd::MacWindow::~MacWindow()
 
 void xxd::MacWindow::Init(const WindowProps& props)
 {
+    [NSApplication sharedApplication]; 
+    [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
+    [NSApp finishLaunching];
+    [NSApp activateIgnoringOtherApps:true];
+
     NSRect rect;
+    rect.origin.x = 100;
+    rect.origin.y = 100;
     rect.size.width = props.width;
     rect.size.height = props.height;
+
     window = [[NSWindow alloc] initWithContentRect:rect 
         styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable | NSWindowStyleMaskMiniaturizable 
         backing:NSBackingStoreBuffered defer:false];
