@@ -2,11 +2,11 @@
 #define _LOGGER_H_
 
 #define XXD_LOG(LogLevel, ...) xxd::Logger::Log((LogLevel), __VA_ARGS__)
-#define DEBUG_LOG(...) XXD_LOG(xxd::LogLevelDebug, __VA_ARGS__)
-#define INFO_LOG(...) XXD_LOG(xxd::LogLevelInfo, __VA_ARGS__)
-#define WARN_LOG(...) XXD_LOG(xxd::LogLevelWarn, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
-#define ERROR_LOG(...) XXD_LOG(xxd::LogLevelError, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
-#define FATAL_LOG(...) XXD_LOG(xxd::LogLevelFatal, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
+#define XXD_DEBUG(...) XXD_LOG(xxd::LogLevelDebug, __VA_ARGS__)
+#define XXD_INFO(...) XXD_LOG(xxd::LogLevelInfo, __VA_ARGS__)
+#define XXD_WARN(...) XXD_LOG(xxd::LogLevelWarn, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
+#define XXD_ERROR(...) XXD_LOG(xxd::LogLevelError, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
+#define XXD_FATAL(...) XXD_LOG(xxd::LogLevelFatal, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
 
 #include "XXd.h"
 

@@ -13,12 +13,12 @@
 @implementation MacWindowDelegate
 - (void)windowWillClose:(NSNotification *)notification
 {
-    DEBUG_LOG("窗口关闭");
+    XXD_DEBUG("窗口关闭");
 }
 
 - (void)windowDidResize:(NSNotification *)notification 
 {
-    DEBUG_LOG("窗口大小改变");
+    XXD_DEBUG("窗口大小改变");
 }
 
 @end
@@ -28,18 +28,18 @@
 - (void)keyDown:(NSEvent *)event 
 {
     [super keyDown:event];
-    DEBUG_LOG("Key");
+    XXD_DEBUG("Key");
 }
 
 - (void)mouseDown:(NSEvent *)event 
 {
-    DEBUG_LOG("MouseDown");
+    XXD_DEBUG("MouseDown");
     
 }
 
 - (void)mouseUp:(NSEvent *)event 
 {
-     DEBUG_LOG("MouseUp");
+    XXD_DEBUG("MouseUp");
 }
 
 @end

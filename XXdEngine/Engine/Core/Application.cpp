@@ -19,11 +19,11 @@ void xxd::Application::Run()
         // int i = 0;
         // while (i++ < 100000)
         // {
-        //     DEBUG_LOG("Helow", " Chenqiudu");
-        //     INFO_LOG("Helow", " Chenqiudu");
-        //     WARN_LOG("Helow", " Chenqiudu");
-        //     ERROR_LOG("Helow", " Chenqiudu");
-        //     FATAL_LOG("Helow", " Chenqiudu");
+        //     XXD_DEBUG("Helow", " Chenqiudu");
+        //     XXD_INFO("Helow", " Chenqiudu");
+        //     XXD_WARN("Helow", " Chenqiudu");
+        //     XXD_ERROR("Helow", " Chenqiudu");
+        //     XXD_FATAL("Helow", " Chenqiudu");
         //     std::this_thread::sleep_for(std::chrono::milliseconds(300));
         // }
     }
