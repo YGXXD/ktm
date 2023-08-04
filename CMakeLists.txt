@@ -18,7 +18,7 @@ if(APPLE)
 	set(CMAKE_CXX_COMPILER /usr/bin/clang++)
 	
 	add_compile_options(-x objective-c++)
-	add_compile_options(-fobjc-arc)
+	#add_compile_options(-fobjc-arc)
 
     # target engine
     add_library(${ENGINE_DLL_NAME} SHARED ${XXD_ENGINE_SOURCE_FILES})	

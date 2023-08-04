@@ -10,48 +10,35 @@ xxd::MacWindow::MacWindow(const WindowProps& props)
 
 xxd::MacWindow::~MacWindow()
 {
-    
+    MacSupport::MacCocoaQuit();
 }
 
 void xxd::MacWindow::Init(const WindowProps& props)
 {
-@autoreleasepool
-{
-    [NSApplication sharedApplication]; 
-    [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
-    [NSApp finishLaunching];
-    [NSApp activateIgnoringOtherApps:true];
+    MacSupport::MacCocoaInit();
+    @autoreleasepool
+    {
+        NSRect rect;
+        rect.origin.x = 100;
+        rect.origin.y = 100;
+        rect.size.width = props.width;
+        rect.size.height = props.height;
 
-    NSRect rect;
-    rect.origin.x = 100;
-    rect.origin.y = 100;
-    rect.size.width = props.width;
-    rect.size.height = props.height;
+        window = [[EvtNSWindow alloc] initWithContentRect:rect 
+            styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable | NSWindowStyleMaskMiniaturizable 
+            backing:NSBackingStoreBuffered defer:false];
 
-    window = [[EvtNSWindow alloc] initWithContentRect:rect 
-        styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable | NSWindowStyleMaskMiniaturizable 
-        backing:NSBackingStoreBuffered defer:false];
-    NSString* title = [[NSString alloc] initWithUTF8String:props.title.c_str()];
-    [window setTitle:title];
-    [window makeKeyWindow];
-    [window orderFrontRegardless];
-    [window setBackgroundColor:NSColor.whiteColor];
-}
+        NSString* title = [[[NSString alloc] initWithUTF8String:props.title.c_str()] autorelease];
+        [window setTitle:title];
+        [window makeKeyWindow];
+        [window orderFrontRegardless];
+        [window setBackgroundColor:NSColor.whiteColor];
+    }
 }
 
 void xxd::MacWindow::OnUpdate()
 {
-@autoreleasepool
-{
-    // nil 会指定 [NSDate distantPast]
-    NSEvent* event = [NSApp nextEventMatchingMask:NSEventMaskAny untilDate:nil inMode:NSDefaultRunLoopMode dequeue:true];
-
-    while(event != nil)
-    {
-        [NSApp sendEvent:event];
-        event = [NSApp nextEventMatchingMask:NSEventMaskAny untilDate:nil inMode:NSDefaultRunLoopMode dequeue:true];
-    }
-}
+    MacSupport::MacCocoaPollEvent();
 }
 
 uint32_t xxd::MacWindow::GetWidth() const

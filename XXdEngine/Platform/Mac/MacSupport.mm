@@ -1,6 +1,59 @@
 #include "MacSupport.h"
 #include "Log/Logger.h"
 
+@implementation NSApplication(Debug)
+
+- (void)dealloc 
+{
+    [super dealloc];
+    XXD_FATAL("CocoaApp销毁")
+}
+
+@end
+
+bool xxd::MacSupport::bisInitialized = false;
+
+void xxd::MacSupport::MacCocoaInit()
+{
+    assert(!bisInitialized && NSApp == nil);
+    bisInitialized = true;
+    @autoreleasepool
+    {
+        auto cocoaApp = [[NSApplication sharedApplication] autorelease];
+        [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
+        [NSApp finishLaunching];
+        [NSApp activateIgnoringOtherApps:true];
+    }
+}
+
+void xxd::MacSupport::MacCocoaPollEvent()
+{
+    
+    @autoreleasepool
+    {
+        while(true)
+        {   
+            // nil 会指定 [NSDate distantPast]
+            NSEvent* event = [NSApp nextEventMatchingMask:NSEventMaskAny untilDate:nil inMode:NSDefaultRunLoopMode dequeue:true];
+            if(event == nil)
+                break;
+            [NSApp sendEvent:event];
+        }
+    }
+    
+}
+
+void xxd::MacSupport::MacCocoaQuit()
+{
+    assert(NSApp != nil && bisInitialized);
+    bisInitialized = false;
+    @autoreleasepool
+    {
+        [NSApp release];
+        NSApp = nil;
+    }
+}
+
 @implementation EvtNSWindow
 
 @synthesize eventCallback;
@@ -37,6 +90,7 @@
 
 - (void)dealloc 
 {
+    [super dealloc];
     XXD_DEBUG("窗口销毁")
 }
 

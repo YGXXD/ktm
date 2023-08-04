@@ -1,6 +1,22 @@
 #ifndef _MAC_SUPPORT_H_
 #define _MAC_SUPPORT_H_
 
+namespace xxd
+{
+class MacSupport
+{
+public:
+    MacSupport() = delete;
+    static void MacCocoaInit();
+    static void MacCocoaPollEvent();
+    static void MacCocoaQuit();
+    
+    inline static bool IsInitialized() { return bisInitialized; }
+private:
+    static bool bisInitialized;
+};
+}
+
 #include "Event/Delegate.h"
 #include "Event/Event.h"
 
