@@ -1,7 +1,7 @@
 #ifndef _LOGGER_H_
 #define _LOGGER_H_
 
-#define XXD_LOG(LogLevel, ...) xxd::Logger::Log((LogLevel), __VA_ARGS__)
+#define XXD_LOG(LogLevel, ...) xxd::Logger::Log((LogLevel), __VA_ARGS__);
 #define XXD_DEBUG(...) XXD_LOG(xxd::LogLevelDebug, __VA_ARGS__)
 #define XXD_INFO(...) XXD_LOG(xxd::LogLevelInfo, __VA_ARGS__)
 #define XXD_WARN(...) XXD_LOG(xxd::LogLevelWarn, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")

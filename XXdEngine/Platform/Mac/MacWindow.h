@@ -3,7 +3,7 @@
 
 #include "Core/Window.h"
 
-@class NSWindow;
+@class EvtNSWindow;
 
 namespace xxd
 {
@@ -29,7 +29,7 @@ private:
 	std::string title;
 	uint32_t width;
 	uint32_t height;
-	::NSWindow* window;
+	::EvtNSWindow* window;
 } ;
 }
 

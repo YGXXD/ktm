@@ -1,48 +1,7 @@
 #include "MacWindow.h"
 #include "Log/Logger.h"
 #include "Event/Delegate.h"
-
-#import <AppKit/AppKit.h>
-
-@interface MacWindowDelegate : NSObject<NSWindowDelegate>
-
-@property(readonly) xxd::SingleDelegate<void, xxd::Event&> eventCallback;
-
-@end
-
-@implementation MacWindowDelegate
-- (void)windowWillClose:(NSNotification *)notification
-{
-    XXD_DEBUG("窗口关闭");
-}
-
-- (void)windowDidResize:(NSNotification *)notification 
-{
-    XXD_DEBUG("窗口大小改变");
-}
-
-@end
-
-@implementation NSWindow (Event)
-
-- (void)keyDown:(NSEvent *)event 
-{
-    [super keyDown:event];
-    XXD_DEBUG("Key");
-}
-
-- (void)mouseDown:(NSEvent *)event 
-{
-    XXD_DEBUG("MouseDown");
-    
-}
-
-- (void)mouseUp:(NSEvent *)event 
-{
-    XXD_DEBUG("MouseUp");
-}
-
-@end
+#include "MacSupport.h"
 
 xxd::MacWindow::MacWindow(const WindowProps& props)
 {
@@ -56,6 +15,8 @@ xxd::MacWindow::~MacWindow()
 
 void xxd::MacWindow::Init(const WindowProps& props)
 {
+@autoreleasepool
+{
     [NSApplication sharedApplication]; 
     [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
     [NSApp finishLaunching];
@@ -67,7 +28,7 @@ void xxd::MacWindow::Init(const WindowProps& props)
     rect.size.width = props.width;
     rect.size.height = props.height;
 
-    window = [[NSWindow alloc] initWithContentRect:rect 
+    window = [[EvtNSWindow alloc] initWithContentRect:rect 
         styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable | NSWindowStyleMaskMiniaturizable 
         backing:NSBackingStoreBuffered defer:false];
     NSString* title = [[NSString alloc] initWithUTF8String:props.title.c_str()];
@@ -75,13 +36,12 @@ void xxd::MacWindow::Init(const WindowProps& props)
     [window makeKeyWindow];
     [window orderFrontRegardless];
     [window setBackgroundColor:NSColor.whiteColor];
-
-    MacWindowDelegate* del = [[MacWindowDelegate alloc] init];
-    [window setDelegate:del];
-
+}
 }
 
 void xxd::MacWindow::OnUpdate()
+{
+@autoreleasepool
 {
     // nil 会指定 [NSDate distantPast]
     NSEvent* event = [NSApp nextEventMatchingMask:NSEventMaskAny untilDate:nil inMode:NSDefaultRunLoopMode dequeue:true];
@@ -91,6 +51,7 @@ void xxd::MacWindow::OnUpdate()
         [NSApp sendEvent:event];
         event = [NSApp nextEventMatchingMask:NSEventMaskAny untilDate:nil inMode:NSDefaultRunLoopMode dequeue:true];
     }
+}
 }
 
 uint32_t xxd::MacWindow::GetWidth() const
@@ -105,9 +66,8 @@ uint32_t xxd::MacWindow::GetHeight() const
 
 void xxd::MacWindow::SetEventCallback(void(* callback)(Event&))
 {
-    MacWindowDelegate* del = (MacWindowDelegate*)window.delegate;
-    if(del != nil)
-        del.eventCallback.BindFunction(callback);
+    if(window != nil)
+        window.eventCallback.BindFunction(callback);
 }
 
 void xxd::MacWindow::SetVSync(bool enabled)
