@@ -38,8 +38,14 @@ inline T& xxd::Singleton<T>::Get()
 }
 
 #define XXD_SINGLETON_FLAG(className) \
-public: static className& Get() { return xxd::Singleton<className>::Get(); } \
-private: friend class Singleton<className>; \
-className(); className(const className&) = delete; className(className&&) = delete; ~className();
+public: \
+static className& Get() { return xxd::Singleton<className>::Get(); } \
+private: \
+friend class Singleton<className>; \
+className(); \
+className(const className&) = delete; \
+className(className&&) = delete; \
+~className(); \
+className& operator=(const className&) = delete;
 
 #endif
