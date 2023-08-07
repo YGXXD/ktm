@@ -96,9 +96,32 @@
     eventCallback(e);
 }
 
+- (void)otherMouseDown:(NSEvent *)event 
+{
+    xxd::MouseButtonPressedEvent e(event.buttonNumber);
+    eventCallback(e);
+}
+
+- (void)rightMouseDown:(NSEvent *)event 
+{
+    xxd::MouseButtonPressedEvent e(event.buttonNumber);
+    eventCallback(e);
+}
 - (void)mouseUp:(NSEvent *)event 
 {
 	xxd::MouseButtonReleasedEvent e(event.buttonNumber);
+    eventCallback(e);
+}
+
+-(void)rightMouseUp:(NSEvent *)event 
+{
+    xxd::MouseButtonReleasedEvent e(event.buttonNumber);
+    eventCallback(e);
+}
+
+- (void)otherMouseUp:(NSEvent *)event 
+{
+    xxd::MouseButtonReleasedEvent e(event.buttonNumber);
     eventCallback(e);
 }
 
