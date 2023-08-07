@@ -28,9 +28,6 @@ void xxd::Application::Run()
 
 void xxd::Application::OnEvent(xxd::Event& event)
 {
-	if(event.GetEventType() == EventType::WindowClose)
-		bIsQuit = true;
-
 	EventDispatcher ed(event);
 	ed.Dispatch<WindowCloseEvent>([](xxd::Event& event)->bool { bIsQuit = true; return true; });
 	ed.Dispatch<WindowResizeEvent>([](xxd::Event& event)->bool { XXD_DEBUG(event); return true; });
