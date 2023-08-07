@@ -37,7 +37,7 @@ inline T& xxd::Singleton<T>::Get()
 	return *SingletonInstance;
 }
 
-#define XXD_SINGLETON_FLAG(className) \
+#define SINGLETON_REGISTER(className) \
 public: \
 static className& Get() { return xxd::Singleton<className>::Get(); } \
 private: \

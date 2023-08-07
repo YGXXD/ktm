@@ -90,7 +90,7 @@ uint32_t xxd::MacWindow::GetHeight() const
 void xxd::MacWindow::SetEventCallback(void(* callback)(Event&))
 {
     if(window != nil)
-        window.eventCallback.BindFunction(callback);
+        window.eventCallback.BindAnyFunc(callback);
 }
 
 void xxd::MacWindow::SetVSync(bool enabled)
