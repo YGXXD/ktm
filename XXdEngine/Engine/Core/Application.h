@@ -3,21 +3,20 @@
 
 #include "XXd.h"
 #include "Window.h"
+#include "Singleton.h"
 
 namespace xxd
 {
-class XXD_API Application
+class XXD_API Application final
 {
+	XXD_SINGLETON_FLAG(Application)
+
 public:
-	Application();
-	virtual ~Application();
-	virtual void Run() = 0;
+	void Run();
 
 private:
 	std::unique_ptr<Window> mainWindow;
 };
-
-Application* CreateApplication();
 
 }
 
