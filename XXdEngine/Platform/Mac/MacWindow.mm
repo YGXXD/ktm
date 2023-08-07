@@ -1,21 +1,57 @@
 #include "MacWindow.h"
 #include "Log/Logger.h"
 #include "Event/Delegate.h"
-#include "MacSupport.h"
+#include "EvtNSWindow.h"
+
+void xxd::MacWindow::MacCocoaInit()
+{
+	assert(NSApp == nil);
+    @autoreleasepool
+    {
+        auto cocoaApp = [[NSApplication sharedApplication] autorelease];
+        [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
+        [NSApp finishLaunching];
+        [NSApp activateIgnoringOtherApps:true];
+    }
+}
+
+void xxd::MacWindow::MacCocoaPollEvent()
+{
+    @autoreleasepool
+    {
+        while(true)
+        {   
+            // nil 会指定 [NSDate distantPast]
+            NSEvent* event = [NSApp nextEventMatchingMask:NSEventMaskAny untilDate:nil inMode:NSDefaultRunLoopMode dequeue:true];
+            if(event == nil)
+                break;
+            [NSApp sendEvent:event];
+        }
+    }
+}
+
+void xxd::MacWindow::MacCocoaQuit()
+{
+    assert(NSApp != nil);
+    @autoreleasepool
+    {
+        [NSApp release];
+        NSApp = nil;
+    }
+}
 
 xxd::MacWindow::MacWindow(const WindowProps& props)
 {
-    Init(props);
+    InitProps(props);
 }
 
 xxd::MacWindow::~MacWindow()
 {
-    MacSupport::MacCocoaQuit();
+
 }
 
-void xxd::MacWindow::Init(const WindowProps& props)
+void xxd::MacWindow::InitProps(const WindowProps& props)
 {
-    MacSupport::MacCocoaInit();
     @autoreleasepool
     {
         NSRect rect;
@@ -38,7 +74,7 @@ void xxd::MacWindow::Init(const WindowProps& props)
 
 void xxd::MacWindow::OnUpdate()
 {
-    MacSupport::MacCocoaPollEvent();
+
 }
 
 uint32_t xxd::MacWindow::GetWidth() const

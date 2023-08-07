@@ -10,6 +10,10 @@ namespace xxd
 class MacWindow : public Window
 {
 public:
+	static void MacCocoaInit();
+	static void MacCocoaPollEvent();
+	static void MacCocoaQuit();
+
 	MacWindow(const WindowProps& props);
 	~MacWindow();
 
@@ -22,9 +26,9 @@ public:
 	virtual void SetVSync(bool enabled) override;
 	virtual bool IsVSync() const override;
 
-  	virtual void *GetNativeWindow() const override;
+  	virtual void *GetNativeWindow() const override;	
 private:
-	void Init(const WindowProps& props);
+	void InitProps(const WindowProps& props);
 	
 	std::string title;
 	uint32_t width;

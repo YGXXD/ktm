@@ -1,58 +1,18 @@
-#include "MacSupport.h"
+#include "EvtNSWindow.h"
 #include "Log/Logger.h"
+#include "Event/KeyEvent.h"
+#include "Event/MouseEvent.h"
+#include "Event/AppEvent.h"
 
 @implementation NSApplication(Debug)
 
 - (void)dealloc 
 {
     [super dealloc];
-    XXD_FATAL("CocoaApp销毁")
+    XXD_FATAL("CocoaApp dealloc")
 }
 
 @end
-
-bool xxd::MacSupport::bisInitialized = false;
-
-void xxd::MacSupport::MacCocoaInit()
-{
-    assert(!bisInitialized && NSApp == nil);
-    bisInitialized = true;
-    @autoreleasepool
-    {
-        auto cocoaApp = [[NSApplication sharedApplication] autorelease];
-        [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
-        [NSApp finishLaunching];
-        [NSApp activateIgnoringOtherApps:true];
-    }
-}
-
-void xxd::MacSupport::MacCocoaPollEvent()
-{
-    
-    @autoreleasepool
-    {
-        while(true)
-        {   
-            // nil 会指定 [NSDate distantPast]
-            NSEvent* event = [NSApp nextEventMatchingMask:NSEventMaskAny untilDate:nil inMode:NSDefaultRunLoopMode dequeue:true];
-            if(event == nil)
-                break;
-            [NSApp sendEvent:event];
-        }
-    }
-    
-}
-
-void xxd::MacSupport::MacCocoaQuit()
-{
-    assert(NSApp != nil && bisInitialized);
-    bisInitialized = false;
-    @autoreleasepool
-    {
-        [NSApp release];
-        NSApp = nil;
-    }
-}
 
 @implementation EvtNSWindow
 
@@ -64,6 +24,7 @@ void xxd::MacSupport::MacCocoaQuit()
     if(self != nil)
     {
         [self setDelegate:self];
+		[self setAcceptsMouseMovedEvents:true];
     }
     return self;
 }
@@ -74,6 +35,7 @@ void xxd::MacSupport::MacCocoaQuit()
     if(self != nil)
     {
         [self setDelegate:self];
+		[self setAcceptsMouseMovedEvents:true];
     }
     return self;
 }
@@ -84,6 +46,7 @@ void xxd::MacSupport::MacCocoaQuit()
     if(self != nil)
     {
         [self setDelegate:self];
+		[self setAcceptsMouseMovedEvents:true];
     }
     return self;
 }
@@ -91,32 +54,59 @@ void xxd::MacSupport::MacCocoaQuit()
 - (void)dealloc 
 {
     [super dealloc];
-    XXD_DEBUG("窗口销毁")
+    XXD_DEBUG("EvtNSWindow dealloc")
 }
 
 - (void)windowWillClose:(NSNotification *)notification 
 {
-    XXD_DEBUG("窗口关闭")
+	xxd::WindowCloseEvent e;
+	eventCallback(e);	
 }
 
 - (void)windowDidResize:(NSNotification *)notification 
 {
-    XXD_DEBUG("窗口大小改变")
+	xxd::WindowResizeEvent e(self.frame.size.width, self.frame.size.height);
+	eventCallback(e);
 }
 
-- (void)keyDown:(NSEvent *)event 
+- (void)keyDown:(NSEvent *)event
 {
-    XXD_DEBUG("Key");
+    switch (event.type)
+    {
+        case NSEventTypeKeyDown: 
+	    {
+            xxd::KeyPressedEvent e(event.keyCode, event.isARepeat);
+            eventCallback(e);
+            break;
+        }
+        case NSEventTypeKeyUp:
+	    {
+            xxd::KeyPressedEvent e(event.keyCode);
+            eventCallback(e);
+            break;
+        }
+        default:
+            return;
+    }
 }
 
 - (void)mouseDown:(NSEvent *)event 
 {
-    XXD_DEBUG("MouseDown");
+	xxd::MouseButtonPressedEvent e(event.buttonNumber);
+    eventCallback(e);
 }
 
 - (void)mouseUp:(NSEvent *)event 
 {
-    XXD_DEBUG("MouseUp");
+	xxd::MouseButtonReleasedEvent e(event.buttonNumber);
+    eventCallback(e);
+}
+
+- (void)mouseMoved:(NSEvent *)event 
+{
+	CGPoint p = [event locationInWindow];
+	xxd::MouseMovedEvent e(p.x, p.y);
+	eventCallback(e);
 }
 
 @end
