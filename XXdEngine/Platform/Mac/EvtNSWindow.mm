@@ -102,6 +102,12 @@
     eventCallback(e);
 }
 
+- (void)scrollWheel:(NSEvent *)event 
+{
+    xxd::MouseScrolledEvent e(event.deltaX, event.deltaY);
+    eventCallback(e);
+}
+
 - (void)mouseMoved:(NSEvent *)event 
 {
 	CGPoint p = [event locationInWindow];
