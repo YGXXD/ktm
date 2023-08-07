@@ -1,6 +1,6 @@
 #include "MacWindow.h"
 #include "Log/Logger.h"
-#include "Event/Delegate.h"
+#include "Core/Delegate.h"
 #include "EvtNSWindow.h"
 
 void xxd::MacWindow::MacCocoaInit()

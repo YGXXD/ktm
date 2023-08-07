@@ -1,18 +1,16 @@
 #include "Application.h"
 #include "Log/Logger.h"
+#include "Event/AppEvent.h"
 
-void WindowEventCallback(xxd::Event& event)
-{
-	XXD_DEBUG(event)
-}
+bool xxd::Application::bIsQuit = false;
+std::unique_ptr<xxd::Window> xxd::Application::mainWindow;
 
-xxd::Application::Application()
+void xxd::Application::Initialize()
 {
 	Window::Init();
-    
 }
 
-xxd::Application::~Application()
+void xxd::Application::Destroy()
 {
 	Window::Quit();
 }
@@ -20,10 +18,20 @@ xxd::Application::~Application()
 void xxd::Application::Run()
 {
     mainWindow = std::unique_ptr<Window>(Window::Create(WindowProps()));
- 	mainWindow->SetEventCallback(&WindowEventCallback);	
- 	while(1)
+ 	mainWindow->SetEventCallback(&Application::OnEvent);	
+ 	while(!bIsQuit)
     {
 		Window::PollEvent();
         mainWindow->OnUpdate();
     }
+}
+
+void xxd::Application::OnEvent(xxd::Event& event)
+{
+	if(event.GetEventType() == EventType::WindowClose)
+		bIsQuit = true;
+
+	EventDispatcher ed(event);
+	ed.Dispatch<WindowCloseEvent>([](xxd::Event& event)->bool { bIsQuit = true; return true; });
+	ed.Dispatch<WindowResizeEvent>([](xxd::Event& event)->bool { XXD_DEBUG(event); return true; });
 }

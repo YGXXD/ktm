@@ -38,7 +38,7 @@ void xxd::Window::PollEvent()
 void xxd::Window::Quit()
 {
 #if defined(XXD_PLATFORM_APPLE)
-	MacWindow::Quit();
+	MacWindow::MacCocoaQuit();
 #elif defined(XXD_PLATFORM_WINDOWS)
 		
 #endif 

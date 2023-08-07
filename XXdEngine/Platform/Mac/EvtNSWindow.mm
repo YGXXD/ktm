@@ -9,7 +9,7 @@
 - (void)dealloc 
 {
     [super dealloc];
-    XXD_FATAL("CocoaApp dealloc")
+    XXD_DEBUG("CocoaApp dealloc")
 }
 
 @end
