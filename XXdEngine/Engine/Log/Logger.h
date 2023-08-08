@@ -28,7 +28,7 @@ public:
     ~Logger();
 	
 	template<typename ...ArgsT>
-	static void Log(LogLevel level, ArgsT &&... args)
+	static void Log(LogLevel level, ArgsT&&... args)
 	{
 		if(level >= minLogLevel && level <= LogLevelFatal)
 		{
@@ -41,14 +41,14 @@ public:
 
 private:
 	template<typename ArgT, typename ...ArgsT>
-	static void ConsoleLog(ArgT && arg, ArgsT &&... args)
+	static void ConsoleLog(ArgT && arg, ArgsT&&... args)
 	{
 		std::cout << arg;
 		ConsoleLog(std::forward<ArgsT>(args)...);
 	}
 
 	template<typename ArgT>
-	static void ConsoleLog(ArgT && arg)
+	static void ConsoleLog(ArgT&& arg)
 	{
 		std::cout << arg << "\n";
 		std::flush(std::cout);

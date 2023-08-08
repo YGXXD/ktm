@@ -50,7 +50,7 @@ private:
         FunT func;
     };
 
-    // 全局和静态函数委托模板
+    // 非成员函数委托模板
     template<typename ReturnT, typename ...ArgsT>
     class FuncDelegate : public IDelegate<ReturnT, ArgsT...>
     {
@@ -90,7 +90,7 @@ private:
         FunT func;
     };
     
-    // 任意非成员函数委托模版
+    // 任意可调用对象委托模版
     template<class AnyFunT, typename ReturnT, typename ...ArgsT>
     class AnyFunDelegate : public IDelegate<ReturnT, ArgsT...>
     {
@@ -114,21 +114,22 @@ class SingleDelegate final
 public:
     explicit SingleDelegate() = default;
     
+    static SingleDelegate CreateFunction(typename DelegateInterface::FuncDelegate<ReturnT, ArgsT...>::FunT fun);
+    
+    template<class ClassT>
+    static SingleDelegate CreateObject(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun);
+    
+    template<class ClassT>
+    static SingleDelegate CreateSafeObj(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun);
+    
+    template<class ClassT>
+    static SingleDelegate CreateSafeObj(const std::weak_ptr<ClassT>& objWeak, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun);
+    
     template<class AnyFunT>
-    explicit SingleDelegate(const AnyFunT& fun);
+    static SingleDelegate CreateAnyFunc(const AnyFunT& func);
     
-    template<class ClassT>
-    explicit SingleDelegate(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun);
-    
-    template<class ClassT>
-    explicit SingleDelegate(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun);
-    
-    template<class ClassT>
-    explicit SingleDelegate(const std::weak_ptr<ClassT>& objWeak, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun);
-    
-    // 绑定全局,静态函数,lambda函数
-    template<class AnyFunT>
-    void BindAnyFunc(const AnyFunT& func);
+    // 绑定全局或静态函数
+    void BindFunction(typename DelegateInterface::FuncDelegate<ReturnT, ArgsT...>::FunT fun);
 
     // 绑定类成员函数
     template<class ClassT>
@@ -140,6 +141,10 @@ public:
     
     template<class ClassT>
     void BindSafeObj(const std::weak_ptr<ClassT>& objWeak, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun);
+    
+    // 绑定任意可调用对象
+    template<class AnyFunT>
+    void BindAnyFunc(const AnyFunT& func);
 
     // 代理执行
     ReturnT Invoke(ArgsT... args);
@@ -179,9 +184,9 @@ public:
     template<class ClassT>
     DelegateHandle AddSafeObj(const std::weak_ptr<ClassT>& objWeak, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunT& objFun);
 
-    // 添加lambda函数
-    template<class LambdaT>
-    DelegateHandle AddLambda(const LambdaT& lambda);
+    // 添加任意可调用对象
+    template<class AnyFunT>
+    DelegateHandle AddAnyFunc(const AnyFunT& func);
     
     // 多播代理执行
     void BroadCast(ArgsT... args);
@@ -228,38 +233,53 @@ private:
 }
 
 template<typename ReturnT, typename ...ArgsT>
+inline xxd::SingleDelegate<ReturnT, ArgsT...> xxd::SingleDelegate<ReturnT, ArgsT...>::CreateFunction(typename DelegateInterface::FuncDelegate<ReturnT, ArgsT...>::FunT fun)
+{
+    SingleDelegate<ReturnT, ArgsT...> dlgt;
+    dlgt.BindFunction(fun);
+    return dlgt;
+}
+
+template<typename ReturnT, typename ...ArgsT>
+template<class ClassT>
+inline xxd::SingleDelegate<ReturnT, ArgsT...> xxd::SingleDelegate<ReturnT, ArgsT...>::CreateObject(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun)
+{
+    SingleDelegate<ReturnT, ArgsT...> dlgt;
+    dlgt.BindObject(obj, objFun);
+    return dlgt;
+}
+
+template<typename ReturnT, typename ...ArgsT>
+template<class ClassT>
+inline xxd::SingleDelegate<ReturnT, ArgsT...> xxd::SingleDelegate<ReturnT, ArgsT...>::CreateSafeObj(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun)
+{
+    SingleDelegate<ReturnT, ArgsT...> dlgt;
+    dlgt.BindSafeObj(objShared, objFun);
+    return dlgt;
+}
+
+template<typename ReturnT, typename ...ArgsT>
+template<class ClassT>
+inline xxd::SingleDelegate<ReturnT, ArgsT...> xxd::SingleDelegate<ReturnT, ArgsT...>::CreateSafeObj(const std::weak_ptr<ClassT>& objWeak, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun)
+{
+    SingleDelegate<ReturnT, ArgsT...> dlgt;
+    dlgt.BindSafeObj(objWeak, objFun);
+    return dlgt;
+}
+
+template<typename ReturnT, typename ...ArgsT>
 template<class AnyFunT>
-inline xxd::SingleDelegate<ReturnT, ArgsT...>::SingleDelegate(const AnyFunT& fun)
+inline xxd::SingleDelegate<ReturnT, ArgsT...> xxd::SingleDelegate<ReturnT, ArgsT...>::CreateAnyFunc(const AnyFunT& func)
 {
-    BindAnyFunc(fun);
+    SingleDelegate<ReturnT, ArgsT...> dlgt;
+    dlgt.BindAnyFunc(func);
+    return dlgt;
 }
 
 template<typename ReturnT, typename ...ArgsT>
-template<class ClassT>
-inline xxd::SingleDelegate<ReturnT, ArgsT...>::SingleDelegate(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun)
+inline void xxd::SingleDelegate<ReturnT, ArgsT...>::BindFunction(typename DelegateInterface::FuncDelegate<ReturnT, ArgsT...>::FunT fun)
 {
-    BindObject(obj, objFun);
-}
-
-template<typename ReturnT, typename ...ArgsT>
-template<class ClassT>
-inline xxd::SingleDelegate<ReturnT, ArgsT...>::SingleDelegate(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun)
-{
-    BindSafeObj(objShared, objFun);
-}
-
-template<typename ReturnT, typename ...ArgsT>
-template<class ClassT>
-inline xxd::SingleDelegate<ReturnT, ArgsT...>::SingleDelegate(const std::weak_ptr<ClassT>& objWeak, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun)
-{
-    BindSafeObj(objWeak, objFun);
-}
-
-template<typename ReturnT, typename ...ArgsT>
-template<class AnyFunT>
-inline void xxd::SingleDelegate<ReturnT, ArgsT...>::BindAnyFunc(const AnyFunT& fun)
-{
-    dlgtPtr = std::make_shared<DelegateInterface::AnyFunDelegate<AnyFunT, ReturnT, ArgsT...> >(fun);
+    dlgtPtr = std::make_shared<DelegateInterface::FuncDelegate<ReturnT, ArgsT...> >(fun);
 }
 
 template<typename ReturnT, typename ...ArgsT>
@@ -281,6 +301,13 @@ template<class ClassT>
 inline void xxd::SingleDelegate<ReturnT, ArgsT...>::BindSafeObj(const std::weak_ptr<ClassT>& objWeak, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun)
 {
     dlgtPtr = std::make_shared<DelegateInterface::ObjFuncSafeDelegate<ClassT, ReturnT, ArgsT...> >(objWeak, objFun);
+}
+
+template<typename ReturnT, typename ...ArgsT>
+template<class AnyFunT>
+inline void xxd::SingleDelegate<ReturnT, ArgsT...>::BindAnyFunc(const AnyFunT& func)
+{
+    dlgtPtr = std::make_shared<DelegateInterface::AnyFunDelegate<AnyFunT, ReturnT, ArgsT...> >(func);
 }
 
 template<typename ReturnT, typename ...ArgsT>
@@ -344,11 +371,11 @@ inline xxd::DelegateHandle xxd::MultiDelegate<ArgsT...>::AddSafeObj(const std::w
 }
 
 template<typename ...ArgsT>
-template<class LambdaT>
-inline xxd::DelegateHandle xxd::MultiDelegate<ArgsT...>::AddLambda(const LambdaT& lambda)
+template<class AnyFunT>
+inline xxd::DelegateHandle xxd::MultiDelegate<ArgsT...>::AddAnyFunc(const AnyFunT& func)
 {
     DelegateHandle handle = { 0x4, dlgtId++, this, 0 };
-    dlgtMap[HandleToString(handle)] = std::make_shared<DelegateInterface::AnyFunDelegate<LambdaT, void, ArgsT...> >(lambda);
+    dlgtMap[HandleToString(handle)] = std::make_shared<DelegateInterface::AnyFunDelegate<AnyFunT, void, ArgsT...> >(func);
     
     return handle;
 }

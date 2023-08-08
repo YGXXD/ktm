@@ -30,7 +30,7 @@ void xxd::Application::Run()
 void xxd::Application::OnEvent(xxd::Event& event)
 {
 	EventDispatcher ed(event);
-	ed.Dispatch<WindowCloseEvent>([](xxd::Event& event)->bool { bIsQuit = true; return true; });
-	ed.Dispatch<WindowResizeEvent>([](xxd::Event& event)->bool { XXD_DEBUG(event); return true; });
-	ed.Dispatch<MouseButtonEvent>([](xxd::MouseButtonEvent& event)->bool { XXD_DEBUG(event); return true; });
+	ed.Dispatch<WindowCloseEvent>([](xxd::WindowCloseEvent& event)->bool { bIsQuit = true; return true; });
+	ed.Dispatch<WindowResizeEvent>([](xxd::WindowResizeEvent& event)->bool { XXD_DEBUG(event); return true; });
+	ed.Dispatch<MouseButtonPressedEvent>([](xxd::MouseButtonPressedEvent& event)->bool { XXD_DEBUG(event); return true; });
 }
