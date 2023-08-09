@@ -92,7 +92,14 @@
 
 - (void)mouseDown:(NSEvent *)event 
 {
+    XXD_DEBUG(event.locationInWindow.x, ",", event.locationInWindow.y)
 	xxd::MouseButtonPressedEvent e(event.buttonNumber);
+    eventCallback(e);
+}
+
+- (void)rightMouseDown:(NSEvent *)event 
+{
+    xxd::MouseButtonPressedEvent e(event.buttonNumber);
     eventCallback(e);
 }
 
@@ -102,11 +109,6 @@
     eventCallback(e);
 }
 
-- (void)rightMouseDown:(NSEvent *)event 
-{
-    xxd::MouseButtonPressedEvent e(event.buttonNumber);
-    eventCallback(e);
-}
 - (void)mouseUp:(NSEvent *)event 
 {
 	xxd::MouseButtonReleasedEvent e(event.buttonNumber);
@@ -133,9 +135,13 @@
 
 - (void)mouseMoved:(NSEvent *)event 
 {
-	CGPoint p = [event locationInWindow];
-	xxd::MouseMovedEvent e(p.x, p.y);
-	eventCallback(e);
+	NSPoint p = [NSEvent mouseLocation];
+    NSRect r = self.frame;
+    if(NSPointInRect(p, r))
+    {
+        xxd::MouseMovedEvent e(p.x - r.origin.x, p.y - r.origin.y);
+	    eventCallback(e);
+    }
 }
 
 @end
