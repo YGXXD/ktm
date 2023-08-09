@@ -135,11 +135,10 @@
 
 - (void)mouseMoved:(NSEvent *)event 
 {
-	NSPoint p = [NSEvent mouseLocation];
-    NSRect r = self.frame;
-    if(NSPointInRect(p, r))
+	NSPoint p = [event locationInWindow];
+    if(NSPointInRect(p, self.contentView.bounds))
     {
-        xxd::MouseMovedEvent e(p.x - r.origin.x, p.y - r.origin.y);
+        xxd::MouseMovedEvent e(p.x, p.y);
 	    eventCallback(e);
     }
 }
