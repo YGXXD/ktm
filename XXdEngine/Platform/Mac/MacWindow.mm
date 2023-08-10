@@ -1,7 +1,6 @@
 #include "MacWindow.h"
 #include "Log/Logger.h"
 #include "Core/Delegate.h"
-#include "EvtNSWindow.h"
 
 void xxd::MacWindow::MacCocoaInit()
 {
@@ -50,6 +49,11 @@ xxd::MacWindow::~MacWindow()
     
 }
 
+xxd::SingleDelegate<void, xxd::Event&>& xxd::MacWindow::GetEventCallback()
+{
+	return eventCallback;
+}
+
 void xxd::MacWindow::InitProps(const WindowProps& props)
 {
     @autoreleasepool
@@ -65,7 +69,8 @@ void xxd::MacWindow::InitProps(const WindowProps& props)
         window = [[EvtNSWindow alloc] initWithContentRect:rect 
             styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable | NSWindowStyleMaskMiniaturizable 
             backing:NSBackingStoreBuffered defer:false];
-
+		window.evtDelegate = this;
+	
         NSString* nsTitle = [[[NSString alloc] initWithUTF8String:title.c_str()] autorelease];
         [window setTitle:nsTitle];
         [window makeKeyWindow];
@@ -87,12 +92,6 @@ uint32_t xxd::MacWindow::GetWidth() const
 uint32_t xxd::MacWindow::GetHeight() const
 {
     return window.contentView.frame.size.height;
-}
-
-void xxd::MacWindow::SetEventCallback(const EventCallbackFn& callback)
-{
-    if(window != nil)
-        window.eventCallback.BindAnyFunc(callback);
 }
 
 void xxd::MacWindow::SetVSync(bool enabled)

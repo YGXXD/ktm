@@ -16,7 +16,7 @@
 
 @implementation EvtNSWindow
 
-@synthesize eventCallback;
+@synthesize evtDelegate;
 
 - (instancetype)init 
 {
@@ -60,13 +60,13 @@
 - (void)windowWillClose:(NSNotification *)notification 
 {
 	xxd::WindowCloseEvent e;
-	eventCallback(e);	
+	evtDelegate->GetEventCallback()(e);	
 }
 
 - (void)windowDidResize:(NSNotification *)notification 
 {
 	xxd::WindowResizeEvent e(self.frame.size.width, self.frame.size.height);
-	eventCallback(e);
+	evtDelegate->GetEventCallback()(e);
 }
 
 - (void)keyDown:(NSEvent *)event
@@ -76,13 +76,13 @@
         case NSEventTypeKeyDown: 
 	    {
             xxd::KeyPressedEvent e(event.keyCode, event.isARepeat);
-            eventCallback(e);
+            evtDelegate->GetEventCallback()(e);
             break;
         }
         case NSEventTypeKeyUp:
 	    {
             xxd::KeyPressedEvent e(event.keyCode);
-            eventCallback(e);
+            evtDelegate->GetEventCallback()(e);
             break;
         }
         default:
@@ -93,43 +93,43 @@
 - (void)mouseDown:(NSEvent *)event 
 {
 	xxd::MouseButtonPressedEvent e(event.buttonNumber);
-    eventCallback(e);
+    evtDelegate->GetEventCallback()(e);
 }
 
 - (void)rightMouseDown:(NSEvent *)event 
 {
     xxd::MouseButtonPressedEvent e(event.buttonNumber);
-    eventCallback(e);
+    evtDelegate->GetEventCallback()(e);
 }
 
 - (void)otherMouseDown:(NSEvent *)event 
 {
     xxd::MouseButtonPressedEvent e(event.buttonNumber);
-    eventCallback(e);
+    evtDelegate->GetEventCallback()(e);
 }
 
 - (void)mouseUp:(NSEvent *)event 
 {
 	xxd::MouseButtonReleasedEvent e(event.buttonNumber);
-    eventCallback(e);
+    evtDelegate->GetEventCallback()(e);
 }
 
 -(void)rightMouseUp:(NSEvent *)event 
 {
     xxd::MouseButtonReleasedEvent e(event.buttonNumber);
-    eventCallback(e);
+    evtDelegate->GetEventCallback()(e);
 }
 
 - (void)otherMouseUp:(NSEvent *)event 
 {
     xxd::MouseButtonReleasedEvent e(event.buttonNumber);
-    eventCallback(e);
+    evtDelegate->GetEventCallback()(e);
 }
 
 - (void)scrollWheel:(NSEvent *)event 
 {
     xxd::MouseScrolledEvent e(event.deltaX, event.deltaY);
-    eventCallback(e);
+    evtDelegate->GetEventCallback()(e);
 }
 
 - (void)mouseMoved:(NSEvent *)event 
@@ -138,7 +138,7 @@
     if(NSPointInRect(p, self.contentView.bounds))
     {
         xxd::MouseMovedEvent e(p.x, p.y);
-	    eventCallback(e);
+	    evtDelegate->GetEventCallback()(e);
     }
 }
 

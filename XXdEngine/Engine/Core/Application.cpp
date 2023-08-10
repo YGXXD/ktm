@@ -20,12 +20,13 @@ void xxd::Application::Destroy()
 void xxd::Application::Run()
 {
     mainWindow = std::unique_ptr<Window>(Window::Create(WindowProps()));
- 	mainWindow->SetEventCallback(&Application::OnEvent);	
+ 	mainWindow->eventCallback.BindAnyFunc(&Application::OnEvent);	
  	while(!bIsQuit)
     {
 		Window::PollEvent();
         mainWindow->OnUpdate();
     }
+	mainWindow.reset();
 }
 
 void xxd::Application::OnEvent(xxd::Event& event)

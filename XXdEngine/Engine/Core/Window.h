@@ -3,6 +3,7 @@
 
 #include <XXd.h>
 #include "Event/Event.h"
+#include "Delegate.h"
 
 namespace xxd
 {
@@ -20,8 +21,12 @@ struct WindowProps
 
 class XXD_API Window
 {
-public:
-	typedef void(* EventCallbackFn)(Event&);
+public: 	
+	static Window* Create(const WindowProps &props = WindowProps());
+	static void Init();
+	static void PollEvent();
+	static void Quit();
+
   	virtual ~Window() { };
 
   	virtual void OnUpdate() = 0;
@@ -29,15 +34,11 @@ public:
   	virtual uint32_t GetWidth() const = 0;
   	virtual uint32_t GetHeight() const = 0;
 
-  	virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
  	virtual void SetVSync(bool enabled) = 0; // 垂直同步
  	virtual bool IsVSync() const = 0;
  	virtual void* GetNativeWindow() const = 0;
 	
- 	static Window* Create(const WindowProps &props = WindowProps());
-	static void Init();
-	static void PollEvent();
-	static void Quit();
+	SingleDelegate<void, Event&> eventCallback;
 
 private:
 	static bool bisInitialized;

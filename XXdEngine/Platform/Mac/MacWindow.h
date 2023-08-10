@@ -2,12 +2,11 @@
 #define _MAC_WINDOW_H_
 
 #include "Core/Window.h"
-
-@class EvtNSWindow;
+#include "EvtNSWindow.h"
 
 namespace xxd
 {
-class MacWindow : public Window
+class MacWindow : public Window, public EvtNSDelegate
 {
 public:
 	static void MacCocoaInit();
@@ -17,12 +16,13 @@ public:
 	MacWindow(const WindowProps& props);
 	~MacWindow();
 
+	virtual SingleDelegate<void, Event&>& GetEventCallback() override;
+
 	virtual void OnUpdate() override;
 
     virtual uint32_t GetWidth() const override;
 	virtual uint32_t GetHeight() const override;
 
-	virtual void SetEventCallback(const EventCallbackFn& callback) override;
 	virtual void SetVSync(bool enabled) override;
 	virtual bool IsVSync() const override;
 
