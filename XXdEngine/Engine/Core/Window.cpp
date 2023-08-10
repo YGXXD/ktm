@@ -19,11 +19,13 @@ xxd::Window* xxd::Window::Create(const WindowProps& props)
 
 void xxd::Window::Init()
 {
+    assert(!bisInitialized);
 #if defined(XXD_PLATFORM_APPLE)
     MacWindow::MacCocoaInit();
 #elif defined(XXD_PLATFORM_WINDOWS)
 		
 #endif 
+    bisInitialized = true;
 }
 
 void xxd::Window::PollEvent()
@@ -37,9 +39,11 @@ void xxd::Window::PollEvent()
 
 void xxd::Window::Quit()
 {
+    assert(bisInitialized);
 #if defined(XXD_PLATFORM_APPLE)
 	MacWindow::MacCocoaQuit();
 #elif defined(XXD_PLATFORM_WINDOWS)
 		
 #endif 
+    bisInitialized = false;
 }

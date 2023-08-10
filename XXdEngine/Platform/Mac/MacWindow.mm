@@ -79,12 +79,12 @@ void xxd::MacWindow::OnUpdate()
 
 uint32_t xxd::MacWindow::GetWidth() const
 {
-    return width;
+    return window.contentView.frame.size.width;
 }
 
 uint32_t xxd::MacWindow::GetHeight() const
 {
-    return height;
+    return window.contentView.frame.size.height;
 }
 
 void xxd::MacWindow::SetEventCallback(void(* callback)(Event&))
