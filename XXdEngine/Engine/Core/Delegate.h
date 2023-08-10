@@ -96,14 +96,14 @@ private:
     {
     public:
         AnyFunDelegate() = delete;
-        explicit AnyFunDelegate(const AnyFunT& fun) : func(fun) { };
+        explicit AnyFunDelegate(AnyFunT&& fun) : func(fun) { };
 
         virtual ReturnT operator() (ArgsT... args) override
         {
             return func(args...);
         }
 
-        AnyFunT func;
+        typename std::remove_reference<AnyFunT>::type func;
     };
     
 };
@@ -126,7 +126,7 @@ public:
     static SingleDelegate CreateSafeObj(const std::weak_ptr<ClassT>& objWeak, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun);
     
     template<class AnyFunT>
-    static SingleDelegate CreateAnyFunc(const AnyFunT& func);
+    static SingleDelegate CreateAnyFunc(AnyFunT&& func);
     
     // 绑定全局或静态函数
     void BindFunction(typename DelegateInterface::FuncDelegate<ReturnT, ArgsT...>::FunT fun);
@@ -144,7 +144,7 @@ public:
     
     // 绑定任意可调用对象
     template<class AnyFunT>
-    void BindAnyFunc(const AnyFunT& func);
+    void BindAnyFunc(AnyFunT&& func);
 
     // 代理执行
     ReturnT Invoke(ArgsT... args);
@@ -269,10 +269,10 @@ inline xxd::SingleDelegate<ReturnT, ArgsT...> xxd::SingleDelegate<ReturnT, ArgsT
 
 template<typename ReturnT, typename ...ArgsT>
 template<class AnyFunT>
-inline xxd::SingleDelegate<ReturnT, ArgsT...> xxd::SingleDelegate<ReturnT, ArgsT...>::CreateAnyFunc(const AnyFunT& func)
+inline xxd::SingleDelegate<ReturnT, ArgsT...> xxd::SingleDelegate<ReturnT, ArgsT...>::CreateAnyFunc(AnyFunT&& func)
 {
     SingleDelegate<ReturnT, ArgsT...> dlgt;
-    dlgt.BindAnyFunc(func);
+    dlgt.BindAnyFunc(std::forward<AnyFunT>(func));
     return dlgt;
 }
 
@@ -305,9 +305,9 @@ inline void xxd::SingleDelegate<ReturnT, ArgsT...>::BindSafeObj(const std::weak_
 
 template<typename ReturnT, typename ...ArgsT>
 template<class AnyFunT>
-inline void xxd::SingleDelegate<ReturnT, ArgsT...>::BindAnyFunc(const AnyFunT& func)
+inline void xxd::SingleDelegate<ReturnT, ArgsT...>::BindAnyFunc(AnyFunT&& func)
 {
-    dlgtPtr = std::make_shared<DelegateInterface::AnyFunDelegate<AnyFunT, ReturnT, ArgsT...> >(func);
+    dlgtPtr = std::make_shared<DelegateInterface::AnyFunDelegate<AnyFunT, ReturnT, ArgsT...> >(std::forward<AnyFunT>(func));
 }
 
 template<typename ReturnT, typename ...ArgsT>
