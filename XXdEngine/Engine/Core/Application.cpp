@@ -2,6 +2,7 @@
 #include "Log/Logger.h"
 #include "Event/AppEvent.h"
 #include "Event/MouseEvent.h"
+#include "Event/KeyEvent.h"
 
 bool xxd::Application::bIsQuit = false;
 std::unique_ptr<xxd::Window> xxd::Application::mainWindow;
@@ -32,5 +33,5 @@ void xxd::Application::OnEvent(xxd::Event& event)
 	EventDispatcher ed(event);
 	ed.Dispatch<WindowCloseEvent>([](xxd::WindowCloseEvent& event)->bool { bIsQuit = true; return true; });
 	ed.Dispatch<WindowResizeEvent>([](xxd::WindowResizeEvent& event)->bool { XXD_DEBUG(event); return true; });
-	ed.Dispatch<MouseMovedEvent>([](xxd::MouseMovedEvent& event)->bool { XXD_DEBUG(event); return true; });
+	ed.Dispatch<KeyPressedEvent>([](xxd::KeyPressedEvent& event)->bool { XXD_DEBUG(event); return true; });
 }

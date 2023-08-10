@@ -21,6 +21,7 @@ struct WindowProps
 class XXD_API Window
 {
 public:
+	typedef void(* EventCallbackFn)(Event&);
   	virtual ~Window() { };
 
   	virtual void OnUpdate() = 0;
@@ -28,10 +29,10 @@ public:
   	virtual uint32_t GetWidth() const = 0;
   	virtual uint32_t GetHeight() const = 0;
 
-  	virtual void SetEventCallback(void(* callback)(Event&)) = 0;
+  	virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
  	virtual void SetVSync(bool enabled) = 0; // 垂直同步
  	virtual bool IsVSync() const = 0;
- 	virtual void *GetNativeWindow() const = 0;
+ 	virtual void* GetNativeWindow() const = 0;
 	
  	static Window* Create(const WindowProps &props = WindowProps());
 	static void Init();

@@ -47,13 +47,15 @@ xxd::MacWindow::MacWindow(const WindowProps& props)
 
 xxd::MacWindow::~MacWindow()
 {
-
+    
 }
 
 void xxd::MacWindow::InitProps(const WindowProps& props)
 {
     @autoreleasepool
     {
+        title = props.title;
+
         NSRect rect;
         rect.origin.x = 100;
         rect.origin.y = 100;
@@ -64,8 +66,8 @@ void xxd::MacWindow::InitProps(const WindowProps& props)
             styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable | NSWindowStyleMaskMiniaturizable 
             backing:NSBackingStoreBuffered defer:false];
 
-        NSString* title = [[[NSString alloc] initWithUTF8String:props.title.c_str()] autorelease];
-        [window setTitle:title];
+        NSString* nsTitle = [[[NSString alloc] initWithUTF8String:title.c_str()] autorelease];
+        [window setTitle:nsTitle];
         [window makeKeyWindow];
         [window orderFrontRegardless];
         [window setBackgroundColor:NSColor.whiteColor];
@@ -87,7 +89,7 @@ uint32_t xxd::MacWindow::GetHeight() const
     return window.contentView.frame.size.height;
 }
 
-void xxd::MacWindow::SetEventCallback(void(* callback)(Event&))
+void xxd::MacWindow::SetEventCallback(const EventCallbackFn& callback)
 {
     if(window != nil)
         window.eventCallback.BindAnyFunc(callback);

@@ -92,7 +92,6 @@
 
 - (void)mouseDown:(NSEvent *)event 
 {
-    XXD_DEBUG(event.locationInWindow.x, ",", event.locationInWindow.y)
 	xxd::MouseButtonPressedEvent e(event.buttonNumber);
     eventCallback(e);
 }

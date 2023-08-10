@@ -39,7 +39,7 @@ inline T& xxd::Singleton<T>::Get()
 
 #define SINGLETON_REGISTER(className) \
 public: \
-static inline className& Get() { return xxd::Singleton<className>::Get(); } \
+inline static className& Get() { return xxd::Singleton<className>::Get(); } \
 private: \
 friend class Singleton<className>; \
 className(); \

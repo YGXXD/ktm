@@ -22,7 +22,7 @@ public:
     virtual uint32_t GetWidth() const override;
 	virtual uint32_t GetHeight() const override;
 
-	virtual void SetEventCallback(void(* callback)(Event&)) override;
+	virtual void SetEventCallback(const EventCallbackFn& callback) override;
 	virtual void SetVSync(bool enabled) override;
 	virtual bool IsVSync() const override;
 
@@ -30,6 +30,7 @@ public:
 private:
 	void InitProps(const WindowProps& props);
 	
+	std::string title;
 	::EvtNSWindow* window;
 } ;
 }

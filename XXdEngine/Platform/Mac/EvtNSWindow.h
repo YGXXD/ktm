@@ -8,7 +8,7 @@
 
 @interface EvtNSWindow : NSWindow <NSWindowDelegate>
 
-@property (readonly) xxd::SingleDelegate<void, xxd::Event&>& eventCallback;
+@property (assign, readonly) xxd::SingleDelegate<void, xxd::Event&>& eventCallback;
 
 @end
 
