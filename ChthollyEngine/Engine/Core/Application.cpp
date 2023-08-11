@@ -1,4 +1,6 @@
 #include "Application.h"
+#include "Window.h"
+#include "Renderer/GraphicsContext.h"
 #include "Log/Logger.h"
 #include "Event/AppEvent.h"
 #include "Event/MouseEvent.h"
@@ -6,14 +8,17 @@
 
 bool xxd::Application::bIsQuit = false;
 std::unique_ptr<xxd::Window> xxd::Application::mainWindow;
+std::unique_ptr<xxd::GraphicsContext> xxd::Application::mainGraphics;
 
 void xxd::Application::Initialize()
 {
 	Window::Init();
+	GraphicsContext::Init();
 }
 
 void xxd::Application::Destroy()
 {
+	GraphicsContext::Quit();
 	Window::Quit();
 }
 
@@ -21,11 +26,15 @@ void xxd::Application::Run()
 {
     mainWindow = std::unique_ptr<Window>(Window::Create(WindowProps()));
  	mainWindow->eventCallback.BindAnyFunc(&Application::OnEvent);	
+	mainGraphics = std::unique_ptr<GraphicsContext>(GraphicsContext::Create(mainWindow->GetNativeWindow()));	
+
  	while(!bIsQuit)
     {
 		Window::PollEvent();
         mainWindow->OnUpdate();
     }
+	
+	mainGraphics.reset();
 	mainWindow.reset();
 }
 

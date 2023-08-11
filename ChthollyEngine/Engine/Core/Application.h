@@ -2,10 +2,12 @@
 #define _APPLICATION_H_
 
 #include "Chtholly.h"
-#include "Window.h"
 
 namespace xxd
 {
+class Event;
+class Window;
+class GraphicsContext;
 class CHTHOLLY_API Application final
 {
 public:
@@ -17,6 +19,7 @@ public:
 private:
 	static bool bIsQuit;
 	static std::unique_ptr<Window> mainWindow;
+	static std::unique_ptr<GraphicsContext> mainGraphics;
 };
 
 }
