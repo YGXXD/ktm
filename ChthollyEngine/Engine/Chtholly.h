@@ -1,7 +1,7 @@
-#ifndef XXD_HPP
-#define XXD_HPP
+#ifndef CHTHOLLY_HPP
+#define CHTHOLLY_HPP
 
-#if defined(XXD_PLATFORM_APPLE)
+#if defined(CHTHOLLY_PLATFORM_APPLE)
 	#include <TargetConditionals.h>
 	
 	#if TARGET_IPHONE_SIMULATOR == 1
@@ -14,13 +14,13 @@
 		#error "XXdEngine don't support unkown apple platform!"
 	#endif
 
-	#ifdef XXD_BUILD_DLL
-		#define XXD_API __attribute__ ((visibility("default")))
+	#ifdef CHTHOLLY_BUILD_DLL
+		#define CHTHOLLY_API __attribute__ ((visibility("default")))
 	#else
-		#define XXD_API __attribute__ ((visibility("default")))
+		#define CHTHOLLY_API __attribute__ ((visibility("default")))
 	#endif
 
-#elif defined(XXD_PLATFORM_WINDOWS)
+#elif defined(CHTHOLLY_PLATFORM_WINDOWS)
 	#ifdef _WIN32
 		#ifdef _WIN64
 
@@ -29,16 +29,16 @@
 		#endif
 	#endif
 
-	#ifdef XXD_BUILD_DLL 
-		#define XXD_API __declspec(dllexport) 
+	#ifdef CHTHOLLY_BUILD_DLL 
+		#define CHTHOLLY_API __declspec(dllexport) 
 	#else
-		#define XXD_API __declspec(dllimport) 
+		#define CHTHOLLY_API __declspec(dllimport) 
 	#endif
 
-#elif defined(XXD_PLATFORM_LINUX)
+#elif defined(CHTHOLLY_PLATFORM_LINUX)
 	#error XXdEngine don't support linux!
 
-#elif difined(XXD_PLATFORM_ANDROID)
+#elif difined(CHTHOLLY_PLATFORM_ANDROID)
 	#error XXdEngine don't support android!
 
 #else

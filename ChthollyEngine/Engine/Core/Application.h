@@ -1,12 +1,12 @@
 #ifndef _APPLICATION_H_
 #define _APPLICATION_H_
 
-#include "XXd.h"
+#include "Chtholly.h"
 #include "Window.h"
 
 namespace xxd
 {
-class XXD_API Application final
+class CHTHOLLY_API Application final
 {
 public:
 	static void Initialize();

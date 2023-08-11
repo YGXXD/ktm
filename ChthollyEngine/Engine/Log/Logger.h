@@ -8,7 +8,7 @@
 #define XXD_ERROR(...) XXD_LOG(xxd::LogLevelError, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
 #define XXD_FATAL(...) XXD_LOG(xxd::LogLevelFatal, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
 
-#include "XXd.h"
+#include "Chtholly.h"
 
 namespace xxd
 {
@@ -21,7 +21,7 @@ enum LogLevel : unsigned char
     LogLevelFatal
 };
 
-class XXD_API Logger
+class CHTHOLLY_API Logger
 {
 public:
     Logger();
