@@ -1,11 +1,11 @@
 #ifndef _BUFFER_H_
 #define _BUFFER_H_
 
-#include <cstdint>
+#include "Chtholly.h"
 
 namespace xxd
 {
-class VertexBuffer
+class CHTHOLLY_API VertexBuffer
 {
 public:
     virtual ~VertexBuffer() { };
@@ -15,7 +15,7 @@ public:
     static VertexBuffer* Create(float* vertices, uint32_t size);
 };   
 
-class IndexBuffer
+class CHTHOLLY_API IndexBuffer
 {
 public:
     virtual ~IndexBuffer() { };

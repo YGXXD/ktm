@@ -9,7 +9,7 @@
 	#elif TARGET_OS_IPHONE == 1
 		#error "XXdEngine don't support ios!"
 	#elif TARGET_OS_MAC == 1
-		
+		#define CHTHOLLY_RENDER_API_METAL	
 	#else
 		#error "XXdEngine don't support unkown apple platform!"
 	#endif
@@ -23,7 +23,7 @@
 #elif defined(CHTHOLLY_PLATFORM_WINDOWS)
 	#ifdef _WIN32
 		#ifdef _WIN64
-
+			#define CHTHOLLY_RENDER_API_DX12
 		#else
 			#error "XXdEngine don't support windows x86!"
 		#endif
