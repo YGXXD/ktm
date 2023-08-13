@@ -32,6 +32,7 @@ void xxd::Application::Run()
     {
 		Window::PollEvent();
         mainWindow->OnUpdate();
+		mainGraphics->SwapBuffer();
     }
 	
 	mainGraphics.reset();

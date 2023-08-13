@@ -46,7 +46,7 @@ xxd::MacWindow::MacWindow(const WindowProps& props)
 
 xxd::MacWindow::~MacWindow()
 {
-    
+	[window release];
 }
 
 xxd::SingleDelegate<void, xxd::Event&>& xxd::MacWindow::GetEventCallback()
@@ -69,6 +69,7 @@ void xxd::MacWindow::InitProps(const WindowProps& props)
         window = [[EvtNSWindow alloc] initWithContentRect:rect 
             styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable | NSWindowStyleMaskMiniaturizable 
             backing:NSBackingStoreBuffered defer:false];
+		window.releasedWhenClosed = false;
 		window.evtDelegate = this;
 	
         NSString* nsTitle = [[[NSString alloc] initWithUTF8String:title.c_str()] autorelease];
