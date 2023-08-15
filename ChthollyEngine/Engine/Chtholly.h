@@ -27,6 +27,8 @@
 		#else
 			#error "XXdEngine don't support windows x86!"
 		#endif
+	#else
+		#error "XXdEngine don't support unkown windows platform!"	
 	#endif
 
 	#ifdef CHTHOLLY_BUILD_DLL 
