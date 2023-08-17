@@ -502,7 +502,7 @@ CHTHOLLY_INLINE int3 operator*(int3&& a, int3&& b)
 CHTHOLLY_INLINE int3 operator/(const int3& a, const int3& b)
 {
 #if defined(__ARM_NEON__)
-    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
+    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 1);
     int32x4_t simd_ret = vld1q_s32(&a1.x) / vld1q_s32(&b1.x);
     return *(int3*)&simd_ret;
 #else   
@@ -513,7 +513,7 @@ CHTHOLLY_INLINE int3 operator/(const int3& a, const int3& b)
 CHTHOLLY_INLINE int3 operator/(const int3& a, int3&& b)
 {
 #if defined(__ARM_NEON__)
-    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
+    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 1);
     int32x4_t simd_ret = vld1q_s32(&a1.x) / vld1q_s32(&b1.x);
     return *(int3*)&simd_ret;
 #else   
@@ -524,7 +524,7 @@ CHTHOLLY_INLINE int3 operator/(const int3& a, int3&& b)
 CHTHOLLY_INLINE int3 operator/(int3&& a, const int3& b)
 {
 #if defined(__ARM_NEON__)
-    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
+    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 1);
     int32x4_t simd_ret = vld1q_s32(&a1.x) / vld1q_s32(&b1.x);
     return *(int3*)&simd_ret;
 #else   
@@ -535,7 +535,7 @@ CHTHOLLY_INLINE int3 operator/(int3&& a, const int3& b)
 CHTHOLLY_INLINE int3 operator/(int3&& a, int3&& b)
 {
 #if defined(__ARM_NEON__)
-    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
+    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 1);
     int32x4_t simd_ret = vld1q_s32(&a1.x) / vld1q_s32(&b1.x);
     return *(int3*)&simd_ret;
 #else   
@@ -1370,7 +1370,7 @@ CHTHOLLY_INLINE float3 operator*(float3&& a, float3&& b)
 CHTHOLLY_INLINE float3 operator/(const float3& a, const float3& b)
 {
 #if defined(__ARM_NEON__)
-    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
+    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 1);
     float32x4_t simd_ret = vld1q_f32(&a1.x) / vld1q_f32(&b1.x);
     return *(float3*)&simd_ret;
 #else   
@@ -1381,7 +1381,7 @@ CHTHOLLY_INLINE float3 operator/(const float3& a, const float3& b)
 CHTHOLLY_INLINE float3 operator/(const float3& a, float3&& b)
 {
 #if defined(__ARM_NEON__)
-    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
+    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 1);
     float32x4_t simd_ret = vld1q_f32(&a1.x) / vld1q_f32(&b1.x);
     return *(float3*)&simd_ret;
 #else   
@@ -1392,7 +1392,7 @@ CHTHOLLY_INLINE float3 operator/(const float3& a, float3&& b)
 CHTHOLLY_INLINE float3 operator/(float3&& a, const float3& b)
 {
 #if defined(__ARM_NEON__)
-    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
+    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 1);
     float32x4_t simd_ret = vld1q_f32(&a1.x) / vld1q_f32(&b1.x);
     return *(float3*)&simd_ret;
 #else   
@@ -1403,7 +1403,7 @@ CHTHOLLY_INLINE float3 operator/(float3&& a, const float3& b)
 CHTHOLLY_INLINE float3 operator/(float3&& a, float3&& b)
 {
 #if defined(__ARM_NEON__)
-    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
+    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 1);
     float32x4_t simd_ret = vld1q_f32(&a1.x) / vld1q_f32(&b1.x);
     return *(float3*)&simd_ret;
 #else   
