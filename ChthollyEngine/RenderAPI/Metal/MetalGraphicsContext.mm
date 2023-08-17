@@ -45,7 +45,6 @@ xxd::MetalGraphicsContext::MetalGraphicsContext(void* window)
 		id<MTLCommandBuffer> pCmd = [gpuCmdQueue commandBuffer];
     	MTLRenderPassDescriptor* pRpd = [[[MTLRenderPassDescriptor alloc] init] autorelease];
 		pRpd.colorAttachments[0].clearColor = MTLClearColorMake(0.5, 1.0, 0.3, 1.0); 
-		XXD_DEBUG(next.texture.retainCount);
 		pRpd.colorAttachments[0].texture = next.texture;
 		pRpd.colorAttachments[0].loadAction = MTLLoadActionClear;    	
 		pRpd.colorAttachments[0].storeAction = MTLStoreActionStore;

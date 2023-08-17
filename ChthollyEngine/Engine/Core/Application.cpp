@@ -6,6 +6,8 @@
 #include "Event/MouseEvent.h"
 #include "Event/KeyEvent.h"
 
+#include "Math/Matholly.h"
+
 bool xxd::Application::bIsQuit = false;
 std::unique_ptr<xxd::Window> xxd::Application::mainWindow;
 std::unique_ptr<xxd::GraphicsContext> xxd::Application::mainGraphics;
@@ -24,6 +26,8 @@ void xxd::Application::Destroy()
 
 void xxd::Application::Run()
 {
+	mathTest();
+	return;
     mainWindow = std::unique_ptr<Window>(Window::Create(WindowProps()));
  	mainWindow->eventCallback.BindAnyFunc(&Application::OnEvent);	
 	mainGraphics = std::unique_ptr<GraphicsContext>(GraphicsContext::Create(mainWindow->GetNativeWindow()));	

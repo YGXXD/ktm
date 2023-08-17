@@ -14,10 +14,15 @@
 		#error "XXdEngine don't support unkown apple platform!"
 	#endif
 
-	#ifdef CHTHOLLY_BUILD_DLL
-		#define CHTHOLLY_API __attribute__ ((visibility("default")))
+	#ifdef __clang__
+		#define CHTHOLLY_INLINE __inline__ __attribute__((always_inline))
+		#ifdef CHTHOLLY_BUILD_DLL 
+			#define CHTHOLLY_API __attribute__ ((visibility("default")))
+		#else
+			#define CHTHOLLY_API __attribute__ ((visibility("default")))
+		#endif
 	#else
-		#define CHTHOLLY_API __attribute__ ((visibility("default")))
+		#error "XXdEngine don't support unkown c++ compiler in apple platform, it's only support apple clang++"
 	#endif
 
 #elif defined(CHTHOLLY_PLATFORM_WINDOWS)
@@ -31,10 +36,15 @@
 		#error "XXdEngine don't support unkown windows platform!"	
 	#endif
 
-	#ifdef CHTHOLLY_BUILD_DLL 
-		#define CHTHOLLY_API __declspec(dllexport) 
+	#ifdef _MSC_VER
+		#define CHOCHTHOLLY_INLINE __forceinline
+		#ifdef CHTHOLLY_BUILD_DLL 
+			#define CHTHOLLY_API __declspec(dllexport) 
+		#else
+			#define CHTHOLLY_API __declspec(dllimport) 
+		#endif
 	#else
-		#define CHTHOLLY_API __declspec(dllimport) 
+		#error "XXdEngine don't support unkown c++ compiler in windows platform, it's only support visual c++"
 	#endif
 
 #elif defined(CHTHOLLY_PLATFORM_LINUX)
@@ -49,9 +59,10 @@
 #endif
 
 #include <iostream>
+#include <sstream>
+#include <string>
 #include <memory>
 #include <cstdint>
-#include <string>
 #include <vector>
 #include <unordered_map>
 #include <thread>
