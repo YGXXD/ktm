@@ -12,6 +12,10 @@ static void mathTest()
     auto ret = (a * b) / (c - d);
 
     std::cout << ret.x << "," << ret.y << "," << ret.z << std::endl;
+
+    ret = ret / 4;
+    std::cout << ret.x << "," << ret.y << "," << ret.z << std::endl;
+
 }
 
 #endif
