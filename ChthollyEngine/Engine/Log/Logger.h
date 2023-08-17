@@ -28,31 +28,14 @@ public:
     ~Logger();
 	
 	template<typename ...ArgsT>
-	static void Log(LogLevel level, ArgsT&&... args)
-	{
-		if(level >= minLogLevel && level <= LogLevelFatal)
-		{
-			if(level >= LogLevelWarn)
-				ConsoleLog(utimer.GetUTCTime(), " ", levelColor[level - LogLevelWarn], levelString[level], ": ", std::forward<ArgsT>(args)..., "\033[0m");	
-			else
-				ConsoleLog(utimer.GetUTCTime(), " ", levelString[level], ": ", std::forward<ArgsT>(args)...);
-		}
-	}
+	static void Log(LogLevel level, ArgsT&&... args);
 
 private:
 	template<typename ArgT, typename ...ArgsT>
-	static void ConsoleLog(ArgT && arg, ArgsT&&... args)
-	{
-		std::cout << arg;
-		ConsoleLog(std::forward<ArgsT>(args)...);
-	}
+	static CHTHOLLY_INLINE void ConsoleLog(ArgT && arg, ArgsT&&... args);
 
 	template<typename ArgT>
-	static void ConsoleLog(ArgT&& arg)
-	{
-		std::cout << arg << "\n";
-		std::flush(std::cout);
-	}
+	static CHTHOLLY_INLINE void ConsoleLog(ArgT&& arg);
 	
 	struct UTCTimer
 	{
@@ -74,5 +57,31 @@ private:
 };
 
 } 
+
+template<typename ...ArgsT>
+void xxd::Logger::Log(xxd::LogLevel level, ArgsT&&... args)
+{
+	if(level >= minLogLevel && level <= LogLevelFatal)
+	{
+		if(level >= LogLevelWarn)
+			ConsoleLog(utimer.GetUTCTime(), " ", levelColor[level - LogLevelWarn], levelString[level], ": ", std::forward<ArgsT>(args)..., "\033[0m");	
+		else
+			ConsoleLog(utimer.GetUTCTime(), " ", levelString[level], ": ", std::forward<ArgsT>(args)...);
+	}
+}
+
+template<typename ArgT, typename ...ArgsT>
+CHTHOLLY_INLINE void xxd::Logger::ConsoleLog(ArgT && arg, ArgsT&&... args)
+{
+	std::cout << arg;
+	ConsoleLog(std::forward<ArgsT>(args)...);
+}
+
+template<typename ArgT>
+CHTHOLLY_INLINE void ConsoleLog(ArgT&& arg)
+{
+	std::cout << arg << "\n";
+	std::flush(std::cout);
+}
 #endif
 

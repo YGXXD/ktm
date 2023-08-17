@@ -1,8 +1,7 @@
 #ifndef _EVENT_H_
 #define _EVENT_H_
 
-#include <iostream>
-#include <string>
+#include "Chtholly.h"
 
 namespace xxd
 {
@@ -26,7 +25,7 @@ enum EventCategory : unsigned char
 };
 
 #define EVENT_TYPE(type) \
-static EventType GetStaticType() { return xxd::EventType::type; } \
+static CHTHOLLY_INLINE EventType GetStaticType() { return xxd::EventType::type; } \
 virtual EventType GetEventType() const override { return xxd::EventType::type; } \
 virtual const char* GetName() const override { return #type; }
 
@@ -45,7 +44,7 @@ public:
 	virtual unsigned char GetCategoryFlags() const = 0;
 	virtual std::string ToString() const { return GetName(); };
 
-	inline bool IsInCategory(EventCategory category) { return GetCategoryFlags() & category; }
+	CHTHOLLY_INLINE bool IsInCategory(EventCategory category) { return GetCategoryFlags() & category; }
 
 private:
 	bool handled = false;
@@ -73,7 +72,7 @@ private:
 	Event& eventRef;
 };
 
-inline std::ostream& operator<<(std::ostream& os, const Event& e)
+CHTHOLLY_INLINE std::ostream& operator<<(std::ostream& os, const Event& e)
 {
 	return os << e.ToString();
 }

@@ -112,19 +112,19 @@ class SingleDelegate final
 public:
     explicit SingleDelegate() = default;
     
-    CHTHOLLY_INLINE static SingleDelegate CreateFunction(typename DelegateInterface::FuncDelegate<ReturnT, ArgsT...>::FunT fun);
+    static CHTHOLLY_INLINE SingleDelegate CreateFunction(typename DelegateInterface::FuncDelegate<ReturnT, ArgsT...>::FunT fun);
     
     template<class ClassT>
-    CHTHOLLY_INLINE static SingleDelegate CreateObject(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun);
+    static CHTHOLLY_INLINE SingleDelegate CreateObject(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun);
     
     template<class ClassT>
-    CHTHOLLY_INLINE static SingleDelegate CreateSafeObj(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun);
+    static CHTHOLLY_INLINE SingleDelegate CreateSafeObj(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun);
     
     template<class ClassT>
-    CHTHOLLY_INLINE static SingleDelegate CreateSafeObj(const std::weak_ptr<ClassT>& objWeak, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun);
+    static CHTHOLLY_INLINE SingleDelegate CreateSafeObj(const std::weak_ptr<ClassT>& objWeak, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun);
     
     template<class AnyFunT>
-    CHTHOLLY_INLINE static SingleDelegate CreateAnyFunc(AnyFunT&& func);
+    static CHTHOLLY_INLINE SingleDelegate CreateAnyFunc(AnyFunT&& func);
     
     // 绑定全局或静态函数
     CHTHOLLY_INLINE void BindFunction(typename DelegateInterface::FuncDelegate<ReturnT, ArgsT...>::FunT fun);
@@ -163,7 +163,7 @@ typedef struct{
 }DelegateHandle;
 
 // Handle转化为字符串函数
-CHTHOLLY_INLINE static std::string HandleToString(const DelegateHandle& handle)
+static CHTHOLLY_INLINE std::string HandleToString(const DelegateHandle& handle)
 {
     static std::stringstream ss;
     ss << handle.tdlgt << handle.idlgt << handle.pdlgt << handle.bind;
