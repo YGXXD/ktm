@@ -57,6 +57,36 @@ typedef struct { double4 col[3]; } double4x3;
 
 typedef struct { double4 col[4]; } double4x4;
 
+CHTHOLLY_INLINE int2 MakeInt2(int x, int y) { return { x, y }; }
+CHTHOLLY_INLINE int3 MakeInt3(const int2& v2, int z) { return { v2.x, v2.y, z }; }
+CHTHOLLY_INLINE int3 MakeInt3(int2&& v2, int z) { return { v2.x, v2.y, z }; }
+CHTHOLLY_INLINE int3 MakeInt3(int x, int y, int z) { return MakeInt3(MakeInt2(x, y), z); }
+CHTHOLLY_INLINE int4 MakeInt4(const int3& v3, int w) { return { v3.x, v3.y, v3.z, w }; }
+CHTHOLLY_INLINE int4 MakeInt4(int3&& v3, int w) { return { v3.x, v3.y, v3.z, w }; }
+CHTHOLLY_INLINE int4 MakeInt4(const int2& v2, int z, int w) { return MakeInt4(MakeInt3(v2, z), 2); }
+CHTHOLLY_INLINE int4 MakeInt4(int2&& v2, int z, int w) { return MakeInt4(MakeInt3(v2, z), 2); }
+CHTHOLLY_INLINE int4 MakeInt4(int x, int y, int z, int w) { return MakeInt4(MakeInt3(MakeInt2(x, y), z), w); }
+
+CHTHOLLY_INLINE float2 MakeFloat2(float x, float y) { return { x, y }; }
+CHTHOLLY_INLINE float3 MakeFloat3(const float2& v2, float z) { return { v2.x, v2.y, z }; }
+CHTHOLLY_INLINE float3 MakeFloat3(float2&& v2, float z) { return { v2.x, v2.y, z }; }
+CHTHOLLY_INLINE float3 MakeFloat3(float x, float y, float z) { return MakeFloat3(MakeFloat2(x, y), z); }
+CHTHOLLY_INLINE float4 MakeFloat4(const float3& v3, float w) { return { v3.x, v3.y, v3.z, w }; }
+CHTHOLLY_INLINE float4 MakeFloat4(float3&& v3, float w) { return { v3.x, v3.y, v3.z, w }; }
+CHTHOLLY_INLINE float4 MakeFloat4(const float2& v2, float z, float w) { return MakeFloat4(MakeFloat3(v2, z), 2); }
+CHTHOLLY_INLINE float4 MakeFloat4(float2&& v2, float z, float w) { return MakeFloat4(MakeFloat3(v2, z), 2); }
+CHTHOLLY_INLINE float4 MakeFloat4(float x, float y, float z, float w) { return MakeFloat4(MakeFloat3(MakeFloat2(x, y), z), w); }
+
+CHTHOLLY_INLINE double2 MakeDouble2(double x, double y) { return { x, y }; }
+CHTHOLLY_INLINE double3 MakeDouble3(const double2& v2, double z) { return { v2.x, v2.y, z }; }
+CHTHOLLY_INLINE double3 MakeDouble3(double2&& v2, double z) { return { v2.x, v2.y, z }; }
+CHTHOLLY_INLINE double3 MakeDouble3(double x, double y, double z) { return MakeDouble3(MakeDouble2(x, y), z); }
+CHTHOLLY_INLINE double4 MakeDouble4(const double3& v3, double w) { return { v3.x, v3.y, v3.z, w }; }
+CHTHOLLY_INLINE double4 MakeDouble4(double3&& v3, double w) { return { v3.x, v3.y, v3.z, w }; }
+CHTHOLLY_INLINE double4 MakeDouble4(const double2& v2, double z, double w) { return MakeDouble4(MakeDouble3(v2, z), 2); }
+CHTHOLLY_INLINE double4 MakeDouble4(double2&& v2, double z, double w) { return MakeDouble4(MakeDouble3(v2, z), 2); }
+CHTHOLLY_INLINE double4 MakeDouble4(double x, double y, double z, double w) { return MakeDouble4(MakeDouble3(MakeDouble2(x, y), z), w); }
+
 CHTHOLLY_INLINE int2 operator+(const int2& a, const int2& b)
 {
 #if defined(__ARM_NEON__)
@@ -214,6 +244,838 @@ CHTHOLLY_INLINE int2 operator/(int2&& a, int2&& b)
     return *(int2*)&simd_ret;
 #else   
     return { a.x / b.x, a.y / b.y };
+#endif
+}
+
+CHTHOLLY_INLINE int3 operator+(const int3& a, const int3& b)
+{
+#if defined(__ARM_NEON__)
+    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
+    int32x4_t simd_ret = vld1q_s32(&a1.x) + vld1q_s32(&b1.x);
+    return *(int3*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z };
+#endif
+}
+
+CHTHOLLY_INLINE int3 operator+(const int3& a, int3&& b)
+{
+#if defined(__ARM_NEON__)
+    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
+    int32x4_t simd_ret = vld1q_s32(&a1.x) + vld1q_s32(&b1.x);
+    return *(int3*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z };
+#endif
+}
+
+CHTHOLLY_INLINE int3 operator+(int3&& a, const int3& b)
+{
+#if defined(__ARM_NEON__)
+    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
+    int32x4_t simd_ret = vld1q_s32(&a1.x) + vld1q_s32(&b1.x);
+    return *(int3*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z };
+#endif
+}
+
+CHTHOLLY_INLINE int3 operator+(int3&& a, int3&& b)
+{
+#if defined(__ARM_NEON__)
+    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
+    int32x4_t simd_ret = vld1q_s32(&a1.x) + vld1q_s32(&b1.x);
+    return *(int3*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z };
+#endif
+}
+
+CHTHOLLY_INLINE int3 operator-(const int3& a, const int3& b)
+{
+#if defined(__ARM_NEON__)
+    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
+    int32x4_t simd_ret = vld1q_s32(&a1.x) - vld1q_s32(&b1.x);
+    return *(int3*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z };
+#endif
+}
+
+CHTHOLLY_INLINE int3 operator-(const int3& a, int3&& b)
+{
+#if defined(__ARM_NEON__)
+    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
+    int32x4_t simd_ret = vld1q_s32(&a1.x) - vld1q_s32(&b1.x);
+    return *(int3*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z };
+#endif
+}
+
+CHTHOLLY_INLINE int3 operator-(int3&& a, const int3& b)
+{
+#if defined(__ARM_NEON__)
+    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
+    int32x4_t simd_ret = vld1q_s32(&a1.x) - vld1q_s32(&b1.x);
+    return *(int3*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z };
+#endif
+}
+
+CHTHOLLY_INLINE int3 operator-(int3&& a, int3&& b)
+{
+#if defined(__ARM_NEON__)
+    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
+    int32x4_t simd_ret = vld1q_s32(&a1.x) - vld1q_s32(&b1.x);
+    return *(int3*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z };
+#endif
+}
+
+CHTHOLLY_INLINE int3 operator*(const int3& a, const int3& b)
+{
+#if defined(__ARM_NEON__)
+    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
+    int32x4_t simd_ret = vld1q_s32(&a1.x) * vld1q_s32(&b1.x);
+    return *(int3*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z };
+#endif
+}
+
+CHTHOLLY_INLINE int3 operator*(const int3& a, int3&& b)
+{
+#if defined(__ARM_NEON__)
+    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
+    int32x4_t simd_ret = vld1q_s32(&a1.x) * vld1q_s32(&b1.x);
+    return *(int3*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z };
+#endif
+}
+
+CHTHOLLY_INLINE int3 operator*(int3&& a, const int3& b)
+{
+#if defined(__ARM_NEON__)
+    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
+    int32x4_t simd_ret = vld1q_s32(&a1.x) * vld1q_s32(&b1.x);
+    return *(int3*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z };
+#endif
+}
+
+CHTHOLLY_INLINE int3 operator*(int3&& a, int3&& b)
+{
+#if defined(__ARM_NEON__)
+    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
+    int32x4_t simd_ret = vld1q_s32(&a1.x) * vld1q_s32(&b1.x);
+    return *(int3*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z };
+#endif
+}
+
+CHTHOLLY_INLINE int3 operator/(const int3& a, const int3& b)
+{
+#if defined(__ARM_NEON__)
+    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
+    int32x4_t simd_ret = vld1q_s32(&a1.x) / vld1q_s32(&b1.x);
+    return *(int3*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z };
+#endif
+}
+
+CHTHOLLY_INLINE int3 operator/(const int3& a, int3&& b)
+{
+#if defined(__ARM_NEON__)
+    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
+    int32x4_t simd_ret = vld1q_s32(&a1.x) / vld1q_s32(&b1.x);
+    return *(int3*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z };
+#endif
+}
+
+CHTHOLLY_INLINE int3 operator/(int3&& a, const int3& b)
+{
+#if defined(__ARM_NEON__)
+    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
+    int32x4_t simd_ret = vld1q_s32(&a1.x) / vld1q_s32(&b1.x);
+    return *(int3*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z };
+#endif
+}
+
+CHTHOLLY_INLINE int3 operator/(int3&& a, int3&& b)
+{
+#if defined(__ARM_NEON__)
+    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
+    int32x4_t simd_ret = vld1q_s32(&a1.x) / vld1q_s32(&b1.x);
+    return *(int3*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z };
+#endif
+}
+
+CHTHOLLY_INLINE int4 operator+(const int4& a, const int4& b)
+{
+#if defined(__ARM_NEON__)
+    int32x4_t simd_ret = vld1q_s32(&a.x) + vld1q_s32(&b.x);
+    return *(int4*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w };
+#endif
+}
+
+CHTHOLLY_INLINE int4 operator+(const int4& a, int4&& b)
+{
+#if defined(__ARM_NEON__)
+    int32x4_t simd_ret = vld1q_s32(&a.x) + vld1q_s32(&b.x);
+    return *(int4*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w };
+#endif
+}
+
+CHTHOLLY_INLINE int4 operator+(int4&& a, const int4& b)
+{
+#if defined(__ARM_NEON__)
+    int32x4_t simd_ret = vld1q_s32(&a.x) + vld1q_s32(&b.x);
+    return *(int4*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w };
+#endif
+}
+
+CHTHOLLY_INLINE int4 operator+(int4&& a, int4&& b)
+{
+#if defined(__ARM_NEON__)
+    int32x4_t simd_ret = vld1q_s32(&a.x) + vld1q_s32(&b.x);
+    return *(int4*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w };
+#endif
+}
+
+CHTHOLLY_INLINE int4 operator-(const int4& a, const int4& b)
+{
+#if defined(__ARM_NEON__)
+    int32x4_t simd_ret = vld1q_s32(&a.x) - vld1q_s32(&b.x);
+    return *(int4*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w };
+#endif
+}
+
+CHTHOLLY_INLINE int4 operator-(const int4& a, int4&& b)
+{
+#if defined(__ARM_NEON__)
+    int32x4_t simd_ret = vld1q_s32(&a.x) - vld1q_s32(&b.x);
+    return *(int4*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w };
+#endif
+}
+
+CHTHOLLY_INLINE int4 operator-(int4&& a, const int4& b)
+{
+#if defined(__ARM_NEON__)
+    int32x4_t simd_ret = vld1q_s32(&a.x) - vld1q_s32(&b.x);
+    return *(int4*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w };
+#endif
+}
+
+CHTHOLLY_INLINE int4 operator-(int4&& a, int4&& b)
+{
+#if defined(__ARM_NEON__)
+    int32x4_t simd_ret = vld1q_s32(&a.x) - vld1q_s32(&b.x);
+    return *(int4*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w };
+#endif
+}
+
+CHTHOLLY_INLINE int4 operator*(const int4& a, const int4& b)
+{
+#if defined(__ARM_NEON__)
+    int32x4_t simd_ret = vld1q_s32(&a.x) * vld1q_s32(&b.x);
+    return *(int4*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w };
+#endif
+}
+
+CHTHOLLY_INLINE int4 operator*(const int4& a, int4&& b)
+{
+#if defined(__ARM_NEON__)
+    int32x4_t simd_ret = vld1q_s32(&a.x) * vld1q_s32(&b.x);
+    return *(int4*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w };
+#endif
+}
+
+CHTHOLLY_INLINE int4 operator*(int4&& a, const int4& b)
+{
+#if defined(__ARM_NEON__)
+    int32x4_t simd_ret = vld1q_s32(&a.x) * vld1q_s32(&b.x);
+    return *(int4*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w };
+#endif
+}
+
+CHTHOLLY_INLINE int4 operator*(int4&& a, int4&& b)
+{
+#if defined(__ARM_NEON__)
+    int32x4_t simd_ret = vld1q_s32(&a.x) * vld1q_s32(&b.x);
+    return *(int4*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w };
+#endif
+}
+
+CHTHOLLY_INLINE int4 operator/(const int4& a, const int4& b)
+{
+#if defined(__ARM_NEON__)
+    int32x4_t simd_ret = vld1q_s32(&a.x) / vld1q_s32(&b.x);
+    return *(int4*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w };
+#endif
+}
+
+CHTHOLLY_INLINE int4 operator/(const int4& a, int4&& b)
+{
+#if defined(__ARM_NEON__)
+    int32x4_t simd_ret = vld1q_s32(&a.x) / vld1q_s32(&b.x);
+    return *(int4*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w };
+#endif
+}
+
+CHTHOLLY_INLINE int4 operator/(int4&& a, const int4& b)
+{
+#if defined(__ARM_NEON__)
+    int32x4_t simd_ret = vld1q_s32(&a.x) / vld1q_s32(&b.x);
+    return *(int4*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w };
+#endif
+}
+
+CHTHOLLY_INLINE int4 operator/(int4&& a, int4&& b)
+{
+#if defined(__ARM_NEON__)
+    int32x4_t simd_ret = vld1q_s32(&a.x) / vld1q_s32(&b.x);
+    return *(int4*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w };
+#endif
+}
+
+CHTHOLLY_INLINE float2 operator+(const float2& a, const float2& b)
+{
+#if defined(__ARM_NEON__)
+    float32x2_t simd_ret = vld1_f32(&a.x) + vld1_f32(&b.x);
+    return *(float2*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y };
+#endif
+}
+
+CHTHOLLY_INLINE float2 operator+(const float2& a, float2&& b)
+{
+#if defined(__ARM_NEON__)
+    float32x2_t simd_ret = vld1_f32(&a.x) + vld1_f32(&b.x);
+    return *(float2*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y };
+#endif
+}
+
+CHTHOLLY_INLINE float2 operator+(float2&& a, const float2& b)
+{
+#if defined(__ARM_NEON__)
+    float32x2_t simd_ret = vld1_f32(&a.x) + vld1_f32(&b.x);
+    return *(float2*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y };
+#endif
+}
+
+CHTHOLLY_INLINE float2 operator+(float2&& a, float2&& b)
+{
+#if defined(__ARM_NEON__)
+    float32x2_t simd_ret = vld1_f32(&a.x) + vld1_f32(&b.x);
+    return *(float2*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y };
+#endif
+}
+
+CHTHOLLY_INLINE float2 operator-(const float2& a, const float2& b)
+{
+#if defined(__ARM_NEON__)
+    float32x2_t simd_ret = vld1_f32(&a.x) - vld1_f32(&b.x);
+    return *(float2*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y };
+#endif
+}
+
+CHTHOLLY_INLINE float2 operator-(const float2& a, float2&& b)
+{
+#if defined(__ARM_NEON__)
+    float32x2_t simd_ret = vld1_f32(&a.x) - vld1_f32(&b.x);
+    return *(float2*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y };
+#endif
+}
+
+CHTHOLLY_INLINE float2 operator-(float2&& a, const float2& b)
+{
+#if defined(__ARM_NEON__)
+    float32x2_t simd_ret = vld1_f32(&a.x) - vld1_f32(&b.x);
+    return *(float2*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y };
+#endif
+}
+
+CHTHOLLY_INLINE float2 operator-(float2&& a, float2&& b)
+{
+#if defined(__ARM_NEON__)
+    float32x2_t simd_ret = vld1_f32(&a.x) - vld1_f32(&b.x);
+    return *(float2*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y };
+#endif
+}
+
+CHTHOLLY_INLINE float2 operator*(const float2& a, const float2& b)
+{
+#if defined(__ARM_NEON__)
+    float32x2_t simd_ret = vld1_f32(&a.x) * vld1_f32(&b.x);
+    return *(float2*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y };
+#endif
+}
+
+CHTHOLLY_INLINE float2 operator*(const float2& a, float2&& b)
+{
+#if defined(__ARM_NEON__)
+    float32x2_t simd_ret = vld1_f32(&a.x) * vld1_f32(&b.x);
+    return *(float2*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y };
+#endif
+}
+
+CHTHOLLY_INLINE float2 operator*(float2&& a, const float2& b)
+{
+#if defined(__ARM_NEON__)
+    float32x2_t simd_ret = vld1_f32(&a.x) * vld1_f32(&b.x);
+    return *(float2*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y };
+#endif
+}
+
+CHTHOLLY_INLINE float2 operator*(float2&& a, float2&& b)
+{
+#if defined(__ARM_NEON__)
+    float32x2_t simd_ret = vld1_f32(&a.x) * vld1_f32(&b.x);
+    return *(float2*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y };
+#endif
+}
+
+CHTHOLLY_INLINE float2 operator/(const float2& a, const float2& b)
+{
+#if defined(__ARM_NEON__)
+    float32x2_t simd_ret = vld1_f32(&a.x) / vld1_f32(&b.x);
+    return *(float2*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y };
+#endif
+}
+
+CHTHOLLY_INLINE float2 operator/(const float2& a, float2&& b)
+{
+#if defined(__ARM_NEON__)
+    float32x2_t simd_ret = vld1_f32(&a.x) / vld1_f32(&b.x);
+    return *(float2*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y };
+#endif
+}
+
+CHTHOLLY_INLINE float2 operator/(float2&& a, const float2& b)
+{
+#if defined(__ARM_NEON__)
+    float32x2_t simd_ret = vld1_f32(&a.x) / vld1_f32(&b.x);
+    return *(float2*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y };
+#endif
+}
+
+CHTHOLLY_INLINE float2 operator/(float2&& a, float2&& b)
+{
+#if defined(__ARM_NEON__)
+    float32x2_t simd_ret = vld1_f32(&a.x) / vld1_f32(&b.x);
+    return *(float2*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y };
+#endif
+}
+
+CHTHOLLY_INLINE float3 operator+(const float3& a, const float3& b)
+{
+#if defined(__ARM_NEON__)
+    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
+    float32x4_t simd_ret = vld1q_f32(&a1.x) + vld1q_f32(&b1.x);
+    return *(float3*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z };
+#endif
+}
+
+CHTHOLLY_INLINE float3 operator+(const float3& a, float3&& b)
+{
+#if defined(__ARM_NEON__)
+    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
+    float32x4_t simd_ret = vld1q_f32(&a1.x) + vld1q_f32(&b1.x);
+    return *(float3*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z };
+#endif
+}
+
+CHTHOLLY_INLINE float3 operator+(float3&& a, const float3& b)
+{
+#if defined(__ARM_NEON__)
+    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
+    float32x4_t simd_ret = vld1q_f32(&a1.x) + vld1q_f32(&b1.x);
+    return *(float3*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z };
+#endif
+}
+
+CHTHOLLY_INLINE float3 operator+(float3&& a, float3&& b)
+{
+#if defined(__ARM_NEON__)
+    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
+    float32x4_t simd_ret = vld1q_f32(&a1.x) + vld1q_f32(&b1.x);
+    return *(float3*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z };
+#endif
+}
+
+CHTHOLLY_INLINE float3 operator-(const float3& a, const float3& b)
+{
+#if defined(__ARM_NEON__)
+    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
+    float32x4_t simd_ret = vld1q_f32(&a1.x) - vld1q_f32(&b1.x);
+    return *(float3*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z };
+#endif
+}
+
+CHTHOLLY_INLINE float3 operator-(const float3& a, float3&& b)
+{
+#if defined(__ARM_NEON__)
+    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
+    float32x4_t simd_ret = vld1q_f32(&a1.x) - vld1q_f32(&b1.x);
+    return *(float3*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z };
+#endif
+}
+
+CHTHOLLY_INLINE float3 operator-(float3&& a, const float3& b)
+{
+#if defined(__ARM_NEON__)
+    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
+    float32x4_t simd_ret = vld1q_f32(&a1.x) - vld1q_f32(&b1.x);
+    return *(float3*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z };
+#endif
+}
+
+CHTHOLLY_INLINE float3 operator-(float3&& a, float3&& b)
+{
+#if defined(__ARM_NEON__)
+    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
+    float32x4_t simd_ret = vld1q_f32(&a1.x) - vld1q_f32(&b1.x);
+    return *(float3*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z };
+#endif
+}
+
+CHTHOLLY_INLINE float3 operator*(const float3& a, const float3& b)
+{
+#if defined(__ARM_NEON__)
+    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
+    float32x4_t simd_ret = vld1q_f32(&a1.x) * vld1q_f32(&b1.x);
+    return *(float3*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z };
+#endif
+}
+
+CHTHOLLY_INLINE float3 operator*(const float3& a, float3&& b)
+{
+#if defined(__ARM_NEON__)
+    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
+    float32x4_t simd_ret = vld1q_f32(&a1.x) * vld1q_f32(&b1.x);
+    return *(float3*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z };
+#endif
+}
+
+CHTHOLLY_INLINE float3 operator*(float3&& a, const float3& b)
+{
+#if defined(__ARM_NEON__)
+    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
+    float32x4_t simd_ret = vld1q_f32(&a1.x) * vld1q_f32(&b1.x);
+    return *(float3*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z };
+#endif
+}
+
+CHTHOLLY_INLINE float3 operator*(float3&& a, float3&& b)
+{
+#if defined(__ARM_NEON__)
+    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
+    float32x4_t simd_ret = vld1q_f32(&a1.x) * vld1q_f32(&b1.x);
+    return *(float3*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z };
+#endif
+}
+
+CHTHOLLY_INLINE float3 operator/(const float3& a, const float3& b)
+{
+#if defined(__ARM_NEON__)
+    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
+    float32x4_t simd_ret = vld1q_f32(&a1.x) / vld1q_f32(&b1.x);
+    return *(float3*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z };
+#endif
+}
+
+CHTHOLLY_INLINE float3 operator/(const float3& a, float3&& b)
+{
+#if defined(__ARM_NEON__)
+    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
+    float32x4_t simd_ret = vld1q_f32(&a1.x) / vld1q_f32(&b1.x);
+    return *(float3*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z };
+#endif
+}
+
+CHTHOLLY_INLINE float3 operator/(float3&& a, const float3& b)
+{
+#if defined(__ARM_NEON__)
+    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
+    float32x4_t simd_ret = vld1q_f32(&a1.x) / vld1q_f32(&b1.x);
+    return *(float3*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z };
+#endif
+}
+
+CHTHOLLY_INLINE float3 operator/(float3&& a, float3&& b)
+{
+#if defined(__ARM_NEON__)
+    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
+    float32x4_t simd_ret = vld1q_f32(&a1.x) / vld1q_f32(&b1.x);
+    return *(float3*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z };
+#endif
+}
+
+CHTHOLLY_INLINE float4 operator+(const float4& a, const float4& b)
+{
+#if defined(__ARM_NEON__)
+    float32x4_t simd_ret = vld1q_f32(&a.x) + vld1q_f32(&b.x);
+    return *(float4*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w };
+#endif
+}
+
+CHTHOLLY_INLINE float4 operator+(const float4& a, float4&& b)
+{
+#if defined(__ARM_NEON__)
+    float32x4_t simd_ret = vld1q_f32(&a.x) + vld1q_f32(&b.x);
+    return *(float4*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w };
+#endif
+}
+
+CHTHOLLY_INLINE float4 operator+(float4&& a, const float4& b)
+{
+#if defined(__ARM_NEON__)
+    float32x4_t simd_ret = vld1q_f32(&a.x) + vld1q_f32(&b.x);
+    return *(float4*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w };
+#endif
+}
+
+CHTHOLLY_INLINE float4 operator+(float4&& a, float4&& b)
+{
+#if defined(__ARM_NEON__)
+    float32x4_t simd_ret = vld1q_f32(&a.x) + vld1q_f32(&b.x);
+    return *(float4*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w };
+#endif
+}
+
+CHTHOLLY_INLINE float4 operator-(const float4& a, const float4& b)
+{
+#if defined(__ARM_NEON__)
+    float32x4_t simd_ret = vld1q_f32(&a.x) - vld1q_f32(&b.x);
+    return *(float4*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w };
+#endif
+}
+
+CHTHOLLY_INLINE float4 operator-(const float4& a, float4&& b)
+{
+#if defined(__ARM_NEON__)
+    float32x4_t simd_ret = vld1q_f32(&a.x) - vld1q_f32(&b.x);
+    return *(float4*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w };
+#endif
+}
+
+CHTHOLLY_INLINE float4 operator-(float4&& a, const float4& b)
+{
+#if defined(__ARM_NEON__)
+    float32x4_t simd_ret = vld1q_f32(&a.x) - vld1q_f32(&b.x);
+    return *(float4*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w };
+#endif
+}
+
+CHTHOLLY_INLINE float4 operator-(float4&& a, float4&& b)
+{
+#if defined(__ARM_NEON__)
+    float32x4_t simd_ret = vld1q_f32(&a.x) - vld1q_f32(&b.x);
+    return *(float4*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w };
+#endif
+}
+
+CHTHOLLY_INLINE float4 operator*(const float4& a, const float4& b)
+{
+#if defined(__ARM_NEON__)
+    float32x4_t simd_ret = vld1q_f32(&a.x) * vld1q_f32(&b.x);
+    return *(float4*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w };
+#endif
+}
+
+CHTHOLLY_INLINE float4 operator*(const float4& a, float4&& b)
+{
+#if defined(__ARM_NEON__)
+    float32x4_t simd_ret = vld1q_f32(&a.x) * vld1q_f32(&b.x);
+    return *(float4*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w };
+#endif
+}
+
+CHTHOLLY_INLINE float4 operator*(float4&& a, const float4& b)
+{
+#if defined(__ARM_NEON__)
+    float32x4_t simd_ret = vld1q_f32(&a.x) * vld1q_f32(&b.x);
+    return *(float4*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w };
+#endif
+}
+
+CHTHOLLY_INLINE float4 operator*(float4&& a, float4&& b)
+{
+#if defined(__ARM_NEON__)
+    float32x4_t simd_ret = vld1q_f32(&a.x) * vld1q_f32(&b.x);
+    return *(float4*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w };
+#endif
+}
+
+CHTHOLLY_INLINE float4 operator/(const float4& a, const float4& b)
+{
+#if defined(__ARM_NEON__)
+    float32x4_t simd_ret = vld1q_f32(&a.x) / vld1q_f32(&b.x);
+    return *(float4*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w };
+#endif
+}
+
+CHTHOLLY_INLINE float4 operator/(const float4& a, float4&& b)
+{
+#if defined(__ARM_NEON__)
+    float32x4_t simd_ret = vld1q_f32(&a.x) / vld1q_f32(&b.x);
+    return *(float4*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w };
+#endif
+}
+
+CHTHOLLY_INLINE float4 operator/(float4&& a, const float4& b)
+{
+#if defined(__ARM_NEON__)
+    float32x4_t simd_ret = vld1q_f32(&a.x) / vld1q_f32(&b.x);
+    return *(float4*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w };
+#endif
+}
+
+CHTHOLLY_INLINE float4 operator/(float4&& a, float4&& b)
+{
+#if defined(__ARM_NEON__)
+    float32x4_t simd_ret = vld1q_f32(&a.x) / vld1q_f32(&b.x);
+    return *(float4*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w };
 #endif
 }
 }

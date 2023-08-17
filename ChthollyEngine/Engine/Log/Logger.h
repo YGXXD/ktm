@@ -78,7 +78,7 @@ CHTHOLLY_INLINE void xxd::Logger::ConsoleLog(ArgT && arg, ArgsT&&... args)
 }
 
 template<typename ArgT>
-CHTHOLLY_INLINE void ConsoleLog(ArgT&& arg)
+CHTHOLLY_INLINE void xxd::Logger::ConsoleLog(ArgT&& arg)
 {
 	std::cout << arg << "\n";
 	std::flush(std::cout);
