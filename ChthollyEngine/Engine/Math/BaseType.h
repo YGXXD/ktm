@@ -370,8 +370,8 @@ CHTHOLLY_INLINE int2 operator/(int2&& v, int a)
 CHTHOLLY_INLINE int3 operator+(const int3& a, const int3& b)
 {
 #if defined(__ARM_NEON__)
-    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
-    int32x4_t simd_ret = vld1q_s32(&a1.x) + vld1q_s32(&b1.x);
+	int32x4_t simd_ret = vsetq_lane_s32(a.z, vsetq_lane_s32(a.y, vsetq_lane_s32(a.x, vdupq_n_s32(0), 0), 1), 2) + 
+		vsetq_lane_s32(b.z, vsetq_lane_s32(b.y, vsetq_lane_s32(b.x, vdupq_n_s32(0), 0), 1), 2);
     return *(int3*)&simd_ret;
 #else   
     return { a.x + b.x, a.y + b.y, a.z + b.z };
@@ -381,8 +381,8 @@ CHTHOLLY_INLINE int3 operator+(const int3& a, const int3& b)
 CHTHOLLY_INLINE int3 operator+(const int3& a, int3&& b)
 {
 #if defined(__ARM_NEON__)
-    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
-    int32x4_t simd_ret = vld1q_s32(&a1.x) + vld1q_s32(&b1.x);
+    int32x4_t simd_ret = vsetq_lane_s32(a.z, vsetq_lane_s32(a.y, vsetq_lane_s32(a.x, vdupq_n_s32(0), 0), 1), 2) + 
+		vsetq_lane_s32(b.z, vsetq_lane_s32(b.y, vsetq_lane_s32(b.x, vdupq_n_s32(0), 0), 1), 2);
     return *(int3*)&simd_ret;
 #else   
     return { a.x + b.x, a.y + b.y, a.z + b.z };
@@ -392,8 +392,8 @@ CHTHOLLY_INLINE int3 operator+(const int3& a, int3&& b)
 CHTHOLLY_INLINE int3 operator+(int3&& a, const int3& b)
 {
 #if defined(__ARM_NEON__)
-    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
-    int32x4_t simd_ret = vld1q_s32(&a1.x) + vld1q_s32(&b1.x);
+    int32x4_t simd_ret = vsetq_lane_s32(a.z, vsetq_lane_s32(a.y, vsetq_lane_s32(a.x, vdupq_n_s32(0), 0), 1), 2) + 
+		vsetq_lane_s32(b.z, vsetq_lane_s32(b.y, vsetq_lane_s32(b.x, vdupq_n_s32(0), 0), 1), 2);
     return *(int3*)&simd_ret;
 #else   
     return { a.x + b.x, a.y + b.y, a.z + b.z };
@@ -403,8 +403,8 @@ CHTHOLLY_INLINE int3 operator+(int3&& a, const int3& b)
 CHTHOLLY_INLINE int3 operator+(int3&& a, int3&& b)
 {
 #if defined(__ARM_NEON__)
-    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
-    int32x4_t simd_ret = vld1q_s32(&a1.x) + vld1q_s32(&b1.x);
+    int32x4_t simd_ret = vsetq_lane_s32(a.z, vsetq_lane_s32(a.y, vsetq_lane_s32(a.x, vdupq_n_s32(0), 0), 1), 2) + 
+		vsetq_lane_s32(b.z, vsetq_lane_s32(b.y, vsetq_lane_s32(b.x, vdupq_n_s32(0), 0), 1), 2);
     return *(int3*)&simd_ret;
 #else   
     return { a.x + b.x, a.y + b.y, a.z + b.z };
@@ -414,8 +414,8 @@ CHTHOLLY_INLINE int3 operator+(int3&& a, int3&& b)
 CHTHOLLY_INLINE int3 operator-(const int3& a, const int3& b)
 {
 #if defined(__ARM_NEON__)
-    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
-    int32x4_t simd_ret = vld1q_s32(&a1.x) - vld1q_s32(&b1.x);
+    int32x4_t simd_ret = vsetq_lane_s32(a.z, vsetq_lane_s32(a.y, vsetq_lane_s32(a.x, vdupq_n_s32(0), 0), 1), 2) - 
+		vsetq_lane_s32(b.z, vsetq_lane_s32(b.y, vsetq_lane_s32(b.x, vdupq_n_s32(0), 0), 1), 2);
     return *(int3*)&simd_ret;
 #else   
     return { a.x - b.x, a.y - b.y, a.z - b.z };
@@ -425,8 +425,8 @@ CHTHOLLY_INLINE int3 operator-(const int3& a, const int3& b)
 CHTHOLLY_INLINE int3 operator-(const int3& a, int3&& b)
 {
 #if defined(__ARM_NEON__)
-    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
-    int32x4_t simd_ret = vld1q_s32(&a1.x) - vld1q_s32(&b1.x);
+    int32x4_t simd_ret = vsetq_lane_s32(a.z, vsetq_lane_s32(a.y, vsetq_lane_s32(a.x, vdupq_n_s32(0), 0), 1), 2) - 
+		vsetq_lane_s32(b.z, vsetq_lane_s32(b.y, vsetq_lane_s32(b.x, vdupq_n_s32(0), 0), 1), 2);
     return *(int3*)&simd_ret;
 #else   
     return { a.x - b.x, a.y - b.y, a.z - b.z };
@@ -436,8 +436,8 @@ CHTHOLLY_INLINE int3 operator-(const int3& a, int3&& b)
 CHTHOLLY_INLINE int3 operator-(int3&& a, const int3& b)
 {
 #if defined(__ARM_NEON__)
-    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
-    int32x4_t simd_ret = vld1q_s32(&a1.x) - vld1q_s32(&b1.x);
+    int32x4_t simd_ret = vsetq_lane_s32(a.z, vsetq_lane_s32(a.y, vsetq_lane_s32(a.x, vdupq_n_s32(0), 0), 1), 2) - 
+		vsetq_lane_s32(b.z, vsetq_lane_s32(b.y, vsetq_lane_s32(b.x, vdupq_n_s32(0), 0), 1), 2);
     return *(int3*)&simd_ret;
 #else   
     return { a.x - b.x, a.y - b.y, a.z - b.z };
@@ -447,8 +447,8 @@ CHTHOLLY_INLINE int3 operator-(int3&& a, const int3& b)
 CHTHOLLY_INLINE int3 operator-(int3&& a, int3&& b)
 {
 #if defined(__ARM_NEON__)
-    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
-    int32x4_t simd_ret = vld1q_s32(&a1.x) - vld1q_s32(&b1.x);
+    int32x4_t simd_ret = vsetq_lane_s32(a.z, vsetq_lane_s32(a.y, vsetq_lane_s32(a.x, vdupq_n_s32(0), 0), 1), 2) - 
+		vsetq_lane_s32(b.z, vsetq_lane_s32(b.y, vsetq_lane_s32(b.x, vdupq_n_s32(0), 0), 1), 2);
     return *(int3*)&simd_ret;
 #else   
     return { a.x - b.x, a.y - b.y, a.z - b.z };
@@ -458,8 +458,8 @@ CHTHOLLY_INLINE int3 operator-(int3&& a, int3&& b)
 CHTHOLLY_INLINE int3 operator*(const int3& a, const int3& b)
 {
 #if defined(__ARM_NEON__)
-    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
-    int32x4_t simd_ret = vld1q_s32(&a1.x) * vld1q_s32(&b1.x);
+    int32x4_t simd_ret = vsetq_lane_s32(a.z, vsetq_lane_s32(a.y, vsetq_lane_s32(a.x, vdupq_n_s32(0), 0), 1), 2) *
+		vsetq_lane_s32(b.z, vsetq_lane_s32(b.y, vsetq_lane_s32(b.x, vdupq_n_s32(0), 0), 1), 2);
     return *(int3*)&simd_ret;
 #else   
     return { a.x * b.x, a.y * b.y, a.z * b.z };
@@ -469,8 +469,8 @@ CHTHOLLY_INLINE int3 operator*(const int3& a, const int3& b)
 CHTHOLLY_INLINE int3 operator*(const int3& a, int3&& b)
 {
 #if defined(__ARM_NEON__)
-    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
-    int32x4_t simd_ret = vld1q_s32(&a1.x) * vld1q_s32(&b1.x);
+    int32x4_t simd_ret = vsetq_lane_s32(a.z, vsetq_lane_s32(a.y, vsetq_lane_s32(a.x, vdupq_n_s32(0), 0), 1), 2) *
+		vsetq_lane_s32(b.z, vsetq_lane_s32(b.y, vsetq_lane_s32(b.x, vdupq_n_s32(0), 0), 1), 2);
     return *(int3*)&simd_ret;
 #else   
     return { a.x * b.x, a.y * b.y, a.z * b.z };
@@ -480,8 +480,8 @@ CHTHOLLY_INLINE int3 operator*(const int3& a, int3&& b)
 CHTHOLLY_INLINE int3 operator*(int3&& a, const int3& b)
 {
 #if defined(__ARM_NEON__)
-    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
-    int32x4_t simd_ret = vld1q_s32(&a1.x) * vld1q_s32(&b1.x);
+    int32x4_t simd_ret = vsetq_lane_s32(a.z, vsetq_lane_s32(a.y, vsetq_lane_s32(a.x, vdupq_n_s32(0), 0), 1), 2) *
+		vsetq_lane_s32(b.z, vsetq_lane_s32(b.y, vsetq_lane_s32(b.x, vdupq_n_s32(0), 0), 1), 2);
     return *(int3*)&simd_ret;
 #else   
     return { a.x * b.x, a.y * b.y, a.z * b.z };
@@ -491,8 +491,8 @@ CHTHOLLY_INLINE int3 operator*(int3&& a, const int3& b)
 CHTHOLLY_INLINE int3 operator*(int3&& a, int3&& b)
 {
 #if defined(__ARM_NEON__)
-    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 0);
-    int32x4_t simd_ret = vld1q_s32(&a1.x) * vld1q_s32(&b1.x);
+    int32x4_t simd_ret = vsetq_lane_s32(a.z, vsetq_lane_s32(a.y, vsetq_lane_s32(a.x, vdupq_n_s32(0), 0), 1), 2) *
+		vsetq_lane_s32(b.z, vsetq_lane_s32(b.y, vsetq_lane_s32(b.x, vdupq_n_s32(0), 0), 1), 2);
     return *(int3*)&simd_ret;
 #else   
     return { a.x * b.x, a.y * b.y, a.z * b.z };
@@ -502,8 +502,8 @@ CHTHOLLY_INLINE int3 operator*(int3&& a, int3&& b)
 CHTHOLLY_INLINE int3 operator/(const int3& a, const int3& b)
 {
 #if defined(__ARM_NEON__)
-    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 1);
-    int32x4_t simd_ret = vld1q_s32(&a1.x) / vld1q_s32(&b1.x);
+    int32x4_t simd_ret = vsetq_lane_s32(a.z, vsetq_lane_s32(a.y, vsetq_lane_s32(a.x, vdupq_n_s32(0), 0), 1), 2) /
+		vsetq_lane_s32(b.z, vsetq_lane_s32(b.y, vsetq_lane_s32(b.x, vdupq_n_s32(1), 0), 1), 2);
     return *(int3*)&simd_ret;
 #else   
     return { a.x / b.x, a.y / b.y, a.z / b.z };
@@ -513,8 +513,8 @@ CHTHOLLY_INLINE int3 operator/(const int3& a, const int3& b)
 CHTHOLLY_INLINE int3 operator/(const int3& a, int3&& b)
 {
 #if defined(__ARM_NEON__)
-    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 1);
-    int32x4_t simd_ret = vld1q_s32(&a1.x) / vld1q_s32(&b1.x);
+    int32x4_t simd_ret = vsetq_lane_s32(a.z, vsetq_lane_s32(a.y, vsetq_lane_s32(a.x, vdupq_n_s32(0), 0), 1), 2) /
+		vsetq_lane_s32(b.z, vsetq_lane_s32(b.y, vsetq_lane_s32(b.x, vdupq_n_s32(1), 0), 1), 2);
     return *(int3*)&simd_ret;
 #else   
     return { a.x / b.x, a.y / b.y, a.z / b.z };
@@ -524,8 +524,8 @@ CHTHOLLY_INLINE int3 operator/(const int3& a, int3&& b)
 CHTHOLLY_INLINE int3 operator/(int3&& a, const int3& b)
 {
 #if defined(__ARM_NEON__)
-    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 1);
-    int32x4_t simd_ret = vld1q_s32(&a1.x) / vld1q_s32(&b1.x);
+    int32x4_t simd_ret = vsetq_lane_s32(a.z, vsetq_lane_s32(a.y, vsetq_lane_s32(a.x, vdupq_n_s32(0), 0), 1), 2) /
+		vsetq_lane_s32(b.z, vsetq_lane_s32(b.y, vsetq_lane_s32(b.x, vdupq_n_s32(1), 0), 1), 2);
     return *(int3*)&simd_ret;
 #else   
     return { a.x / b.x, a.y / b.y, a.z / b.z };
@@ -535,8 +535,8 @@ CHTHOLLY_INLINE int3 operator/(int3&& a, const int3& b)
 CHTHOLLY_INLINE int3 operator/(int3&& a, int3&& b)
 {
 #if defined(__ARM_NEON__)
-    int4 a1 = MakeInt4(a, 0), b1 = MakeInt4(b, 1);
-    int32x4_t simd_ret = vld1q_s32(&a1.x) / vld1q_s32(&b1.x);
+    int32x4_t simd_ret = vsetq_lane_s32(a.z, vsetq_lane_s32(a.y, vsetq_lane_s32(a.x, vdupq_n_s32(0), 0), 1), 2) /
+		vsetq_lane_s32(b.z, vsetq_lane_s32(b.y, vsetq_lane_s32(b.x, vdupq_n_s32(1), 0), 1), 2);
     return *(int3*)&simd_ret;
 #else   
     return { a.x / b.x, a.y / b.y, a.z / b.z };
@@ -546,8 +546,8 @@ CHTHOLLY_INLINE int3 operator/(int3&& a, int3&& b)
 CHTHOLLY_INLINE int3 operator+(const int3& v, int a)
 {
 #if defined(__ARM_NEON__)
-    int4 v1 = MakeInt4(v, 0);
-    int32x4_t simd_ret = vld1q_s32(&v1.x) + vdupq_n_s32(a);
+    int32x4_t simd_ret = vsetq_lane_s32(v.z, vsetq_lane_s32(v.y, vsetq_lane_s32(v.x, vdupq_n_s32(0), 0), 1), 2) +
+		vdupq_n_s32(a);   
     return *(int3*)&simd_ret;
 #else   
     return { v.x + a, v.y + a, v.z + a };
@@ -557,8 +557,8 @@ CHTHOLLY_INLINE int3 operator+(const int3& v, int a)
 CHTHOLLY_INLINE int3 operator+(int3&& v, int a)
 {
 #if defined(__ARM_NEON__)
-    int4 v1 = MakeInt4(v, 0);
-    int32x4_t simd_ret = vld1q_s32(&v1.x) + vdupq_n_s32(a);
+    int32x4_t simd_ret = vsetq_lane_s32(v.z, vsetq_lane_s32(v.y, vsetq_lane_s32(v.x, vdupq_n_s32(0), 0), 1), 2) +
+		vdupq_n_s32(a);   
     return *(int3*)&simd_ret;
 #else   
     return { v.x + a, v.y + a, v.z + a };
@@ -568,8 +568,8 @@ CHTHOLLY_INLINE int3 operator+(int3&& v, int a)
 CHTHOLLY_INLINE int3 operator+(int a, const int3& v)
 {
 #if defined(__ARM_NEON__)
-    int4 v1 = MakeInt4(v, 0);
-    int32x4_t simd_ret = vld1q_s32(&v1.x) + vdupq_n_s32(a);
+    int32x4_t simd_ret = vsetq_lane_s32(v.z, vsetq_lane_s32(v.y, vsetq_lane_s32(v.x, vdupq_n_s32(0), 0), 1), 2) +
+		vdupq_n_s32(a);   
     return *(int3*)&simd_ret;
 #else   
     return { v.x + a, v.y + a, v.z + a };
@@ -579,8 +579,8 @@ CHTHOLLY_INLINE int3 operator+(int a, const int3& v)
 CHTHOLLY_INLINE int3 operator+(int a, int3&& v)
 {
 #if defined(__ARM_NEON__)
-    int4 v1 = MakeInt4(v, 0);
-    int32x4_t simd_ret = vld1q_s32(&v1.x) + vdupq_n_s32(a);
+    int32x4_t simd_ret = vsetq_lane_s32(v.z, vsetq_lane_s32(v.y, vsetq_lane_s32(v.x, vdupq_n_s32(0), 0), 1), 2) +
+		vdupq_n_s32(a);   
     return *(int3*)&simd_ret;
 #else   
     return { v.x + a, v.y + a, v.z + a };
@@ -590,8 +590,8 @@ CHTHOLLY_INLINE int3 operator+(int a, int3&& v)
 CHTHOLLY_INLINE int3 operator-(const int3& v, int a)
 {
 #if defined(__ARM_NEON__)
-    int4 v1 = MakeInt4(v, 0);
-    int32x4_t simd_ret = vld1q_s32(&v1.x) - vdupq_n_s32(a);
+    int32x4_t simd_ret = vsetq_lane_s32(v.z, vsetq_lane_s32(v.y, vsetq_lane_s32(v.x, vdupq_n_s32(0), 0), 1), 2) -
+		vdupq_n_s32(a);   
     return *(int3*)&simd_ret;
 #else   
     return { v.x - a, v.y - a, v.z - a };
@@ -601,8 +601,8 @@ CHTHOLLY_INLINE int3 operator-(const int3& v, int a)
 CHTHOLLY_INLINE int3 operator-(int3&& v, int a)
 {
 #if defined(__ARM_NEON__)
-    int4 v1 = MakeInt4(v, 0);
-    int32x4_t simd_ret = vld1q_s32(&v1.x) - vdupq_n_s32(a);
+    int32x4_t simd_ret = vsetq_lane_s32(v.z, vsetq_lane_s32(v.y, vsetq_lane_s32(v.x, vdupq_n_s32(0), 0), 1), 2) -
+		vdupq_n_s32(a);   
     return *(int3*)&simd_ret;
 #else   
     return { v.x - a, v.y - a, v.z - a };
@@ -612,8 +612,8 @@ CHTHOLLY_INLINE int3 operator-(int3&& v, int a)
 CHTHOLLY_INLINE int3 operator*(const int3& v, int a)
 {
 #if defined(__ARM_NEON__)
-    int4 v1 = MakeInt4(v, 0);
-    int32x4_t simd_ret = vld1q_s32(&v1.x) * vdupq_n_s32(a);
+    int32x4_t simd_ret = vsetq_lane_s32(v.z, vsetq_lane_s32(v.y, vsetq_lane_s32(v.x, vdupq_n_s32(0), 0), 1), 2) *
+		vdupq_n_s32(a);   
     return *(int3*)&simd_ret;
 #else   
     return { v.x * a, v.y * a, v.z * a };
@@ -623,8 +623,8 @@ CHTHOLLY_INLINE int3 operator*(const int3& v, int a)
 CHTHOLLY_INLINE int3 operator*(int3&& v, int a)
 {
 #if defined(__ARM_NEON__)
-    int4 v1 = MakeInt4(v, 0);
-    int32x4_t simd_ret = vld1q_s32(&v1.x) * vdupq_n_s32(a);
+    int32x4_t simd_ret = vsetq_lane_s32(v.z, vsetq_lane_s32(v.y, vsetq_lane_s32(v.x, vdupq_n_s32(0), 0), 1), 2) *
+		vdupq_n_s32(a);   
     return *(int3*)&simd_ret;
 #else   
     return { v.x * a, v.y * a, v.z * a };
@@ -634,8 +634,8 @@ CHTHOLLY_INLINE int3 operator*(int3&& v, int a)
 CHTHOLLY_INLINE int3 operator*(int a, const int3& v)
 {
 #if defined(__ARM_NEON__)
-    int4 v1 = MakeInt4(v, 0);
-    int32x4_t simd_ret = vld1q_s32(&v1.x) * vdupq_n_s32(a);
+    int32x4_t simd_ret = vsetq_lane_s32(v.z, vsetq_lane_s32(v.y, vsetq_lane_s32(v.x, vdupq_n_s32(0), 0), 1), 2) *
+		vdupq_n_s32(a);   
     return *(int3*)&simd_ret;
 #else   
     return { v.x * a, v.y * a, v.z * a };
@@ -645,8 +645,8 @@ CHTHOLLY_INLINE int3 operator*(int a, const int3& v)
 CHTHOLLY_INLINE int3 operator*(int a, int3&& v)
 {
 #if defined(__ARM_NEON__)
-    int4 v1 = MakeInt4(v, 0);
-    int32x4_t simd_ret = vld1q_s32(&v1.x) * vdupq_n_s32(a);
+    int32x4_t simd_ret = vsetq_lane_s32(v.z, vsetq_lane_s32(v.y, vsetq_lane_s32(v.x, vdupq_n_s32(0), 0), 1), 2) *
+		vdupq_n_s32(a);   
     return *(int3*)&simd_ret;
 #else   
     return { v.x * a, v.y * a, v.z * a };
@@ -656,8 +656,8 @@ CHTHOLLY_INLINE int3 operator*(int a, int3&& v)
 CHTHOLLY_INLINE int3 operator/(const int3& v, int a)
 {
 #if defined(__ARM_NEON__)
-    int4 v1 = MakeInt4(v, 0);
-    int32x4_t simd_ret = vld1q_s32(&v1.x) / vdupq_n_s32(a);
+    int32x4_t simd_ret = vsetq_lane_s32(v.z, vsetq_lane_s32(v.y, vsetq_lane_s32(v.x, vdupq_n_s32(0), 0), 1), 2) /
+		vdupq_n_s32(a);   
     return *(int3*)&simd_ret;
 #else   
     return { v.x / a, v.y / a, v.z / a };
@@ -667,8 +667,8 @@ CHTHOLLY_INLINE int3 operator/(const int3& v, int a)
 CHTHOLLY_INLINE int3 operator/(int3&& v, int a)
 {
 #if defined(__ARM_NEON__)
-    int4 v1 = MakeInt4(v, 0);
-    int32x4_t simd_ret = vld1q_s32(&v1.x) / vdupq_n_s32(a);
+    int32x4_t simd_ret = vsetq_lane_s32(v.z, vsetq_lane_s32(v.y, vsetq_lane_s32(v.x, vdupq_n_s32(0), 0), 1), 2) /
+		vdupq_n_s32(a);   
     return *(int3*)&simd_ret;
 #else   
     return { v.x / a, v.y / a, v.z / a };
@@ -1238,8 +1238,8 @@ CHTHOLLY_INLINE float2 operator/(float2&& v, float a)
 CHTHOLLY_INLINE float3 operator+(const float3& a, const float3& b)
 {
 #if defined(__ARM_NEON__)
-    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
-    float32x4_t simd_ret = vld1q_f32(&a1.x) + vld1q_f32(&b1.x);
+    float32x4_t simd_ret = vsetq_lane_f32(a.z, vsetq_lane_f32(a.y, vsetq_lane_f32(a.x, vdupq_n_f32(0), 0), 1), 2) + 
+		vsetq_lane_f32(b.z, vsetq_lane_f32(b.y, vsetq_lane_f32(b.x, vdupq_n_f32(0), 0), 1), 2);
     return *(float3*)&simd_ret;
 #else   
     return { a.x + b.x, a.y + b.y, a.z + b.z };
@@ -1249,8 +1249,8 @@ CHTHOLLY_INLINE float3 operator+(const float3& a, const float3& b)
 CHTHOLLY_INLINE float3 operator+(const float3& a, float3&& b)
 {
 #if defined(__ARM_NEON__)
-    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
-    float32x4_t simd_ret = vld1q_f32(&a1.x) + vld1q_f32(&b1.x);
+    float32x4_t simd_ret = vsetq_lane_f32(a.z, vsetq_lane_f32(a.y, vsetq_lane_f32(a.x, vdupq_n_f32(0), 0), 1), 2) + 
+		vsetq_lane_f32(b.z, vsetq_lane_f32(b.y, vsetq_lane_f32(b.x, vdupq_n_f32(0), 0), 1), 2);
     return *(float3*)&simd_ret;
 #else   
     return { a.x + b.x, a.y + b.y, a.z + b.z };
@@ -1260,8 +1260,8 @@ CHTHOLLY_INLINE float3 operator+(const float3& a, float3&& b)
 CHTHOLLY_INLINE float3 operator+(float3&& a, const float3& b)
 {
 #if defined(__ARM_NEON__)
-    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
-    float32x4_t simd_ret = vld1q_f32(&a1.x) + vld1q_f32(&b1.x);
+    float32x4_t simd_ret = vsetq_lane_f32(a.z, vsetq_lane_f32(a.y, vsetq_lane_f32(a.x, vdupq_n_f32(0), 0), 1), 2) + 
+		vsetq_lane_f32(b.z, vsetq_lane_f32(b.y, vsetq_lane_f32(b.x, vdupq_n_f32(0), 0), 1), 2);
     return *(float3*)&simd_ret;
 #else   
     return { a.x + b.x, a.y + b.y, a.z + b.z };
@@ -1271,8 +1271,8 @@ CHTHOLLY_INLINE float3 operator+(float3&& a, const float3& b)
 CHTHOLLY_INLINE float3 operator+(float3&& a, float3&& b)
 {
 #if defined(__ARM_NEON__)
-    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
-    float32x4_t simd_ret = vld1q_f32(&a1.x) + vld1q_f32(&b1.x);
+    float32x4_t simd_ret = vsetq_lane_f32(a.z, vsetq_lane_f32(a.y, vsetq_lane_f32(a.x, vdupq_n_f32(0), 0), 1), 2) + 
+		vsetq_lane_f32(b.z, vsetq_lane_f32(b.y, vsetq_lane_f32(b.x, vdupq_n_f32(0), 0), 1), 2);
     return *(float3*)&simd_ret;
 #else   
     return { a.x + b.x, a.y + b.y, a.z + b.z };
@@ -1282,8 +1282,8 @@ CHTHOLLY_INLINE float3 operator+(float3&& a, float3&& b)
 CHTHOLLY_INLINE float3 operator-(const float3& a, const float3& b)
 {
 #if defined(__ARM_NEON__)
-    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
-    float32x4_t simd_ret = vld1q_f32(&a1.x) - vld1q_f32(&b1.x);
+    float32x4_t simd_ret = vsetq_lane_f32(a.z, vsetq_lane_f32(a.y, vsetq_lane_f32(a.x, vdupq_n_f32(0), 0), 1), 2) - 
+		vsetq_lane_f32(b.z, vsetq_lane_f32(b.y, vsetq_lane_f32(b.x, vdupq_n_f32(0), 0), 1), 2);
     return *(float3*)&simd_ret;
 #else   
     return { a.x - b.x, a.y - b.y, a.z - b.z };
@@ -1293,8 +1293,8 @@ CHTHOLLY_INLINE float3 operator-(const float3& a, const float3& b)
 CHTHOLLY_INLINE float3 operator-(const float3& a, float3&& b)
 {
 #if defined(__ARM_NEON__)
-    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
-    float32x4_t simd_ret = vld1q_f32(&a1.x) - vld1q_f32(&b1.x);
+    float32x4_t simd_ret = vsetq_lane_f32(a.z, vsetq_lane_f32(a.y, vsetq_lane_f32(a.x, vdupq_n_f32(0), 0), 1), 2) - 
+		vsetq_lane_f32(b.z, vsetq_lane_f32(b.y, vsetq_lane_f32(b.x, vdupq_n_f32(0), 0), 1), 2);
     return *(float3*)&simd_ret;
 #else   
     return { a.x - b.x, a.y - b.y, a.z - b.z };
@@ -1304,8 +1304,8 @@ CHTHOLLY_INLINE float3 operator-(const float3& a, float3&& b)
 CHTHOLLY_INLINE float3 operator-(float3&& a, const float3& b)
 {
 #if defined(__ARM_NEON__)
-    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
-    float32x4_t simd_ret = vld1q_f32(&a1.x) - vld1q_f32(&b1.x);
+    float32x4_t simd_ret = vsetq_lane_f32(a.z, vsetq_lane_f32(a.y, vsetq_lane_f32(a.x, vdupq_n_f32(0), 0), 1), 2) - 
+		vsetq_lane_f32(b.z, vsetq_lane_f32(b.y, vsetq_lane_f32(b.x, vdupq_n_f32(0), 0), 1), 2);
     return *(float3*)&simd_ret;
 #else   
     return { a.x - b.x, a.y - b.y, a.z - b.z };
@@ -1315,8 +1315,8 @@ CHTHOLLY_INLINE float3 operator-(float3&& a, const float3& b)
 CHTHOLLY_INLINE float3 operator-(float3&& a, float3&& b)
 {
 #if defined(__ARM_NEON__)
-    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
-    float32x4_t simd_ret = vld1q_f32(&a1.x) - vld1q_f32(&b1.x);
+    float32x4_t simd_ret = vsetq_lane_f32(a.z, vsetq_lane_f32(a.y, vsetq_lane_f32(a.x, vdupq_n_f32(0), 0), 1), 2) - 
+		vsetq_lane_f32(b.z, vsetq_lane_f32(b.y, vsetq_lane_f32(b.x, vdupq_n_f32(0), 0), 1), 2);
     return *(float3*)&simd_ret;
 #else   
     return { a.x - b.x, a.y - b.y, a.z - b.z };
@@ -1326,8 +1326,8 @@ CHTHOLLY_INLINE float3 operator-(float3&& a, float3&& b)
 CHTHOLLY_INLINE float3 operator*(const float3& a, const float3& b)
 {
 #if defined(__ARM_NEON__)
-    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
-    float32x4_t simd_ret = vld1q_f32(&a1.x) * vld1q_f32(&b1.x);
+    float32x4_t simd_ret = vsetq_lane_f32(a.z, vsetq_lane_f32(a.y, vsetq_lane_f32(a.x, vdupq_n_f32(0), 0), 1), 2) *
+		vsetq_lane_f32(b.z, vsetq_lane_f32(b.y, vsetq_lane_f32(b.x, vdupq_n_f32(0), 0), 1), 2);
     return *(float3*)&simd_ret;
 #else   
     return { a.x * b.x, a.y * b.y, a.z * b.z };
@@ -1337,8 +1337,8 @@ CHTHOLLY_INLINE float3 operator*(const float3& a, const float3& b)
 CHTHOLLY_INLINE float3 operator*(const float3& a, float3&& b)
 {
 #if defined(__ARM_NEON__)
-    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
-    float32x4_t simd_ret = vld1q_f32(&a1.x) * vld1q_f32(&b1.x);
+    float32x4_t simd_ret = vsetq_lane_f32(a.z, vsetq_lane_f32(a.y, vsetq_lane_f32(a.x, vdupq_n_f32(0), 0), 1), 2) *
+		vsetq_lane_f32(b.z, vsetq_lane_f32(b.y, vsetq_lane_f32(b.x, vdupq_n_f32(0), 0), 1), 2);
     return *(float3*)&simd_ret;
 #else   
     return { a.x * b.x, a.y * b.y, a.z * b.z };
@@ -1348,8 +1348,8 @@ CHTHOLLY_INLINE float3 operator*(const float3& a, float3&& b)
 CHTHOLLY_INLINE float3 operator*(float3&& a, const float3& b)
 {
 #if defined(__ARM_NEON__)
-    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
-    float32x4_t simd_ret = vld1q_f32(&a1.x) * vld1q_f32(&b1.x);
+    float32x4_t simd_ret = vsetq_lane_f32(a.z, vsetq_lane_f32(a.y, vsetq_lane_f32(a.x, vdupq_n_f32(0), 0), 1), 2) *
+		vsetq_lane_f32(b.z, vsetq_lane_f32(b.y, vsetq_lane_f32(b.x, vdupq_n_f32(0), 0), 1), 2);
     return *(float3*)&simd_ret;
 #else   
     return { a.x * b.x, a.y * b.y, a.z * b.z };
@@ -1359,8 +1359,8 @@ CHTHOLLY_INLINE float3 operator*(float3&& a, const float3& b)
 CHTHOLLY_INLINE float3 operator*(float3&& a, float3&& b)
 {
 #if defined(__ARM_NEON__)
-    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 0);
-    float32x4_t simd_ret = vld1q_f32(&a1.x) * vld1q_f32(&b1.x);
+    float32x4_t simd_ret = vsetq_lane_f32(a.z, vsetq_lane_f32(a.y, vsetq_lane_f32(a.x, vdupq_n_f32(0), 0), 1), 2) *
+		vsetq_lane_f32(b.z, vsetq_lane_f32(b.y, vsetq_lane_f32(b.x, vdupq_n_f32(0), 0), 1), 2);
     return *(float3*)&simd_ret;
 #else   
     return { a.x * b.x, a.y * b.y, a.z * b.z };
@@ -1370,8 +1370,8 @@ CHTHOLLY_INLINE float3 operator*(float3&& a, float3&& b)
 CHTHOLLY_INLINE float3 operator/(const float3& a, const float3& b)
 {
 #if defined(__ARM_NEON__)
-    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 1);
-    float32x4_t simd_ret = vld1q_f32(&a1.x) / vld1q_f32(&b1.x);
+    float32x4_t simd_ret = vsetq_lane_f32(a.z, vsetq_lane_f32(a.y, vsetq_lane_f32(a.x, vdupq_n_f32(0), 0), 1), 2) /
+		vsetq_lane_f32(b.z, vsetq_lane_f32(b.y, vsetq_lane_f32(b.x, vdupq_n_f32(1), 0), 1), 2);
     return *(float3*)&simd_ret;
 #else   
     return { a.x / b.x, a.y / b.y, a.z / b.z };
@@ -1381,8 +1381,8 @@ CHTHOLLY_INLINE float3 operator/(const float3& a, const float3& b)
 CHTHOLLY_INLINE float3 operator/(const float3& a, float3&& b)
 {
 #if defined(__ARM_NEON__)
-    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 1);
-    float32x4_t simd_ret = vld1q_f32(&a1.x) / vld1q_f32(&b1.x);
+    float32x4_t simd_ret = vsetq_lane_f32(a.z, vsetq_lane_f32(a.y, vsetq_lane_f32(a.x, vdupq_n_f32(0), 0), 1), 2) /
+		vsetq_lane_f32(b.z, vsetq_lane_f32(b.y, vsetq_lane_f32(b.x, vdupq_n_f32(1), 0), 1), 2);
     return *(float3*)&simd_ret;
 #else   
     return { a.x / b.x, a.y / b.y, a.z / b.z };
@@ -1392,8 +1392,8 @@ CHTHOLLY_INLINE float3 operator/(const float3& a, float3&& b)
 CHTHOLLY_INLINE float3 operator/(float3&& a, const float3& b)
 {
 #if defined(__ARM_NEON__)
-    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 1);
-    float32x4_t simd_ret = vld1q_f32(&a1.x) / vld1q_f32(&b1.x);
+    float32x4_t simd_ret = vsetq_lane_f32(a.z, vsetq_lane_f32(a.y, vsetq_lane_f32(a.x, vdupq_n_f32(0), 0), 1), 2) /
+		vsetq_lane_f32(b.z, vsetq_lane_f32(b.y, vsetq_lane_f32(b.x, vdupq_n_f32(1), 0), 1), 2);
     return *(float3*)&simd_ret;
 #else   
     return { a.x / b.x, a.y / b.y, a.z / b.z };
@@ -1403,8 +1403,8 @@ CHTHOLLY_INLINE float3 operator/(float3&& a, const float3& b)
 CHTHOLLY_INLINE float3 operator/(float3&& a, float3&& b)
 {
 #if defined(__ARM_NEON__)
-    float4 a1 = MakeFloat4(a, 0), b1 = MakeFloat4(b, 1);
-    float32x4_t simd_ret = vld1q_f32(&a1.x) / vld1q_f32(&b1.x);
+    float32x4_t simd_ret = vsetq_lane_f32(a.z, vsetq_lane_f32(a.y, vsetq_lane_f32(a.x, vdupq_n_f32(0), 0), 1), 2) /
+		vsetq_lane_f32(b.z, vsetq_lane_f32(b.y, vsetq_lane_f32(b.x, vdupq_n_f32(1), 0), 1), 2);
     return *(float3*)&simd_ret;
 #else   
     return { a.x / b.x, a.y / b.y, a.z / b.z };
@@ -1414,8 +1414,8 @@ CHTHOLLY_INLINE float3 operator/(float3&& a, float3&& b)
 CHTHOLLY_INLINE float3 operator+(const float3& v, float a)
 {
 #if defined(__ARM_NEON__)
-    float4 v1 = MakeFloat4(v, 0);
-    float32x4_t simd_ret = vld1q_f32(&v1.x) + vdupq_n_f32(a);
+    float32x4_t simd_ret = vsetq_lane_f32(v.z, vsetq_lane_f32(v.y, vsetq_lane_f32(v.x, vdupq_n_f32(0), 0), 1), 2) +
+		vdupq_n_f32(a);
     return *(float3*)&simd_ret;
 #else   
     return { v.x + a, v.y + a, v.z + a };
@@ -1425,8 +1425,8 @@ CHTHOLLY_INLINE float3 operator+(const float3& v, float a)
 CHTHOLLY_INLINE float3 operator+(float3&& v, float a)
 {
 #if defined(__ARM_NEON__)
-    float4 v1 = MakeFloat4(v, 0);
-    float32x4_t simd_ret = vld1q_f32(&v1.x) + vdupq_n_f32(a);
+    float32x4_t simd_ret = vsetq_lane_f32(v.z, vsetq_lane_f32(v.y, vsetq_lane_f32(v.x, vdupq_n_f32(0), 0), 1), 2) +
+		vdupq_n_f32(a);
     return *(float3*)&simd_ret;
 #else   
     return { v.x + a, v.y + a, v.z + a };
@@ -1436,8 +1436,8 @@ CHTHOLLY_INLINE float3 operator+(float3&& v, float a)
 CHTHOLLY_INLINE float3 operator+(float a, const float3& v)
 {
 #if defined(__ARM_NEON__)
-    float4 v1 = MakeFloat4(v, 0);
-    float32x4_t simd_ret = vld1q_f32(&v1.x) + vdupq_n_f32(a);
+    float32x4_t simd_ret = vsetq_lane_f32(v.z, vsetq_lane_f32(v.y, vsetq_lane_f32(v.x, vdupq_n_f32(0), 0), 1), 2) +
+		vdupq_n_f32(a);
     return *(float3*)&simd_ret;
 #else   
     return { v.x + a, v.y + a, v.z + a };
@@ -1447,8 +1447,8 @@ CHTHOLLY_INLINE float3 operator+(float a, const float3& v)
 CHTHOLLY_INLINE float3 operator+(float a, float3&& v)
 {
 #if defined(__ARM_NEON__)
-    float4 v1 = MakeFloat4(v, 0);
-    float32x4_t simd_ret = vld1q_f32(&v1.x) + vdupq_n_f32(a);
+    float32x4_t simd_ret = vsetq_lane_f32(v.z, vsetq_lane_f32(v.y, vsetq_lane_f32(v.x, vdupq_n_f32(0), 0), 1), 2) +
+		vdupq_n_f32(a);
     return *(float3*)&simd_ret;
 #else   
     return { v.x + a, v.y + a, v.z + a };
@@ -1458,8 +1458,8 @@ CHTHOLLY_INLINE float3 operator+(float a, float3&& v)
 CHTHOLLY_INLINE float3 operator-(const float3& v, float a)
 {
 #if defined(__ARM_NEON__)
-    float4 v1 = MakeFloat4(v, 0);
-    float32x4_t simd_ret = vld1q_f32(&v1.x) - vdupq_n_f32(a);
+    float32x4_t simd_ret = vsetq_lane_f32(v.z, vsetq_lane_f32(v.y, vsetq_lane_f32(v.x, vdupq_n_f32(0), 0), 1), 2) -
+		vdupq_n_f32(a);
     return *(float3*)&simd_ret;
 #else   
     return { v.x - a, v.y - a, v.z - a };
@@ -1469,8 +1469,8 @@ CHTHOLLY_INLINE float3 operator-(const float3& v, float a)
 CHTHOLLY_INLINE float3 operator-(float3&& v, float a)
 {
 #if defined(__ARM_NEON__)
-    float4 v1 = MakeFloat4(v, 0);
-    float32x4_t simd_ret = vld1q_f32(&v1.x) - vdupq_n_f32(a);
+    float32x4_t simd_ret = vsetq_lane_f32(v.z, vsetq_lane_f32(v.y, vsetq_lane_f32(v.x, vdupq_n_f32(0), 0), 1), 2) -
+		vdupq_n_f32(a);
     return *(float3*)&simd_ret;
 #else   
     return { v.x - a, v.y - a, v.z - a };
@@ -1480,8 +1480,8 @@ CHTHOLLY_INLINE float3 operator-(float3&& v, float a)
 CHTHOLLY_INLINE float3 operator*(const float3& v, float a)
 {
 #if defined(__ARM_NEON__)
-    float4 v1 = MakeFloat4(v, 0);
-    float32x4_t simd_ret = vld1q_f32(&v1.x) * vdupq_n_f32(a);
+    float32x4_t simd_ret = vsetq_lane_f32(v.z, vsetq_lane_f32(v.y, vsetq_lane_f32(v.x, vdupq_n_f32(0), 0), 1), 2) *
+		vdupq_n_f32(a);
     return *(float3*)&simd_ret;
 #else   
     return { v.x * a, v.y * a, v.z * a };
@@ -1491,8 +1491,8 @@ CHTHOLLY_INLINE float3 operator*(const float3& v, float a)
 CHTHOLLY_INLINE float3 operator*(float3&& v, float a)
 {
 #if defined(__ARM_NEON__)
-    float4 v1 = MakeFloat4(v, 0);
-    float32x4_t simd_ret = vld1q_f32(&v1.x) * vdupq_n_f32(a);
+    float32x4_t simd_ret = vsetq_lane_f32(v.z, vsetq_lane_f32(v.y, vsetq_lane_f32(v.x, vdupq_n_f32(0), 0), 1), 2) *
+		vdupq_n_f32(a);
     return *(float3*)&simd_ret;
 #else   
     return { v.x * a, v.y * a, v.z * a };
@@ -1502,8 +1502,8 @@ CHTHOLLY_INLINE float3 operator*(float3&& v, float a)
 CHTHOLLY_INLINE float3 operator*(float a, const float3& v)
 {
 #if defined(__ARM_NEON__)
-    float4 v1 = MakeFloat4(v, 0);
-    float32x4_t simd_ret = vld1q_f32(&v1.x) * vdupq_n_f32(a);
+    float32x4_t simd_ret = vsetq_lane_f32(v.z, vsetq_lane_f32(v.y, vsetq_lane_f32(v.x, vdupq_n_f32(0), 0), 1), 2) *
+		vdupq_n_f32(a);
     return *(float3*)&simd_ret;
 #else   
     return { v.x * a, v.y * a, v.z * a };
@@ -1513,8 +1513,8 @@ CHTHOLLY_INLINE float3 operator*(float a, const float3& v)
 CHTHOLLY_INLINE float3 operator*(float a, float3&& v)
 {
 #if defined(__ARM_NEON__)
-    float4 v1 = MakeFloat4(v, 0);
-    float32x4_t simd_ret = vld1q_f32(&v1.x) * vdupq_n_f32(a);
+    float32x4_t simd_ret = vsetq_lane_f32(v.z, vsetq_lane_f32(v.y, vsetq_lane_f32(v.x, vdupq_n_f32(0), 0), 1), 2) *
+		vdupq_n_f32(a);
     return *(float3*)&simd_ret;
 #else   
     return { v.x * a, v.y * a, v.z * a };
@@ -1524,8 +1524,8 @@ CHTHOLLY_INLINE float3 operator*(float a, float3&& v)
 CHTHOLLY_INLINE float3 operator/(const float3& v, float a)
 {
 #if defined(__ARM_NEON__)
-    float4 v1 = MakeFloat4(v, 0);
-    float32x4_t simd_ret = vld1q_f32(&v1.x) / vdupq_n_f32(a);
+    float32x4_t simd_ret = vsetq_lane_f32(v.z, vsetq_lane_f32(v.y, vsetq_lane_f32(v.x, vdupq_n_f32(0), 0), 1), 2) /
+		vdupq_n_f32(a);
     return *(float3*)&simd_ret;
 #else   
     return { v.x / a, v.y / a, v.z / a };
@@ -1535,8 +1535,8 @@ CHTHOLLY_INLINE float3 operator/(const float3& v, float a)
 CHTHOLLY_INLINE float3 operator/(float3&& v, float a)
 {
 #if defined(__ARM_NEON__)
-    float4 v1 = MakeFloat4(v, 0);
-    float32x4_t simd_ret = vld1q_f32(&v1.x) / vdupq_n_f32(a);
+    float32x4_t simd_ret = vsetq_lane_f32(v.z, vsetq_lane_f32(v.y, vsetq_lane_f32(v.x, vdupq_n_f32(0), 0), 1), 2) /
+		vdupq_n_f32(a);
     return *(float3*)&simd_ret;
 #else   
     return { v.x / a, v.y / a, v.z / a };
