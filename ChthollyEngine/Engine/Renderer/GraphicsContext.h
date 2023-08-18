@@ -3,7 +3,7 @@
 
 #include "Chtholly.h"
 
-namespace xxd
+namespace ktl
 {
 class CHTHOLLY_API GraphicsContext
 {

@@ -1,7 +1,7 @@
 #ifndef _SINGLETON_H_
 #define _SINGLETON_H_
 
-namespace xxd
+namespace ktl
 {
 template<class T>
 class Singleton final
@@ -24,10 +24,10 @@ private:
 }
 
 template<class T>
-T* xxd::Singleton<T>::SingletonInstance = nullptr;
+T* ktl::Singleton<T>::SingletonInstance = nullptr;
 
 template<class T>
-inline T& xxd::Singleton<T>::Get()
+inline T& ktl::Singleton<T>::Get()
 {
 	if(!SingletonInstance)
 	{
@@ -39,7 +39,7 @@ inline T& xxd::Singleton<T>::Get()
 
 #define SINGLETON_REGISTER(className) \
 public: \
-static inline className& Get() { return xxd::Singleton<className>::Get(); } \
+static inline className& Get() { return ktl::Singleton<className>::Get(); } \
 private: \
 friend class Singleton<className>; \
 className(); \

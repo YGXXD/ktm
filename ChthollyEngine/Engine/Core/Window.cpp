@@ -6,9 +6,9 @@
 
 #endif
 
-bool xxd::Window::bisInitialized = false;
+bool ktl::Window::bisInitialized = false;
 
-xxd::Window* xxd::Window::Create(const WindowProps& props)
+ktl::Window* ktl::Window::Create(const WindowProps& props)
 {
 #if defined(CHTHOLLY_PLATFORM_APPLE)
     return new MacWindow(props);
@@ -17,7 +17,7 @@ xxd::Window* xxd::Window::Create(const WindowProps& props)
 #endif 
 }
 
-void xxd::Window::Init()
+void ktl::Window::Init()
 {
     assert(!bisInitialized);
 #if defined(CHTHOLLY_PLATFORM_APPLE)
@@ -28,7 +28,7 @@ void xxd::Window::Init()
     bisInitialized = true;
 }
 
-void xxd::Window::PollEvent()
+void ktl::Window::PollEvent()
 {
 #if defined(CHTHOLLY_PLATFORM_APPLE)
     MacWindow::MacCocoaPollEvent();
@@ -37,7 +37,7 @@ void xxd::Window::PollEvent()
 #endif 
 }
 
-void xxd::Window::Quit()
+void ktl::Window::Quit()
 {
     assert(bisInitialized);
 #if defined(CHTHOLLY_PLATFORM_APPLE)

@@ -3,7 +3,7 @@
 
 #include "Chtholly.h"
 
-namespace xxd
+namespace ktl
 {
 enum class EventType : unsigned char
 {
@@ -25,12 +25,12 @@ enum EventCategory : unsigned char
 };
 
 #define EVENT_TYPE(type) \
-static CHTHOLLY_INLINE EventType GetStaticType() { return xxd::EventType::type; } \
-virtual EventType GetEventType() const override { return xxd::EventType::type; } \
+static CHTHOLLY_INLINE EventType GetStaticType() { return ktl::EventType::type; } \
+virtual EventType GetEventType() const override { return ktl::EventType::type; } \
 virtual const char* GetName() const override { return #type; }
 
 #define EVENT_CATEGORY(category) \
-virtual unsigned char GetCategoryFlags() const override { return xxd::category; }
+virtual unsigned char GetCategoryFlags() const override { return ktl::category; }
 
 class Event
 {

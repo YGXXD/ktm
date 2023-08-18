@@ -4,7 +4,7 @@
 #include "Core/Window.h"
 #include "EvtNSWindow.h"
 
-namespace xxd
+namespace ktl
 {
 class MacWindow : public Window, public EvtNSDelegate
 {

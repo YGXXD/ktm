@@ -5,7 +5,7 @@
 #include "Event/Event.h"
 #include "Delegate.h"
 
-namespace xxd
+namespace ktl
 {
 struct WindowProps
 {

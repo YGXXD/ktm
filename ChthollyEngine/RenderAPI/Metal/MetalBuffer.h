@@ -3,7 +3,7 @@
 
 #include "Renderer/Buffer.h"
 
-namespace xxd 
+namespace ktl 
 {
 class MetalVertexBuffer : public VertexBuffer
 {

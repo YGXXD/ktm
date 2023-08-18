@@ -1,16 +1,16 @@
 #ifndef _LOGGER_H_
 #define _LOGGER_H_
 
-#define XXD_LOG(LogLevel, ...) xxd::Logger::Log((LogLevel), __VA_ARGS__);
-#define XXD_DEBUG(...) XXD_LOG(xxd::LogLevelDebug, __VA_ARGS__)
-#define XXD_INFO(...) XXD_LOG(xxd::LogLevelInfo, __VA_ARGS__)
-#define XXD_WARN(...) XXD_LOG(xxd::LogLevelWarn, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
-#define XXD_ERROR(...) XXD_LOG(xxd::LogLevelError, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
-#define XXD_FATAL(...) XXD_LOG(xxd::LogLevelFatal, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
+#define KTL_LOG(LogLevel, ...) ktl::Logger::Log((LogLevel), __VA_ARGS__);
+#define KTL_DEBUG(...) KTL_LOG(ktl::LogLevelDebug, __VA_ARGS__)
+#define KTL_INFO(...) KTL_LOG(ktl::LogLevelInfo, __VA_ARGS__)
+#define KTL_WARN(...) KTL_LOG(ktl::LogLevelWarn, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
+#define KTL_ERROR(...) KTL_LOG(ktl::LogLevelError, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
+#define KTL_FATAL(...) KTL_LOG(ktl::LogLevelFatal, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
 
 #include "Chtholly.h"
 
-namespace xxd
+namespace ktl
 {
 enum LogLevel : unsigned char
 {
@@ -59,7 +59,7 @@ private:
 } 
 
 template<typename ...ArgsT>
-void xxd::Logger::Log(xxd::LogLevel level, ArgsT&&... args)
+void ktl::Logger::Log(ktl::LogLevel level, ArgsT&&... args)
 {
 	if(level >= minLogLevel && level <= LogLevelFatal)
 	{
@@ -71,14 +71,14 @@ void xxd::Logger::Log(xxd::LogLevel level, ArgsT&&... args)
 }
 
 template<typename ArgT, typename ...ArgsT>
-CHTHOLLY_INLINE void xxd::Logger::ConsoleLog(ArgT && arg, ArgsT&&... args)
+CHTHOLLY_INLINE void ktl::Logger::ConsoleLog(ArgT && arg, ArgsT&&... args)
 {
 	std::cout << arg;
 	ConsoleLog(std::forward<ArgsT>(args)...);
 }
 
 template<typename ArgT>
-CHTHOLLY_INLINE void xxd::Logger::ConsoleLog(ArgT&& arg)
+CHTHOLLY_INLINE void ktl::Logger::ConsoleLog(ArgT&& arg)
 {
 	std::cout << arg << "\n";
 	std::flush(std::cout);

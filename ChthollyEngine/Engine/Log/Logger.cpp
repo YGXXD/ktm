@@ -1,19 +1,19 @@
 #include "Logger.h"
 
-const char* xxd::Logger::levelString[5] = {"Debug", "Info", "Warn", "Error", "Fatal"};
-const char* xxd::Logger::levelColor[3] = {"\033[33m", "\033[31m", "\033[41m"};
-xxd::LogLevel xxd::Logger::minLogLevel = xxd::LogLevelDebug;
-xxd::Logger::UTCTimer xxd::Logger::utimer;
+const char* ktl::Logger::levelString[5] = {"Debug", "Info", "Warn", "Error", "Fatal"};
+const char* ktl::Logger::levelColor[3] = {"\033[33m", "\033[31m", "\033[41m"};
+ktl::LogLevel ktl::Logger::minLogLevel = ktl::LogLevelDebug;
+ktl::Logger::UTCTimer ktl::Logger::utimer;
 
-xxd::Logger::Logger()
+ktl::Logger::Logger()
 {
 }
 
-xxd::Logger::~Logger()
+ktl::Logger::~Logger()
 {
 }
 
-xxd::Logger::UTCTimer::UTCTimer()
+ktl::Logger::UTCTimer::UTCTimer()
 {
     time_t t;
     time(&t);
@@ -21,7 +21,7 @@ xxd::Logger::UTCTimer::UTCTimer()
     timeStrLen = strlen(timeStr);
 }
 
-const char* xxd::Logger::UTCTimer::GetUTCTime()
+const char* ktl::Logger::UTCTimer::GetUTCTime()
 {
     time_t t;
     time(&t);

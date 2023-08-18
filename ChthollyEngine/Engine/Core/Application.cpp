@@ -5,28 +5,25 @@
 #include "Event/AppEvent.h"
 #include "Event/MouseEvent.h"
 #include "Event/KeyEvent.h"
-#include "Math/XMath.h"
 
-bool xxd::Application::bIsQuit = false;
-std::unique_ptr<xxd::Window> xxd::Application::mainWindow;
-std::unique_ptr<xxd::GraphicsContext> xxd::Application::mainGraphics;
+bool ktl::Application::bIsQuit = false;
+std::unique_ptr<ktl::Window> ktl::Application::mainWindow;
+std::unique_ptr<ktl::GraphicsContext> ktl::Application::mainGraphics;
 
-void xxd::Application::Initialize()
+void ktl::Application::Initialize()
 {
 	Window::Init();
 	GraphicsContext::Init();
 }
 
-void xxd::Application::Destroy()
+void ktl::Application::Destroy()
 {
 	GraphicsContext::Quit();
 	Window::Quit();
 }
 
-void xxd::Application::Run()
+void ktl::Application::Run()
 {
-	mathTest();
-	return;
     mainWindow = std::unique_ptr<Window>(Window::Create(WindowProps()));
  	mainWindow->eventCallback.BindAnyFunc(&Application::OnEvent);	
 	mainGraphics = std::unique_ptr<GraphicsContext>(GraphicsContext::Create(mainWindow->GetNativeWindow()));	
@@ -42,10 +39,10 @@ void xxd::Application::Run()
 	mainWindow.reset();
 }
 
-void xxd::Application::OnEvent(xxd::Event& event)
+void ktl::Application::OnEvent(ktl::Event& event)
 {
 	EventDispatcher ed(event);
-	ed.Dispatch<WindowCloseEvent>([](xxd::WindowCloseEvent& event)->bool { bIsQuit = true; return true; });
-	ed.Dispatch<WindowResizeEvent>([](xxd::WindowResizeEvent& event)->bool { XXD_DEBUG(event); return true; });
-	ed.Dispatch<KeyPressedEvent>([](xxd::KeyPressedEvent& event)->bool { XXD_DEBUG(event); return true; });
+	ed.Dispatch<WindowCloseEvent>([](ktl::WindowCloseEvent& event)->bool { bIsQuit = true; return true; });
+	ed.Dispatch<WindowResizeEvent>([](ktl::WindowResizeEvent& event)->bool { KTL_DEBUG(event); return true; });
+	ed.Dispatch<KeyPressedEvent>([](ktl::KeyPressedEvent& event)->bool { KTL_DEBUG(event); return true; });
 }

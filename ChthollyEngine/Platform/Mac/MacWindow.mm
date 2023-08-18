@@ -2,7 +2,7 @@
 #include "Log/Logger.h"
 #include "Core/Delegate.h"
 
-void xxd::MacWindow::MacCocoaInit()
+void ktl::MacWindow::MacCocoaInit()
 {
 	assert(NSApp == nil);
     @autoreleasepool
@@ -14,7 +14,7 @@ void xxd::MacWindow::MacCocoaInit()
     }
 }
 
-void xxd::MacWindow::MacCocoaPollEvent()
+void ktl::MacWindow::MacCocoaPollEvent()
 {
     @autoreleasepool
     {
@@ -29,7 +29,7 @@ void xxd::MacWindow::MacCocoaPollEvent()
     }
 }
 
-void xxd::MacWindow::MacCocoaQuit()
+void ktl::MacWindow::MacCocoaQuit()
 {
     assert(NSApp != nil);
     @autoreleasepool
@@ -39,22 +39,22 @@ void xxd::MacWindow::MacCocoaQuit()
     }
 }
 
-xxd::MacWindow::MacWindow(const WindowProps& props)
+ktl::MacWindow::MacWindow(const WindowProps& props)
 {
     InitProps(props);
 }
 
-xxd::MacWindow::~MacWindow()
+ktl::MacWindow::~MacWindow()
 {
 	[window release];
 }
 
-xxd::SingleDelegate<void, xxd::Event&>& xxd::MacWindow::GetEventCallback()
+ktl::SingleDelegate<void, ktl::Event&>& ktl::MacWindow::GetEventCallback()
 {
 	return eventCallback;
 }
 
-void xxd::MacWindow::InitProps(const WindowProps& props)
+void ktl::MacWindow::InitProps(const WindowProps& props)
 {
     @autoreleasepool
     {
@@ -80,32 +80,32 @@ void xxd::MacWindow::InitProps(const WindowProps& props)
     }
 }
 
-void xxd::MacWindow::OnUpdate()
+void ktl::MacWindow::OnUpdate()
 {
 
 }
 
-uint32_t xxd::MacWindow::GetWidth() const
+uint32_t ktl::MacWindow::GetWidth() const
 {
     return window.contentView.frame.size.width;
 }
 
-uint32_t xxd::MacWindow::GetHeight() const
+uint32_t ktl::MacWindow::GetHeight() const
 {
     return window.contentView.frame.size.height;
 }
 
-void xxd::MacWindow::SetVSync(bool enabled)
+void ktl::MacWindow::SetVSync(bool enabled)
 {
 
 }
 
-bool xxd::MacWindow::IsVSync() const
+bool ktl::MacWindow::IsVSync() const
 {
     return false;
 }
 
-void* xxd::MacWindow::GetNativeWindow() const
+void* ktl::MacWindow::GetNativeWindow() const
 {
     return (__bridge void*)window;
 }

@@ -1,5 +1,5 @@
-#ifndef _BASE_TYPE_H_
-#define _BASE_TYPE_H_
+#ifndef _MATH_TYPE_H_
+#define _MATH_TYPE_H_
 
 #include "Chtholly.h"
 #include <simd/simd.h>
@@ -8,7 +8,7 @@
     #include <arm_neon.h>
 #endif
 
-namespace xxd
+namespace ktl
 {
 typedef struct { int x, y; } int2; 
 

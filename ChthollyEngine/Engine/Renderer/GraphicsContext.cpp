@@ -6,7 +6,7 @@
 
 #endif
 
-xxd::GraphicsContext* xxd::GraphicsContext::Create(void* window)
+ktl::GraphicsContext* ktl::GraphicsContext::Create(void* window)
 {
 #if defined(CHTHOLLY_RENDER_API_METAL)
     return new MetalGraphicsContext(window);
@@ -15,7 +15,7 @@ xxd::GraphicsContext* xxd::GraphicsContext::Create(void* window)
 #endif
 }
 
-void xxd::GraphicsContext::Init()
+void ktl::GraphicsContext::Init()
 {
 #if defined(CHTHOLLY_RENDER_API_METAL)
 	MetalGraphicsContext::MetalInit();
@@ -24,7 +24,7 @@ void xxd::GraphicsContext::Init()
 #endif
 }
 
-void xxd::GraphicsContext::Quit()
+void ktl::GraphicsContext::Quit()
 {
 #if defined(CHTHOLLY_RENDER_API_METAL)
 	MetalGraphicsContext::MetalQuit();

@@ -1,41 +1,41 @@
 #include "MetalBuffer.h"
 
-xxd::MetalVertexBuffer::MetalVertexBuffer(float* vertices, uint32_t size)
+ktl::MetalVertexBuffer::MetalVertexBuffer(float* vertices, uint32_t size)
 {
 
 }
 
-xxd::MetalVertexBuffer::~MetalVertexBuffer()
+ktl::MetalVertexBuffer::~MetalVertexBuffer()
 {
 
 }
 
-void xxd::MetalVertexBuffer::Bind()
-{
-    
-}
-
-void xxd::MetalVertexBuffer::UnBind()
-{
-
-}
-
-xxd::MetalIndexBuffer::MetalIndexBuffer(uint32_t* indices, uint32_t size)
-{
-
-}
-
-xxd::MetalIndexBuffer::~MetalIndexBuffer()
+void ktl::MetalVertexBuffer::Bind()
 {
     
 }
 
-void xxd::MetalIndexBuffer::Bind()
+void ktl::MetalVertexBuffer::UnBind()
 {
 
 }
 
-void xxd::MetalIndexBuffer::UnBind()
+ktl::MetalIndexBuffer::MetalIndexBuffer(uint32_t* indices, uint32_t size)
+{
+
+}
+
+ktl::MetalIndexBuffer::~MetalIndexBuffer()
+{
+    
+}
+
+void ktl::MetalIndexBuffer::Bind()
+{
+
+}
+
+void ktl::MetalIndexBuffer::UnBind()
 {
 
 }

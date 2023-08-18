@@ -4,7 +4,7 @@
 #include "Core/Delegate.h"
 #include "Event/Event.h"
 
-namespace xxd
+namespace ktl
 {
 class EvtNSDelegate
 {
@@ -17,7 +17,7 @@ public:
 
 @interface EvtNSWindow : NSWindow <NSWindowDelegate>
 
-@property (assign, readwrite) xxd::EvtNSDelegate* evtDelegate;
+@property (assign, readwrite) ktl::EvtNSDelegate* evtDelegate;
 
 @end
 

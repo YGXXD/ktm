@@ -6,12 +6,12 @@
 
 #endif
 
-xxd::VertexBuffer* xxd::VertexBuffer::Create(float* vertices, uint32_t size)
+ktl::VertexBuffer* ktl::VertexBuffer::Create(float* vertices, uint32_t size)
 {
     return nullptr;
 }
 
-xxd::IndexBuffer* xxd::IndexBuffer::Create(uint32_t* indices, uint32_t size)
+ktl::IndexBuffer* ktl::IndexBuffer::Create(uint32_t* indices, uint32_t size)
 {
     return nullptr;
 }

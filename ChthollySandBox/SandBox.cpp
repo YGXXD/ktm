@@ -12,8 +12,8 @@ int main(int argc, const char* argv[])
 	//     XXD_FATAL("Helow", " Chenqiudu");
 	//     std::this_thread::sleep_for(std::chrono::milliseconds(300));
 	// }
-	xxd::Application::Initialize();
-	xxd::Application::Run();
-	xxd::Application::Destroy();
+	ktl::Application::Initialize();
+	ktl::Application::Run();
+	ktl::Application::Destroy();
 	return 0;
 }

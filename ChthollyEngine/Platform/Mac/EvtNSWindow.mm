@@ -9,7 +9,7 @@
 - (void)dealloc 
 {
     [super dealloc];
-    XXD_DEBUG("CocoaApp dealloc")
+    KTL_DEBUG("CocoaApp dealloc")
 }
 
 @end
@@ -54,18 +54,18 @@
 - (void)dealloc 
 {
     [super dealloc];
-    XXD_DEBUG("EvtNSWindow dealloc")
+    KTL_DEBUG("EvtNSWindow dealloc")
 }
 
 - (void)windowWillClose:(NSNotification *)notification 
 {
-	xxd::WindowCloseEvent e;
+	ktl::WindowCloseEvent e;
 	evtDelegate->GetEventCallback()(e);	
 }
 
 - (void)windowDidResize:(NSNotification *)notification 
 {
-	xxd::WindowResizeEvent e(self.frame.size.width, self.frame.size.height);
+	ktl::WindowResizeEvent e(self.frame.size.width, self.frame.size.height);
 	evtDelegate->GetEventCallback()(e);
 }
 
@@ -75,13 +75,13 @@
     {
         case NSEventTypeKeyDown: 
 	    {
-            xxd::KeyPressedEvent e(event.keyCode, event.isARepeat);
+            ktl::KeyPressedEvent e(event.keyCode, event.isARepeat);
             evtDelegate->GetEventCallback()(e);
             break;
         }
         case NSEventTypeKeyUp:
 	    {
-            xxd::KeyPressedEvent e(event.keyCode);
+            ktl::KeyPressedEvent e(event.keyCode);
             evtDelegate->GetEventCallback()(e);
             break;
         }
@@ -92,43 +92,43 @@
 
 - (void)mouseDown:(NSEvent *)event 
 {
-	xxd::MouseButtonPressedEvent e(event.buttonNumber);
+	ktl::MouseButtonPressedEvent e(event.buttonNumber);
     evtDelegate->GetEventCallback()(e);
 }
 
 - (void)rightMouseDown:(NSEvent *)event 
 {
-    xxd::MouseButtonPressedEvent e(event.buttonNumber);
+    ktl::MouseButtonPressedEvent e(event.buttonNumber);
     evtDelegate->GetEventCallback()(e);
 }
 
 - (void)otherMouseDown:(NSEvent *)event 
 {
-    xxd::MouseButtonPressedEvent e(event.buttonNumber);
+    ktl::MouseButtonPressedEvent e(event.buttonNumber);
     evtDelegate->GetEventCallback()(e);
 }
 
 - (void)mouseUp:(NSEvent *)event 
 {
-	xxd::MouseButtonReleasedEvent e(event.buttonNumber);
+	ktl::MouseButtonReleasedEvent e(event.buttonNumber);
     evtDelegate->GetEventCallback()(e);
 }
 
 -(void)rightMouseUp:(NSEvent *)event 
 {
-    xxd::MouseButtonReleasedEvent e(event.buttonNumber);
+    ktl::MouseButtonReleasedEvent e(event.buttonNumber);
     evtDelegate->GetEventCallback()(e);
 }
 
 - (void)otherMouseUp:(NSEvent *)event 
 {
-    xxd::MouseButtonReleasedEvent e(event.buttonNumber);
+    ktl::MouseButtonReleasedEvent e(event.buttonNumber);
     evtDelegate->GetEventCallback()(e);
 }
 
 - (void)scrollWheel:(NSEvent *)event 
 {
-    xxd::MouseScrolledEvent e(event.deltaX, event.deltaY);
+    ktl::MouseScrolledEvent e(event.deltaX, event.deltaY);
     evtDelegate->GetEventCallback()(e);
 }
 
@@ -137,7 +137,7 @@
 	NSPoint p = [event locationInWindow];
     if(NSPointInRect(p, self.contentView.bounds))
     {
-        xxd::MouseMovedEvent e(p.x, p.y);
+        ktl::MouseMovedEvent e(p.x, p.y);
 	    evtDelegate->GetEventCallback()(e);
     }
 }
