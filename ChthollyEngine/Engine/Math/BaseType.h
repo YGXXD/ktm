@@ -2,6 +2,7 @@
 #define _BASE_TYPE_H_
 
 #include "Chtholly.h"
+#include <simd/simd.h>
 
 #if defined(__ARM_NEON__)
     #include <arm_neon.h>
@@ -58,9 +59,15 @@ typedef struct { double4 col[3]; } double4x3;
 typedef struct { double4 col[4]; } double4x4;
 
 CHTHOLLY_INLINE int2 MakeInt2(int x, int y) { return { x, y }; }
+CHTHOLLY_INLINE int2 MakeInt2(const int3& v3) { return { v3.x, v3.y}; }
+CHTHOLLY_INLINE int2 MakeInt2(int3&& v3) { return { v3.x, v3.y}; }
+CHTHOLLY_INLINE int2 MakeInt2(const int4& v4) { return { v4.x, v4.y}; }
+CHTHOLLY_INLINE int2 MakeInt2(int4&& v4) { return { v4.x, v4.y}; }
 CHTHOLLY_INLINE int3 MakeInt3(const int2& v2, int z) { return { v2.x, v2.y, z }; }
 CHTHOLLY_INLINE int3 MakeInt3(int2&& v2, int z) { return { v2.x, v2.y, z }; }
 CHTHOLLY_INLINE int3 MakeInt3(int x, int y, int z) { return MakeInt3(MakeInt2(x, y), z); }
+CHTHOLLY_INLINE int3 MakeInt3(const int4& v4) { return { v4.x, v4.y, v4.z}; }
+CHTHOLLY_INLINE int3 MakeInt3(int4&& v4) { return { v4.x, v4.y, v4.z}; }
 CHTHOLLY_INLINE int4 MakeInt4(const int3& v3, int w) { return { v3.x, v3.y, v3.z, w }; }
 CHTHOLLY_INLINE int4 MakeInt4(int3&& v3, int w) { return { v3.x, v3.y, v3.z, w }; }
 CHTHOLLY_INLINE int4 MakeInt4(const int2& v2, int z, int w) { return MakeInt4(MakeInt3(v2, z), 2); }
@@ -68,9 +75,15 @@ CHTHOLLY_INLINE int4 MakeInt4(int2&& v2, int z, int w) { return MakeInt4(MakeInt
 CHTHOLLY_INLINE int4 MakeInt4(int x, int y, int z, int w) { return MakeInt4(MakeInt3(MakeInt2(x, y), z), w); }
 
 CHTHOLLY_INLINE float2 MakeFloat2(float x, float y) { return { x, y }; }
+CHTHOLLY_INLINE float2 MakeFloat2(const float3& v3) { return { v3.x, v3.y}; }
+CHTHOLLY_INLINE float2 MakeFloat2(float3&& v3) { return { v3.x, v3.y}; }
+CHTHOLLY_INLINE float2 MakeFloat2(const float4& v4) { return { v4.x, v4.y}; }
+CHTHOLLY_INLINE float2 MakeFloat2(float4&& v4) { return { v4.x, v4.y}; }
 CHTHOLLY_INLINE float3 MakeFloat3(const float2& v2, float z) { return { v2.x, v2.y, z }; }
 CHTHOLLY_INLINE float3 MakeFloat3(float2&& v2, float z) { return { v2.x, v2.y, z }; }
 CHTHOLLY_INLINE float3 MakeFloat3(float x, float y, float z) { return MakeFloat3(MakeFloat2(x, y), z); }
+CHTHOLLY_INLINE float3 MakeFloat3(const float4& v4) { return { v4.x, v4.y, v4.z}; }
+CHTHOLLY_INLINE float3 MakeFloat3(float4&& v4) { return { v4.x, v4.y, v4.z}; }
 CHTHOLLY_INLINE float4 MakeFloat4(const float3& v3, float w) { return { v3.x, v3.y, v3.z, w }; }
 CHTHOLLY_INLINE float4 MakeFloat4(float3&& v3, float w) { return { v3.x, v3.y, v3.z, w }; }
 CHTHOLLY_INLINE float4 MakeFloat4(const float2& v2, float z, float w) { return MakeFloat4(MakeFloat3(v2, z), 2); }
@@ -78,9 +91,15 @@ CHTHOLLY_INLINE float4 MakeFloat4(float2&& v2, float z, float w) { return MakeFl
 CHTHOLLY_INLINE float4 MakeFloat4(float x, float y, float z, float w) { return MakeFloat4(MakeFloat3(MakeFloat2(x, y), z), w); }
 
 CHTHOLLY_INLINE double2 MakeDouble2(double x, double y) { return { x, y }; }
+CHTHOLLY_INLINE double2 MakeDouble2(const double3& v3) { return { v3.x, v3.y}; }
+CHTHOLLY_INLINE double2 MakeDouble2(double3&& v3) { return { v3.x, v3.y}; }
+CHTHOLLY_INLINE double2 MakeDouble2(const double4& v4) { return { v4.x, v4.y}; }
+CHTHOLLY_INLINE double2 MakeDouble2(double4&& v4) { return { v4.x, v4.y}; }
 CHTHOLLY_INLINE double3 MakeDouble3(const double2& v2, double z) { return { v2.x, v2.y, z }; }
 CHTHOLLY_INLINE double3 MakeDouble3(double2&& v2, double z) { return { v2.x, v2.y, z }; }
 CHTHOLLY_INLINE double3 MakeDouble3(double x, double y, double z) { return MakeDouble3(MakeDouble2(x, y), z); }
+CHTHOLLY_INLINE double3 MakeDouble3(const double4& v4) { return { v4.x, v4.y, v4.z}; }
+CHTHOLLY_INLINE double3 MakeDouble3(double4&& v4) { return { v4.x, v4.y, v4.z}; }
 CHTHOLLY_INLINE double4 MakeDouble4(const double3& v3, double w) { return { v3.x, v3.y, v3.z, w }; }
 CHTHOLLY_INLINE double4 MakeDouble4(double3&& v3, double w) { return { v3.x, v3.y, v3.z, w }; }
 CHTHOLLY_INLINE double4 MakeDouble4(const double2& v2, double z, double w) { return MakeDouble4(MakeDouble3(v2, z), 2); }
@@ -2790,6 +2809,1622 @@ CHTHOLLY_INLINE float4& operator/=(float4& l, float r)
 #if defined(__ARM_NEON__)
     float32x4_t simd_ret = vld1q_f32(&l.x) / vdupq_n_f32(r);
     vst1q_f32(&l.x, simd_ret);
+    return l;
+#else   
+    l.x /= r;
+    l.y /= r;
+    l.z /= r;
+    l.w /= r;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator+(const double2& a, const double2& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&a.x) + vld1q_f64(&b.x);
+    return *(double2*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator+(const double2& a, double2&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&a.x) + vld1q_f64(&b.x);
+    return *(double2*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator+(double2&& a, const double2& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&a.x) + vld1q_f64(&b.x);
+    return *(double2*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator+(double2&& a, double2&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&a.x) + vld1q_f64(&b.x);
+    return *(double2*)&simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator-(const double2& a, const double2& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&a.x) - vld1q_f64(&b.x);
+    return *(double2*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator-(const double2& a, double2&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&a.x) - vld1q_f64(&b.x);
+    return *(double2*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator-(double2&& a, const double2& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&a.x) - vld1q_f64(&b.x);
+    return *(double2*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator-(double2&& a, double2&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&a.x) - vld1q_f64(&b.x);
+    return *(double2*)&simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator*(const double2& a, const double2& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&a.x) * vld1q_f64(&b.x);
+    return *(double2*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator*(const double2& a, double2&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&a.x) * vld1q_f64(&b.x);
+    return *(double2*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator*(double2&& a, const double2& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&a.x) * vld1q_f64(&b.x);
+    return *(double2*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator*(double2&& a, double2&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&a.x) * vld1q_f64(&b.x);
+    return *(double2*)&simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator/(const double2& a, const double2& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&a.x) / vld1q_f64(&b.x);
+    return *(double2*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator/(const double2& a, double2&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&a.x) / vld1q_f64(&b.x);
+    return *(double2*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator/(double2&& a, const double2& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&a.x) / vld1q_f64(&b.x);
+    return *(double2*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator/(double2&& a, double2&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&a.x) / vld1q_f64(&b.x);
+    return *(double2*)&simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator+(const double2& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&v.x) + vdupq_n_f64(a);
+    return *(double2*)&simd_ret;
+#else   
+    return { v.x + a, v.y + a };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator+(double2&& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&v.x) + vdupq_n_f64(a);
+    return *(double2*)&simd_ret;
+#else   
+    return { v.x + a, v.y + a };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator+(double a, const double2& v)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&v.x) + vdupq_n_f64(a);
+    return *(double2*)&simd_ret;
+#else   
+    return { v.x + a, v.y + a };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator+(double a, double2&& v)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&v.x) + vdupq_n_f64(a);
+    return *(double2*)&simd_ret;
+#else   
+    return { v.x + a, v.y + a };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator-(const double2& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&v.x) - vdupq_n_f64(a);
+    return *(double2*)&simd_ret;
+#else   
+    return { v.x - a, v.y - a };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator-(double2&& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&v.x) - vdupq_n_f64(a);
+    return *(double2*)&simd_ret;
+#else   
+    return { v.x - a, v.y - a };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator*(const double2& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&v.x) * vdupq_n_f64(a);
+    return *(double2*)&simd_ret;
+#else   
+    return { v.x * a, v.y * a };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator*(double2&& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&v.x) * vdupq_n_f64(a);
+    return *(double2*)&simd_ret;
+#else   
+    return { v.x * a, v.y * a };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator*(double a, const double2& v)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&v.x) * vdupq_n_f64(a);
+    return *(double2*)&simd_ret;
+#else   
+    return { v.x * a, v.y * a };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator*(double a, double2&& v)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&v.x) * vdupq_n_f64(a);
+    return *(double2*)&simd_ret;
+#else   
+    return { v.x * a, v.y * a };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator/(const double2& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&v.x) / vdupq_n_f64(a);
+    return *(double2*)&simd_ret;
+#else   
+    return { v.x / a, v.y / a };
+#endif
+}
+
+CHTHOLLY_INLINE double2 operator/(double2&& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&v.x) / vdupq_n_f64(a);
+    return *(double2*)&simd_ret;
+#else   
+    return { v.x / a, v.y / a };
+#endif
+}
+
+CHTHOLLY_INLINE double2& operator+=(double2& l, const double2& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&l.x) + vld1q_f64(&r.x);
+    vst1q_f64(&l.x, simd_ret);
+    return l;
+#else   
+    l.x += r.x;
+    l.y += r.y;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double2& operator+=(double2& l, double2&& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&l.x) + vld1q_f64(&r.x);
+    vst1q_f64(&l.x, simd_ret);
+    return l;
+#else   
+    l.x += r.x;
+    l.y += r.y;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double2& operator-=(double2& l, const double2& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&l.x) - vld1q_f64(&r.x);
+    vst1q_f64(&l.x, simd_ret);
+    return l;
+#else   
+    l.x -= r.x;
+    l.y -= r.y;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double2& operator-=(double2& l, double2&& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&l.x) - vld1q_f64(&r.x);
+    vst1q_f64(&l.x, simd_ret);
+    return l;
+#else   
+    l.x -= r.x;
+    l.y -= r.y;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double2& operator*=(double2& l, const double2& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&l.x) * vld1q_f64(&r.x);
+    vst1q_f64(&l.x, simd_ret);
+    return l;
+#else   
+    l.x *= r.x;
+    l.y *= r.y;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double2& operator*=(double2& l, double2&& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&l.x) * vld1q_f64(&r.x);
+    vst1q_f64(&l.x, simd_ret);
+    return l;
+#else   
+    l.x *= r.x;
+    l.y *= r.y;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double2& operator/=(double2& l, const double2& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&l.x) / vld1q_f64(&r.x);
+    vst1q_f64(&l.x, simd_ret);
+    return l;
+#else   
+    l.x /= r.x;
+    l.y /= r.y;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double2& operator/=(double2& l, double2&& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&l.x) / vld1q_f64(&r.x);
+    vst1q_f64(&l.x, simd_ret);
+    return l;
+#else   
+    l.x /= r.x;
+    l.y /= r.y;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double2& operator+=(double2& l, double r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&l.x) + vdupq_n_f64(r);
+    vst1q_f64(&l.x, simd_ret);
+    return l;
+#else   
+    l.x += r;
+    l.y += r;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double2& operator-=(double2& l, double r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&l.x) - vdupq_n_f64(r);
+    vst1q_f64(&l.x, simd_ret);
+    return l;
+#else   
+    l.x -= r;
+    l.y -= r;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double2& operator*=(double2& l, double r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&l.x) * vdupq_n_f64(r);
+    vst1q_f64(&l.x, simd_ret);
+    return l;
+#else   
+    l.x *= r;
+    l.y *= r;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double2& operator/=(double2& l, double r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret = vld1q_f64(&l.x) / vdupq_n_f64(r);
+    vst1q_f64(&l.x, simd_ret);
+    return l;
+#else   
+    l.x /= r;
+    l.y /= r;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator+(const double3& a, const double3& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) + vld1q_f64(&b.x);
+    float64x1_t simd_ret_high = vld1_f64(&a.z) + vld1_f64(&b.z);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator+(const double3& a, double3&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) + vld1q_f64(&b.x);
+    float64x1_t simd_ret_high = vld1_f64(&a.z) + vld1_f64(&b.z);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator+(double3&& a, const double3& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) + vld1q_f64(&b.x);
+    float64x1_t simd_ret_high = vld1_f64(&a.z) + vld1_f64(&b.z);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator+(double3&& a, double3&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) + vld1q_f64(&b.x);
+    float64x1_t simd_ret_high = vld1_f64(&a.z) + vld1_f64(&b.z);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator-(const double3& a, const double3& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) - vld1q_f64(&b.x);
+    float64x1_t simd_ret_high = vld1_f64(&a.z) - vld1_f64(&b.z);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator-(const double3& a, double3&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) - vld1q_f64(&b.x);
+    float64x1_t simd_ret_high = vld1_f64(&a.z) - vld1_f64(&b.z);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator-(double3&& a, const double3& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) - vld1q_f64(&b.x);
+    float64x1_t simd_ret_high = vld1_f64(&a.z) - vld1_f64(&b.z);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator-(double3&& a, double3&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) - vld1q_f64(&b.x);
+    float64x1_t simd_ret_high = vld1_f64(&a.z) - vld1_f64(&b.z);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator*(const double3& a, const double3& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) * vld1q_f64(&b.x);
+    float64x1_t simd_ret_high = vld1_f64(&a.z) * vld1_f64(&b.z);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator*(const double3& a, double3&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) * vld1q_f64(&b.x);
+    float64x1_t simd_ret_high = vld1_f64(&a.z) * vld1_f64(&b.z);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator*(double3&& a, const double3& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) * vld1q_f64(&b.x);
+    float64x1_t simd_ret_high = vld1_f64(&a.z) * vld1_f64(&b.z);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator*(double3&& a, double3&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) * vld1q_f64(&b.x);
+    float64x1_t simd_ret_high = vld1_f64(&a.z) * vld1_f64(&b.z);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator/(const double3& a, const double3& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) / vld1q_f64(&b.x);
+    float64x1_t simd_ret_high = vld1_f64(&a.z) / vld1_f64(&b.z);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator/(const double3& a, double3&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) / vld1q_f64(&b.x);
+    float64x1_t simd_ret_high = vld1_f64(&a.z) / vld1_f64(&b.z);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator/(double3&& a, const double3& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) / vld1q_f64(&b.x);
+    float64x1_t simd_ret_high = vld1_f64(&a.z) / vld1_f64(&b.z);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator/(double3&& a, double3&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) / vld1q_f64(&b.x);
+    float64x1_t simd_ret_high = vld1_f64(&a.z) / vld1_f64(&b.z);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator+(const double3& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) + vdupq_n_f64(a);
+    float64x1_t simd_ret_high = vld1_f64(&v.z) + vdup_n_f64(a);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x + a, v.y + a , v.z + a };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator+(double3&& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) + vdupq_n_f64(a);
+    float64x1_t simd_ret_high = vld1_f64(&v.z) + vdup_n_f64(a);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x + a, v.y + a , v.z + a };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator+(double a, const double3& v)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) + vdupq_n_f64(a);
+    float64x1_t simd_ret_high = vld1_f64(&v.z) + vdup_n_f64(a);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x + a, v.y + a , v.z + a };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator+(double a, double3&& v)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) + vdupq_n_f64(a);
+    float64x1_t simd_ret_high = vld1_f64(&v.z) + vdup_n_f64(a);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x + a, v.y + a , v.z + a };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator-(const double3& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) - vdupq_n_f64(a);
+    float64x1_t simd_ret_high = vld1_f64(&v.z) - vdup_n_f64(a);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x - a, v.y - a , v.z - a };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator-(double3&& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) - vdupq_n_f64(a);
+    float64x1_t simd_ret_high = vld1_f64(&v.z) - vdup_n_f64(a);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x - a, v.y - a , v.z - a };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator*(const double3& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) * vdupq_n_f64(a);
+    float64x1_t simd_ret_high = vld1_f64(&v.z) * vdup_n_f64(a);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x * a, v.y * a , v.z * a };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator*(double3&& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) * vdupq_n_f64(a);
+    float64x1_t simd_ret_high = vld1_f64(&v.z) * vdup_n_f64(a);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x * a, v.y * a , v.z * a };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator*(double a, const double3& v)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) * vdupq_n_f64(a);
+    float64x1_t simd_ret_high = vld1_f64(&v.z) * vdup_n_f64(a);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x * a, v.y * a , v.z * a };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator*(double a, double3&& v)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) * vdupq_n_f64(a);
+    float64x1_t simd_ret_high = vld1_f64(&v.z) * vdup_n_f64(a);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x * a, v.y * a , v.z * a };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator/(const double3& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) / vdupq_n_f64(a);
+    float64x1_t simd_ret_high = vld1_f64(&v.z) / vdup_n_f64(a);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x / a, v.y / a, v.z / a };
+#endif
+}
+
+CHTHOLLY_INLINE double3 operator/(double3&& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) / vdupq_n_f64(a);
+    float64x1_t simd_ret_high = vld1_f64(&v.z) / vdup_n_f64(a);
+    double3 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x / a, v.y / a, v.z / a };
+#endif
+}
+
+CHTHOLLY_INLINE double3& operator+=(double3& l, const double3& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) + vld1q_f64(&r.x);
+    float64x1_t simd_ret_high = vld1_f64(&l.z) + vld1_f64(&r.z);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x += r.x;
+    l.y += r.y;
+    l.z += r.z;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double3& operator+=(double3& l, double3&& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) + vld1q_f64(&r.x);
+    float64x1_t simd_ret_high = vld1_f64(&l.z) + vld1_f64(&r.z);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x += r.x;
+    l.y += r.y;
+    l.z += r.z;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double3& operator-=(double3& l, const double3& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) - vld1q_f64(&r.x);
+    float64x1_t simd_ret_high = vld1_f64(&l.z) - vld1_f64(&r.z);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x -= r.x;
+    l.y -= r.y;
+    l.z -= r.z;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double3& operator-=(double3& l, double3&& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) - vld1q_f64(&r.x);
+    float64x1_t simd_ret_high = vld1_f64(&l.z) - vld1_f64(&r.z);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x -= r.x;
+    l.y -= r.y;
+    l.z -= r.z;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double3& operator*=(double3& l, const double3& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) * vld1q_f64(&r.x);
+    float64x1_t simd_ret_high = vld1_f64(&l.z) * vld1_f64(&r.z);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x *= r.x;
+    l.y *= r.y;
+    l.z *= r.z;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double3& operator*=(double3& l, double3&& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) * vld1q_f64(&r.x);
+    float64x1_t simd_ret_high = vld1_f64(&l.z) * vld1_f64(&r.z);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x *= r.x;
+    l.y *= r.y;
+    l.z *= r.z;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double3& operator/=(double3& l, const double3& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) / vld1q_f64(&r.x);
+    float64x1_t simd_ret_high = vld1_f64(&l.z) / vld1_f64(&r.z);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x /= r.x;
+    l.y /= r.y;
+    l.z /= r.z;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double3& operator/=(double3& l, double3&& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) / vld1q_f64(&r.x);
+    float64x1_t simd_ret_high = vld1_f64(&l.z) / vld1_f64(&r.z);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x /= r.x;
+    l.y /= r.y;
+    l.z /= r.z;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double3& operator+=(double3& l, double r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) + vdupq_n_f64(r);
+    float64x1_t simd_ret_high = vld1_f64(&l.z) + vdup_n_f64(r);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x += r;
+    l.y += r;
+    l.z += r;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double3& operator-=(double3& l, double r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) - vdupq_n_f64(r);
+    float64x1_t simd_ret_high = vld1_f64(&l.z) - vdup_n_f64(r);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x -= r;
+    l.y -= r;
+    l.z -= r;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double3& operator*=(double3& l, double r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) * vdupq_n_f64(r);
+    float64x1_t simd_ret_high = vld1_f64(&l.z) * vdup_n_f64(r);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x *= r;
+    l.y *= r;
+    l.z *= r;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double3& operator/=(double3& l, double r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) / vdupq_n_f64(r);
+    float64x1_t simd_ret_high = vld1_f64(&l.z) / vdup_n_f64(r);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x /= r;
+    l.y /= r;
+    l.z /= r;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator+(const double4& a, const double4& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) + vld1q_f64(&b.x);
+    float64x2_t simd_ret_high = vld1q_f64(&a.z) + vld1q_f64(&b.z);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator+(const double4& a, double4&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) + vld1q_f64(&b.x);
+    float64x2_t simd_ret_high = vld1q_f64(&a.z) + vld1q_f64(&b.z);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator+(double4&& a, const double4& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) + vld1q_f64(&b.x);
+    float64x2_t simd_ret_high = vld1q_f64(&a.z) + vld1q_f64(&b.z);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator+(double4&& a, double4&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) + vld1q_f64(&b.x);
+    float64x2_t simd_ret_high = vld1q_f64(&a.z) + vld1q_f64(&b.z);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator-(const double4& a, const double4& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) - vld1q_f64(&b.x);
+    float64x2_t simd_ret_high = vld1q_f64(&a.z) - vld1q_f64(&b.z);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator-(const double4& a, double4&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) - vld1q_f64(&b.x);
+    float64x2_t simd_ret_high = vld1q_f64(&a.z) - vld1q_f64(&b.z);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator-(double4&& a, const double4& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) - vld1q_f64(&b.x);
+    float64x2_t simd_ret_high = vld1q_f64(&a.z) - vld1q_f64(&b.z);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator-(double4&& a, double4&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) - vld1q_f64(&b.x);
+    float64x2_t simd_ret_high = vld1q_f64(&a.z) - vld1q_f64(&b.z);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator*(const double4& a, const double4& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) * vld1q_f64(&b.x);
+    float64x2_t simd_ret_high = vld1q_f64(&a.z) * vld1q_f64(&b.z);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator*(const double4& a, double4&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) * vld1q_f64(&b.x);
+    float64x2_t simd_ret_high = vld1q_f64(&a.z) * vld1q_f64(&b.z);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator*(double4&& a, const double4& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) * vld1q_f64(&b.x);
+    float64x2_t simd_ret_high = vld1q_f64(&a.z) * vld1q_f64(&b.z);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator*(double4&& a, double4&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) * vld1q_f64(&b.x);
+    float64x2_t simd_ret_high = vld1q_f64(&a.z) * vld1q_f64(&b.z);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator/(const double4& a, const double4& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) / vld1q_f64(&b.x);
+    float64x2_t simd_ret_high = vld1q_f64(&a.z) / vld1q_f64(&b.z);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator/(const double4& a, double4&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) / vld1q_f64(&b.x);
+    float64x2_t simd_ret_high = vld1q_f64(&a.z) / vld1q_f64(&b.z);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator/(double4&& a, const double4& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) / vld1q_f64(&b.x);
+    float64x2_t simd_ret_high = vld1q_f64(&a.z) / vld1q_f64(&b.z);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator/(double4&& a, double4&& b)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&a.x) / vld1q_f64(&b.x);
+    float64x2_t simd_ret_high = vld1q_f64(&a.z) / vld1q_f64(&b.z);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator+(const double4& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) + vdupq_n_f64(a);
+    float64x2_t simd_ret_high = vld1q_f64(&v.z) + vdupq_n_f64(a);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x + a, v.y + a , v.z + a, v.w + a };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator+(double4&& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) + vdupq_n_f64(a);
+    float64x2_t simd_ret_high = vld1q_f64(&v.z) + vdupq_n_f64(a);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x + a, v.y + a , v.z + a, v.w + a };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator+(double a, const double4& v)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) + vdupq_n_f64(a);
+    float64x2_t simd_ret_high = vld1q_f64(&v.z) + vdupq_n_f64(a);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x + a, v.y + a , v.z + a, v.w + a };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator+(double a, double4&& v)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) + vdupq_n_f64(a);
+    float64x2_t simd_ret_high = vld1q_f64(&v.z) + vdupq_n_f64(a);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x + a, v.y + a , v.z + a, v.w + a };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator-(const double4& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) - vdupq_n_f64(a);
+    float64x2_t simd_ret_high = vld1q_f64(&v.z) - vdupq_n_f64(a);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x - a, v.y - a , v.z - a, v.w - a };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator-(double4&& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) - vdupq_n_f64(a);
+    float64x2_t simd_ret_high = vld1q_f64(&v.z) - vdupq_n_f64(a);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x - a, v.y - a , v.z - a, v.w - a };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator*(const double4& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) * vdupq_n_f64(a);
+    float64x2_t simd_ret_high = vld1q_f64(&v.z) * vdupq_n_f64(a);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x * a, v.y * a , v.z * a, v.w * a };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator*(double4&& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) * vdupq_n_f64(a);
+    float64x2_t simd_ret_high = vld1q_f64(&v.z) * vdupq_n_f64(a);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x * a, v.y * a , v.z * a, v.w * a };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator*(double a, const double4& v)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) * vdupq_n_f64(a);
+    float64x2_t simd_ret_high = vld1q_f64(&v.z) * vdupq_n_f64(a);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x * a, v.y * a , v.z * a, v.w * a };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator*(double a, double4&& v)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) * vdupq_n_f64(a);
+    float64x2_t simd_ret_high = vld1q_f64(&v.z) * vdupq_n_f64(a);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x * a, v.y * a , v.z * a, v.w * a };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator/(const double4& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) / vdupq_n_f64(a);
+    float64x2_t simd_ret_high = vld1q_f64(&v.z) / vdupq_n_f64(a);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x / a, v.y / a, v.z / a, v.w / a };
+#endif
+}
+
+CHTHOLLY_INLINE double4 operator/(double4&& v, double a)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&v.x) / vdupq_n_f64(a);
+    float64x2_t simd_ret_high = vld1q_f64(&v.z) / vdupq_n_f64(a);
+    double4 simd_ret;
+    vst1q_f64(&simd_ret.x, simd_ret_low);
+    vst1q_f64(&simd_ret.z, simd_ret_high);
+    return simd_ret;
+#else   
+    return { v.x / a, v.y / a, v.z / a, v.w / a };
+#endif
+}
+
+CHTHOLLY_INLINE double4& operator+=(double4& l, const double4& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) + vld1q_f64(&r.x);
+    float64x2_t simd_ret_high = vld1q_f64(&l.z) + vld1q_f64(&r.z);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1q_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x += r.x;
+    l.y += r.y;
+    l.z += r.z;
+    l.w += r.w;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double4& operator+=(double4& l, double4&& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) + vld1q_f64(&r.x);
+    float64x2_t simd_ret_high = vld1q_f64(&l.z) + vld1q_f64(&r.z);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1q_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x += r.x;
+    l.y += r.y;
+    l.z += r.z;
+    l.w += r.w;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double4& operator-=(double4& l, const double4& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) - vld1q_f64(&r.x);
+    float64x2_t simd_ret_high = vld1q_f64(&l.z) - vld1q_f64(&r.z);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1q_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x -= r.x;
+    l.y -= r.y;
+    l.z -= r.z;
+    l.w -= r.w;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double4& operator-=(double4& l, double4&& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) - vld1q_f64(&r.x);
+    float64x2_t simd_ret_high = vld1q_f64(&l.z) - vld1q_f64(&r.z);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1q_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x -= r.x;
+    l.y -= r.y;
+    l.z -= r.z;
+    l.w -= r.w;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double4& operator*=(double4& l, const double4& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) * vld1q_f64(&r.x);
+    float64x2_t simd_ret_high = vld1q_f64(&l.z) * vld1q_f64(&r.z);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1q_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x *= r.x;
+    l.y *= r.y;
+    l.z *= r.z;
+    l.w *= r.w;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double4& operator*=(double4& l, double4&& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) * vld1q_f64(&r.x);
+    float64x2_t simd_ret_high = vld1q_f64(&l.z) * vld1q_f64(&r.z);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1q_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x *= r.x;
+    l.y *= r.y;
+    l.z *= r.z;
+    l.w *= r.w;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double4& operator/=(double4& l, const double4& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) / vld1q_f64(&r.x);
+    float64x2_t simd_ret_high = vld1q_f64(&l.z) / vld1q_f64(&r.z);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1q_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x /= r.x;
+    l.y /= r.y;
+    l.z /= r.z;
+    l.w /= r.w;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double4& operator/=(double4& l, double4&& r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) / vld1q_f64(&r.x);
+    float64x2_t simd_ret_high = vld1q_f64(&l.z) / vld1q_f64(&r.z);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1q_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x /= r.x;
+    l.y /= r.y;
+    l.z /= r.z;
+    l.w /= r.w;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double4& operator+=(double4& l, double r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) + vdupq_n_f64(r);
+    float64x2_t simd_ret_high = vld1q_f64(&l.z) + vdupq_n_f64(r);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1q_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x += r;
+    l.y += r;
+    l.z += r;
+    l.w += r;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double4& operator-=(double4& l, double r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) - vdupq_n_f64(r);
+    float64x2_t simd_ret_high = vld1q_f64(&l.z) - vdupq_n_f64(r);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1q_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x -= r;
+    l.y -= r;
+    l.z -= r;
+    l.w -= r;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double4& operator*=(double4& l, double r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) * vdupq_n_f64(r);
+    float64x2_t simd_ret_high = vld1q_f64(&l.z) * vdupq_n_f64(r);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1q_f64(&l.z, simd_ret_high);
+    return l;
+#else   
+    l.x *= r;
+    l.y *= r;
+    l.z *= r;
+    l.w *= r;
+    return l;
+#endif
+}
+
+CHTHOLLY_INLINE double4& operator/=(double4& l, double r)
+{
+#if defined(__ARM_NEON__)
+    float64x2_t simd_ret_low = vld1q_f64(&l.x) / vdupq_n_f64(r);
+    float64x2_t simd_ret_high = vld1q_f64(&l.z) / vdupq_n_f64(r);
+    vst1q_f64(&l.x, simd_ret_low);
+    vst1q_f64(&l.z, simd_ret_high);
     return l;
 #else   
     l.x /= r;
