@@ -65,14 +65,14 @@ CHTHOLLY_INLINE int2 MakeInt2(const int4& v4) { return { v4.x, v4.y}; }
 CHTHOLLY_INLINE int2 MakeInt2(int4&& v4) { return { v4.x, v4.y}; }
 CHTHOLLY_INLINE int3 MakeInt3(const int2& v2, int z) { return { v2.x, v2.y, z }; }
 CHTHOLLY_INLINE int3 MakeInt3(int2&& v2, int z) { return { v2.x, v2.y, z }; }
-CHTHOLLY_INLINE int3 MakeInt3(int x, int y, int z) { return MakeInt3(MakeInt2(x, y), z); }
+CHTHOLLY_INLINE int3 MakeInt3(int x, int y, int z) { return { x, y, z }; }
 CHTHOLLY_INLINE int3 MakeInt3(const int4& v4) { return { v4.x, v4.y, v4.z}; }
 CHTHOLLY_INLINE int3 MakeInt3(int4&& v4) { return { v4.x, v4.y, v4.z}; }
 CHTHOLLY_INLINE int4 MakeInt4(const int3& v3, int w) { return { v3.x, v3.y, v3.z, w }; }
 CHTHOLLY_INLINE int4 MakeInt4(int3&& v3, int w) { return { v3.x, v3.y, v3.z, w }; }
-CHTHOLLY_INLINE int4 MakeInt4(const int2& v2, int z, int w) { return MakeInt4(MakeInt3(v2, z), 2); }
-CHTHOLLY_INLINE int4 MakeInt4(int2&& v2, int z, int w) { return MakeInt4(MakeInt3(v2, z), 2); }
-CHTHOLLY_INLINE int4 MakeInt4(int x, int y, int z, int w) { return MakeInt4(MakeInt3(MakeInt2(x, y), z), w); }
+CHTHOLLY_INLINE int4 MakeInt4(const int2& v2, int z, int w) { return { v2.x, v2.y, z, w }; }
+CHTHOLLY_INLINE int4 MakeInt4(int2&& v2, int z, int w) { return { v2.x, v2.y, z, w }; }
+CHTHOLLY_INLINE int4 MakeInt4(int x, int y, int z, int w) { return { x, y, z, w }; }
 
 CHTHOLLY_INLINE float2 MakeFloat2(float x, float y) { return { x, y }; }
 CHTHOLLY_INLINE float2 MakeFloat2(const float3& v3) { return { v3.x, v3.y}; }
@@ -81,14 +81,14 @@ CHTHOLLY_INLINE float2 MakeFloat2(const float4& v4) { return { v4.x, v4.y}; }
 CHTHOLLY_INLINE float2 MakeFloat2(float4&& v4) { return { v4.x, v4.y}; }
 CHTHOLLY_INLINE float3 MakeFloat3(const float2& v2, float z) { return { v2.x, v2.y, z }; }
 CHTHOLLY_INLINE float3 MakeFloat3(float2&& v2, float z) { return { v2.x, v2.y, z }; }
-CHTHOLLY_INLINE float3 MakeFloat3(float x, float y, float z) { return MakeFloat3(MakeFloat2(x, y), z); }
+CHTHOLLY_INLINE float3 MakeFloat3(float x, float y, float z) { return { x, y, z }; }
 CHTHOLLY_INLINE float3 MakeFloat3(const float4& v4) { return { v4.x, v4.y, v4.z}; }
 CHTHOLLY_INLINE float3 MakeFloat3(float4&& v4) { return { v4.x, v4.y, v4.z}; }
 CHTHOLLY_INLINE float4 MakeFloat4(const float3& v3, float w) { return { v3.x, v3.y, v3.z, w }; }
 CHTHOLLY_INLINE float4 MakeFloat4(float3&& v3, float w) { return { v3.x, v3.y, v3.z, w }; }
-CHTHOLLY_INLINE float4 MakeFloat4(const float2& v2, float z, float w) { return MakeFloat4(MakeFloat3(v2, z), 2); }
-CHTHOLLY_INLINE float4 MakeFloat4(float2&& v2, float z, float w) { return MakeFloat4(MakeFloat3(v2, z), 2); }
-CHTHOLLY_INLINE float4 MakeFloat4(float x, float y, float z, float w) { return MakeFloat4(MakeFloat3(MakeFloat2(x, y), z), w); }
+CHTHOLLY_INLINE float4 MakeFloat4(const float2& v2, float z, float w) { return { v2.x, v2.y, z, w }; }
+CHTHOLLY_INLINE float4 MakeFloat4(float2&& v2, float z, float w) { return { v2.x, v2.y, z, w }; }
+CHTHOLLY_INLINE float4 MakeFloat4(float x, float y, float z, float w) { return { x, y, z, w }; }
 
 CHTHOLLY_INLINE double2 MakeDouble2(double x, double y) { return { x, y }; }
 CHTHOLLY_INLINE double2 MakeDouble2(const double3& v3) { return { v3.x, v3.y}; }
@@ -97,14 +97,14 @@ CHTHOLLY_INLINE double2 MakeDouble2(const double4& v4) { return { v4.x, v4.y}; }
 CHTHOLLY_INLINE double2 MakeDouble2(double4&& v4) { return { v4.x, v4.y}; }
 CHTHOLLY_INLINE double3 MakeDouble3(const double2& v2, double z) { return { v2.x, v2.y, z }; }
 CHTHOLLY_INLINE double3 MakeDouble3(double2&& v2, double z) { return { v2.x, v2.y, z }; }
-CHTHOLLY_INLINE double3 MakeDouble3(double x, double y, double z) { return MakeDouble3(MakeDouble2(x, y), z); }
+CHTHOLLY_INLINE double3 MakeDouble3(double x, double y, double z) { return { x, y, z }; }
 CHTHOLLY_INLINE double3 MakeDouble3(const double4& v4) { return { v4.x, v4.y, v4.z}; }
 CHTHOLLY_INLINE double3 MakeDouble3(double4&& v4) { return { v4.x, v4.y, v4.z}; }
 CHTHOLLY_INLINE double4 MakeDouble4(const double3& v3, double w) { return { v3.x, v3.y, v3.z, w }; }
 CHTHOLLY_INLINE double4 MakeDouble4(double3&& v3, double w) { return { v3.x, v3.y, v3.z, w }; }
-CHTHOLLY_INLINE double4 MakeDouble4(const double2& v2, double z, double w) { return MakeDouble4(MakeDouble3(v2, z), 2); }
-CHTHOLLY_INLINE double4 MakeDouble4(double2&& v2, double z, double w) { return MakeDouble4(MakeDouble3(v2, z), 2); }
-CHTHOLLY_INLINE double4 MakeDouble4(double x, double y, double z, double w) { return MakeDouble4(MakeDouble3(MakeDouble2(x, y), z), w); }
+CHTHOLLY_INLINE double4 MakeDouble4(const double2& v2, double z, double w) { return { v2.x, v2.y, z, w }; }
+CHTHOLLY_INLINE double4 MakeDouble4(double2&& v2, double z, double w) { return { v2.x, v2.y, z, w }; }
+CHTHOLLY_INLINE double4 MakeDouble4(double x, double y, double z, double w) { return { x, y, z, w }; }
 
 CHTHOLLY_INLINE int2 operator+(const int2& a, const int2& b)
 {
