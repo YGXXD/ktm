@@ -13,7 +13,7 @@ static void mathTest()
 
     std::cout << ret.x << "," << ret.y << "," << ret.z << std::endl;
 
-    ret = ret / 4;
+    ret /= (a * b) / (c - d) + 1;
     std::cout << ret.x << "," << ret.y << "," << ret.z << std::endl;
 
 }
