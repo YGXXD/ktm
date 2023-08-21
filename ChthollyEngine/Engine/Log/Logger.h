@@ -64,7 +64,7 @@ void ktl::Logger::Log(ktl::LogLevel level, ArgsT&&... args)
 	if(level >= minLogLevel && level <= LogLevelFatal)
 	{
 		if(level >= LogLevelWarn)
-			ConsoleLog(utimer.GetUTCTime(), " ", levelColor[level - LogLevelWarn], levelString[level], ": ", std::forward<ArgsT>(args)..., "\033[0m");	
+			ConsoleLog(levelColor[level - LogLevelWarn], utimer.GetUTCTime(), " ", levelString[level], ": ", std::forward<ArgsT>(args)..., "\033[0m");	
 		else
 			ConsoleLog(utimer.GetUTCTime(), " ", levelString[level], ": ", std::forward<ArgsT>(args)...);
 	}
