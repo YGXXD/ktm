@@ -2,7 +2,6 @@
 #define _MATH_TYPE_H_
 
 #include "Chtholly.h"
-#include <simd/simd.h>
 
 #if defined(__ARM_NEON__)
     #include <arm_neon.h>
