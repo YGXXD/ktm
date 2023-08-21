@@ -3,6 +3,21 @@
 
 #include "MathType.h"
 #include <time.h>
+#include <simd/simd.h>
+
+static inline simd_float4 t1(simd_float4 v)
+{
+    simd_float4 x = {1, 1, 66, 1};
+	return v + x;
+}
+
+static inline ktl::float4 t2(ktl::float4 v)
+{
+    ktl::float4 x = {1, 1, 66, 1}; 
+	return v + x;
+}
+
+
 
 static void mathTest()
 {
@@ -17,27 +32,28 @@ static void mathTest()
     ret *= (a * b) / (c - d);
     std::cout << ret.x << ", " << ret.y << ", " << ret.z << ", " << ret.w << std::endl;
 
-    // clock_t start1;
-    // clock_t start2;
-    // clock_t end1;
-    // clock_t end2;
-    // start1 = clock();
-    // for(int i = 0; i < 10000000; ++i)
-    // {
-    //     ktl::Vec<double, 4> v = {1, 1, 66, 1};
-    // }
-    // end1 = clock();
-    // start2 = clock();
-    // for(int i = 0; i < 10000000; ++i)
-    // {
-    //    ktl::double4 x = {1, 1, 66, 1}; 
-     
-    // }
-    // end2 = clock();
-    // std::cout << (double)(end1 - start1) << ", " << (double)(end2 - start2) << std::endl;
+    clock_t start1;
+    clock_t start2;
+    clock_t end1;
+    clock_t end2;
+    simd_float4 v = {1, 1, 66, 1};
+    start1 = clock();
+    for(int i = 0; i < 10000000; ++i)
+    {
+        v = t1(v);
+    }
+    end1 = clock();
+    ktl::float4 x = {1, 1, 66, 1}; 
+    start2 = clock();
+    for(int i = 0; i < 10000000; ++i)
+    {
+        x = t2(x);
+    }
+    end2 = clock();
+    std::cout << (double)(end1 - start1) << ", " << (double)(end2 - start2) << std::endl;
     // ktl::Vec<double, 4> v = ktl::MakeVec<double, 4>({ 5.0, 2.0, 3.0 }, 1);
     // std::cout << v.m[0] << ", " << v.m[1] << ", " << v.m[2] << ", " << v.m[3] << std::endl;
-
+    std::cout << v[1] << "," << x.x << std::endl;
 }
 
 #endif
