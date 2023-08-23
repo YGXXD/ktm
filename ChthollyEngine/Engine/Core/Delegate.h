@@ -335,7 +335,7 @@ CHTHOLLY_INLINE void ktl::SingleDelegate<ReturnT, ArgsT...>::UnBind()
 template<typename ...ArgsT>
 CHTHOLLY_INLINE ktl::DelegateHandle ktl::MultiDelegate<ArgsT...>::AddFunction(typename DelegateInterface::FuncDelegate<void, ArgsT...>::FunType fun)
 {
-    DelegateHandle handle = { 0, dlgtId++, this, (void*)fun };
+    DelegateHandle handle(0, dlgtId++, this, reinterpret_cast<void*>(fun));
     dlgtMap[handle.ToString()] = std::make_shared<DelegateInterface::FuncDelegate<void, ArgsT...> >(fun);
     
     return handle;
@@ -345,7 +345,7 @@ template<typename ...ArgsT>
 template<class ClassT>
 CHTHOLLY_INLINE ktl::DelegateHandle ktl::MultiDelegate<ArgsT...>::AddObject(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunT& objFun)
 {
-    DelegateHandle handle(0x1, dlgtId++, this, (void*)obj);
+    DelegateHandle handle(0x1, dlgtId++, this, reinterpret_cast<void*>(obj));
     dlgtMap[handle.ToString()] = std::make_shared<DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...> >(obj, objFun);
     
     return handle;
@@ -355,7 +355,7 @@ template<typename ...ArgsT>
 template<class ClassT>
 CHTHOLLY_INLINE ktl::DelegateHandle ktl::MultiDelegate<ArgsT...>::AddSafeObj(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunT& objFun)
 {
-    DelegateHandle handle(0x2, dlgtId++, this, (void*)objShared.get());
+    DelegateHandle handle(0x2, dlgtId++, this, reinterpret_cast<void*>(objShared.get()));
     dlgtMap[handle.ToString()] = std::make_shared<DelegateInterface::ObjFuncSafeDelegate<ClassT, void, ArgsT...> >(objShared, objFun);
     
     return handle;
@@ -365,7 +365,7 @@ template<typename ...ArgsT>
 template<class ClassT>
 CHTHOLLY_INLINE ktl::DelegateHandle ktl::MultiDelegate<ArgsT...>::AddSafeObj(const std::weak_ptr<ClassT>& objWeak, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunT& objFun)
 {
-    DelegateHandle handle(0x2, dlgtId++, this, (void*)objWeak.lock().get());
+    DelegateHandle handle(0x2, dlgtId++, this, reinterpret_cast<void*>(objWeak.lock().get()));
     dlgtMap[handle.ToString()] = std::make_shared<DelegateInterface::ObjFuncSafeDelegate<ClassT, void, ArgsT...> >(objWeak, objFun);
     
     return handle;
