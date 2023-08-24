@@ -109,7 +109,7 @@ template<typename ReturnT, typename ...ArgsT>
 class SingleDelegate final
 {
 public:
-    CHTHOLLY_INLINE explicit SingleDelegate() = default;
+    explicit SingleDelegate() = default;
     
     static CHTHOLLY_INLINE SingleDelegate<ReturnT, ArgsT...> CreateFunction(typename DelegateInterface::FuncDelegate<ReturnT, ArgsT...>::FunType fun);
     
@@ -182,7 +182,7 @@ template<typename ...ArgsT>
 class MultiDelegate final
 {
 public:
-    CHTHOLLY_INLINE explicit MultiDelegate() = default;
+    explicit MultiDelegate() = default;
 
     // 添加全局或静态函数
     CHTHOLLY_INLINE DelegateHandle AddFunction(typename DelegateInterface::FuncDelegate<void, ArgsT...>::FunType fun);

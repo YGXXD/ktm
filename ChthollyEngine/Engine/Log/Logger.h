@@ -32,7 +32,7 @@ public:
 
 private:
 	template<typename ArgT, typename ...ArgsT>
-	static CHTHOLLY_INLINE void ConsoleLog(ArgT && arg, ArgsT&&... args);
+	static CHTHOLLY_INLINE void ConsoleLog(ArgT&& arg, ArgsT&&... args);
 
 	template<typename ArgT>
 	static CHTHOLLY_INLINE void ConsoleLog(ArgT&& arg);
@@ -71,7 +71,7 @@ void ktl::Logger::Log(ktl::LogLevel level, ArgsT&&... args)
 }
 
 template<typename ArgT, typename ...ArgsT>
-CHTHOLLY_INLINE void ktl::Logger::ConsoleLog(ArgT && arg, ArgsT&&... args)
+CHTHOLLY_INLINE void ktl::Logger::ConsoleLog(ArgT&& arg, ArgsT&&... args)
 {
 	std::cout << arg;
 	ConsoleLog(std::forward<ArgsT>(args)...);
