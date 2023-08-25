@@ -100,7 +100,7 @@ private:
             return func(args...);
         }
 
-        typename std::remove_reference<AnyFunT>::type func;
+        std::decay_t<AnyFunT> func;
     };
     
 };
@@ -141,7 +141,7 @@ public:
     
     // 绑定任意可调用对象
     template<class AnyFunT>
-    CHTHOLLY_INLINE void BindAnyFunc(AnyFunT&& func);
+    CHTHOLLY_INLINE std::enable_if_t<!std::is_same_v<std::decay_t<AnyFunT>, SingleDelegate<ReturnT, ArgsT...>>> BindAnyFunc(AnyFunT&& func);
 
     // 代理执行
     CHTHOLLY_INLINE ReturnT Invoke(ArgsT... args);
@@ -200,7 +200,7 @@ public:
 
     // 添加任意可调用对象
     template<class AnyFunT>
-    CHTHOLLY_INLINE DelegateHandle AddAnyFunc(AnyFunT&& func);
+    CHTHOLLY_INLINE std::enable_if_t<!std::is_same_v<std::decay_t<AnyFunT>, MultiDelegate<void, ArgsT...>>, DelegateHandle> AddAnyFunc(AnyFunT&& func);
     
     // 多播代理执行
     void BroadCast(ArgsT... args);
@@ -309,7 +309,7 @@ CHTHOLLY_INLINE void ktl::SingleDelegate<ReturnT, ArgsT...>::BindSafeObj(const s
 
 template<typename ReturnT, typename ...ArgsT>
 template<class AnyFunT>
-CHTHOLLY_INLINE void ktl::SingleDelegate<ReturnT, ArgsT...>::BindAnyFunc(AnyFunT&& func)
+CHTHOLLY_INLINE std::enable_if_t<!std::is_same_v<std::decay_t<AnyFunT>, ktl::SingleDelegate<ReturnT, ArgsT...>>> ktl::SingleDelegate<ReturnT, ArgsT...>::BindAnyFunc(AnyFunT&& func)
 {
     dlgtPtr = std::make_shared<DelegateInterface::AnyFunDelegate<AnyFunT, ReturnT, ArgsT...> >(std::forward<AnyFunT>(func));
 }
@@ -373,7 +373,7 @@ CHTHOLLY_INLINE ktl::DelegateHandle ktl::MultiDelegate<ArgsT...>::AddSafeObj(con
 
 template<typename ...ArgsT>
 template<class AnyFunT>
-CHTHOLLY_INLINE ktl::DelegateHandle ktl::MultiDelegate<ArgsT...>::AddAnyFunc(AnyFunT&& func)
+CHTHOLLY_INLINE std::enable_if_t<!std::is_same_v<std::decay_t<AnyFunT>, ktl::MultiDelegate<void, ArgsT...>>, ktl::DelegateHandle> ktl::MultiDelegate<ArgsT...>::AddAnyFunc(AnyFunT&& func)
 {
     DelegateHandle handle(0x4, dlgtId++, this, 0);
     dlgtMap[handle.ToString()] = std::make_shared<DelegateInterface::AnyFunDelegate<AnyFunT, void, ArgsT...> >(std::forward<AnyFunT>(func));
