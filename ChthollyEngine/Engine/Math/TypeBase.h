@@ -3,7 +3,7 @@
 
 #include "Chtholly.h"
 
-namespace ktl::math
+namespace ktl
 {
 
 template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
@@ -27,7 +27,6 @@ struct math_traits;
 template<int N, typename T>
 struct math_traits<vec<N, T>>
 {
-    
     static constexpr int size = N;
     using type = T;
 };
@@ -37,7 +36,6 @@ struct math_traits<mat<Col, Raw, T>>
 {
     static constexpr int size = Col * Raw;
     using type = T;
-
 };
 
 template<typename T>
