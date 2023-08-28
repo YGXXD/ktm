@@ -31,11 +31,8 @@ public:
 	static void Log(LogLevel level, ArgsT&&... args);
 
 private:
-	template<typename ArgT, typename ...ArgsT>
-	static CHTHOLLY_INLINE void ConsoleLog(ArgT&& arg, ArgsT&&... args);
-
-	template<typename ArgT>
-	static CHTHOLLY_INLINE void ConsoleLog(ArgT&& arg);
+	template<typename ...ArgsT>
+	static CHTHOLLY_INLINE void ConsoleLog(ArgsT&&... args);
 	
 	struct UTCTimer
 	{
@@ -70,18 +67,12 @@ void ktl::Logger::Log(ktl::LogLevel level, ArgsT&&... args)
 	}
 }
 
-template<typename ArgT, typename ...ArgsT>
-CHTHOLLY_INLINE void ktl::Logger::ConsoleLog(ArgT&& arg, ArgsT&&... args)
+template<typename ...ArgsT>
+CHTHOLLY_INLINE void ktl::Logger::ConsoleLog(ArgsT&&... args)
 {
-	std::cout << arg;
-	ConsoleLog(std::forward<ArgsT>(args)...);
-}
-
-template<typename ArgT>
-CHTHOLLY_INLINE void ktl::Logger::ConsoleLog(ArgT&& arg)
-{
-	std::cout << arg << "\n";
+	(std::cout << ... << args) << "\n";
 	std::flush(std::cout);
 }
+
 #endif
 
