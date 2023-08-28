@@ -2,6 +2,7 @@
 #define _TEMPLATE_H_
 
 #include <type_traits>
+#include <iostream>
 
 // type traits extensions
 namespace std
@@ -98,7 +99,9 @@ namespace ktl
 template<typename ...Ts>
 struct TypeList 
 {
-
+    static inline constexpr bool IsAllSameType = std::is_same_vs<Ts...>;
+    static inline constexpr bool IsExistSameType = std::is_exist_same_vs<Ts...>;
+    static inline constexpr bool IsAllArithmetic = std::is_arithmetic_vs<Ts...>;
 };
 
 // 模版特化后的实例类型
@@ -134,15 +137,24 @@ template<typename TpList, class Child, typename = std::enable_if_t<!TpList::IsEx
 struct SingleExtends;
 
 template<class Child>
-struct SingleExtends<TemplateList<>, Child> : Nil<Child> { };
+struct SingleExtends<TemplateList<>, Child> 
+{
+    using type = Nil<Child>;
+};
 
-template <template<typename F, typename C> class Father, 
-          template<typename F, typename C> class... Fathers,
-          typename Child>
-struct SingleExtends<TemplateList<Father, Fathers...>, Child> : public Father<SingleExtends<TemplateList<Fathers...>, Child>, Child> { };
+template <template<class F, class C> class Father, 
+          template<class F, class C> class... Fathers,
+          class Child>
+struct SingleExtends<TemplateList<Father, Fathers...>, Child>  
+{
+    using type = Father<typename SingleExtends<TemplateList<Fathers...>, Child>::type, Child>;
+};
 
-// D : { } : C : { } : B : { } : A : { } : Nil
-// struct D : SingleExtends<TemplateList<C, B, A>, D> { }
+template<typename TpList, class Child>
+using SingleExtends_t = typename SingleExtends<TpList, Child>::type;
+
+// D : C : B : A : Nil
+// struct D : SingleExtends_t<TemplateList<C, B, A>, D>::type { }
 // 父类里面特化的模版为最后一级子类, A<D>, B<D>, C<D>
 }
 
