@@ -19,7 +19,6 @@ static inline ktl::float4 t2(ktl::float4 v)
 
 static void mathTest()
 {
-
     ktl::double4 a = {8, 10, 8, 10};
     ktl::double4 b = {9, 2, 9, 2};
     ktl::double4 c = {10, 4, 10, 4};
@@ -58,7 +57,7 @@ static void mathTest()
     // ktl::Vec<double, 4> v = ktl::MakeVec<double, 4>({ 5.0, 2.0, 3.0 }, 1);
     // std::cout << v.m[0] << ", " << v.m[1] << ", " << v.m[2] << ", " << v.m[3] << std::endl;
     std::cout << v[1] << "," << x.y << std::endl;
-    
+
 }
 
 #endif

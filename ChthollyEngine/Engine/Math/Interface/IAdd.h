@@ -50,7 +50,8 @@ struct IAdd : Father
         return x * a;
     }
 };
-
 }
+
+
 
 #endif
