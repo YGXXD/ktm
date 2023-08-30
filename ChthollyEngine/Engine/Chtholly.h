@@ -37,7 +37,7 @@
 	#endif
 
 	#ifdef _MSC_VER
-		#define CHOCHTHOLLY_INLINE __forceinline
+		#define CHTHOLLY_INLINE __forceinline
 		#ifdef CHTHOLLY_BUILD_DLL 
 			#define CHTHOLLY_API __declspec(dllexport) 
 		#else
