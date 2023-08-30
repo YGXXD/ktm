@@ -57,6 +57,31 @@ struct IVecOpt : Father
         return Opposite(std::make_index_sequence<N>());
     }
 
+    CHTHOLLY_INLINE Child operator+(T a) const noexcept
+    {
+        return AddScalar(a, std::make_index_sequence<N>());
+    }
+
+    CHTHOLLY_INLINE Child& operator+=(T a) noexcept
+    {
+        return AddScalarToSelf(a, std::make_index_sequence<N>());
+    }
+
+    friend CHTHOLLY_INLINE Child operator+(T a, const Child& x) noexcept
+    {
+        return x + a;
+    }
+
+     CHTHOLLY_INLINE Child operator-(T a) const noexcept
+    {
+        return MinusScalar(a, std::make_index_sequence<N>());
+    }
+
+    CHTHOLLY_INLINE Child& operator-=(T a) noexcept
+    {
+        return MinusScalarToSelf(a, std::make_index_sequence<N>());
+    }
+
     CHTHOLLY_INLINE Child operator*(T a) const noexcept
     {
         return MulScalar(a, std::make_index_sequence<N>());
@@ -150,6 +175,36 @@ private:
         Child ret;
         ((reinterpret_cast<T*>(&ret)[Ns] = -reinterpret_cast<const T*>(this)[Ns]), ...);
         return ret; 
+    }
+
+    template<size_t ...Ns>
+    CHTHOLLY_INLINE Child AddScalar(T a, std::index_sequence<Ns...>) const noexcept
+    {
+        Child ret;
+        ((reinterpret_cast<T*>(&ret)[Ns] = reinterpret_cast<const T*>(this)[Ns] + a), ...);
+        return ret;  
+    }
+
+    template<size_t ...Ns>
+    CHTHOLLY_INLINE Child& AddScalarToSelf(T a, std::index_sequence<Ns...>) noexcept
+    {
+        ((reinterpret_cast<T*>(this)[Ns] += a), ...);
+        return reinterpret_cast<Child&>(*this);
+    }
+
+    template<size_t ...Ns>
+    CHTHOLLY_INLINE Child MinusScalar(T a, std::index_sequence<Ns...>) const noexcept
+    {
+        Child ret;
+        ((reinterpret_cast<T*>(&ret)[Ns] = reinterpret_cast<const T*>(this)[Ns] - a), ...);
+        return ret;  
+    }
+
+    template<size_t ...Ns>
+    CHTHOLLY_INLINE Child& MinusScalarToSelf(T a, std::index_sequence<Ns...>) noexcept
+    {
+        ((reinterpret_cast<T*>(this)[Ns] -= a), ...);
+        return reinterpret_cast<Child&>(*this);
     }
 
     template<size_t ...Ns>
