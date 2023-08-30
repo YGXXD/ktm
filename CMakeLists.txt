@@ -4,8 +4,6 @@ set(-DCMAKE_CXX_COMPILE "clang++")
 
 project(XXd)
 set(CMAKE_CXX_STANDARD 17)
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O1")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-elide-constructors")
 set(CMAKE_BUILD_TYPE Release)
 
 set(CHTHOLLY_ENGINE_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/ChthollyEngine)
@@ -20,6 +18,7 @@ if(APPLE)
 	set(CMAKE_CXX_COMPILER /usr/bin/clang++)
 	
 	add_compile_options(-x objective-c++)
+	#add_compile_options(-fno-elide-constructors)
 	#add_compile_options(-fobjc-arc)
 	
     # target engine

@@ -27,6 +27,12 @@ static inline ktl::float4 t2(ktl::float4 v)
 	return v + x;
 }
 
+static inline ktl::vec<4, float> t3(ktl::vec<4, float> v)
+{
+    ktl::vec<4, float> x = {1, 1, 66, 1}; 
+	return v + x;
+}
+
 static void mathTest()
 {
     ktl::double4 a = {8, 10, 8, 10};
@@ -60,13 +66,17 @@ static void mathTest()
         x = t2(x);
     }
     end2 = clock();
-
+    ktl::vec<4,float> kt = {1, 1, 66, 1}; 
     start3 = clock();
+    for(int i = 0; i < 10000000; ++i)
+    {
+        kt = t3(kt);
+    } 
     end3 = clock();
     std::cout << (double)(end1 - start1) << ", " << (double)(end2 - start2) << ", " << (double)(end3 - start3) << std::endl;
     // ktl::Vec<double, 4> v = ktl::MakeVec<double, 4>({ 5.0, 2.0, 3.0 }, 1);
     // std::cout << v.m[0] << ", " << v.m[1] << ", " << v.m[2] << ", " << v.m[3] << std::endl;
-    std::cout << v[1] << "," << x.y << std::endl;
+    std::cout << v[1] << "," << x.y << "," << kt.y << std::endl;
 
     typedef ktl::vec<3, float> fvec3;
     std::cout << sizeof(fvec3) << std::endl;
