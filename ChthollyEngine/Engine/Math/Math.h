@@ -4,6 +4,16 @@
 #include "MathType.h"
 #include <simd/simd.h>
 #include "TypeBase.h"
+#include "Interface/IVector/IVecOpt.h"
+#include "Interface/IVector/IVecData.h"
+#include "Interface/IVector/IArray.h"
+
+template<int N, typename T>
+struct ktl::vec<N, T> : ktl::SingleExtends_t<ktl::TemplateList<IVecData, IArray, IVecOpt>, ktl::vec<N, T>> 
+{
+    using Father = ktl::SingleExtends_t<ktl::TemplateList<IVecData, IArray, IVecOpt>, ktl::vec<N, T>>; 
+    using Father::Father;
+};
 
 static inline simd_float4 t1(simd_float4 v)
 {
@@ -57,6 +67,25 @@ static void mathTest()
     // ktl::Vec<double, 4> v = ktl::MakeVec<double, 4>({ 5.0, 2.0, 3.0 }, 1);
     // std::cout << v.m[0] << ", " << v.m[1] << ", " << v.m[2] << ", " << v.m[3] << std::endl;
     std::cout << v[1] << "," << x.y << std::endl;
+
+    typedef ktl::vec<3, float> fvec3;
+    std::cout << sizeof(fvec3) << std::endl;
+    fvec3 aaa = { 1, 2, 3};
+    aaa = -(aaa + aaa);
+    
+    fvec3 bbb(aaa);
+    aaa *= aaa + aaa;
+    //bbb.x = 100;
+    int iio = 5;
+    int oo = iio * 1.5f;
+    std::cout << aaa.x << "," << aaa.y << "," << aaa.z << std::endl;
+    std::array<float, 3> arr = { 1, 2, 3 };
+    std::initializer_list<int> pp = { 1, 2, 3, 4, 5};
+    // for(int i = 0; i < 100; ++i)
+    // {
+    //     std::cout << pp.begin()[1] << " ";
+    // }
+    // std::cout << std::endl;
 
 }
 
