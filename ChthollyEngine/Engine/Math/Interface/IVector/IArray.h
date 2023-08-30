@@ -54,7 +54,7 @@ struct IArray : Father
     CHTHOLLY_INLINE const_reference Back() const noexcept { return ToArray().back(); }
 
     CHTHOLLY_INLINE pointer Data() noexcept { return reinterpret_cast<T*>(this); }
-    CHTHOLLY_INLINE const_pointer Data() const noexcept { return const_cast<IArray*>(this)->data(); }
+    CHTHOLLY_INLINE const_pointer Data() const noexcept { return reinterpret_cast<const T*>(this); }
 
     CHTHOLLY_INLINE reference operator[](size_t i) noexcept { return ToArray()[i]; }
     CHTHOLLY_INLINE const_reference operator[](size_t i) const noexcept { return ToArray()[i]; }

@@ -96,7 +96,7 @@ private:
     CHTHOLLY_INLINE Child& AddToSelf(const Child& y, std::index_sequence<Ns...>) noexcept
     {
         ((reinterpret_cast<T*>(this)[Ns] += reinterpret_cast<const T*>(&y)[Ns]), ...);
-        return static_cast<Child&>(*this);
+        return reinterpret_cast<Child&>(*this);
     }
 
     template<size_t ...Ns>
@@ -111,7 +111,7 @@ private:
     CHTHOLLY_INLINE Child& MinusToSelf(const Child& y, std::index_sequence<Ns...>) noexcept
     {
         ((reinterpret_cast<T*>(this)[Ns] -= reinterpret_cast<const T*>(&y)[Ns]), ...);
-        return static_cast<Child&>(*this); 
+        return reinterpret_cast<Child&>(*this); 
     }
 
     template<size_t ...Ns>
@@ -126,7 +126,7 @@ private:
     CHTHOLLY_INLINE Child& MulToSelf(const Child& y, std::index_sequence<Ns...>) noexcept
     {
         ((reinterpret_cast<T*>(this)[Ns] *= reinterpret_cast<const T*>(&y)[Ns]), ...);
-        return static_cast<Child&>(*this);
+        return reinterpret_cast<Child&>(*this);
     }
 
     template<size_t ...Ns>
@@ -141,7 +141,7 @@ private:
     CHTHOLLY_INLINE Child& DivToSelf(const Child& y, std::index_sequence<Ns...>) noexcept
     {
         ((reinterpret_cast<T*>(this)[Ns] /= reinterpret_cast<const T*>(&y)[Ns]), ...);
-        return static_cast<Child&>(*this);
+        return reinterpret_cast<Child&>(*this);
     }
 
     template<size_t ...Ns>
@@ -164,7 +164,7 @@ private:
     CHTHOLLY_INLINE Child& MulScalarToSelf(T a, std::index_sequence<Ns...>) noexcept
     {
         ((reinterpret_cast<T*>(this)[Ns] *= a), ...);
-        return static_cast<Child&>(*this);
+        return reinterpret_cast<Child&>(*this);
     }
 
     template<size_t ...Ns>
@@ -179,7 +179,7 @@ private:
     CHTHOLLY_INLINE Child& DivScalarToSelf(T a, std::index_sequence<Ns...>) noexcept
     {
         ((reinterpret_cast<T*>(this)[Ns] /= a), ...);
-        return static_cast<Child&>(*this);
+        return reinterpret_cast<Child&>(*this);
     }
 };
 }

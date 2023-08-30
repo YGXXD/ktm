@@ -15,7 +15,6 @@ struct alignas(sizeof(T)) IVecData<Father, vec<1, T>> : Father
     using Father::Father;
     union
     {
-        T elems[1];
         struct { T x; };
         struct { T r; };
     };
@@ -28,7 +27,6 @@ struct alignas(2 * sizeof(T)) IVecData<Father, vec<2, T>> : Father
     using Father::Father;
     union
     {
-        T elems[2];
         struct { T x, y; };
         struct { T r, g; };
     };
@@ -41,7 +39,6 @@ struct alignas(4 * sizeof(T)) IVecData<Father, vec<3, T>> : Father
     using Father::Father;
     union
     {
-        T elems[3];
         struct { T x, y, z; };
         struct { T r, g, b; };
     };
@@ -54,7 +51,6 @@ struct alignas(4 * sizeof(T)) IVecData<Father, vec<4, T>> : Father
     using Father::Father;
     union
     {
-        T elems[4];
         struct { T x, y, z, w; };
         struct { T r, g, b, a; };
     };
