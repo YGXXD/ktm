@@ -77,8 +77,8 @@ static void mathTest()
     aaa *= aaa + aaa;
     //bbb.x = 100;
     int iio = 5;
-    int oo = iio * 1.5f;
-    std::cout << aaa.x << "," << aaa.y << "," << aaa.z << std::endl;
+    int oo = (bbb >= bbb);
+    std::cout << oo << "," << aaa.y << "," << aaa.z << std::endl;
     std::array<float, 3> arr = { 1, 2, 3 };
     std::initializer_list<int> pp = { 1, 2, 3, 4, 5};
     // for(int i = 0; i < 100; ++i)

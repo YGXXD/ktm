@@ -13,7 +13,7 @@ struct IArray : Father
     static constexpr int N = vec_traits_len<Child>;
 
     CHTHOLLY_INLINE std::array<T, N>& ToArray() noexcept { return reinterpret_cast<std::array<T, N>&>(*this); }
-    CHTHOLLY_INLINE const std::array<T, N>& ToArray() const noexcept { return reinterpret_cast<std::array<T, N>&>(*this); }
+    CHTHOLLY_INLINE const std::array<T, N>& ToArray() const noexcept { return reinterpret_cast<const std::array<T, N>&>(*this); }
 
     using pointer = T*;
     using const_pointer = const T*;
@@ -56,8 +56,14 @@ struct IArray : Father
     CHTHOLLY_INLINE pointer Data() noexcept { return reinterpret_cast<T*>(this); }
     CHTHOLLY_INLINE const_pointer Data() const noexcept { return const_cast<IArray*>(this)->data(); }
 
-    CHTHOLLY_INLINE reference operator[](size_t i) noexcept { return ToArray().at(i); }
-    CHTHOLLY_INLINE const_reference operator[](size_t i) const noexcept { return ToArray().at(i); }
+    CHTHOLLY_INLINE reference operator[](size_t i) noexcept { return ToArray()[i]; }
+    CHTHOLLY_INLINE const_reference operator[](size_t i) const noexcept { return ToArray()[i]; }
+    CHTHOLLY_INLINE bool operator==(const Child& y) const noexcept { return ToArray() == y.ToArray(); }
+    CHTHOLLY_INLINE bool operator!=(const Child& y) const noexcept { return ToArray() != y.ToArray(); }
+    CHTHOLLY_INLINE bool operator< (const Child& y) const noexcept { return ToArray() <  y.ToArray(); }
+    CHTHOLLY_INLINE bool operator> (const Child& y) const noexcept { return ToArray() >  y.ToArray(); }
+    CHTHOLLY_INLINE bool operator<=(const Child& y) const noexcept { return ToArray() <= y.ToArray(); }
+    CHTHOLLY_INLINE bool operator>=(const Child& y) const noexcept { return ToArray() >= y.ToArray(); }
 };
 }
 
