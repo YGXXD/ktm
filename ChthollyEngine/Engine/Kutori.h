@@ -8,6 +8,19 @@
 namespace std
 {
 
+// 选择类型, E为true选择前者，否则为后者
+template<bool E, typename TT, typename FT>
+struct select_if;
+
+template<typename TT, typename FT>
+struct select_if<true, TT, FT> { using type = TT; };
+
+template<typename TT, typename FT>
+struct select_if<false, TT, FT> { using type = FT; };
+
+template<bool E, typename TT, typename FT>
+using select_if_t = typename select_if<E, TT, FT>::type;
+
 // 多个类型相比较,都相同返回true,有一个不相同返回false
 template<class ...Tps>
 inline bool is_same_vs;

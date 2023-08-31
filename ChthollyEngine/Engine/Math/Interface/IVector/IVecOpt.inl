@@ -1,6 +1,8 @@
 #ifndef _I_VEC_OPT_INL_
 #define _I_VEC_OPT_INL_
 
+#include "IVecOpt.h"
+
 template<int N, typename T, class V>
 struct ktm::VecOptImplement::Add<N, T, V>
 {
@@ -255,7 +257,7 @@ struct ktm::VecOptImplement::DivScalar<N, T, V>
     static CHTHOLLY_INLINE V Call(const V& x, T scalar) noexcept
     {   
         if constexpr(std::is_floating_point_v<T>)
-            return ktm::VecOptImplement::MulScalar<N, T, V>::Call(x, static_cast<T>(1) / scalar);
+            return ktm::VecOptImplement::MulScalar<N, T, V>::Call(x, one<T> / scalar);
         else 
             return Call(x, scalar, std::make_index_sequence<N>());
     }
@@ -275,7 +277,7 @@ struct ktm::VecOptImplement::DivScalarToSelf<N, T, V>
     static CHTHOLLY_INLINE V& Call(V& x, T scalar) noexcept
     {
         if constexpr(std::is_floating_point_v<T>)
-            return ktm::VecOptImplement::MulScalarToSelf<N, T, V>::Call(x, static_cast<T>(1) / scalar);
+            return ktm::VecOptImplement::MulScalarToSelf<N, T, V>::Call(x, one<T> / scalar);
         else 
             return Call(x, scalar, std::make_index_sequence<N>());
     }
