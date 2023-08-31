@@ -111,11 +111,11 @@ struct TInstance;
 template<template<typename ...> class Tp, typename ...Ts>
 struct TInstance<TypeList<Ts...>, Tp>
 {
-	using type = Tp<Ts...>;
+	using Type = Tp<Ts...>;
 };
 
 template<typename TList, template<typename ...> class Tp>
-using TInstance_t = typename TInstance<TList, Tp>::type;
+using TInstance_t = typename TInstance<TList, Tp>::Type;
 
 // 存储模版未特化类型的容器
 template<template<typename ...> class ...Tps>
@@ -139,7 +139,7 @@ struct SingleExtends;
 template<class Child>
 struct SingleExtends<TemplateList<>, Child> 
 {
-    using type = Nil<Child>;
+    using FatherType = Nil<Child>;
 };
 
 template <template<class F, class C> class Father, 
@@ -147,11 +147,11 @@ template <template<class F, class C> class Father,
           class Child>
 struct SingleExtends<TemplateList<Father, Fathers...>, Child>  
 {
-    using type = Father<typename SingleExtends<TemplateList<Fathers...>, Child>::type, Child>;
+    using FatherType = Father<typename SingleExtends<TemplateList<Fathers...>, Child>::FatherType, Child>;
 };
 
 template<typename TpList, class Child>
-using SingleExtends_t = typename SingleExtends<TpList, Child>::type;
+using SingleExtends_t = typename SingleExtends<TpList, Child>::FatherType;
 
 // D : C : B : A : Nil
 // struct D : SingleExtends_t<TemplateList<C, B, A>, D>::type { }

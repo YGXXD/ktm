@@ -28,6 +28,24 @@ private:
         virtual ~IDelegate() { };
     };
 
+    // 非成员函数委托模板
+    template<typename ReturnT, typename ...ArgsT>
+    class FuncDelegate : public IDelegate<ReturnT, ArgsT...>
+    {
+    public:
+        typedef ReturnT(*FunType) (ArgsT...);
+
+        FuncDelegate() = delete;
+        explicit FuncDelegate(const FunType& fun) : func(fun) { };
+
+        virtual ReturnT operator() (ArgsT... args) noexcept override
+        {
+            return (*func)(args...);
+        }
+
+        FunType func;
+    };
+
     // 类成员函数委托模板
     template<class ClassT, typename ReturnT, typename ...ArgsT>
     class ObjFuncDelegate : public IDelegate<ReturnT, ArgsT...>
@@ -44,24 +62,6 @@ private:
         }
 
         ClassT* obj;
-        FunType func;
-    };
-
-    // 非成员函数委托模板
-    template<typename ReturnT, typename ...ArgsT>
-    class FuncDelegate : public IDelegate<ReturnT, ArgsT...>
-    {
-    public:
-        typedef ReturnT(*FunType) (ArgsT...);
-
-        FuncDelegate() = delete;
-        explicit FuncDelegate(FunType fun) : func(fun) { };
-
-        virtual ReturnT operator() (ArgsT... args) noexcept override
-        {
-            return (*func)(args...);
-        }
-
         FunType func;
     };
     
@@ -110,27 +110,27 @@ class SingleDelegate final
 public:
     explicit SingleDelegate() = default;
     
-    static CHTHOLLY_INLINE SingleDelegate<ReturnT, ArgsT...> CreateFunction(typename DelegateInterface::FuncDelegate<ReturnT, ArgsT...>::FunType fun) noexcept;
+    static CHTHOLLY_INLINE SingleDelegate<ReturnT, ArgsT...> CreateFunction(const typename DelegateInterface::FuncDelegate<ReturnT, ArgsT...>::FunType& fun) noexcept;
     
     template<class ClassT>
-    static CHTHOLLY_INLINE SingleDelegate<ReturnT, ArgsT...> CreateObject(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun) noexcept;
+    static CHTHOLLY_INLINE SingleDelegate<ReturnT, ArgsT...> CreateObject(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunType& objFun) noexcept;
     
     template<class ClassT>
-    static CHTHOLLY_INLINE SingleDelegate<ReturnT, ArgsT...> CreateSafeObj(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun) noexcept;
+    static CHTHOLLY_INLINE SingleDelegate<ReturnT, ArgsT...> CreateSafeObj(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunType& objFun) noexcept;
     
     template<class AnyFunT>
     static CHTHOLLY_INLINE SingleDelegate<ReturnT, ArgsT...> CreateAnyFunc(AnyFunT&& func) noexcept;
     
     // 绑定全局或静态函数
-    CHTHOLLY_INLINE void BindFunction(typename DelegateInterface::FuncDelegate<ReturnT, ArgsT...>::FunType fun) noexcept;
+    CHTHOLLY_INLINE void BindFunction(const typename DelegateInterface::FuncDelegate<ReturnT, ArgsT...>::FunType& fun) noexcept;
 
     // 绑定类成员函数
     template<class ClassT>
-    CHTHOLLY_INLINE void BindObject(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun) noexcept;
+    CHTHOLLY_INLINE void BindObject(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunType& objFun) noexcept;
 
     // 绑定安全的类成员函数
     template<class ClassT>
-    CHTHOLLY_INLINE void BindSafeObj(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun) noexcept;
+    CHTHOLLY_INLINE void BindSafeObj(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunType& objFun) noexcept;
     
     // 绑定任意可调用对象
     template<class AnyFunT>
@@ -178,15 +178,15 @@ public:
     explicit MultiDelegate() = default;
 
     // 添加全局或静态函数
-    CHTHOLLY_INLINE DelegateHandle AddFunction(typename DelegateInterface::FuncDelegate<void, ArgsT...>::FunType fun) noexcept;
+    CHTHOLLY_INLINE DelegateHandle AddFunction(const typename DelegateInterface::FuncDelegate<void, ArgsT...>::FunType& fun) noexcept;
 
     // 添加类成员函数
     template<class ClassT>
-    CHTHOLLY_INLINE DelegateHandle AddObject(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunT& objFun) noexcept;
+    CHTHOLLY_INLINE DelegateHandle AddObject(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunType& objFun) noexcept;
     
     // 添加安全的类成员函数
     template<class ClassT>
-    CHTHOLLY_INLINE DelegateHandle AddSafeObj(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunT& objFun) noexcept;
+    CHTHOLLY_INLINE DelegateHandle AddSafeObj(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunType& objFun) noexcept;
     
     // 添加任意可调用对象
     template<class AnyFunT>
@@ -200,15 +200,15 @@ public:
     CHTHOLLY_INLINE bool Remove(const DelegateHandle& handle) noexcept;
     
     // 移除全局或静态函数
-    CHTHOLLY_INLINE bool Remove(typename DelegateInterface::FuncDelegate<void, ArgsT...>::FunType objFun) noexcept;
+    CHTHOLLY_INLINE bool Remove(const typename DelegateInterface::FuncDelegate<void, ArgsT...>::FunType& objFun) noexcept;
 
     // 移除类成员函数
     template<class ClassT>
-    CHTHOLLY_INLINE bool Remove(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunT& objFun) noexcept;
+    CHTHOLLY_INLINE bool Remove(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunType& objFun) noexcept;
     
     // 移除安全类成员函数
     template<class ClassT>
-    CHTHOLLY_INLINE bool Remove(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunT& objFun) noexcept;
+    CHTHOLLY_INLINE bool Remove(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunType& objFun) noexcept;
     
     // 清空代理
     CHTHOLLY_INLINE void Clear() noexcept;
@@ -224,7 +224,7 @@ private:
 }
 
 template<typename ReturnT, typename ...ArgsT>
-CHTHOLLY_INLINE ktl::SingleDelegate<ReturnT, ArgsT...> ktl::SingleDelegate<ReturnT, ArgsT...>::CreateFunction(typename DelegateInterface::FuncDelegate<ReturnT, ArgsT...>::FunType fun) noexcept
+CHTHOLLY_INLINE ktl::SingleDelegate<ReturnT, ArgsT...> ktl::SingleDelegate<ReturnT, ArgsT...>::CreateFunction(const typename DelegateInterface::FuncDelegate<ReturnT, ArgsT...>::FunType& fun) noexcept
 {
     SingleDelegate<ReturnT, ArgsT...> dlgt;
     dlgt.BindFunction(fun);
@@ -233,7 +233,7 @@ CHTHOLLY_INLINE ktl::SingleDelegate<ReturnT, ArgsT...> ktl::SingleDelegate<Retur
 
 template<typename ReturnT, typename ...ArgsT>
 template<class ClassT>
-CHTHOLLY_INLINE ktl::SingleDelegate<ReturnT, ArgsT...> ktl::SingleDelegate<ReturnT, ArgsT...>::CreateObject(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun) noexcept
+CHTHOLLY_INLINE ktl::SingleDelegate<ReturnT, ArgsT...> ktl::SingleDelegate<ReturnT, ArgsT...>::CreateObject(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunType& objFun) noexcept
 {
     SingleDelegate<ReturnT, ArgsT...> dlgt;
     dlgt.BindObject(obj, objFun);
@@ -242,7 +242,7 @@ CHTHOLLY_INLINE ktl::SingleDelegate<ReturnT, ArgsT...> ktl::SingleDelegate<Retur
 
 template<typename ReturnT, typename ...ArgsT>
 template<class ClassT>
-CHTHOLLY_INLINE ktl::SingleDelegate<ReturnT, ArgsT...> ktl::SingleDelegate<ReturnT, ArgsT...>::CreateSafeObj(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun) noexcept
+CHTHOLLY_INLINE ktl::SingleDelegate<ReturnT, ArgsT...> ktl::SingleDelegate<ReturnT, ArgsT...>::CreateSafeObj(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunType& objFun) noexcept
 {
     SingleDelegate<ReturnT, ArgsT...> dlgt;
     dlgt.BindSafeObj(objShared, objFun);
@@ -259,21 +259,21 @@ CHTHOLLY_INLINE ktl::SingleDelegate<ReturnT, ArgsT...> ktl::SingleDelegate<Retur
 }
 
 template<typename ReturnT, typename ...ArgsT>
-CHTHOLLY_INLINE void ktl::SingleDelegate<ReturnT, ArgsT...>::BindFunction(typename DelegateInterface::FuncDelegate<ReturnT, ArgsT...>::FunType fun) noexcept
+CHTHOLLY_INLINE void ktl::SingleDelegate<ReturnT, ArgsT...>::BindFunction(const typename DelegateInterface::FuncDelegate<ReturnT, ArgsT...>::FunType& fun) noexcept
 {
     dlgtPtr = std::make_shared<DelegateInterface::FuncDelegate<ReturnT, ArgsT...> >(fun);
 }
 
 template<typename ReturnT, typename ...ArgsT>
 template<class ClassT>
-CHTHOLLY_INLINE void ktl::SingleDelegate<ReturnT, ArgsT...>::BindObject(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun) noexcept
+CHTHOLLY_INLINE void ktl::SingleDelegate<ReturnT, ArgsT...>::BindObject(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunType& objFun) noexcept
 {
     dlgtPtr = std::make_shared<DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...> >(obj, objFun);
 }
 
 template<typename ReturnT, typename ...ArgsT>
 template<class ClassT>
-CHTHOLLY_INLINE void ktl::SingleDelegate<ReturnT, ArgsT...>::BindSafeObj(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunT& objFun) noexcept
+CHTHOLLY_INLINE void ktl::SingleDelegate<ReturnT, ArgsT...>::BindSafeObj(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, ReturnT, ArgsT...>::FunType& objFun) noexcept
 {
     dlgtPtr = std::make_shared<DelegateInterface::ObjFuncSafeDelegate<ClassT, ReturnT, ArgsT...> >(objShared, objFun);
 }
@@ -304,7 +304,7 @@ CHTHOLLY_INLINE void ktl::SingleDelegate<ReturnT, ArgsT...>::UnBind() noexcept
 }
 
 template<typename ...ArgsT>
-CHTHOLLY_INLINE ktl::DelegateHandle ktl::MultiDelegate<ArgsT...>::AddFunction(typename DelegateInterface::FuncDelegate<void, ArgsT...>::FunType fun) noexcept
+CHTHOLLY_INLINE ktl::DelegateHandle ktl::MultiDelegate<ArgsT...>::AddFunction(const typename DelegateInterface::FuncDelegate<void, ArgsT...>::FunType& fun) noexcept
 {
     DelegateHandle handle(0, dlgtId++, this, reinterpret_cast<void*>(fun));
     dlgtMap[handle.ToString()] = std::make_shared<DelegateInterface::FuncDelegate<void, ArgsT...> >(fun);
@@ -314,7 +314,7 @@ CHTHOLLY_INLINE ktl::DelegateHandle ktl::MultiDelegate<ArgsT...>::AddFunction(ty
 
 template<typename ...ArgsT>
 template<class ClassT>
-CHTHOLLY_INLINE ktl::DelegateHandle ktl::MultiDelegate<ArgsT...>::AddObject(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunT& objFun) noexcept
+CHTHOLLY_INLINE ktl::DelegateHandle ktl::MultiDelegate<ArgsT...>::AddObject(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunType& objFun) noexcept
 {
     DelegateHandle handle(0x1, dlgtId++, this, reinterpret_cast<void*>(obj));
     dlgtMap[handle.ToString()] = std::make_shared<DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...> >(obj, objFun);
@@ -324,7 +324,7 @@ CHTHOLLY_INLINE ktl::DelegateHandle ktl::MultiDelegate<ArgsT...>::AddObject(Clas
 
 template<typename ...ArgsT>
 template<class ClassT>
-CHTHOLLY_INLINE ktl::DelegateHandle ktl::MultiDelegate<ArgsT...>::AddSafeObj(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunT& objFun) noexcept
+CHTHOLLY_INLINE ktl::DelegateHandle ktl::MultiDelegate<ArgsT...>::AddSafeObj(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunType& objFun) noexcept
 {
     DelegateHandle handle(0x2, dlgtId++, this, reinterpret_cast<void*>(objShared.get()));
     dlgtMap[handle.ToString()] = std::make_shared<DelegateInterface::ObjFuncSafeDelegate<ClassT, void, ArgsT...> >(objShared, objFun);
@@ -365,7 +365,7 @@ CHTHOLLY_INLINE bool ktl::MultiDelegate<ArgsT...>::Remove(const ktl::DelegateHan
 }
 
 template<typename ...ArgsT>
-CHTHOLLY_INLINE bool ktl::MultiDelegate<ArgsT...>::Remove(typename DelegateInterface::FuncDelegate<void, ArgsT...>::FunType objFun) noexcept
+CHTHOLLY_INLINE bool ktl::MultiDelegate<ArgsT...>::Remove(const typename DelegateInterface::FuncDelegate<void, ArgsT...>::FunType& objFun) noexcept
 {
     auto rmLambda = [&](const typename std::unordered_map<std::string, std::shared_ptr<DelegateInterface::IDelegate<void, ArgsT...> > >::iterator& it)->bool
     {
@@ -378,7 +378,7 @@ CHTHOLLY_INLINE bool ktl::MultiDelegate<ArgsT...>::Remove(typename DelegateInter
 
 template<typename ...ArgsT>
 template<class ClassT>
-CHTHOLLY_INLINE bool ktl::MultiDelegate<ArgsT...>::Remove(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunT& objFun) noexcept
+CHTHOLLY_INLINE bool ktl::MultiDelegate<ArgsT...>::Remove(ClassT* obj, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunType& objFun) noexcept
 {
     auto rmLambda = [&](const typename std::unordered_map<std::string, std::shared_ptr<DelegateInterface::IDelegate<void, ArgsT...> > >::iterator& it)->bool
     {
@@ -391,7 +391,7 @@ CHTHOLLY_INLINE bool ktl::MultiDelegate<ArgsT...>::Remove(ClassT* obj, const typ
 
 template<typename ...ArgsT>
 template<class ClassT>
-CHTHOLLY_INLINE bool ktl::MultiDelegate<ArgsT...>::Remove(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunT& objFun) noexcept
+CHTHOLLY_INLINE bool ktl::MultiDelegate<ArgsT...>::Remove(const std::shared_ptr<ClassT>& objShared, const typename DelegateInterface::ObjFuncDelegate<ClassT, void, ArgsT...>::FunType& objFun) noexcept
 {
     auto rmLambda = [&](const typename std::unordered_map<std::string, std::shared_ptr<DelegateInterface::IDelegate<void, ArgsT...> > >::iterator& it)->bool
     {

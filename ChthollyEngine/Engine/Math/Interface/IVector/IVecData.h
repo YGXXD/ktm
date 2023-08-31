@@ -3,7 +3,7 @@
 
 #include "Math/TypeBase.h"
 
-namespace ktl
+namespace ktm
 {
 
 template<class Father, class Child>

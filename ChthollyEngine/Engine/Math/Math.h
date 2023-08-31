@@ -9,9 +9,9 @@
 #include "Interface/IVector/IArray.h"
 
 template<int N, typename T>
-struct ktl::vec<N, T> : ktl::SingleExtends_t<ktl::TemplateList<IVecData, IArray, IVecOpt>, ktl::vec<N, T>> 
+struct ktm::vec<N, T> : ktl::SingleExtends_t<ktl::TemplateList<IVecData, IArray, IVecOpt>, ktm::vec<N, T>> 
 {
-    using Father = ktl::SingleExtends_t<ktl::TemplateList<IVecData, IArray, IVecOpt>, ktl::vec<N, T>>; 
+    using Father = ktl::SingleExtends_t<ktl::TemplateList<IVecData, IArray, IVecOpt>, ktm::vec<N, T>>; 
     using Father::Father;
 };
 
@@ -27,9 +27,9 @@ static inline ktl::float4 t2(ktl::float4 v)
 	return v + x;
 }
 
-static inline ktl::vec<4, float> t3(ktl::vec<4, float> v)
+static inline ktm::vec<4, float> t3(ktm::vec<4, float> v)
 {
-    ktl::vec<4, float> x = {1, 1, 66, 1}; 
+    ktm::vec<4, float> x = {1, 1, 66, 1}; 
 	return v + x;
 }
 
@@ -66,7 +66,7 @@ static void mathTest()
         x = t2(x);
     }
     end2 = clock();
-    ktl::vec<4,float> kt = {1, 1, 66, 1}; 
+    ktm::vec<4,float> kt = {1, 1, 66, 1}; 
     start3 = clock();
     for(int i = 0; i < 10000000; ++i)
     {
@@ -78,7 +78,7 @@ static void mathTest()
     // std::cout << v.m[0] << ", " << v.m[1] << ", " << v.m[2] << ", " << v.m[3] << std::endl;
     std::cout << v[1] << "," << x.y << "," << kt.y << std::endl;
 
-    typedef ktl::vec<3, float> fvec3;
+    typedef ktm::vec<3, float> fvec3;
     std::cout << sizeof(fvec3) << std::endl;
     fvec3 aaa = { 1, 2, 3};
     aaa = -(aaa + aaa);
