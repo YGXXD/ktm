@@ -5,6 +5,64 @@
 
 namespace ktm
 {
+
+struct VecOptImplement
+{
+private:
+    template<class Father, class Child> friend class IVecOpt;
+    template<int N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, math_traits_t<V>> && vec_traits_len<V> == N>>
+    struct Add;
+
+    template<int N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, math_traits_t<V>> && vec_traits_len<V> == N>>
+    struct AddToSelf;
+
+    template<int N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, math_traits_t<V>> && vec_traits_len<V> == N>>
+    struct Minus;
+
+    template<int N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, math_traits_t<V>> && vec_traits_len<V> == N>>
+    struct MinusToSelf; 
+
+    template<class Father, class Child> friend class IVecOpt;
+    template<int N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, math_traits_t<V>> && vec_traits_len<V> == N>>
+    struct Mul;
+
+    template<int N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, math_traits_t<V>> && vec_traits_len<V> == N>>
+    struct MulToSelf;
+
+    template<int N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, math_traits_t<V>> && vec_traits_len<V> == N>>
+    struct Div;
+
+    template<int N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, math_traits_t<V>> && vec_traits_len<V> == N>>
+    struct DivToSelf; 
+
+    template<int N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, math_traits_t<V>> && vec_traits_len<V> == N>>
+    struct Opposite;
+
+    template<int N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, math_traits_t<V>> && vec_traits_len<V> == N>>
+    struct AddScalar;
+
+    template<int N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, math_traits_t<V>> && vec_traits_len<V> == N>>
+    struct AddScalarToSelf;  
+
+    template<int N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, math_traits_t<V>> && vec_traits_len<V> == N>>
+    struct MinusScalar;
+
+    template<int N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, math_traits_t<V>> && vec_traits_len<V> == N>>
+    struct MinusScalarToSelf;  
+
+    template<int N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, math_traits_t<V>> && vec_traits_len<V> == N>>
+    struct MulScalar;
+
+    template<int N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, math_traits_t<V>> && vec_traits_len<V> == N>>
+    struct MulScalarToSelf;  
+
+    template<int N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, math_traits_t<V>> && vec_traits_len<V> == N>>
+    struct DivScalar;
+
+    template<int N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, math_traits_t<V>> && vec_traits_len<V> == N>>
+    struct DivScalarToSelf;  
+};
+
 template<class Father, class Child>
 struct IVecOpt : Father
 {
@@ -14,57 +72,57 @@ struct IVecOpt : Father
 
     CHTHOLLY_INLINE Child operator+(const Child& y) const noexcept
     {
-        return Add(y, std::make_index_sequence<len>());
+        return VecOptImplement::Add<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), y);
     }
 
     CHTHOLLY_INLINE Child& operator+=(const Child& y) noexcept
     {
-        return AddToSelf(y, std::make_index_sequence<len>());
+        return VecOptImplement::AddToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), y);
     }
 
     CHTHOLLY_INLINE Child operator-(const Child& y) const noexcept
     {
-        return Minus(y, std::make_index_sequence<len>());
+        return VecOptImplement::Minus<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), y);
     }
 
     CHTHOLLY_INLINE Child& operator-=(const Child& y) noexcept
     {
-        return MinusToSelf(y, std::make_index_sequence<len>());
+        return VecOptImplement::MinusToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), y);
     }
 
     CHTHOLLY_INLINE Child operator*(const Child& y) const noexcept
     {
-        return Mul(y, std::make_index_sequence<len>()); 
+        return VecOptImplement::Mul<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), y);
     }
 
     CHTHOLLY_INLINE Child& operator*=(const Child& y) noexcept
     {
-        return MulToSelf(y, std::make_index_sequence<len>());
+        return VecOptImplement::MulToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), y);
     }
 
     CHTHOLLY_INLINE Child operator/(const Child& y) const noexcept
     {
-        return Div(y, std::make_index_sequence<len>());
+        return VecOptImplement::Div<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), y);
     }
 
     CHTHOLLY_INLINE Child& operator/=(const Child& y) noexcept
     {
-        return DivToSelf(y, std::make_index_sequence<len>());
+        return VecOptImplement::DivToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), y);
     }
 
     CHTHOLLY_INLINE Child operator-() const noexcept
     {
-        return Opposite(std::make_index_sequence<len>());
+        return VecOptImplement::Opposite<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this));
     }
 
-    CHTHOLLY_INLINE Child operator+(value_type a) const noexcept
+    CHTHOLLY_INLINE Child operator+(value_type scalar) const noexcept
     {
-        return AddScalar(a, std::make_index_sequence<len>());
+        return VecOptImplement::AddScalar<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), scalar);
     }
 
-    CHTHOLLY_INLINE Child& operator+=(value_type a) noexcept
+    CHTHOLLY_INLINE Child& operator+=(value_type scalar) noexcept
     {
-        return AddScalarToSelf(a, std::make_index_sequence<len>());
+        return VecOptImplement::AddScalarToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), scalar);
     }
 
     friend CHTHOLLY_INLINE Child operator+(value_type a, const Child& x) noexcept
@@ -72,24 +130,24 @@ struct IVecOpt : Father
         return x + a;
     }
 
-     CHTHOLLY_INLINE Child operator-(value_type a) const noexcept
+     CHTHOLLY_INLINE Child operator-(value_type scalar) const noexcept
     {
-        return MinusScalar(a, std::make_index_sequence<len>());
+        return VecOptImplement::MinusScalar<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), scalar);
     }
 
-    CHTHOLLY_INLINE Child& operator-=(value_type a) noexcept
+    CHTHOLLY_INLINE Child& operator-=(value_type scalar) noexcept
     {
-        return MinusScalarToSelf(a, std::make_index_sequence<len>());
+        return VecOptImplement::MinusScalarToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), scalar);
     }
 
-    CHTHOLLY_INLINE Child operator*(value_type a) const noexcept
+    CHTHOLLY_INLINE Child operator*(value_type scalar) const noexcept
     {
-        return MulScalar(a, std::make_index_sequence<len>());
+        return VecOptImplement::MulScalar<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), scalar);
     }
 
-    CHTHOLLY_INLINE Child& operator*=(value_type a) noexcept
+    CHTHOLLY_INLINE Child& operator*=(value_type scalar) noexcept
     {
-        return MulScalarToSelf(a, std::make_index_sequence<len>());
+        return VecOptImplement::MulScalarToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), scalar);
     }
 
     friend CHTHOLLY_INLINE Child operator*(value_type a, const Child& x) noexcept
@@ -97,147 +155,17 @@ struct IVecOpt : Father
         return x * a;
     }
 
-    CHTHOLLY_INLINE Child operator/(value_type a) const noexcept
+    CHTHOLLY_INLINE Child operator/(value_type scalar) const noexcept
     {
-        return DivScalar(a, std::make_index_sequence<len>());
+        return VecOptImplement::DivScalar<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), scalar);
     }
 
-    CHTHOLLY_INLINE Child& operator/=(value_type a) noexcept
+    CHTHOLLY_INLINE Child& operator/=(value_type scalar) noexcept
     {
-        return DivScalarToSelf(a, std::make_index_sequence<len>());
+        return VecOptImplement::DivScalarToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), scalar);
     }
-
-private:
-
-    template<size_t ...Ns>
-    CHTHOLLY_INLINE Child Add(const Child& y, std::index_sequence<Ns...>) const noexcept
-    {
-        Child ret;
-        ((reinterpret_cast<value_type*>(&ret)[Ns] = reinterpret_cast<const value_type*>(this)[Ns] + reinterpret_cast<const value_type*>(&y)[Ns]), ...);
-        return ret;
-    }
-
-    template<size_t ...Ns>
-    CHTHOLLY_INLINE Child& AddToSelf(const Child& y, std::index_sequence<Ns...>) noexcept
-    {
-        ((reinterpret_cast<value_type*>(this)[Ns] += reinterpret_cast<const value_type*>(&y)[Ns]), ...);
-        return reinterpret_cast<Child&>(*this);
-    }
-
-    template<size_t ...Ns>
-    CHTHOLLY_INLINE Child Minus(const Child& y, std::index_sequence<Ns...>) const noexcept
-    {
-        Child ret;
-        ((reinterpret_cast<value_type*>(&ret)[Ns] = reinterpret_cast<const value_type*>(this)[Ns] - reinterpret_cast<const value_type*>(&y)[Ns]), ...);
-        return ret;
-    } 
-
-    template<size_t ...Ns>
-    CHTHOLLY_INLINE Child& MinusToSelf(const Child& y, std::index_sequence<Ns...>) noexcept
-    {
-        ((reinterpret_cast<value_type*>(this)[Ns] -= reinterpret_cast<const value_type*>(&y)[Ns]), ...);
-        return reinterpret_cast<Child&>(*this); 
-    }
-
-    template<size_t ...Ns>
-    CHTHOLLY_INLINE Child Mul(const Child& y, std::index_sequence<Ns...>) const noexcept
-    {
-        Child ret;
-        ((reinterpret_cast<value_type*>(&ret)[Ns] = reinterpret_cast<const value_type*>(this)[Ns] * reinterpret_cast<const value_type*>(&y)[Ns]), ...);
-        return ret;
-    }
-
-    template<size_t ...Ns>
-    CHTHOLLY_INLINE Child& MulToSelf(const Child& y, std::index_sequence<Ns...>) noexcept
-    {
-        ((reinterpret_cast<value_type*>(this)[Ns] *= reinterpret_cast<const value_type*>(&y)[Ns]), ...);
-        return reinterpret_cast<Child&>(*this);
-    }
-
-    template<size_t ...Ns>
-    CHTHOLLY_INLINE Child Div(const Child& y, std::index_sequence<Ns...>) const noexcept
-    {
-        Child ret;
-        ((reinterpret_cast<value_type*>(&ret)[Ns] = reinterpret_cast<const value_type*>(this)[Ns] / reinterpret_cast<const value_type*>(&y)[Ns]), ...);
-        return ret;
-    }
-
-    template<size_t ...Ns>
-    CHTHOLLY_INLINE Child& DivToSelf(const Child& y, std::index_sequence<Ns...>) noexcept
-    {
-        ((reinterpret_cast<value_type*>(this)[Ns] /= reinterpret_cast<const value_type*>(&y)[Ns]), ...);
-        return reinterpret_cast<Child&>(*this);
-    }
-
-    template<size_t ...Ns>
-    CHTHOLLY_INLINE Child Opposite(std::index_sequence<Ns...>) const noexcept
-    {
-        Child ret;
-        ((reinterpret_cast<value_type*>(&ret)[Ns] = -reinterpret_cast<const value_type*>(this)[Ns]), ...);
-        return ret; 
-    }
-
-    template<size_t ...Ns>
-    CHTHOLLY_INLINE Child AddScalar(value_type a, std::index_sequence<Ns...>) const noexcept
-    {
-        Child ret;
-        ((reinterpret_cast<value_type*>(&ret)[Ns] = reinterpret_cast<const value_type*>(this)[Ns] + a), ...);
-        return ret;  
-    }
-
-    template<size_t ...Ns>
-    CHTHOLLY_INLINE Child& AddScalarToSelf(value_type a, std::index_sequence<Ns...>) noexcept
-    {
-        ((reinterpret_cast<value_type*>(this)[Ns] += a), ...);
-        return reinterpret_cast<Child&>(*this);
-    }
-
-    template<size_t ...Ns>
-    CHTHOLLY_INLINE Child MinusScalar(value_type a, std::index_sequence<Ns...>) const noexcept
-    {
-        Child ret;
-        ((reinterpret_cast<value_type*>(&ret)[Ns] = reinterpret_cast<const value_type*>(this)[Ns] - a), ...);
-        return ret;  
-    }
-
-    template<size_t ...Ns>
-    CHTHOLLY_INLINE Child& MinusScalarToSelf(value_type a, std::index_sequence<Ns...>) noexcept
-    {
-        ((reinterpret_cast<value_type*>(this)[Ns] -= a), ...);
-        return reinterpret_cast<Child&>(*this);
-    }
-
-    template<size_t ...Ns>
-    CHTHOLLY_INLINE Child MulScalar(value_type a, std::index_sequence<Ns...>) const noexcept
-    {
-        Child ret;
-        ((reinterpret_cast<value_type*>(&ret)[Ns] = reinterpret_cast<const value_type*>(this)[Ns] * a), ...);
-        return ret;  
-    }
-
-    template<size_t ...Ns>
-    CHTHOLLY_INLINE Child& MulScalarToSelf(value_type a, std::index_sequence<Ns...>) noexcept
-    {
-        ((reinterpret_cast<value_type*>(this)[Ns] *= a), ...);
-        return reinterpret_cast<Child&>(*this);
-    }
-
-    template<size_t ...Ns>
-    CHTHOLLY_INLINE Child DivScalar(value_type a, std::index_sequence<Ns...>) const noexcept
-    {
-        Child ret;
-        ((reinterpret_cast<value_type*>(&ret)[Ns] = reinterpret_cast<const value_type*>(this)[Ns] / a), ...);
-        return ret;  
-    }
-
-    template<size_t ...Ns>
-    CHTHOLLY_INLINE Child& DivScalarToSelf(value_type a, std::index_sequence<Ns...>) noexcept
-    {
-        ((reinterpret_cast<value_type*>(this)[Ns] /= a), ...);
-        return reinterpret_cast<Child&>(*this);
-    }
-
 };
 }
 
+#include "IVecOpt.inl"
 #endif
