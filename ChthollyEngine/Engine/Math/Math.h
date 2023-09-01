@@ -3,17 +3,8 @@
 
 #include "MathType.h"
 #include <simd/simd.h>
-#include "TypeBase.h"
-#include "Interface/IVector/IVecOpt.h"
-#include "Interface/IVector/IVecData.h"
-#include "Interface/IVector/IArray.h"
-
-template<int N, typename T>
-struct ktm::vec<N, T> : ktl::SingleExtends_t<ktl::TemplateList<IVecData, IArray, IVecOpt>, ktm::vec<N, T>> 
-{
-    using Father = ktl::SingleExtends_t<ktl::TemplateList<IVecData, IArray, IVecOpt>, ktm::vec<N, T>>; 
-    using Father::Father;
-};
+#include "MathType/TypeBase.h"
+#include "MathType/Vector.h"
 
 static inline simd_float4 t1(simd_float4 v)
 {
@@ -27,9 +18,9 @@ static inline ktl::float4 t2(ktl::float4 v)
 	return v + x;
 }
 
-static inline ktm::vec<4, float> t3(ktm::vec<4, float> v)
+static inline ktm::fvec4 t3(ktm::fvec4 v)
 {
-    ktm::vec<4, float> x = {1, 1, 66, 1}; 
+    ktm::fvec4 x = {1, 1, 66, 1}; 
 	return v + x;
 }
 
@@ -66,7 +57,7 @@ static void mathTest()
         x = t2(x);
     }
     end2 = clock();
-    ktm::vec<4,float> kt = {1, 1, 66, 1}; 
+    ktm::fvec4 kt = {1, 1, 66, 1}; 
     start3 = clock();
     for(int i = 0; i < 10000000; ++i)
     {
@@ -78,26 +69,19 @@ static void mathTest()
     // std::cout << v.m[0] << ", " << v.m[1] << ", " << v.m[2] << ", " << v.m[3] << std::endl;
     std::cout << v[1] << "," << x.y << "," << kt.y << std::endl;
 
-    typedef ktm::vec<3, float> fvec3;
-    typedef ktm::vec<3, int> svec3;
-    std::cout << sizeof(fvec3) << std::endl;
-    fvec3 aaa = { 1, 2, 3.7};
+    std::cout << sizeof(ktm::fvec3) << std::endl;
+    ktm::fvec3 aaa = { 1, 2, 3.7 };
     aaa = -(aaa + aaa);
     
-    const fvec3 bbb(aaa);
+    const ktm::fvec3 bbb(aaa);
     aaa *= aaa + aaa;
-    svec3 opo(aaa); 
+    ktm::svec3 opo(aaa); 
     //bbb.x = 100;
     int iio = 5;
     int oo = (bbb >= bbb);
-    std::cout << aaa.ReduceMax() << "," << static_cast<svec3>(aaa) << "," << aaa << std::endl;
+    std::cout << aaa.ReduceMax() << ", " << static_cast<ktm::svec3>(aaa) << ", " << aaa << ", " << (((float*)&aaa)[3] == 0.f) << std::endl;
     std::array<float, 3> arr = { 1, 2, 3 };
     std::initializer_list<int> pp = { 1, 2, 3, 4, 5};
-    // for(int i = 0; i < 100; ++i)
-    // {
-    //     std::cout << pp.begin()[1] << " ";
-    // }
-    // std::cout << std::endl;
 
 }
 

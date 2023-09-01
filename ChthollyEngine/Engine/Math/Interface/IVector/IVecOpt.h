@@ -1,7 +1,7 @@
 #ifndef _I_VEC_OPT_H_
 #define _I_VEC_OPT_H_
 
-#include "Math/TypeBase.h"
+#include "Math/MathType/TypeBase.h"
 
 namespace ktm
 {
