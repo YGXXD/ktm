@@ -6,10 +6,10 @@
 namespace ktm
 {
 
-struct VecComImplement
+struct VecOptImplement
 {
 private:
-    template<class Father, class Child> friend class IVecCom;
+    template<class Father, class Child> friend class IVecOpt;
 
     template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, math_traits_t<V>> && vec_traits_len<V> == N>>
     struct Add;
@@ -23,7 +23,6 @@ private:
     template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, math_traits_t<V>> && vec_traits_len<V> == N>>
     struct MinusToSelf; 
 
-    template<class Father, class Child> friend class IVecCom;
     template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, math_traits_t<V>> && vec_traits_len<V> == N>>
     struct Mul;
 
@@ -74,7 +73,7 @@ private:
 };
 
 template<class Father, class Child>
-struct IVecCom : Father
+struct IVecOpt : Father
 {
     using Father::Father;
     using value_type = math_traits_t<Child>;
@@ -82,115 +81,130 @@ struct IVecCom : Father
 
     Child operator+(const Child& y) const noexcept
     {
-        return VecComImplement::Add<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), y);
+        return VecOptImplement::Add<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), y);
     }
 
     Child& operator+=(const Child& y) noexcept
     {
-        return VecComImplement::AddToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), y);
+        return VecOptImplement::AddToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), y);
     }
 
     Child operator-(const Child& y) const noexcept
     {
-        return VecComImplement::Minus<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), y);
+        return VecOptImplement::Minus<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), y);
     }
 
     Child& operator-=(const Child& y) noexcept
     {
-        return VecComImplement::MinusToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), y);
+        return VecOptImplement::MinusToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), y);
     }
 
     Child operator*(const Child& y) const noexcept
     {
-        return VecComImplement::Mul<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), y);
+        return VecOptImplement::Mul<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), y);
     }
 
     Child& operator*=(const Child& y) noexcept
     {
-        return VecComImplement::MulToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), y);
+        return VecOptImplement::MulToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), y);
     }
 
     Child operator/(const Child& y) const noexcept
     {
-        return VecComImplement::Div<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), y);
+        return VecOptImplement::Div<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), y);
     }
 
     Child& operator/=(const Child& y) noexcept
     {
-        return VecComImplement::DivToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), y);
+        return VecOptImplement::DivToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), y);
     }
 
     Child operator-() const noexcept
     {
-        return VecComImplement::Opposite<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this));
+        return VecOptImplement::Opposite<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this));
     }
 
     Child operator+(value_type scalar) const noexcept
     {
-        return VecComImplement::AddScalar<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), scalar);
+        return VecOptImplement::AddScalar<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), scalar);
     }
 
     Child& operator+=(value_type scalar) noexcept
     {
-        return VecComImplement::AddScalarToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), scalar);
+        return VecOptImplement::AddScalarToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), scalar);
     }
 
-    friend Child operator+(value_type a, const Child& x) noexcept
+    friend CHTHOLLY_INLINE Child operator+(value_type a, const Child& x) noexcept
     {
         return x + a;
     }
 
     Child operator-(value_type scalar) const noexcept
     {
-        return VecComImplement::MinusScalar<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), scalar);
+        return VecOptImplement::MinusScalar<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), scalar);
     }
 
     Child& operator-=(value_type scalar) noexcept
     {
-        return VecComImplement::MinusScalarToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), scalar);
+        return VecOptImplement::MinusScalarToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), scalar);
     }
 
     Child operator*(value_type scalar) const noexcept
     {
-        return VecComImplement::MulScalar<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), scalar);
+        return VecOptImplement::MulScalar<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), scalar);
     }
 
     Child& operator*=(value_type scalar) noexcept
     {
-        return VecComImplement::MulScalarToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), scalar);
+        return VecOptImplement::MulScalarToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), scalar);
     }
 
-    friend Child operator*(value_type a, const Child& x) noexcept
+    friend CHTHOLLY_INLINE Child operator*(value_type a, const Child& x) noexcept
     {
         return x * a;
     }
 
     Child operator/(value_type scalar) const noexcept
     {
-        return VecComImplement::DivScalar<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), scalar);
+        return VecOptImplement::DivScalar<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this), scalar);
     }
 
     Child& operator/=(value_type scalar) noexcept
     {
-        return VecComImplement::DivScalarToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), scalar);
+        return VecOptImplement::DivScalarToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), scalar);
+    }
+
+    static value_type ReduceSum(const Child& x) noexcept
+    {
+        return VecOptImplement::ReduceSum<len, value_type, Child>::Call(x); 
     }
 
     value_type ReduceSum() const noexcept
     {
-        return VecComImplement::ReduceSum<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this)); 
+        return VecOptImplement::ReduceSum<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this)); 
+    }
+
+    static value_type ReduceMin(const Child& x) noexcept
+    {
+        return VecOptImplement::ReduceMin<len, value_type, Child>::Call(x); 
     }
 
     value_type ReduceMin() const noexcept
     {
-        return VecComImplement::ReduceMin<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this)); 
+        return VecOptImplement::ReduceMin<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this)); 
+    }
+
+    static value_type ReduceMax(const Child& x) noexcept
+    {
+        return VecOptImplement::ReduceMax<len, value_type, Child>::Call(x); 
     }
 
     value_type ReduceMax() const noexcept
     {
-        return VecComImplement::ReduceMax<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this)); 
+        return VecOptImplement::ReduceMax<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this)); 
     }
 };
 }
 
-#include "IVecCom.inl"
+#include "IVecOpt.inl"
 #endif

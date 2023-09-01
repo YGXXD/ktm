@@ -4,15 +4,14 @@
 #include "MathType.h"
 #include <simd/simd.h>
 #include "TypeBase.h"
-#include "Interface/IVector/IVecCom.h"
+#include "Interface/IVector/IVecOpt.h"
 #include "Interface/IVector/IVecData.h"
 #include "Interface/IVector/IArray.h"
-#include "Interface/IVector/IDot.h"
 
 template<int N, typename T>
-struct ktm::vec<N, T> : ktl::SingleExtends_t<ktl::TemplateList<IVecData, IArray, IVecCom, IDot>, ktm::vec<N, T>> 
+struct ktm::vec<N, T> : ktl::SingleExtends_t<ktl::TemplateList<IVecData, IArray, IVecOpt>, ktm::vec<N, T>> 
 {
-    using Father = ktl::SingleExtends_t<ktl::TemplateList<IVecData, IArray, IVecCom, IDot>, ktm::vec<N, T>>; 
+    using Father = ktl::SingleExtends_t<ktl::TemplateList<IVecData, IArray, IVecOpt>, ktm::vec<N, T>>; 
     using Father::Father;
 };
 
