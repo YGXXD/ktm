@@ -66,6 +66,8 @@
 #include <vector>
 #include <unordered_map>
 #include <thread>
+#include <cmath>
+#include <algorithm>
 #include "Kutori.h"
 
 #endif

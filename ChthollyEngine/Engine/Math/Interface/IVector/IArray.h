@@ -10,8 +10,13 @@ struct IArray : Father
 {
     using Father::Father;
     using value_type = math_traits_t<Child>;
-    static constexpr int len = vec_traits_len<Child>;
+    static constexpr size_t len = vec_traits_len<Child>;
     using array_type = std::array<value_type, len>;
+
+    template<size_t Index> 
+    CHTHOLLY_INLINE value_type Get() const noexcept { static_assert(Index < len); return reinterpret_cast<const value_type*>(this)[Index]; }
+    template<size_t Index> 
+    CHTHOLLY_INLINE void Set(value_type v) noexcept { static_assert(Index < len); reinterpret_cast<value_type*>(this)[Index] = v; }
 
     CHTHOLLY_INLINE array_type& ToArray() noexcept { return reinterpret_cast<array_type&>(*this); }
     CHTHOLLY_INLINE const array_type& ToArray() const noexcept { return reinterpret_cast<const array_type&>(*this); }
