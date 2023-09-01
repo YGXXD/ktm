@@ -6,9 +6,6 @@
 namespace ktm
 {
 
-template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
-inline constexpr T epsilon = static_cast<T>(0.001);
-
 template<typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
 inline constexpr T pi = static_cast<T>(3.141592653589793);
 

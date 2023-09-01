@@ -64,20 +64,16 @@ struct IArray : Father
     CHTHOLLY_INLINE bool operator>=(const Child& y) const noexcept { return ToArray() >= y.ToArray(); }
     friend CHTHOLLY_INLINE std::ostream& operator<<(std::ostream& o, const Child& x) 
     {
-        o << "{ ";
-        for(auto it = x.Begin(); it != x.End(); ++it)
-        {
+        auto it = x.Begin();
+        for(; it != x.End() - 1; ++it)
             o << *it << " ";
-        }
-        return o << "}";
+        o << *it;
+        return o;
     }
-
     friend CHTHOLLY_INLINE std::istream& operator>>(std::istream& i, const Child& x) 
     {
         for(auto it = x.Begin(); it != x.End(); ++it)
-        {
             i >> *it;
-        }
         return i;
     }
 

@@ -79,17 +79,18 @@ static void mathTest()
     std::cout << v[1] << "," << x.y << "," << kt.y << std::endl;
 
     typedef ktm::vec<3, float> fvec3;
+    typedef ktm::vec<3, int> svec3;
     std::cout << sizeof(fvec3) << std::endl;
-    fvec3 aaa = { 1, 2, 3};
+    fvec3 aaa = { 1, 2, 3.7};
     aaa = -(aaa + aaa);
     
     const fvec3 bbb(aaa);
     aaa *= aaa + aaa;
-    
+    svec3 opo(aaa); 
     //bbb.x = 100;
     int iio = 5;
     int oo = (bbb >= bbb);
-    std::cout << aaa.ReduceMax() << "," << aaa.y << "," << aaa << std::endl;
+    std::cout << aaa.ReduceMax() << "," << static_cast<svec3>(aaa) << "," << aaa << std::endl;
     std::array<float, 3> arr = { 1, 2, 3 };
     std::initializer_list<int> pp = { 1, 2, 3, 4, 5};
     // for(int i = 0; i < 100; ++i)
