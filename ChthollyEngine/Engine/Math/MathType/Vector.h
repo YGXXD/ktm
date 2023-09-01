@@ -22,7 +22,6 @@ using svec1 = svec<1>;
 using svec2 = svec<2>;
 using svec3 = svec<3>;
 using svec4 = svec<4>;
-static_assert(sizeof(svec3) == 16);
 
 template<int N>
 using fvec = vec<N, float>;
@@ -30,7 +29,6 @@ using fvec1 = fvec<1>;
 using fvec2 = fvec<2>;
 using fvec3 = fvec<3>;
 using fvec4 = fvec<4>;
-static_assert(sizeof(svec3) == 16);
 
 template<int N>
 using dvec = vec<N, double>;

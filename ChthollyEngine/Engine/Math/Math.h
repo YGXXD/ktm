@@ -75,11 +75,10 @@ static void mathTest()
     
     const ktm::fvec3 bbb(aaa);
     aaa *= aaa + aaa;
-    ktm::svec3 opo(aaa); 
-    //bbb.x = 100;
-    int iio = 5;
+    ktm::fvec3 opo(aaa); 
     int oo = (bbb >= bbb);
-    std::cout << aaa.ReduceMax() << ", " << static_cast<ktm::svec3>(aaa) << ", " << aaa << ", " << (((float*)&aaa)[3] == 0.f) << std::endl;
+
+    std::cout << aaa.ReduceMax() << ", " << static_cast<ktm::svec3>(aaa) << ", " << aaa << ", " << ((float*)&opo)[3] << "," << (std::abs(((float*)&opo)[3]) < 1e-6) << std::endl;
     std::array<float, 3> arr = { 1, 2, 3 };
     std::initializer_list<int> pp = { 1, 2, 3, 4, 5};
 
