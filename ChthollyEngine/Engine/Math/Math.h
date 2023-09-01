@@ -89,7 +89,7 @@ static void mathTest()
     //bbb.x = 100;
     int iio = 5;
     int oo = (bbb >= bbb);
-    std::cout << aaa.ReduceMax() << "," << aaa.y << "," << aaa.z << std::endl;
+    std::cout << aaa.ReduceMax() << "," << aaa.y << "," << aaa << std::endl;
     std::array<float, 3> arr = { 1, 2, 3 };
     std::initializer_list<int> pp = { 1, 2, 3, 4, 5};
     // for(int i = 0; i < 100; ++i)
