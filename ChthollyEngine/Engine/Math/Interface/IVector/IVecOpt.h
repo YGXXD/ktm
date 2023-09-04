@@ -174,32 +174,17 @@ struct IVecOpt : Father
         return VecOptImplement::DivScalarToSelf<len, value_type, Child>::Call(reinterpret_cast<Child&>(*this), scalar);
     }
 
-    static value_type ReduceSum(const Child& x) noexcept
-    {
-        return VecOptImplement::ReduceSum<len, value_type, Child>::Call(x); 
-    }
-
-    value_type ReduceSum() const noexcept
+    value_type GetSum() const noexcept
     {
         return VecOptImplement::ReduceSum<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this)); 
     }
 
-    static value_type ReduceMin(const Child& x) noexcept
-    {
-        return VecOptImplement::ReduceMin<len, value_type, Child>::Call(x); 
-    }
-
-    value_type ReduceMin() const noexcept
+    value_type GetMin() const noexcept
     {
         return VecOptImplement::ReduceMin<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this)); 
     }
 
-    static value_type ReduceMax(const Child& x) noexcept
-    {
-        return VecOptImplement::ReduceMax<len, value_type, Child>::Call(x); 
-    }
-
-    value_type ReduceMax() const noexcept
+    value_type GetMax() const noexcept
     {
         return VecOptImplement::ReduceMax<len, value_type, Child>::Call(reinterpret_cast<const Child&>(*this)); 
     }

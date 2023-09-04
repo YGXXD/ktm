@@ -78,10 +78,11 @@ static void mathTest()
     ktm::fvec3 opo(aaa); 
     int oo = (bbb >= bbb);
 
-    std::cout << aaa.ReduceMax() << ", " << static_cast<ktm::svec3>(aaa) << ", " << aaa << ", " << ((float*)&opo)[3] << "," << (std::abs(((float*)&opo)[3]) < 1e-6) << std::endl;
+    std::cout << aaa.GetMax() << ", " << static_cast<ktm::svec3>(aaa) << ", " << aaa << ", " << ((float*)&opo)[3] << "," << (std::abs(((float*)&opo)[3]) < 1e-6) << std::endl;
     std::array<float, 3> arr = { 1, 2, 3 };
     std::initializer_list<int> pp = { 1, 2, 3, 4, 5};
-
+    //ktm::mat<2,2,float> lll;
+    //ktm::ReduceSum<ktm::fvec3>(aaa);
 }
 
 #endif
