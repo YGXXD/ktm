@@ -1,5 +1,5 @@
-#ifndef _TYPE_BASE_H_
-#define _TYPE_BASE_H_
+#ifndef _BASE_TYPE_H_
+#define _BASE_TYPE_H_
 
 #include "Chtholly.h"
 

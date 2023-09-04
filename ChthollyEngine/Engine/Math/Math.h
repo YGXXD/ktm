@@ -3,8 +3,8 @@
 
 #include "MathType.h"
 #include <simd/simd.h>
-#include "MathType/TypeBase.h"
-#include "MathType/Vector.h"
+#include "MathType/BaseType.h"
+#include "MathType/VecType.h"
 
 static inline simd_float4 t1(simd_float4 v)
 {

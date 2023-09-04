@@ -1,7 +1,7 @@
-#ifndef _VECTOR_H_
-#define _VECTOR_H_
+#ifndef _VEC_TYPE_H_
+#define _VEC_TYPE_H_
 
-#include "TypeBase.h"
+#include "BaseType.h"
 #include "Math/Interface/IVector/IVecOpt.h"
 #include "Math/Interface/IVector/IVecData.h"
 #include "Math/Interface/IVector/IArray.h"
