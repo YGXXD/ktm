@@ -73,14 +73,13 @@ static void mathTest()
     std::cout << sizeof(ktm::fvec3) << std::endl;
     ktm::fvec3 aaa = { 1, 2, 3.7 };
     aaa = -(aaa + aaa);
-    
-    const ktm::fvec3 bbb(aaa);
     aaa *= aaa + aaa;
-    ktm::svec3 opo(aaa); 
-    int oo = (bbb >= bbb);
-    std::cout << aaa.get_sum() << ", " << static_cast<ktm::svec3>(aaa) << ", " << aaa << ", " << ((float*)&opo)[3] << ", " << (std::abs(((float*)&opo)[3]) < 1e-6) << std::endl;
+    ktm::fvec3 bbb(aaa); 
+    ktm::fvec3 ccc = aaa;
+    std::cout << ktm::distance(ktm::project(ktm::nomorlize(aaa), aaa), aaa) << ", " << ccc << ", " << static_cast<ktm::svec3>(aaa) << ", " << aaa << ", " << ((float*)&bbb)[3] << ", " << (std::abs(((float*)&bbb)[3]) < 1e-6) << std::endl;
     std::array<float, 3> arr = { 1, 2, 3 };
     std::initializer_list<int> pp = { 1, 2, 3, 4, 5};
+    std::cout << (&ccc.z)[1] << std::endl;
     
 }
 

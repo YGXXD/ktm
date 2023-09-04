@@ -3,6 +3,126 @@
 
 #include "IVecOpt.h"
 
+template<class Father, class Child>
+Child ktm::IVecOpt<Father, Child>::operator+(const Child& y) const noexcept
+{
+    return detail::vec_opt_implement::add<len, value_type, Child>::call(reinterpret_cast<const Child&>(*this), y);
+}
+
+template<class Father, class Child>
+Child& ktm::IVecOpt<Father, Child>::operator+=(const Child& y) noexcept
+{
+    return detail::vec_opt_implement::add_to_self<len, value_type, Child>::call(reinterpret_cast<Child&>(*this), y);
+}
+
+template<class Father, class Child>
+Child ktm::IVecOpt<Father, Child>::operator-(const Child& y) const noexcept
+{
+    return detail::vec_opt_implement::minus<len, value_type, Child>::call(reinterpret_cast<const Child&>(*this), y);
+}
+
+template<class Father, class Child>
+Child& ktm::IVecOpt<Father, Child>::operator-=(const Child& y) noexcept
+{
+    return detail::vec_opt_implement::minus_to_self<len, value_type, Child>::call(reinterpret_cast<Child&>(*this), y);
+}
+
+template<class Father, class Child>
+Child ktm::IVecOpt<Father, Child>::operator*(const Child& y) const noexcept
+{
+    return detail::vec_opt_implement::mul<len, value_type, Child>::call(reinterpret_cast<const Child&>(*this), y);
+}
+
+template<class Father, class Child>
+Child& ktm::IVecOpt<Father, Child>::operator*=(const Child& y) noexcept
+{
+    return detail::vec_opt_implement::mul_to_self<len, value_type, Child>::call(reinterpret_cast<Child&>(*this), y);
+}
+
+template<class Father, class Child>
+Child ktm::IVecOpt<Father, Child>::operator/(const Child& y) const noexcept
+{
+    return detail::vec_opt_implement::div<len, value_type, Child>::call(reinterpret_cast<const Child&>(*this), y);
+}
+
+template<class Father, class Child>
+Child& ktm::IVecOpt<Father, Child>::operator/=(const Child& y) noexcept
+{
+    return detail::vec_opt_implement::div_to_self<len, value_type, Child>::call(reinterpret_cast<Child&>(*this), y);
+}
+
+template<class Father, class Child>
+Child ktm::IVecOpt<Father, Child>::operator-() const noexcept
+{
+    return detail::vec_opt_implement::opposite<len, value_type, Child>::call(reinterpret_cast<const Child&>(*this));
+}
+
+template<class Father, class Child>
+Child ktm::IVecOpt<Father, Child>::operator+(value_type scalar) const noexcept
+{
+    return detail::vec_opt_implement::add_scalar<len, value_type, Child>::call(reinterpret_cast<const Child&>(*this), scalar);
+}
+
+template<class Father, class Child>
+Child& ktm::IVecOpt<Father, Child>::operator+=(value_type scalar) noexcept
+{
+    return detail::vec_opt_implement::add_scalar_to_self<len, value_type, Child>::call(reinterpret_cast<Child&>(*this), scalar);
+}
+
+template<class Father, class Child>
+Child ktm::IVecOpt<Father, Child>::operator-(value_type scalar) const noexcept
+{
+    return detail::vec_opt_implement::minus_scalar<len, value_type, Child>::call(reinterpret_cast<const Child&>(*this), scalar);
+}
+
+template<class Father, class Child>
+Child& ktm::IVecOpt<Father, Child>::operator-=(value_type scalar) noexcept
+{
+    return detail::vec_opt_implement::minus_scalar_to_self<len, value_type, Child>::call(reinterpret_cast<Child&>(*this), scalar);
+}
+
+template<class Father, class Child>
+Child ktm::IVecOpt<Father, Child>::operator*(value_type scalar) const noexcept
+{
+    return detail::vec_opt_implement::mul_scalar<len, value_type, Child>::call(reinterpret_cast<const Child&>(*this), scalar);
+}
+
+template<class Father, class Child>
+Child& ktm::IVecOpt<Father, Child>::operator*=(value_type scalar) noexcept
+{
+    return detail::vec_opt_implement::mul_scalar_to_self<len, value_type, Child>::call(reinterpret_cast<Child&>(*this), scalar);
+}
+
+template<class Father, class Child>
+Child ktm::IVecOpt<Father, Child>::operator/(value_type scalar) const noexcept
+{
+    return detail::vec_opt_implement::div_scalar<len, value_type, Child>::call(reinterpret_cast<const Child&>(*this), scalar);
+}
+
+template<class Father, class Child>
+Child& ktm::IVecOpt<Father, Child>::operator/=(value_type scalar) noexcept
+{
+    return detail::vec_opt_implement::div_scalar_to_self<len, value_type, Child>::call(reinterpret_cast<Child&>(*this), scalar);
+}
+
+template<class Father, class Child>
+typename ktm::IVecOpt<Father, Child>::value_type ktm::IVecOpt<Father, Child>::get_sum() const noexcept
+{
+    return detail::vec_opt_implement::reduce_add<len, value_type, Child>::call(reinterpret_cast<const Child&>(*this)); 
+}
+
+template<class Father, class Child>
+typename ktm::IVecOpt<Father, Child>::value_type ktm::IVecOpt<Father, Child>::get_min() const noexcept
+{
+    return detail::vec_opt_implement::reduce_min<len, value_type, Child>::call(reinterpret_cast<const Child&>(*this)); 
+}
+
+template<class Father, class Child>
+typename ktm::IVecOpt<Father, Child>::value_type ktm::IVecOpt<Father, Child>::get_max() const noexcept
+{
+    return detail::vec_opt_implement::reduce_max<len, value_type, Child>::call(reinterpret_cast<const Child&>(*this)); 
+}
+
 template<size_t N, typename T, class V>
 struct ktm::detail::vec_opt_implement::add<N, T, V>
 {
