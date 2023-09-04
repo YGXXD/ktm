@@ -78,7 +78,7 @@ static void mathTest()
     aaa *= aaa + aaa;
     ktm::svec3 opo(aaa); 
     int oo = (bbb >= bbb);
-    std::cout << ktm::length(aaa) << ", " << static_cast<ktm::svec3>(aaa) << ", " << aaa << ", " << ((float*)&opo)[3] << ", " << (std::abs(((float*)&opo)[3]) < 1e-6) << std::endl;
+    std::cout << aaa.get_sum() << ", " << static_cast<ktm::svec3>(aaa) << ", " << aaa << ", " << ((float*)&opo)[3] << ", " << (std::abs(((float*)&opo)[3]) < 1e-6) << std::endl;
     std::array<float, 3> arr = { 1, 2, 3 };
     std::initializer_list<int> pp = { 1, 2, 3, 4, 5};
     
