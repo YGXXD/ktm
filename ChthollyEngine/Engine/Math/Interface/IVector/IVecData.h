@@ -37,7 +37,7 @@ struct alignas(2 * sizeof(T)) IVecData<Father, vec<2, T>> : Father
     constexpr IVecData(T xi, T yi) noexcept : x(xi), y(yi) { }
     IVecData(const vec<1, T>& v, T yi) noexcept : x(v.x), y(yi) { }
     template<typename U, typename = std::enable_if_t<!std::is_same_v<U, T>>>
-    IVecData(const vec<3, U>& v) : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)) { }
+    IVecData(const vec<2, U>& v) : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)) { }
 };
 
 template<class Father, typename T>

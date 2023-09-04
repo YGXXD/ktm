@@ -109,4 +109,5 @@ private:
 }
 
 #include "IVecOpt.inl"
+#include "IVecOptSimd.inl"
 #endif
