@@ -3,7 +3,7 @@
 
 #include <type_traits>
 
-// type traits extensions
+// std traits extensions
 namespace std
 {
 
@@ -103,7 +103,7 @@ inline constexpr bool is_template_exist_same_vs<> = false;
 
 }
 
-// type and template list
+// ktl template 
 namespace ktl
 {
 
@@ -137,11 +137,7 @@ struct TemplateList
     static inline constexpr bool IsExistSameTemplate = std::is_template_exist_same_vs<Tps...>;
 };
 
-}
-
-// single extends template
-namespace ktl
-{
+// 单继承化模版
 template<class Child>
 struct Nil { };
 
