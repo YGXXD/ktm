@@ -2,7 +2,6 @@
 #define _TEMPLATE_H_
 
 #include <type_traits>
-#include <iostream>
 
 // type traits extensions
 namespace std
