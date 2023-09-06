@@ -28,6 +28,12 @@ namespace ktm
     {
         return v < min ? min : v > max ? max : v;
     }
+
+    template<typename T>
+    static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> lerp(T x, T y, T t)
+    {
+        return x + t * (y - x);
+    }
 }
 
 #endif

@@ -7,6 +7,18 @@
 namespace ktm
 {
     template<class V>
+    static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<vec_traits_t<V>>, V> lerp(const V& x, const V& y, vec_traits_t<V> t)
+    {
+        return x + t * (y - x);
+    }
+
+    template<class V>
+    static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<vec_traits_t<V>>, V> mix(const V& x, const V& y, const V& t)
+    {
+        return x + t * (y - x);
+    }
+
+    template<class V>
     static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<vec_traits_t<V>>, vec_traits_t<V>> dot(const V& x, const V& y)
     {
         return reduce_add(x * y); 
