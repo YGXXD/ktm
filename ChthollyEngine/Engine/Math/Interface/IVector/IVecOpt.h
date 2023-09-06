@@ -2,112 +2,113 @@
 #define _I_VEC_OPT_H_
 
 #include "Math/MathType/BaseType.h"
+#include "Math/Detail/VecOptImpl.h"
 
 namespace ktm
 {
-
 template<class Father, class Child>
-struct IVecOpt : Father
+struct IVecOpt;
+
+template<class Father, size_t N, typename T>
+struct IVecOpt<Father, vec<N, T>> : Father
 {
     using Father::Father;
-    using value_type = vec_traits_t<Child>;
-    static constexpr size_t len = vec_traits_len<Child>;
+    
+    CHTHOLLY_INLINE vec<N, T> operator+(const vec<N, T>& y) const noexcept
+    {
+        return detail::vec_opt_implement::add<vec<N, T>>::call(reinterpret_cast<const vec<N, T>&>(*this), y);
+    }
 
-    Child operator+(const Child& y) const noexcept;
-    Child& operator+=(const Child& y) noexcept;
-    Child operator-(const Child& y) const noexcept;
-    Child& operator-=(const Child& y) noexcept;
-    Child operator*(const Child& y) const noexcept;
-    Child& operator*=(const Child& y) noexcept;
-    Child operator/(const Child& y) const noexcept;
-    Child& operator/=(const Child& y) noexcept;
-    Child operator-() const noexcept;
-    Child operator+(value_type scalar) const noexcept;
-    Child& operator+=(value_type scalar) noexcept;
-    friend CHTHOLLY_INLINE Child operator+(value_type a, const Child& x) noexcept { return x + a; }
-    Child operator-(value_type scalar) const noexcept;
-    Child& operator-=(value_type scalar) noexcept;
-    Child operator*(value_type scalar) const noexcept;
-    Child& operator*=(value_type scalar) noexcept;
-    friend CHTHOLLY_INLINE Child operator*(value_type a, const Child& x) noexcept { return x * a; }
-    Child operator/(value_type scalar) const noexcept;
-    Child& operator/=(value_type scalar) noexcept;
-    value_type get_sum() const noexcept;
-    value_type get_min() const noexcept;
-    value_type get_max() const noexcept;
-};
+    CHTHOLLY_INLINE vec<N, T>& operator+=(const vec<N, T>& y) noexcept
+    {
+        return detail::vec_opt_implement::add_to_self<vec<N, T>>::call(reinterpret_cast<vec<N, T>&>(*this), y);
+    }
 
-namespace detail
-{
-struct vec_opt_implement
-{
-private:
-    template<class Father, class Child> friend class ::ktm::IVecOpt;
+    CHTHOLLY_INLINE vec<N, T> operator-(const vec<N, T>& y) const noexcept
+    {
+        return detail::vec_opt_implement::minus<vec<N, T>>::call(reinterpret_cast<const vec<N, T>&>(*this), y);
+    }
 
-    template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, vec_traits_t<V>> && vec_traits_len<V> == N>>
-    struct add;
+    CHTHOLLY_INLINE vec<N, T>& operator-=(const vec<N, T>& y) noexcept
+    {
+        return detail::vec_opt_implement::minus_to_self<vec<N, T>>::call(reinterpret_cast<vec<N, T>&>(*this), y);
+    }
+    
+    CHTHOLLY_INLINE vec<N, T> operator*(const vec<N, T>& y) const noexcept
+    {
+        return detail::vec_opt_implement::mul<vec<N, T>>::call(reinterpret_cast<const vec<N, T>&>(*this), y);
+    }
 
-    template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, vec_traits_t<V>> && vec_traits_len<V> == N>>
-    struct add_to_self;
+    CHTHOLLY_INLINE vec<N, T>& operator*=(const vec<N, T>& y) noexcept
+    {
+        return detail::vec_opt_implement::mul_to_self<vec<N, T>>::call(reinterpret_cast<vec<N, T>&>(*this), y);
+    }
 
-    template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, vec_traits_t<V>> && vec_traits_len<V> == N>>
-    struct minus;
+    CHTHOLLY_INLINE vec<N, T> operator/(const vec<N, T>& y) const noexcept
+    {
+        return detail::vec_opt_implement::div<vec<N, T>>::call(reinterpret_cast<const vec<N, T>&>(*this), y);
+    }
 
-    template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, vec_traits_t<V>> && vec_traits_len<V> == N>>
-    struct minus_to_self; 
+    CHTHOLLY_INLINE vec<N, T>& operator/=(const vec<N, T>& y) noexcept
+    {
+        return detail::vec_opt_implement::div_to_self<vec<N, T>>::call(reinterpret_cast<vec<N, T>&>(*this), y);
+    }
 
-    template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, vec_traits_t<V>> && vec_traits_len<V> == N>>
-    struct mul;
+    CHTHOLLY_INLINE vec<N, T> operator-() const noexcept
+    {
+        return detail::vec_opt_implement::opposite<vec<N, T>>::call(reinterpret_cast<const vec<N, T>&>(*this));
+    }
 
-    template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, vec_traits_t<V>> && vec_traits_len<V> == N>>
-    struct mul_to_self;
+    CHTHOLLY_INLINE vec<N, T> operator+(T scalar) const noexcept
+    {
+        return detail::vec_opt_implement::add_scalar<vec<N, T>>::call(reinterpret_cast<const vec<N, T>&>(*this), scalar);
+    }
 
-    template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, vec_traits_t<V>> && vec_traits_len<V> == N>>
-    struct div;
+    CHTHOLLY_INLINE vec<N, T>& operator+=(T scalar) noexcept
+    {
+        return detail::vec_opt_implement::add_scalar_to_self<vec<N, T>>::call(reinterpret_cast<vec<N, T>&>(*this), scalar);
+    }
 
-    template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, vec_traits_t<V>> && vec_traits_len<V> == N>>
-    struct div_to_self; 
+    friend CHTHOLLY_INLINE vec<N, T> operator+(T a, const vec<N, T>& x) noexcept 
+    { 
+        return x + a; 
+    }
 
-    template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, vec_traits_t<V>> && vec_traits_len<V> == N>>
-    struct opposite;
+    CHTHOLLY_INLINE vec<N, T> operator-(T scalar) const noexcept
+    {
+        return detail::vec_opt_implement::minus_scalar<vec<N, T>>::call(reinterpret_cast<const vec<N, T>&>(*this), scalar);
+    }
 
-    template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, vec_traits_t<V>> && vec_traits_len<V> == N>>
-    struct add_scalar;
+    CHTHOLLY_INLINE vec<N, T>& operator-=(T scalar) noexcept
+    {
+        return detail::vec_opt_implement::minus_scalar_to_self<vec<N, T>>::call(reinterpret_cast<vec<N, T>&>(*this), scalar);
+    }
 
-    template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, vec_traits_t<V>> && vec_traits_len<V> == N>>
-    struct add_scalar_to_self;  
+    CHTHOLLY_INLINE vec<N, T> operator*(T scalar) const noexcept
+    {
+        return detail::vec_opt_implement::mul_scalar<vec<N, T>>::call(reinterpret_cast<const vec<N, T>&>(*this), scalar);
+    }
 
-    template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, vec_traits_t<V>> && vec_traits_len<V> == N>>
-    struct minus_scalar;
+    CHTHOLLY_INLINE vec<N, T>& operator*=(T scalar) noexcept
+    {
+        return detail::vec_opt_implement::mul_scalar_to_self<vec<N, T>>::call(reinterpret_cast<vec<N, T>&>(*this), scalar);
+    }
 
-    template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, vec_traits_t<V>> && vec_traits_len<V> == N>>
-    struct minus_scalar_to_self;  
+    friend CHTHOLLY_INLINE vec<N, T> operator*(T a, const vec<N, T>& x) noexcept 
+    {
+        return x * a; 
+    }
+    
+    CHTHOLLY_INLINE vec<N, T> operator/(T scalar) const noexcept
+    {
+        return detail::vec_opt_implement::div_scalar<vec<N, T>>::call(reinterpret_cast<const vec<N, T>&>(*this), scalar);
+    }
 
-    template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, vec_traits_t<V>> && vec_traits_len<V> == N>>
-    struct mul_scalar;
-
-    template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, vec_traits_t<V>> && vec_traits_len<V> == N>>
-    struct mul_scalar_to_self;  
-
-    template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, vec_traits_t<V>> && vec_traits_len<V> == N>>
-    struct div_scalar;
-
-    template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, vec_traits_t<V>> && vec_traits_len<V> == N>>
-    struct div_scalar_to_self;
-
-    template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, vec_traits_t<V>> && vec_traits_len<V> == N>>
-    struct reduce_add;
-
-    template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, vec_traits_t<V>> && vec_traits_len<V> == N>>
-    struct reduce_min;
-
-    template<size_t N, typename T, class V, typename = std::enable_if_t<std::is_same_v<T, vec_traits_t<V>> && vec_traits_len<V> == N>>
-    struct reduce_max;
+    CHTHOLLY_INLINE vec<N, T>& operator/=(T scalar) noexcept
+    {
+        return detail::vec_opt_implement::div_scalar_to_self<vec<N, T>>::call(reinterpret_cast<vec<N, T>&>(*this), scalar);
+    }
 };
 
 }
-}
-
-#include "IVecOpt.inl"
-#include "IVecOptSimd.inl"
 #endif

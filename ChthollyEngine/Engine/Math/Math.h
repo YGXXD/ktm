@@ -5,7 +5,7 @@
 #include <simd/simd.h>
 #include "MathType/BaseType.h"
 #include "MathType/VecType.h"
-#include "Math/MathLib/VecLib.h"
+#include "Math/MathLib/VecGeometry.h"
 
 static inline simd_float4 t1(simd_float4 v)
 {
@@ -32,7 +32,7 @@ static void mathTest()
     ktl::double4 c = {10, 4, 10, 4};
     ktl::double4 d = {7, 10, 7, 10};
     auto ret = (a * b) / (c - d);
-
+    
     std::cout << ret.x << ", " << ret.y << ", " << ret.z << ", " << ret.w << std::endl;
 
     ret *= (a * b) / (c - d);
@@ -71,15 +71,18 @@ static void mathTest()
     std::cout << v[1] << "," << x.y << "," << kt.y << std::endl;
 
     std::cout << sizeof(ktm::fvec3) << std::endl;
-    ktm::fvec3 aaa = { 1, 2, 3.7 };
+    ktm::dvec3 aaa = { 1, 2, -3.7 };
     aaa = -(aaa + aaa);
-    aaa *= aaa + aaa;
-    ktm::fvec3 bbb(aaa); 
-    ktm::fvec3 ccc = aaa;
+    aaa *= -(aaa + aaa);
+    ktm::svec3 bbb(aaa); 
+    ktm::fvec3 ccc = static_cast<ktm::fvec3>(aaa) + 10.f;
     std::cout << ktm::distance(ktm::project(ktm::nomorlize(aaa), aaa), aaa) << ", " << ccc << ", " << static_cast<ktm::svec3>(aaa) << ", " << aaa << ", " << ((float*)&bbb)[3] << ", " << (std::abs(((float*)&bbb)[3]) < 1e-6) << std::endl;
     std::array<float, 3> arr = { 1, 2, 3 };
     std::initializer_list<int> pp = { 1, 2, 3, 4, 5};
-    std::cout << (&ccc.z)[1] << std::endl;
+    ktm::fvec1 pi = { 1.9f };
+    pi += pi;
+    
+    std::cout << ktm::clamp({1.1f, 55.f, -400.f}, {1.1f, 33.f, 400.f}, aaa) << std::endl;
     
 }
 

@@ -39,7 +39,7 @@ struct alignas(2 * sizeof(T)) IVecData<Father, vec<2, T>> : Father
 };
 
 template<class Father, typename T>
-struct alignas(sizeof(T) == 4 ? 4 * sizeof(T) : sizeof(T)) IVecData<Father, vec<3, T>> : Father
+struct alignas(sizeof(T) < 8 ? 4 * sizeof(T) : sizeof(T)) IVecData<Father, vec<3, T>> : Father
 {
     using Father::Father;
     union

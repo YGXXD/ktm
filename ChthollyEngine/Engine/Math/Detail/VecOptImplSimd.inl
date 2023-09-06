@@ -1,14 +1,16 @@
-#ifndef _I_VEC_OPT_SIMD_INL_
-#define _I_VEC_OPT_SIMD_INL_
+#ifndef _VEC_OPT_IMPL_SIMD_INL_
+#define _VEC_OPT_IMPL_SIMD_INL_
 
-#include "IVecOpt.h"
+#include "VecOptImpl.h"
+#include <Math/MathType/BaseType.h>
 
 #ifdef __ARM_NEON__
 #include <arm_neon.h>
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::add<N, std::enable_if_t<(N >= 2 && N <= 4), float>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::add<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), float>>>
 {
+    using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -24,9 +26,10 @@ struct ktm::detail::vec_opt_implement::add<N, std::enable_if_t<(N >= 2 && N <= 4
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::add_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), float>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::add_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), float>>>
 {
+    using V = vec<N, float>;
     static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -43,9 +46,10 @@ struct ktm::detail::vec_opt_implement::add_to_self<N, std::enable_if_t<(N >= 2 &
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::minus<N, std::enable_if_t<(N >= 2 && N <= 4), float>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::minus<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), float>>>
 {
+    using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -61,9 +65,10 @@ struct ktm::detail::vec_opt_implement::minus<N, std::enable_if_t<(N >= 2 && N <=
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::minus_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), float>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::minus_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), float>>>
 {
+    using V = vec<N, float>;
     static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -80,9 +85,10 @@ struct ktm::detail::vec_opt_implement::minus_to_self<N, std::enable_if_t<(N >= 2
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::mul<N, std::enable_if_t<(N >= 2 && N <= 4), float>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::mul<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), float>>>
 {
+    using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -98,9 +104,10 @@ struct ktm::detail::vec_opt_implement::mul<N, std::enable_if_t<(N >= 2 && N <= 4
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::mul_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), float>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::mul_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), float>>>
 {
+    using V = vec<N, float>;
     static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -117,9 +124,10 @@ struct ktm::detail::vec_opt_implement::mul_to_self<N, std::enable_if_t<(N >= 2 &
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::div<N, std::enable_if_t<(N >= 2 && N <= 4), float>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::div<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), float>>>
 {
+    using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -135,9 +143,10 @@ struct ktm::detail::vec_opt_implement::div<N, std::enable_if_t<(N >= 2 && N <= 4
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::div_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), float>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::div_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), float>>>
 {
+    using V = vec<N, float>;
     static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -154,9 +163,10 @@ struct ktm::detail::vec_opt_implement::div_to_self<N, std::enable_if_t<(N >= 2 &
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::opposite<N, std::enable_if_t<(N >= 2 && N <= 4), float>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::opposite<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), float>>>
 {
+    using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
         if constexpr(N == 2)
@@ -172,9 +182,10 @@ struct ktm::detail::vec_opt_implement::opposite<N, std::enable_if_t<(N >= 2 && N
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::add_scalar<N, std::enable_if_t<(N >= 2 && N <= 4), float>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::add_scalar<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), float>>>
 {
+    using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x, float scalar) noexcept
     {
         if constexpr(N == 2)
@@ -191,9 +202,10 @@ struct ktm::detail::vec_opt_implement::add_scalar<N, std::enable_if_t<(N >= 2 &&
 
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::add_scalar_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), float>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::add_scalar_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), float>>>
 {
+    using V = vec<N, float>;
     static CHTHOLLY_INLINE V& call(V& x, float scalar) noexcept
     {
         if constexpr(N == 2)
@@ -210,9 +222,10 @@ struct ktm::detail::vec_opt_implement::add_scalar_to_self<N, std::enable_if_t<(N
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::minus_scalar<N, std::enable_if_t<(N >= 2 && N <= 4), float>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::minus_scalar<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), float>>>
 {
+    using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x, float scalar) noexcept
     {
         if constexpr(N == 2)
@@ -228,9 +241,10 @@ struct ktm::detail::vec_opt_implement::minus_scalar<N, std::enable_if_t<(N >= 2 
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::minus_scalar_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), float>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::minus_scalar_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), float>>>
 {
+    using V = vec<N, float>;
     static CHTHOLLY_INLINE V& call(V& x, float scalar) noexcept
     {
         if constexpr(N == 2)
@@ -247,9 +261,10 @@ struct ktm::detail::vec_opt_implement::minus_scalar_to_self<N, std::enable_if_t<
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::mul_scalar<N, std::enable_if_t<(N >= 2 && N <= 4), float>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::mul_scalar<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), float>>>
 {
+    using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x, float scalar) noexcept
     {
         if constexpr(N == 2)
@@ -265,9 +280,10 @@ struct ktm::detail::vec_opt_implement::mul_scalar<N, std::enable_if_t<(N >= 2 &&
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::mul_scalar_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), float>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::mul_scalar_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), float>>>
 {
+    using V = vec<N, float>;
     static CHTHOLLY_INLINE V& call(V& x, float scalar) noexcept
     {
         if constexpr(N == 2)
@@ -284,9 +300,10 @@ struct ktm::detail::vec_opt_implement::mul_scalar_to_self<N, std::enable_if_t<(N
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::div_scalar<N, std::enable_if_t<(N >= 2 && N <= 4), float>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::div_scalar<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), float>>>
 {
+    using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x, float scalar) noexcept
     {   
         if constexpr(N == 2)
@@ -302,9 +319,10 @@ struct ktm::detail::vec_opt_implement::div_scalar<N, std::enable_if_t<(N >= 2 &&
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::div_scalar_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), float>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::div_scalar_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), float>>>
 {
+    using V = vec<N, float>;
     static CHTHOLLY_INLINE V& call(V& x, float scalar) noexcept
     {
         if constexpr(N == 2)
@@ -321,9 +339,10 @@ struct ktm::detail::vec_opt_implement::div_scalar_to_self<N, std::enable_if_t<(N
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::add<N, std::enable_if_t<(N >= 2 && N <= 4), int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::add<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), int>>>
 {
+    using V = vec<N, int>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -339,9 +358,10 @@ struct ktm::detail::vec_opt_implement::add<N, std::enable_if_t<(N >= 2 && N <= 4
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::add_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::add_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), int>>>
 {
+    using V = vec<N, int>;
     static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -358,9 +378,10 @@ struct ktm::detail::vec_opt_implement::add_to_self<N, std::enable_if_t<(N >= 2 &
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::minus<N, std::enable_if_t<(N >= 2 && N <= 4), int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::minus<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), int>>>
 {
+    using V = vec<N, int>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -376,9 +397,10 @@ struct ktm::detail::vec_opt_implement::minus<N, std::enable_if_t<(N >= 2 && N <=
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::minus_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::minus_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), int>>>
 {
+    using V = vec<N, int>;
     static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -395,9 +417,10 @@ struct ktm::detail::vec_opt_implement::minus_to_self<N, std::enable_if_t<(N >= 2
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::mul<N, std::enable_if_t<(N >= 2 && N <= 4), int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::mul<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), int>>>
 {
+    using V = vec<N, int>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -413,9 +436,10 @@ struct ktm::detail::vec_opt_implement::mul<N, std::enable_if_t<(N >= 2 && N <= 4
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::mul_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::mul_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), int>>>
 {
+    using V = vec<N, int>;
     static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -432,9 +456,10 @@ struct ktm::detail::vec_opt_implement::mul_to_self<N, std::enable_if_t<(N >= 2 &
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::opposite<N, std::enable_if_t<(N >= 2 && N <= 4), int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::opposite<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), int>>>
 {
+    using V = vec<N, int>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
         if constexpr(N == 2)
@@ -450,9 +475,10 @@ struct ktm::detail::vec_opt_implement::opposite<N, std::enable_if_t<(N >= 2 && N
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::add_scalar<N, std::enable_if_t<(N >= 2 && N <= 4), int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::add_scalar<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), int>>>
 {
+    using V = vec<N, int>;
     static CHTHOLLY_INLINE V call(const V& x, int scalar) noexcept
     {
         if constexpr(N == 2)
@@ -469,9 +495,10 @@ struct ktm::detail::vec_opt_implement::add_scalar<N, std::enable_if_t<(N >= 2 &&
 
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::add_scalar_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::add_scalar_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), int>>>
 {
+    using V = vec<N, int>;
     static CHTHOLLY_INLINE V& call(V& x, int scalar) noexcept
     {
         if constexpr(N == 2)
@@ -488,9 +515,10 @@ struct ktm::detail::vec_opt_implement::add_scalar_to_self<N, std::enable_if_t<(N
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::minus_scalar<N, std::enable_if_t<(N >= 2 && N <= 4), int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::minus_scalar<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), int>>>
 {
+    using V = vec<N, int>;
     static CHTHOLLY_INLINE V call(const V& x, int scalar) noexcept
     {
         if constexpr(N == 2)
@@ -506,9 +534,10 @@ struct ktm::detail::vec_opt_implement::minus_scalar<N, std::enable_if_t<(N >= 2 
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::minus_scalar_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::minus_scalar_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), int>>>
 {
+    using V = vec<N, int>;
     static CHTHOLLY_INLINE V& call(V& x, int scalar) noexcept
     {
         if constexpr(N == 2)
@@ -525,9 +554,10 @@ struct ktm::detail::vec_opt_implement::minus_scalar_to_self<N, std::enable_if_t<
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::mul_scalar<N, std::enable_if_t<(N >= 2 && N <= 4), int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::mul_scalar<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), int>>>
 {
+    using V = vec<N, int>;
     static CHTHOLLY_INLINE V call(const V& x, int scalar) noexcept
     {
         if constexpr(N == 2)
@@ -543,9 +573,10 @@ struct ktm::detail::vec_opt_implement::mul_scalar<N, std::enable_if_t<(N >= 2 &&
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::mul_scalar_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::mul_scalar_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), int>>>
 {
+    using V = vec<N, int>;
     static CHTHOLLY_INLINE V& call(V& x, int scalar) noexcept
     {
         if constexpr(N == 2)
@@ -563,9 +594,10 @@ struct ktm::detail::vec_opt_implement::mul_scalar_to_self<N, std::enable_if_t<(N
 };
 
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::add<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::add<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>>>
 {
+    using V = vec<N, unsigned int>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -581,9 +613,10 @@ struct ktm::detail::vec_opt_implement::add<N, std::enable_if_t<(N >= 2 && N <= 4
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::add_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::add_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>>>
 {
+    using V = vec<N, unsigned int>;
     static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -600,9 +633,10 @@ struct ktm::detail::vec_opt_implement::add_to_self<N, std::enable_if_t<(N >= 2 &
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::minus<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::minus<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>>>
 {
+    using V = vec<N, unsigned int>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -618,9 +652,10 @@ struct ktm::detail::vec_opt_implement::minus<N, std::enable_if_t<(N >= 2 && N <=
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::minus_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::minus_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>>>
 {
+    using V = vec<N, unsigned int>;
     static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -637,9 +672,10 @@ struct ktm::detail::vec_opt_implement::minus_to_self<N, std::enable_if_t<(N >= 2
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::mul<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::mul<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>>>
 {
+    using V = vec<N, unsigned int>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -655,9 +691,10 @@ struct ktm::detail::vec_opt_implement::mul<N, std::enable_if_t<(N >= 2 && N <= 4
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::mul_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::mul_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>>>
 {
+    using V = vec<N, unsigned int>;
     static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -674,9 +711,10 @@ struct ktm::detail::vec_opt_implement::mul_to_self<N, std::enable_if_t<(N >= 2 &
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::add_scalar<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::add_scalar<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>>>
 {
+    using V = vec<N, unsigned int>;
     static CHTHOLLY_INLINE V call(const V& x, unsigned int scalar) noexcept
     {
         if constexpr(N == 2)
@@ -693,9 +731,10 @@ struct ktm::detail::vec_opt_implement::add_scalar<N, std::enable_if_t<(N >= 2 &&
 
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::add_scalar_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::add_scalar_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>>>
 {
+    using V = vec<N, unsigned int>;
     static CHTHOLLY_INLINE V& call(V& x, unsigned int scalar) noexcept
     {
         if constexpr(N == 2)
@@ -712,9 +751,10 @@ struct ktm::detail::vec_opt_implement::add_scalar_to_self<N, std::enable_if_t<(N
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::minus_scalar<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::minus_scalar<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>>>
 {
+    using V = vec<N, unsigned int>;
     static CHTHOLLY_INLINE V call(const V& x, unsigned int scalar) noexcept
     {
         if constexpr(N == 2)
@@ -730,9 +770,10 @@ struct ktm::detail::vec_opt_implement::minus_scalar<N, std::enable_if_t<(N >= 2 
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::minus_scalar_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::minus_scalar_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>>>
 {
+    using V = vec<N, unsigned int>;
     static CHTHOLLY_INLINE V& call(V& x, unsigned int scalar) noexcept
     {
         if constexpr(N == 2)
@@ -749,9 +790,10 @@ struct ktm::detail::vec_opt_implement::minus_scalar_to_self<N, std::enable_if_t<
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::mul_scalar<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::mul_scalar<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>>>
 {
+    using V = vec<N, unsigned int>;
     static CHTHOLLY_INLINE V call(const V& x, unsigned int scalar) noexcept
     {
         if constexpr(N == 2)
@@ -767,9 +809,10 @@ struct ktm::detail::vec_opt_implement::mul_scalar<N, std::enable_if_t<(N >= 2 &&
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::mul_scalar_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::mul_scalar_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>>>
 {
+    using V = vec<N, unsigned int>;
     static CHTHOLLY_INLINE V& call(V& x, unsigned int scalar) noexcept
     {
         if constexpr(N == 2)
@@ -786,9 +829,10 @@ struct ktm::detail::vec_opt_implement::mul_scalar_to_self<N, std::enable_if_t<(N
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::add<N, std::enable_if_t<(N >= 2 && N <= 4), double>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::add<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), double>>>
 {
+    using V = vec<N, double>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -817,9 +861,10 @@ struct ktm::detail::vec_opt_implement::add<N, std::enable_if_t<(N >= 2 && N <= 4
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::add_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), double>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::add_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), double>>>
 {
+    using V = vec<N, double>;
     static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -845,9 +890,10 @@ struct ktm::detail::vec_opt_implement::add_to_self<N, std::enable_if_t<(N >= 2 &
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::minus<N, std::enable_if_t<(N >= 2 && N <= 4), double>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::minus<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), double>>>
 {
+    using V = vec<N, double>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -876,9 +922,10 @@ struct ktm::detail::vec_opt_implement::minus<N, std::enable_if_t<(N >= 2 && N <=
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::minus_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), double>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::minus_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), double>>>
 {
+    using V = vec<N, double>;
     static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -904,9 +951,10 @@ struct ktm::detail::vec_opt_implement::minus_to_self<N, std::enable_if_t<(N >= 2
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::mul<N, std::enable_if_t<(N >= 2 && N <= 4), double>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::mul<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), double>>>
 {
+    using V = vec<N, double>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -935,9 +983,10 @@ struct ktm::detail::vec_opt_implement::mul<N, std::enable_if_t<(N >= 2 && N <= 4
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::mul_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), double>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::mul_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), double>>>
 {
+    using V = vec<N, double>;
     static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -963,9 +1012,10 @@ struct ktm::detail::vec_opt_implement::mul_to_self<N, std::enable_if_t<(N >= 2 &
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::div<N, std::enable_if_t<(N >= 2 && N <= 4), double>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::div<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), double>>>
 {
+    using V = vec<N, double>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -994,9 +1044,10 @@ struct ktm::detail::vec_opt_implement::div<N, std::enable_if_t<(N >= 2 && N <= 4
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::div_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), double>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::div_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), double>>>
 {
+    using V = vec<N, double>;
     static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
@@ -1022,9 +1073,10 @@ struct ktm::detail::vec_opt_implement::div_to_self<N, std::enable_if_t<(N >= 2 &
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::opposite<N, std::enable_if_t<(N >= 2 && N <= 4), double>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::opposite<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), double>>>
 {
+    using V = vec<N, double>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
         if constexpr(N == 2)
@@ -1053,9 +1105,10 @@ struct ktm::detail::vec_opt_implement::opposite<N, std::enable_if_t<(N >= 2 && N
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::add_scalar<N, std::enable_if_t<(N >= 2 && N <= 4), double>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::add_scalar<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), double>>>
 {
+    using V = vec<N, double>;
     static CHTHOLLY_INLINE V call(const V& x, double scalar) noexcept
     {
         if constexpr(N == 2)
@@ -1084,9 +1137,10 @@ struct ktm::detail::vec_opt_implement::add_scalar<N, std::enable_if_t<(N >= 2 &&
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::add_scalar_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), double>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::add_scalar_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), double>>>
 {
+    using V = vec<N, double>;
     static CHTHOLLY_INLINE V& call(V& x, double scalar) noexcept
     {
         if constexpr(N == 2)
@@ -1112,9 +1166,10 @@ struct ktm::detail::vec_opt_implement::add_scalar_to_self<N, std::enable_if_t<(N
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::minus_scalar<N, std::enable_if_t<(N >= 2 && N <= 4), double>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::minus_scalar<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), double>>>
 {
+    using V = vec<N, double>;
     static CHTHOLLY_INLINE V call(const V& x, double scalar) noexcept
     {
         if constexpr(N == 2)
@@ -1143,9 +1198,10 @@ struct ktm::detail::vec_opt_implement::minus_scalar<N, std::enable_if_t<(N >= 2 
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::minus_scalar_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), double>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::minus_scalar_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), double>>>
 {
+    using V = vec<N, double>;
     static CHTHOLLY_INLINE V& call(V& x, double scalar) noexcept
     {
         if constexpr(N == 2)
@@ -1171,9 +1227,10 @@ struct ktm::detail::vec_opt_implement::minus_scalar_to_self<N, std::enable_if_t<
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::mul_scalar<N, std::enable_if_t<(N >= 2 && N <= 4), double>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::mul_scalar<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), double>>>
 {
+    using V = vec<N, double>;
     static CHTHOLLY_INLINE V call(const V& x, double scalar) noexcept
     {
         if constexpr(N == 2)
@@ -1202,9 +1259,10 @@ struct ktm::detail::vec_opt_implement::mul_scalar<N, std::enable_if_t<(N >= 2 &&
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::mul_scalar_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), double>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::mul_scalar_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), double>>>
 {
+    using V = vec<N, double>;
     static CHTHOLLY_INLINE V& call(V& x, double scalar) noexcept
     {
         if constexpr(N == 2)
@@ -1230,9 +1288,10 @@ struct ktm::detail::vec_opt_implement::mul_scalar_to_self<N, std::enable_if_t<(N
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::div_scalar<N, std::enable_if_t<(N >= 2 && N <= 4), double>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::div_scalar<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), double>>>
 {
+    using V = vec<N, double>;
     static CHTHOLLY_INLINE V call(const V& x, double scalar) noexcept
     {   
         if constexpr(N == 2)
@@ -1261,9 +1320,10 @@ struct ktm::detail::vec_opt_implement::div_scalar<N, std::enable_if_t<(N >= 2 &&
     }
 };
 
-template<size_t N, class V>
-struct ktm::detail::vec_opt_implement::div_scalar_to_self<N, std::enable_if_t<(N >= 2 && N <= 4), double>, V>
+template<size_t N>
+struct ktm::detail::vec_opt_implement::div_scalar_to_self<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), double>>>
 {
+    using V = vec<N, double>;
     static CHTHOLLY_INLINE V& call(V& x, float scalar) noexcept
     {
         if constexpr(N == 2)

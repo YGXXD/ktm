@@ -7,23 +7,25 @@ namespace ktm
 {
 
 template<class Father, class Child>
-struct IArray : Father
+struct IArray;
+
+template<class Father, size_t N, typename T>
+struct IArray<Father, vec<N, T>> : Father
 {
     using Father::Father;
-    using value_type = vec_traits_t<Child>;
-    static constexpr size_t len = vec_traits_len<Child>;
-    using array_type = std::array<value_type, len>;
+    using array_type = std::array<T, N>;
+    using value_type = typename array_type::value_type;
 
     template<size_t Index> 
-    CHTHOLLY_INLINE value_type get() const noexcept { static_assert(Index < len); return reinterpret_cast<const value_type*>(this)[Index]; }
+    CHTHOLLY_INLINE value_type get() const noexcept { static_assert(Index < N); return reinterpret_cast<const value_type*>(this)[Index]; }
     template<size_t Index> 
-    CHTHOLLY_INLINE void set(value_type v) noexcept { static_assert(Index < len); reinterpret_cast<value_type*>(this)[Index] = v; }
+    CHTHOLLY_INLINE void set(value_type v) noexcept { static_assert(Index < N); reinterpret_cast<value_type*>(this)[Index] = v; }
 
     CHTHOLLY_INLINE array_type& to_array() noexcept { return reinterpret_cast<array_type&>(*this); }
     CHTHOLLY_INLINE const array_type& to_array() const noexcept { return reinterpret_cast<const array_type&>(*this); }
 
     CHTHOLLY_INLINE void fill(value_type v) noexcept { to_array().fill(v); };
-    CHTHOLLY_INLINE void swap(Child& other) noexcept { to_array().swap(other.to_array()); }
+    CHTHOLLY_INLINE void swap(vec<N, T>& other) noexcept { to_array().swap(other.to_array()); }
 
     CHTHOLLY_INLINE typename array_type::iterator begin() noexcept { return to_array().begin(); }
     CHTHOLLY_INLINE typename array_type::const_iterator begin() const noexcept { return to_array().begin(); }
@@ -40,8 +42,8 @@ struct IArray : Father
     CHTHOLLY_INLINE typename array_type::const_reverse_iterator crbegin() const noexcept { return rbegin(); }
     CHTHOLLY_INLINE typename array_type::const_reverse_iterator crend() const noexcept { return rend(); }
 
-    constexpr size_t size() const noexcept { return len; }
-    constexpr size_t max_size() const noexcept { return len; }
+    constexpr size_t size() const noexcept { return N; }
+    constexpr size_t max_size() const noexcept { return N; }
     constexpr bool empty() const noexcept { return false; }
 
     CHTHOLLY_INLINE typename array_type::reference at(size_t i) { return to_array().at(i); }
@@ -56,13 +58,13 @@ struct IArray : Father
 
     CHTHOLLY_INLINE typename array_type::reference operator[](size_t i) noexcept { return to_array()[i]; }
     CHTHOLLY_INLINE typename array_type::const_reference operator[](size_t i) const noexcept { return to_array()[i]; }
-    CHTHOLLY_INLINE bool operator==(const Child& y) const noexcept { return to_array() == y.to_array(); }
-    CHTHOLLY_INLINE bool operator!=(const Child& y) const noexcept { return to_array() != y.to_array(); }
-    CHTHOLLY_INLINE bool operator< (const Child& y) const noexcept { return to_array() <  y.to_array(); }
-    CHTHOLLY_INLINE bool operator> (const Child& y) const noexcept { return to_array() >  y.to_array(); }
-    CHTHOLLY_INLINE bool operator<=(const Child& y) const noexcept { return to_array() <= y.to_array(); }
-    CHTHOLLY_INLINE bool operator>=(const Child& y) const noexcept { return to_array() >= y.to_array(); }
-    friend CHTHOLLY_INLINE std::ostream& operator<<(std::ostream& o, const Child& x) 
+    CHTHOLLY_INLINE bool operator==(const vec<N, T>& y) const noexcept { return to_array() == y.to_array(); }
+    CHTHOLLY_INLINE bool operator!=(const vec<N, T>& y) const noexcept { return to_array() != y.to_array(); }
+    CHTHOLLY_INLINE bool operator< (const vec<N, T>& y) const noexcept { return to_array() <  y.to_array(); }
+    CHTHOLLY_INLINE bool operator> (const vec<N, T>& y) const noexcept { return to_array() >  y.to_array(); }
+    CHTHOLLY_INLINE bool operator<=(const vec<N, T>& y) const noexcept { return to_array() <= y.to_array(); }
+    CHTHOLLY_INLINE bool operator>=(const vec<N, T>& y) const noexcept { return to_array() >= y.to_array(); }
+    friend CHTHOLLY_INLINE std::ostream& operator<<(std::ostream& o, const vec<N, T>& x) 
     {
         auto it = x.begin();
         for(; it != x.end() - 1; ++it)
@@ -70,7 +72,7 @@ struct IArray : Father
         o << *it;
         return o;
     }
-    friend CHTHOLLY_INLINE std::istream& operator>>(std::istream& i, const Child& x) 
+    friend CHTHOLLY_INLINE std::istream& operator>>(std::istream& i, const vec<N, T>& x) 
     {
         for(auto it = x.begin(); it != x.end(); ++it)
             i >> *it;

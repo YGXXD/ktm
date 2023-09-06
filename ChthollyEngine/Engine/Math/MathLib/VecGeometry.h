@@ -1,14 +1,15 @@
-#ifndef _VEC_LIB_H_
-#define _VEC_LIB_H_
+#ifndef _VEC_GEOMETRY_H_
+#define _VEC_GEOMETRY_H_
 
 #include "Math/MathType/VecType.h"
+#include "Math/MathLib/VecCommon.h"
 
 namespace ktm
 {
     template<class V>
     static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<vec_traits_t<V>>, vec_traits_t<V>> dot(const V& x, const V& y)
     {
-        return (x * y).get_sum(); 
+        return reduce_add(x * y); 
     }
 
     template<class V>
