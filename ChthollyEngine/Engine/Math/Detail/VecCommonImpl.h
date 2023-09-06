@@ -27,6 +27,12 @@ struct max;
 
 template<class V>
 struct clamp;
+
+template<class V>
+struct lerp;
+
+template<class V>
+struct mix;
 }
 }
 }

@@ -48,6 +48,18 @@ namespace ktm
     {
         return detail::vec_common_implement::clamp<V>::call(min, max, v);
     }
+
+    template<class V>
+    static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<vec_traits_t<V>>, V> lerp(const V& x, const V& y, vec_traits_t<V> t)
+    {
+        return detail::vec_common_implement::lerp<V>::call(x, y, t);
+    }
+
+    template<class V>
+    static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<vec_traits_t<V>>, V> mix(const V& x, const V& y, const V& t)
+    {
+        return detail::vec_common_implement::mix<V>::call(x, y, t);
+    }
 }   
 
 #endif

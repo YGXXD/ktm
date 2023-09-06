@@ -142,4 +142,42 @@ private:
     }
 };
 
+template<class V>
+struct ktm::detail::vec_common_implement::lerp
+{
+    using T = vec_traits_t<V>;
+    static_assert(std::is_floating_point_v<T>);
+    static CHTHOLLY_INLINE V call(const V& x, const V& y, T t) noexcept
+    {
+        return call(x, y, t, std::make_index_sequence<vec_traits_len<V>>());
+    }
+private:
+    template<size_t ...Ns>
+    static CHTHOLLY_INLINE V call(const V& x, const V& y, T t, std::index_sequence<Ns...>) noexcept
+    {
+        V ret;
+        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::lerp<T>(reinterpret_cast<const T*>(&x)[Ns], reinterpret_cast<const T*>(&y)[Ns], t)), ...);
+        return ret;
+    }
+};
+
+template<class V>
+struct ktm::detail::vec_common_implement::mix
+{
+    using T = vec_traits_t<V>;
+    static_assert(std::is_floating_point_v<T>);
+    static CHTHOLLY_INLINE V call(const V& x, const V& y, const V& t) noexcept
+    {
+        return call(x, y, t, std::make_index_sequence<vec_traits_len<V>>());
+    }
+private:
+    template<size_t ...Ns>
+    static CHTHOLLY_INLINE V call(const V& x, const V& y, const V& t, std::index_sequence<Ns...>) noexcept
+    {
+        V ret;
+        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::lerp<T>(reinterpret_cast<const T*>(&x)[Ns], reinterpret_cast<const T*>(&y)[Ns], reinterpret_cast<const T*>(&t)[Ns])), ...);
+        return ret;
+    }
+};
+
 #endif
