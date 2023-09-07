@@ -156,7 +156,7 @@ private:
     static CHTHOLLY_INLINE V call(const V& x, const V& y, T t, std::index_sequence<Ns...>) noexcept
     {
         V ret;
-        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::lerp<T>(reinterpret_cast<const T*>(&x)[Ns], reinterpret_cast<const T*>(&y)[Ns], t)), ...);
+        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::mix<T>(reinterpret_cast<const T*>(&x)[Ns], reinterpret_cast<const T*>(&y)[Ns], t)), ...);
         return ret;
     }
 };
@@ -175,7 +175,7 @@ private:
     static CHTHOLLY_INLINE V call(const V& x, const V& y, const V& t, std::index_sequence<Ns...>) noexcept
     {
         V ret;
-        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::lerp<T>(reinterpret_cast<const T*>(&x)[Ns], reinterpret_cast<const T*>(&y)[Ns], reinterpret_cast<const T*>(&t)[Ns])), ...);
+        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::mix<T>(reinterpret_cast<const T*>(&x)[Ns], reinterpret_cast<const T*>(&y)[Ns], reinterpret_cast<const T*>(&t)[Ns])), ...);
         return ret;
     }
 };

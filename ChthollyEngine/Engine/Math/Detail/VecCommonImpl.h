@@ -39,6 +39,7 @@ struct recip;
 
 template<class V>
 struct rsqrt;
+
 }
 }
 }

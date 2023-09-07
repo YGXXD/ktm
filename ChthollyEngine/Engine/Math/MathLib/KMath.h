@@ -1,7 +1,7 @@
 #ifndef _K_MATH_H_
 #define _K_MATH_H_
 
-#include "Chtholly.h"
+#include "Math/MathType/BaseType.h"
 
 namespace ktm
 {
@@ -30,7 +30,7 @@ namespace ktm
     }
 
     template<typename T>
-    static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> lerp(T x, T y, T t)
+    static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> mix(T x, T y, T t)
     {
         return x + t * (y - x);
     }
@@ -59,6 +59,12 @@ namespace ktm
         // a = a * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * a * a));
             
         return a;
+    }
+
+    template<typename T>
+    static CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> step(T edge, T x)
+    {
+        return x < edge ? one<T> : zero<T>;
     }
 }
 
