@@ -51,7 +51,7 @@ namespace ktm
     template<class V>
     static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<vec_traits_t<V>>, V> nomorlize(const V& x)
     {
-        return 1 / length(x) * x;
+        return rsqrt(length_squared(x)) * x;
     }
 
     template<class V>

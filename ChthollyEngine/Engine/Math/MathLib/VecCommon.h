@@ -60,6 +60,12 @@ namespace ktm
     {
         return detail::vec_common_implement::mix<V>::call(x, y, t);
     }
+
+    template<class V>
+    static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<vec_traits_t<V>>, V> recip(const V& x)
+    {
+        return detail::vec_common_implement::recip<V>::call(x);
+    } 
 }   
 
 #endif

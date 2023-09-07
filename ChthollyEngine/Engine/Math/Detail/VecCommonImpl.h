@@ -33,6 +33,12 @@ struct lerp;
 
 template<class V>
 struct mix;
+
+template<class V>
+struct recip;
+
+template<class V>
+struct rsqrt;
 }
 }
 }
