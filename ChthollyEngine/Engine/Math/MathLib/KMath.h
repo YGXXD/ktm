@@ -38,27 +38,33 @@ static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> mix(T x,
 template<typename T>
 static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> rsqrt(T x)
 {
-    using integral_type = std::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
-    T a = x;
-    integral_type i = *reinterpret_cast<integral_type*>(&a);
+    if constexpr(std::is_same_v<T, long double>)
+    {
+        return one<long double> / ::sqrtl(x);
+    }
+    else
+    {
+        using integral_type = std::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
+        integral_type i = *reinterpret_cast<const integral_type*>(&x);
 
-    //原算法u的值为0.0450465
-    if constexpr(std::is_same_v<integral_type, unsigned int>)
-    {
-        i = 0x5f3759df - (i >> 1);
-    }
-    else // std::is_same_v<integral_type, unsigned long long> 
-    {
-        i = 0x5fe6eb3bfb58d152 - (i >> 1);
-    }
-    //求出平方根倒数近似解
-    a = *reinterpret_cast<T*>(&i); 
-    
-    //用牛顿迭代法进行迭代增加精度
-    a = a * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * a * a));
-    // a = a * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * a * a));
+        //原算法u的值为0.0450465
+        if constexpr(std::is_same_v<integral_type, unsigned int>)
+        {
+            i = 0x5f3759df - (i >> 1);
+        }
+        else // std::is_same_v<integral_type, unsigned long long> 
+        {
+            i = 0x5fe6eb3bfb58d152 - (i >> 1);
+        }
+        //求出平方根倒数近似解
+        T ret = *reinterpret_cast<T*>(&i); 
         
-    return a;
+        //用牛顿迭代法进行迭代增加精度
+        ret = ret * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * ret * ret));
+        // a = a * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * a * a));
+            
+        return ret;
+    }
 }
 
 template<typename T>
@@ -74,40 +80,39 @@ static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> smoothst
     return tmp * tmp * (static_cast<T>(3) - static_cast<T>(2) * tmp);
 }
 
-// template<typename T>
-// static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> floor(T x)
-// {
-//     using logic_type = std::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
-//     if constexpr(std::is_same_v<T, float>)
-//     {
-//         int exp = (*reinterpret_cast<logic_type*>(&x) & 0x7f800000) >> 23;
-//     }
-//     else // std::is_same_v<T, double>  
-//     {
-//         int exp = ((*reinterpret_cast<logic_type*>(&x) & 0x7ff0000000000000) >> 52) - 1023;
-//         if(exp < 0)
-//         {
-//             return exp < 0 ? -one<T> : zero<T>;
-//         }
-//         else if(exp > 52)
-//         {
-//             return x;
-//         }
-//         else 
-//         {
-//             logic_type mask = 0x000fffffffffffff >> exp;
-//             if((*reinterpret_cast<logic_type*>(&x) & mask) == 0)
-//             {
-//                 return x;
-//             }
-//             else 
-//             {
-//                 logic_type ret = *reinterpret_cast<logic_type*>(&x) & (~mask);
-//                 return *reinterpret_cast<T*>(&ret) - step(zero<T>, x);
-//             } 
-//         }
-//     }
-// }
+template<typename T>
+static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> floor(T x)
+{
+    if constexpr(std::is_same_v<T, float>)
+        return ::floorf(x);
+    else if constexpr(std::is_same_v<T, double>)
+        return ::floor(x);
+    else 
+        return ::floorl(x);
+}
+
+template<typename T>
+static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> ceil(T x)
+{
+    if constexpr(std::is_same_v<T, float>)
+        return ::ceilf(x);
+    else if constexpr(std::is_same_v<T, double>)
+        return ::ceil(x);
+    else 
+        return ::ceill(x);
+}
+
+template<typename T>
+static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> round(T x)
+{
+    if constexpr(std::is_same_v<T, float>)
+        return ::roundf(x);
+    else if constexpr(std::is_same_v<T, double>)
+        return ::round(x);
+    else 
+        return ::roundl(x);
+}
+
 }
 
 #endif

@@ -256,4 +256,61 @@ private:
     }
 };
 
+template<class V>
+struct ktm::detail::vec_common_implement::floor
+{
+    using T = vec_traits_t<V>;
+    static_assert(std::is_floating_point_v<T>);
+    static CHTHOLLY_INLINE V call(const V& x) noexcept
+    {
+        return call(x, std::make_index_sequence<vec_traits_len<V>>());
+    }
+private:
+    template<size_t ...Ns>
+    static CHTHOLLY_INLINE V call(const V& x, std::index_sequence<Ns...>) noexcept
+    {
+        V ret;
+        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::floor<T>(reinterpret_cast<const T*>(&x)[Ns])), ...);
+        return ret;
+    }
+};
+
+template<class V>
+struct ktm::detail::vec_common_implement::ceil
+{
+    using T = vec_traits_t<V>;
+    static_assert(std::is_floating_point_v<T>);
+    static CHTHOLLY_INLINE V call(const V& x) noexcept
+    {
+        return call(x, std::make_index_sequence<vec_traits_len<V>>());
+    }
+private:
+    template<size_t ...Ns>
+    static CHTHOLLY_INLINE V call(const V& x, std::index_sequence<Ns...>) noexcept
+    {
+        V ret;
+        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::ceil<T>(reinterpret_cast<const T*>(&x)[Ns])), ...);
+        return ret;
+    }
+};
+
+template<class V>
+struct ktm::detail::vec_common_implement::round
+{
+    using T = vec_traits_t<V>;
+    static_assert(std::is_floating_point_v<T>);
+    static CHTHOLLY_INLINE V call(const V& x) noexcept
+    {
+        return call(x, std::make_index_sequence<vec_traits_len<V>>());
+    }
+private:
+    template<size_t ...Ns>
+    static CHTHOLLY_INLINE V call(const V& x, std::index_sequence<Ns...>) noexcept
+    {
+        V ret;
+        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::round<T>(reinterpret_cast<const T*>(&x)[Ns])), ...);
+        return ret;
+    }
+};
+
 #endif
