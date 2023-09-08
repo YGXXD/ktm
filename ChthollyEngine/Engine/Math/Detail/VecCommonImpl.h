@@ -40,6 +40,12 @@ struct recip;
 template<class V>
 struct rsqrt;
 
+template<class V>
+struct step;
+
+template<class V>
+struct smoothstep;
+
 }
 }
 }

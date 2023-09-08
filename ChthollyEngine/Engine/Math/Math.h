@@ -37,7 +37,7 @@ static void mathTest()
 
     ret *= (a * b) / (c - d);
     std::cout << ret.x << ", " << ret.y << ", " << ret.z << ", " << ret.w << std::endl;
-
+    
     clock_t start1;
     clock_t start2;
     clock_t end1;
@@ -81,9 +81,8 @@ static void mathTest()
     std::initializer_list<int> pp = { 1, 2, 3, 4, 5};
     ktm::fvec1 pi = { 1.9f };
     pi += pi;
-    
-    std::cout << ktm::clamp({1.1f, 55.f, -400.f}, {1.1f, 33.f, 400.f}, aaa) << std::endl;
-    
+    std::cout << ktm::clamp(aaa,{1.1f, 55.f, -400.f}, {1.1f, 33.f, 400.f}) << std::endl;
+    std::cout << std::floor(9989908098098509808.29479274f) << std::endl;
 }
 
 #endif
