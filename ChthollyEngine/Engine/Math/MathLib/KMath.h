@@ -5,6 +5,106 @@
 
 namespace ktm
 {
+
+template<typename T>
+static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> sin(T x)
+{
+    if constexpr(std::is_same_v<T, float>)
+        return ::sinf(x);
+    else if constexpr(std::is_same_v<T, double>)
+        return ::sin(x);
+    else 
+        return ::sinl(x); 
+}
+
+template<typename T>
+static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> asin(T x)
+{
+    if constexpr(std::is_same_v<T, float>)
+        return ::asinf(x);
+    else if constexpr(std::is_same_v<T, double>)
+        return ::asin(x);
+    else 
+        return ::asinl(x); 
+}
+
+template<typename T>
+static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> cos(T x)
+{
+    if constexpr(std::is_same_v<T, float>)
+        return ::cosf(x);
+    else if constexpr(std::is_same_v<T, double>)
+        return ::cos(x);
+    else 
+        return ::cosl(x); 
+}
+
+template<typename T>
+static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> acos(T x)
+{
+    if constexpr(std::is_same_v<T, float>)
+        return ::acosf(x);
+    else if constexpr(std::is_same_v<T, double>)
+        return ::acos(x);
+    else 
+        return ::acosl(x); 
+}
+
+template<typename T>
+static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> tan(T x)
+{
+    if constexpr(std::is_same_v<T, float>)
+        return ::tanf(x);
+    else if constexpr(std::is_same_v<T, double>)
+        return ::tan(x);
+    else 
+        return ::tanl(x); 
+}
+
+template<typename T>
+static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> atan(T x)
+{
+    if constexpr(std::is_same_v<T, float>)
+        return ::atanf(x);
+    else if constexpr(std::is_same_v<T, double>)
+        return ::atan(x);
+    else 
+        return ::atanl(x); 
+}
+
+template<typename T>
+static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> floor(T x)
+{
+    if constexpr(std::is_same_v<T, float>)
+        return ::floorf(x);
+    else if constexpr(std::is_same_v<T, double>)
+        return ::floor(x);
+    else 
+        return ::floorl(x);
+}
+
+template<typename T>
+static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> ceil(T x)
+{
+    if constexpr(std::is_same_v<T, float>)
+        return ::ceilf(x);
+    else if constexpr(std::is_same_v<T, double>)
+        return ::ceil(x);
+    else 
+        return ::ceill(x);
+}
+
+template<typename T>
+static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> round(T x)
+{
+    if constexpr(std::is_same_v<T, float>)
+        return ::roundf(x);
+    else if constexpr(std::is_same_v<T, double>)
+        return ::round(x);
+    else 
+        return ::roundl(x);
+}
+
 template<typename T>
 static CHTHOLLY_INLINE std::enable_if_t<(std::is_arithmetic_v<T> && !std::is_unsigned_v<T>), T> abs(T x)
 {
@@ -78,39 +178,6 @@ static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> smoothst
 {
     const T tmp = clamp<T>((x - edge0) / (edge1 - edge0), zero<T>, one<T>);
     return tmp * tmp * (static_cast<T>(3) - static_cast<T>(2) * tmp);
-}
-
-template<typename T>
-static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> floor(T x)
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::floorf(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::floor(x);
-    else 
-        return ::floorl(x);
-}
-
-template<typename T>
-static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> ceil(T x)
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::ceilf(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::ceil(x);
-    else 
-        return ::ceill(x);
-}
-
-template<typename T>
-static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> round(T x)
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::roundf(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::round(x);
-    else 
-        return ::roundl(x);
 }
 
 }

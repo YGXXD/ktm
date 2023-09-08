@@ -46,15 +46,6 @@ struct step;
 template<class V>
 struct smoothstep;
 
-template<class V>
-struct floor;
-
-template<class V>
-struct ceil;
-
-template<class V>
-struct round;
-
 }
 }
 }
