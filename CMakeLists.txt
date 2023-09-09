@@ -38,7 +38,9 @@ if(APPLE)
 
 elseif(WIN32)
 	set(CHTHOLLY_PLATFORM CHTHOLLY_PLATFORM_WINDOWS)
-
+	add_compile_options(/source-charset:utf-8)
+	add_compile_options(/execution-charset:utf-8)
+	
 	# target engine
 	file(GLOB_RECURSE CHTHOLLY_PLATFORM_SOURCE_FILES ${CHTHOLLY_ENGINE_SOURCE_DIR}/Platform/Windows/*.cpp)
     add_library(${ENGINE_DLL_NAME} SHARED ${CHTHOLLY_ENGINE_SOURCE_FILES} ${CHTHOLLY_PLATFORM_SOURCE_FILES})

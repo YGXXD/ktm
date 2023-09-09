@@ -11,7 +11,7 @@ ktl::GraphicsContext* ktl::GraphicsContext::Create(void* window)
 #if defined(CHTHOLLY_RENDER_API_METAL)
     return new MetalGraphicsContext(window);
 #elif defined(CHTHOLLY_RENDER_API_DX12)
-
+	return nullptr;
 #endif
 }
 

@@ -63,6 +63,7 @@
 #include <string>
 #include <memory>
 #include <cstdint>
+#include <cassert>
 #include <vector>
 #include <unordered_map>
 #include <thread>
