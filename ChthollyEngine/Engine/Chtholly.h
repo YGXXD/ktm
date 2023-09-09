@@ -48,13 +48,13 @@
 	#endif
 
 #elif defined(CHTHOLLY_PLATFORM_LINUX)
-	#error XXdEngine don't support linux!
+	#error "XXdEngine don't support linux!"
 
-#elif difined(CHTHOLLY_PLATFORM_ANDROID)
-	#error XXdEngine don't support android!
+#elif defined(CHTHOLLY_PLATFORM_ANDROID)
+	#error "XXdEngine don't support android!"
 
 #else
-	#error XXdEngine don't support the unknown platform!
+	#error "XXdEngine don't support the unknown platform!"
 
 #endif
 
