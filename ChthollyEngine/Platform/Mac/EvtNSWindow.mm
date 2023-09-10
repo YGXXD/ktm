@@ -71,23 +71,14 @@
 
 - (void)keyDown:(NSEvent *)event
 {
-    switch (event.type)
-    {
-        case NSEventTypeKeyDown: 
-	    {
-            ktl::KeyPressedEvent e(event.keyCode, event.isARepeat);
-            evtDelegate->GetEventCallback()(e);
-            break;
-        }
-        case NSEventTypeKeyUp:
-	    {
-            ktl::KeyPressedEvent e(event.keyCode);
-            evtDelegate->GetEventCallback()(e);
-            break;
-        }
-        default:
-            return;
-    }
+    ktl::KeyPressedEvent e(event.keyCode, event.isARepeat);
+    evtDelegate->GetEventCallback()(e);
+}
+
+- (void)keyUp:(NSEvent *)event 
+{
+	ktl::KeyReleasedEvent e(event.keyCode);
+    evtDelegate->GetEventCallback()(e); 
 }
 
 - (void)mouseDown:(NSEvent *)event 
