@@ -58,12 +58,6 @@ struct IArray<Father, vec<N, T>> : Father
 
     CHTHOLLY_INLINE typename array_type::reference operator[](size_t i) noexcept { return to_array()[i]; }
     CHTHOLLY_INLINE typename array_type::const_reference operator[](size_t i) const noexcept { return to_array()[i]; }
-    CHTHOLLY_INLINE bool operator==(const vec<N, T>& y) const noexcept { return to_array() == y.to_array(); }
-    CHTHOLLY_INLINE bool operator!=(const vec<N, T>& y) const noexcept { return to_array() != y.to_array(); }
-    CHTHOLLY_INLINE bool operator< (const vec<N, T>& y) const noexcept { return to_array() <  y.to_array(); }
-    CHTHOLLY_INLINE bool operator> (const vec<N, T>& y) const noexcept { return to_array() >  y.to_array(); }
-    CHTHOLLY_INLINE bool operator<=(const vec<N, T>& y) const noexcept { return to_array() <= y.to_array(); }
-    CHTHOLLY_INLINE bool operator>=(const vec<N, T>& y) const noexcept { return to_array() >= y.to_array(); }
     friend CHTHOLLY_INLINE std::ostream& operator<<(std::ostream& o, const vec<N, T>& x) 
     {
         auto it = x.begin();

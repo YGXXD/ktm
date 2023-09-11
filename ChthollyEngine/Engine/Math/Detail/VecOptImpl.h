@@ -58,6 +58,9 @@ struct div_scalar;
 template<class V>
 struct div_scalar_to_self;
 
+template<class V>
+struct equal;
+
 }
 }
 }

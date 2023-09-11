@@ -10,9 +10,9 @@ namespace ktm
 {
 
 template<int N, typename T>
-struct vec<N, T> : ktl::SingleExtends_t<ktl::TemplateList<IVecData, IArray, IVecOpt>, ktm::vec<N, T>> 
+struct vec<N, T> : ktl::SingleExtends_t<ktl::TemplateList<IVecData, IArray, IVecOpt>, vec<N, T>> 
 {
-    using Father = ktl::SingleExtends_t<ktl::TemplateList<IVecData, IArray, IVecOpt>, ktm::vec<N, T>>; 
+    using Father = ktl::SingleExtends_t<ktl::TemplateList<IVecData, IArray, IVecOpt>, vec<N, T>>; 
     using Father::Father;
 };
 

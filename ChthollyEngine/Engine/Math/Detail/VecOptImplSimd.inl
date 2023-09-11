@@ -340,6 +340,32 @@ struct ktm::detail::vec_opt_implement::div_scalar_to_self<ktm::vec<N, std::enabl
 };
 
 template<size_t N>
+struct ktm::detail::vec_opt_implement::equal<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), float>>>
+{
+    using V = vec<N, float>;
+    static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
+    {
+        if constexpr(N == 2)
+        {
+            float32x2_t ret = vceq_f32(vld1_f32(reinterpret_cast<const float*>(&x)), vld1_f32(reinterpret_cast<const float*>(&y)));
+            return static_cast<bool>(vminv_u32(ret)); 
+        }
+        else if constexpr(N == 3)
+        {
+            float32x4_t ret = vceqq_f32(vld1q_f32(reinterpret_cast<const float*>(&x)), vld1q_f32(reinterpret_cast<const float*>(&y)));
+            ret = vsetq_lane_f32(ret[2], ret, 3);
+            return static_cast<bool>(vminvq_u32(ret)); 
+        }
+        else
+        {
+            float32x4_t ret = vceqq_f32(vld1q_f32(reinterpret_cast<const float*>(&x)), vld1q_f32(reinterpret_cast<const float*>(&y)));
+            uint32x4_t tmp = vreinterpretq_u32_f32(ret);
+            return static_cast<bool>(vminvq_u32(ret)); 
+        }
+    }
+};
+
+template<size_t N>
 struct ktm::detail::vec_opt_implement::add<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), int>>>
 {
     using V = vec<N, int>;
@@ -593,6 +619,30 @@ struct ktm::detail::vec_opt_implement::mul_scalar_to_self<ktm::vec<N, std::enabl
     }
 };
 
+template<size_t N>
+struct ktm::detail::vec_opt_implement::equal<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), int>>>
+{
+    using V = vec<N, int>;
+    static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
+    {
+        if constexpr(N == 2)
+        {
+            int32x2_t ret = vceq_s32(vld1_s32(reinterpret_cast<const int*>(&x)), vld1_s32(reinterpret_cast<const int*>(&y)));
+            return static_cast<bool>(vmaxv_s32(ret)); 
+        }
+        else if constexpr(N == 3)
+        {
+            int32x4_t ret = vceqq_s32(vld1q_s32(reinterpret_cast<const int*>(&x)), vld1q_s32(reinterpret_cast<const int*>(&y)));
+            ret = vsetq_lane_s32(ret[2], ret, 3);
+            return static_cast<bool>(vmaxvq_s32(ret)); 
+        }
+        else
+        {
+            int32x4_t ret = vceqq_s32(vld1q_s32(reinterpret_cast<const int*>(&x)), vld1q_s32(reinterpret_cast<const int*>(&y)));
+            return static_cast<bool>(vmaxvq_s32(ret)); 
+        }
+    }
+};
 
 template<size_t N>
 struct ktm::detail::vec_opt_implement::add<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>>>
@@ -826,6 +876,31 @@ struct ktm::detail::vec_opt_implement::mul_scalar_to_self<ktm::vec<N, std::enabl
             vst1q_u32(reinterpret_cast<unsigned int*>(&x), ret);
         }
         return x;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::vec_opt_implement::equal<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), unsigned int>>>
+{
+    using V = vec<N, unsigned int>;
+    static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
+    {
+        if constexpr(N == 2)
+        {
+            uint32x2_t ret = vceq_u32(vld1_u32(reinterpret_cast<const unsigned int*>(&x)), vld1_u32(reinterpret_cast<const unsigned int*>(&y)));
+            return static_cast<bool>(vminv_u32(ret)); 
+        }
+        else if constexpr(N == 3)
+        {
+            uint32x4_t ret = vceqq_u32(vld1q_u32(reinterpret_cast<const unsigned int*>(&x)), vld1q_u32(reinterpret_cast<const unsigned int*>(&y)));
+            ret = vsetq_lane_u32(ret[2], ret, 3);
+            return static_cast<bool>(vminvq_u32(ret)); 
+        }
+        else
+        {
+            uint32x4_t ret = vceqq_u32(vld1q_u32(reinterpret_cast<const unsigned int*>(&x)), vld1q_u32(reinterpret_cast<const unsigned int*>(&y)));
+            return static_cast<bool>(vminvq_u32(ret)); 
+        }
     }
 };
 
@@ -1349,6 +1424,31 @@ struct ktm::detail::vec_opt_implement::div_scalar_to_self<ktm::vec<N, std::enabl
     }
 };
 
+template<size_t N>
+struct ktm::detail::vec_opt_implement::equal<ktm::vec<N, std::enable_if_t<(N >= 2 && N <= 4), double>>>
+{
+    using V = vec<N, double>;
+    static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
+    {
+        if constexpr(N == 2)
+        {
+            float64x2_t ret = vceqq_f64(vld1q_f64(reinterpret_cast<const double*>(&x)), vld1q_f64(reinterpret_cast<const double*>(&y)));
+            return static_cast<bool>(vminvq_u32(ret)); 
+        }
+        else if constexpr(N == 3)
+        {
+            float64x2_t ret1 = vceqq_f64(vld1q_f64(reinterpret_cast<const double*>(&x)), vld1q_f64(reinterpret_cast<const double*>(&y)));
+            float64x1_t ret2 = vceq_f64(vld1_f64(reinterpret_cast<const double*>(&x) + 2), vld1_f64(reinterpret_cast<const double*>(&y) + 2));
+            return vminvq_u32(ret1) & vminv_u32(ret2); 
+        }
+        else
+        {
+            float64x2_t ret1 = vceqq_f64(vld1q_f64(reinterpret_cast<const double*>(&x)), vld1q_f64(reinterpret_cast<const double*>(&y)));
+            float64x2_t ret2 = vceqq_f64(vld1q_f64(reinterpret_cast<const double*>(&x) + 2), vld1q_f64(reinterpret_cast<const double*>(&y) + 2));
+            return vminvq_u32(ret1) & vminvq_u32(ret2);  
+        }
+    }
+};
 #endif
 
 #endif

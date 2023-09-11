@@ -308,4 +308,20 @@ private:
     }
 };
 
+template<class V>
+struct ktm::detail::vec_opt_implement::equal
+{
+    using T = vec_traits_t<V>;
+    static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
+    {
+        return call(x, y, std::make_index_sequence<vec_traits_len<V>>());
+    }
+private:
+    template<size_t ...Ns>
+    static CHTHOLLY_INLINE bool call(const V& x, const V& y, std::index_sequence<Ns...>) noexcept
+    {
+        return ((reinterpret_cast<const T*>(&x)[Ns] == reinterpret_cast<const T*>(&y)[Ns]) && ...);
+    }
+};
+
 #endif
