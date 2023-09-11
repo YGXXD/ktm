@@ -180,6 +180,12 @@ static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> smoothst
     return tmp * tmp * (static_cast<T>(3) - static_cast<T>(2) * tmp);
 }
 
+template<typename T>
+static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> fract(T x)
+{
+    return min<T>(x - floor(x), 0x1.fffffep-1f);
+} 
+
 }
 
 #endif

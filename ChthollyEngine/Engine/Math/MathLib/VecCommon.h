@@ -79,6 +79,12 @@ static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<vec_traits_t<V>
     return detail::vec_common_implement::smoothstep<V>::call(edge0, edge1, x);
 }
 
+template<class V>
+static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<vec_traits_t<V>>, V> fract(const V& x)
+{
+    return detail::vec_common_implement::fract<V>::call(x);
+}
+
 }   
 
 #endif

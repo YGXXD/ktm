@@ -46,6 +46,9 @@ struct step;
 template<class V>
 struct smoothstep;
 
+template<class V>
+struct fract;
+
 }
 }
 }
