@@ -5,7 +5,7 @@
 #include <simd/simd.h>
 #include "MathType/BaseType.h"
 #include "MathType/VecType.h"
-#include "Math/MathLib/VecGeometry.h"
+#include "Math/MathLib/Geometry.h"
 
 static inline simd_float4 t1(simd_float4 v)
 {
