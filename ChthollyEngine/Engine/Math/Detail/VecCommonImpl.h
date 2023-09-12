@@ -1,11 +1,11 @@
-#ifndef _COMMON_IMPL_H_
-#define _COMMON_IMPL_H_
+#ifndef _VEC_COMMON_IMPL_H_
+#define _VEC_COMMON_IMPL_H_
 
 namespace ktm
 {
 namespace detail
 {
-namespace common_implement
+namespace vec_common_implement
 {
 template<class V>
 struct reduce_add;
@@ -53,5 +53,5 @@ struct fract;
 }
 }
 
-#include "CommonImpl.inl"
+#include "VecCommonImpl.inl"
 #endif

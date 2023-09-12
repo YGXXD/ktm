@@ -8,6 +8,7 @@ struct IMatData;
 template<class Father, typename T>
 struct alignas(alignof(vec<2, T>)) IMatData<Father, mat<2, 2, T>> : Father
 {
+    static_assert(std::is_same_v<mat_traits_col_t<mat<2, 2, T>>, vec<2, T>>);
     vec<2, T> columns[2];
 
     IMatData(const vec<2, T>& col1, const vec<2, T>& col2) : columns{ col1, col2 } { }
@@ -15,6 +16,7 @@ struct alignas(alignof(vec<2, T>)) IMatData<Father, mat<2, 2, T>> : Father
              T m01, T m11) : columns{ { m00, m10 }, 
                                       { m01, m11 } } { };
 
+    static_assert(std::is_same_v<mat_traits_raw_t<mat<2, 2, T>>, vec<2, T>>);
     static CHTHOLLY_INLINE mat<2, 2, T> from_raw(const vec<2, T>& raw1, const vec<2, T>& raw2)
     {
         return mat<2, 2, T>(vec<2, T>(raw1.x, raw2.x), 
@@ -29,9 +31,12 @@ struct alignas(alignof(vec<2, T>)) IMatData<Father, mat<2, 2, T>> : Father
 
 };
 
+
+
 template<class Father, typename T>
 struct alignas(alignof(vec<3, T>)) IMatData<Father, mat<3, 3, T>> : Father
 {
+    static_assert(std::is_same_v<mat_traits_col_t<mat<3, 3, T>>, vec<3, T>>);
     vec<3, T> columns[3];
 
     IMatData(const vec<3, T>& col1, const vec<3, T>& col2, const vec<3, T>& col3) : columns{ col1, col2, col3 } { }
@@ -41,6 +46,7 @@ struct alignas(alignof(vec<3, T>)) IMatData<Father, mat<3, 3, T>> : Father
                                              { m01, m11, m21 }, 
                                              { m02, m12, m22 } } { };
 
+    static_assert(std::is_same_v<mat_traits_raw_t<mat<3, 3, T>>, vec<3, T>>);
     static CHTHOLLY_INLINE mat<3, 3, T> from_raw(const vec<3, T>& raw1, const vec<3, T>& raw2, const vec<3, T>& raw3)
     {
         return mat<3, 3, T>(vec<3, T>(raw1.x, raw2.x, raw3.x), 
@@ -60,6 +66,7 @@ struct alignas(alignof(vec<3, T>)) IMatData<Father, mat<3, 3, T>> : Father
 template<class Father, typename T>
 struct alignas(alignof(vec<4, T>)) IMatData<Father, mat<4, 4, T>> : Father
 {
+    static_assert(std::is_same_v<mat_traits_col_t<mat<4, 4, T>>, vec<4, T>>);
     vec<4, T> columns[4];
 
     IMatData(const vec<4, T>& col1, const vec<4, T>& col2, const vec<4, T>& col3, const vec<4, T>& col4) : columns{ col1, col2, col3, col4 } { }
@@ -70,6 +77,8 @@ struct alignas(alignof(vec<4, T>)) IMatData<Father, mat<4, 4, T>> : Father
                                                     { m01, m11, m21, m31 }, 
                                                     { m02, m12, m22, m32 }, 
                                                     { m03, m13, m23, m33 } } { };
+
+    static_assert(std::is_same_v<mat_traits_raw_t<mat<4, 4, T>>, vec<4, T>>);
     static CHTHOLLY_INLINE mat<4, 4, T> from_raw(const vec<4, T>& raw1, const vec<4, T>& raw2, const vec<4, T>& raw3, const vec<4, T>& raw4)
     {
         return mat<4, 4, T>(vec<4, T>(raw1.x, raw2.x, raw3.x, raw4.x), 
