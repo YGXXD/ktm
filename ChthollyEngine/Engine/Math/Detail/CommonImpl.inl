@@ -1,12 +1,12 @@
 #ifndef _VEC_COMMON_IMPL_INL_
 #define _VEC_COMMON_IMPL_INL_
 
-#include "VecCommonImpl.h"
+#include "CommonImpl.h"
 #include <Math/MathType/BaseType.h>
 #include <Math/MathLib/KMath.h>
 
 template<class V>
-struct ktm::detail::vec_common_implement::reduce_add
+struct ktm::detail::common_implement::reduce_add
 {
     using T = vec_traits_t<V>;
     static CHTHOLLY_INLINE T call(const V& x) noexcept
@@ -22,7 +22,7 @@ private:
 };
 
 template<class V>
-struct ktm::detail::vec_common_implement::reduce_min
+struct ktm::detail::common_implement::reduce_min
 {
     using T = vec_traits_t<V>;
     static CHTHOLLY_INLINE T call(const V& x) noexcept
@@ -45,7 +45,7 @@ private:
 };
 
 template<class V>
-struct ktm::detail::vec_common_implement::reduce_max
+struct ktm::detail::common_implement::reduce_max
 {
     using T = vec_traits_t<V>;
     static CHTHOLLY_INLINE T call(const V& x) noexcept
@@ -68,7 +68,7 @@ private:
 };
 
 template<class V>
-struct ktm::detail::vec_common_implement::abs
+struct ktm::detail::common_implement::abs
 {
     using T = vec_traits_t<V>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -89,7 +89,7 @@ private:
 };
 
 template<class V>
-struct ktm::detail::vec_common_implement::min
+struct ktm::detail::common_implement::min
 {
     using T = vec_traits_t<V>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
@@ -107,7 +107,7 @@ private:
 };
 
 template<class V>
-struct ktm::detail::vec_common_implement::max
+struct ktm::detail::common_implement::max
 {
     using T = vec_traits_t<V>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
@@ -125,7 +125,7 @@ private:
 };
 
 template<class V>
-struct ktm::detail::vec_common_implement::clamp
+struct ktm::detail::common_implement::clamp
 {
     using T = vec_traits_t<V>;
     static CHTHOLLY_INLINE V call(const V& v, const V& min, const V& max) noexcept
@@ -143,7 +143,7 @@ private:
 };
 
 template<class V>
-struct ktm::detail::vec_common_implement::lerp
+struct ktm::detail::common_implement::lerp
 {
     using T = vec_traits_t<V>;
     static_assert(std::is_floating_point_v<T>);
@@ -162,7 +162,7 @@ private:
 };
 
 template<class V>
-struct ktm::detail::vec_common_implement::mix
+struct ktm::detail::common_implement::mix
 {
     using T = vec_traits_t<V>;
     static_assert(std::is_floating_point_v<T>);
@@ -181,7 +181,7 @@ private:
 };
 
 template<class V>
-struct ktm::detail::vec_common_implement::recip
+struct ktm::detail::common_implement::recip
 {
     using T = vec_traits_t<V>;
     static_assert(std::is_floating_point_v<T>);
@@ -200,7 +200,7 @@ private:
 };
 
 template<class V>
-struct ktm::detail::vec_common_implement::rsqrt
+struct ktm::detail::common_implement::rsqrt
 {
     using T = vec_traits_t<V>;
     static_assert(std::is_floating_point_v<T>);
@@ -219,7 +219,7 @@ private:
 };
 
 template<class V>
-struct ktm::detail::vec_common_implement::step
+struct ktm::detail::common_implement::step
 {
     using T = vec_traits_t<V>;
     static_assert(std::is_floating_point_v<T>);
@@ -238,7 +238,7 @@ private:
 };
 
 template<class V>
-struct ktm::detail::vec_common_implement::smoothstep
+struct ktm::detail::common_implement::smoothstep
 {
     using T = vec_traits_t<V>;
     static_assert(std::is_floating_point_v<T>);
@@ -257,7 +257,7 @@ private:
 };
 
 template<class V>
-struct ktm::detail::vec_common_implement::fract
+struct ktm::detail::common_implement::fract
 {
     using T = vec_traits_t<V>;
     static_assert(std::is_floating_point_v<T>);

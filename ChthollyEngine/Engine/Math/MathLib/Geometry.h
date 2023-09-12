@@ -1,8 +1,8 @@
-#ifndef _VEC_GEOMETRY_H_
-#define _VEC_GEOMETRY_H_
+#ifndef _K_GEOMETRY_H_
+#define _K_GEOMETRY_H_
 
 #include "Math/MathType/VecType.h"
-#include "Math/MathLib/VecCommon.h"
+#include "Math/MathLib/Common.h"
 
 namespace ktm
 {
