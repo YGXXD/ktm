@@ -14,17 +14,16 @@ struct IArray<Father, vec<N, T>> : Father
 {
     using Father::Father;
     using array_type = std::array<T, N>;
-    using value_type = typename array_type::value_type;
 
     template<size_t Index> 
-    CHTHOLLY_INLINE value_type get() const noexcept { static_assert(Index < N); return reinterpret_cast<const value_type*>(this)[Index]; }
+    CHTHOLLY_INLINE typename array_type::value_type get() const noexcept { static_assert(Index < N); return reinterpret_cast<typename array_type::const_pointer>(this)[Index]; }
     template<size_t Index> 
-    CHTHOLLY_INLINE void set(value_type v) noexcept { static_assert(Index < N); reinterpret_cast<value_type*>(this)[Index] = v; }
+    CHTHOLLY_INLINE void set(typename array_type::const_reference v) noexcept { static_assert(Index < N); reinterpret_cast<typename array_type::pointer>(this)[Index] = v; }
 
     CHTHOLLY_INLINE array_type& to_array() noexcept { return reinterpret_cast<array_type&>(*this); }
     CHTHOLLY_INLINE const array_type& to_array() const noexcept { return reinterpret_cast<const array_type&>(*this); }
 
-    CHTHOLLY_INLINE void fill(value_type v) noexcept { to_array().fill(v); };
+    CHTHOLLY_INLINE void fill(typename array_type::const_reference v) noexcept { to_array().fill(v); };
     CHTHOLLY_INLINE void swap(vec<N, T>& other) noexcept { to_array().swap(other.to_array()); }
 
     CHTHOLLY_INLINE typename array_type::iterator begin() noexcept { return to_array().begin(); }
@@ -53,8 +52,8 @@ struct IArray<Father, vec<N, T>> : Father
     CHTHOLLY_INLINE typename array_type::reference back() noexcept { return to_array().back(); }
     CHTHOLLY_INLINE typename array_type::const_reference back() const noexcept { return to_array().back(); }
 
-    CHTHOLLY_INLINE typename array_type::pointer data() noexcept { return reinterpret_cast<value_type*>(this); }
-    CHTHOLLY_INLINE typename array_type::const_pointer data() const noexcept { return reinterpret_cast<const value_type*>(this); }
+    CHTHOLLY_INLINE typename array_type::pointer data() noexcept { return to_array().data(); }
+    CHTHOLLY_INLINE typename array_type::const_pointer data() const noexcept { return to_array().data(); }
 
     CHTHOLLY_INLINE typename array_type::reference operator[](size_t i) noexcept { return to_array()[i]; }
     CHTHOLLY_INLINE typename array_type::const_reference operator[](size_t i) const noexcept { return to_array()[i]; }
