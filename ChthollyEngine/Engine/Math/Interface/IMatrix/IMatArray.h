@@ -12,7 +12,7 @@ template<class Father, size_t Col, size_t Raw, typename T>
 struct IMatArray<Father, mat<Col, Raw, T>> : Father
 {
     using Father::Father;
-    using array_type = std::array<vec<Raw, T>, Col>;
+    using array_type = std::array<vec<Col, T>, Raw>;
 };
 }
 

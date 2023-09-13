@@ -9,18 +9,18 @@ template<class M>
 struct ktm::detail::mat_opt_implement::mat_mul_vec
 {
     using T = mat_traits_t<M>;
-    using ColT = mat_traits_col_t<M>;
-    using RawT = mat_traits_raw_t<M>;
-    static CHTHOLLY_INLINE ColT call(const M& m, const RawT& v) noexcept
+    using ColV = mat_traits_col_t<M>;
+    using RawV = mat_traits_raw_t<M>;
+    static CHTHOLLY_INLINE ColV call(const M& m, const RawV& v) noexcept
     {
-        return call(m, v, std::make_index_sequence<ktm::mat_traits_col_n<M>>());
+        return call(m, v, std::make_index_sequence<mat_traits_raw_n<M>>());
     }
 private:
     template<size_t ...Ns>
-    static CHTHOLLY_INLINE ColT call(const M& m, const RawT& v, std::index_sequence<Ns...>) noexcept
+    static CHTHOLLY_INLINE ColV call(const M& m, const RawV& v, std::index_sequence<Ns...>) noexcept
     {
-        ColT ret;
-        ret = ((reinterpret_cast<const ColT*>(&m)[Ns] * reinterpret_cast<const T*>(&v)[Ns]) + ...);
+        ColV ret;
+        ret = ((reinterpret_cast<const ColV*>(&m)[Ns] * reinterpret_cast<const T*>(&v)[Ns]) + ...);
         return ret;
     }
 };
@@ -29,18 +29,18 @@ template<class M>
 struct ktm::detail::mat_opt_implement::vec_mul_mat
 {
     using T = mat_traits_t<M>;
-    using ColT = mat_traits_col_t<M>;
-    using RawT = mat_traits_raw_t<M>;
-    static CHTHOLLY_INLINE RawT call(const ColT& v, const M& m) noexcept
+    using ColV = mat_traits_col_t<M>;
+    using RawV = mat_traits_raw_t<M>;
+    static CHTHOLLY_INLINE RawV call(const ColV& v, const M& m) noexcept
     {
-        return call(v, m, std::make_index_sequence<ktm::mat_traits_col_n<M>>());
+        return call(v, m, std::make_index_sequence<mat_traits_raw_n<M>>());
     }
 private:
     template<size_t ...Ns>
-    static CHTHOLLY_INLINE RawT call(const ColT& v, const M& m, std::index_sequence<Ns...>) noexcept
+    static CHTHOLLY_INLINE RawV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
-        RawT ret;
-        ((reinterpret_cast<T*>(&ret)[Ns] = reduce_add<ColT>(reinterpret_cast<const ColT*>(&m)[Ns] * v)), ...);
+        RawV ret;
+        ((reinterpret_cast<T*>(&ret)[Ns] = reduce_add<ColV>(reinterpret_cast<const ColV*>(&m)[Ns] * v)), ...);
         return ret;
     }
 };
@@ -49,13 +49,13 @@ template<class M>
 struct ktm::detail::mat_opt_implement::mat_mul_mat
 {
     using T = mat_traits_t<M>;
-    using ColT = mat_traits_col_t<M>;
-    using RawT = mat_traits_raw_t<M>;
+    using ColV = mat_traits_col_t<M>;
+    using RawV = mat_traits_raw_t<M>;
 
     template<size_t U>
-    using M2 = mat<U, ktm::mat_traits_col_n<M>, T>;
+    using M2 = mat<mat_traits_raw_n<M>, U, T>;
     template<size_t U>
-    using RetM = mat<U, ktm::mat_traits_raw_n<M>, T>;
+    using RetM = mat<mat_traits_col_n<M>, U, T>;
 
     template<size_t U>
     static CHTHOLLY_INLINE RetM<U> call(const M& m1 , const M2<U>& m2) noexcept
@@ -67,7 +67,7 @@ private:
     static CHTHOLLY_INLINE RetM<U> call(const M& m1 , const M2<U>& m2, std::index_sequence<Ns...>) noexcept
     {
         RetM<U> ret;
-        ((reinterpret_cast<ColT*>(&ret)[Ns] = mat_mul_vec<M>::call(m1, reinterpret_cast<const RawT*>(&m2)[Ns])), ...);
+        ((reinterpret_cast<ColV*>(&ret)[Ns] = mat_mul_vec<M>::call(m1, reinterpret_cast<const RawV*>(&m2)[Ns])), ...);
         return ret;
     }
 };
@@ -75,17 +75,17 @@ private:
 template<class M>
 struct ktm::detail::mat_opt_implement::add
 {
-    using ColT = mat_traits_col_t<M>;
+    using ColV = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_col_n<M>>());
+        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_raw_n<M>>());
     }
 private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
     {
         M ret;
-        (((reinterpret_cast<ColT*>(&ret)[Ns] = reinterpret_cast<const ColT*>(&m1)[Ns] + reinterpret_cast<const ColT*>(&m2)[Ns])), ...);
+        (((reinterpret_cast<ColV*>(&ret)[Ns] = reinterpret_cast<const ColV*>(&m1)[Ns] + reinterpret_cast<const ColV*>(&m2)[Ns])), ...);
         return ret;
     }
 };
@@ -93,17 +93,17 @@ private:
 template<class M>
 struct ktm::detail::mat_opt_implement::minus
 {
-    using ColT = mat_traits_col_t<M>;
+    using ColV = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_col_n<M>>());
+        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_raw_n<M>>());
     }
 private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
     {
         M ret;
-        (((reinterpret_cast<ColT*>(&ret)[Ns] = reinterpret_cast<const ColT*>(&m1)[Ns] - reinterpret_cast<const ColT*>(&m2)[Ns])), ...);
+        (((reinterpret_cast<ColV*>(&ret)[Ns] = reinterpret_cast<const ColV*>(&m1)[Ns] - reinterpret_cast<const ColV*>(&m2)[Ns])), ...);
         return ret;
     }
 };
@@ -111,16 +111,16 @@ private:
 template<class M>
 struct ktm::detail::mat_opt_implement::equal
 {
-    using ColT = mat_traits_col_t<M>;
+    using ColV = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE bool call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_col_n<M>>());
+        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_raw_n<M>>());
     }
 private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE bool call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
     {
-        return ((reinterpret_cast<const ColT*>(&m1)[Ns] == reinterpret_cast<const ColT*>(&m2)[Ns]) && ...);
+        return ((reinterpret_cast<const ColV*>(&m1)[Ns] == reinterpret_cast<const ColV*>(&m2)[Ns]) && ...);
     }
 };
 
