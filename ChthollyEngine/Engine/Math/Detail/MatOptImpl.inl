@@ -55,18 +55,18 @@ struct ktm::detail::mat_opt_implement::mat_mul_mat
     template<size_t U>
     using M2 = mat<U, ktm::mat_traits_col_n<M>, T>;
     template<size_t U>
-    using RetT = mat<U, ktm::mat_traits_raw_n<M>, T>;
+    using RetM = mat<U, ktm::mat_traits_raw_n<M>, T>;
 
     template<size_t U>
-    static CHTHOLLY_INLINE RetT<U> call(const M& m1 , const M2<U>& m2) noexcept
+    static CHTHOLLY_INLINE RetM<U> call(const M& m1 , const M2<U>& m2) noexcept
     {
         return call(m1, m2,  std::make_index_sequence<U>());
     }
 private:
     template<size_t U, size_t ...Ns>
-    static CHTHOLLY_INLINE RetT<U> call(const M& m1 , const M2<U>& m2, std::index_sequence<Ns...>) noexcept
+    static CHTHOLLY_INLINE RetM<U> call(const M& m1 , const M2<U>& m2, std::index_sequence<Ns...>) noexcept
     {
-        RetT<U> ret;
+        RetM<U> ret;
         ((reinterpret_cast<ColT*>(&ret)[Ns] = mat_mul_vec<M>::call(m1, reinterpret_cast<const RawT*>(&m2)[Ns])), ...);
         return ret;
     }
