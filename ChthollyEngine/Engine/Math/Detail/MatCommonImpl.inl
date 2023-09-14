@@ -30,7 +30,7 @@ struct ktm::detail::mat_common_implement::determinant<ktm::mat<N, N, T>>
 {
     static_assert(N >= 2 && N <= 4);
     using M = mat<N, N, T>;
-    using ColT = mat_traits_col_t<mat<N, N, T>>;
+    using ColT = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE T call(const M& m) noexcept
     {
         if constexpr(N == 2)

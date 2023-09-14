@@ -18,5 +18,5 @@ struct determinant;
 }
 
 #include "MatCommonImpl.inl"
-
+#include "MatCommonImplSimd.inl"
 #endif
