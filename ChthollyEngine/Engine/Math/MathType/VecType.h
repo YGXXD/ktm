@@ -11,9 +11,9 @@ namespace ktm
 {
 
 template<int N, typename T>
-struct vec<N, T> : ktl::SingleExtends_t<ktl::TemplateList<IArray, IVecData, IVecArray, IVecOpt>, vec<N, T>> 
+struct vec<N, T> : ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, ktm::IVecData, ktm::IVecArray, ktm::IVecOpt>, vec<N, T>> 
 {
-    using Father = ktl::SingleExtends_t<ktl::TemplateList<IArray, IVecData, IVecArray, IVecOpt>, vec<N, T>>; 
+    using Father = ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, ktm::IVecData, ktm::IVecArray, ktm::IVecOpt>, vec<N, T>>; 
     using Father::Father;
 };
 

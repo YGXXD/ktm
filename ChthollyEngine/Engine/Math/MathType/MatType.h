@@ -10,9 +10,9 @@
 namespace ktm
 {
 template<size_t Col, size_t Raw, typename T>
-struct mat<Col, Raw, T> : ktl::SingleExtends_t<ktl::TemplateList<IArray, IMatData, IMatArray, IMatOpt>, mat<Col, Raw, T>>
+struct mat<Col, Raw, T> : ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, ktm::IMatData, ktm::IMatArray, ktm::IMatOpt>, mat<Col, Raw, T>>
 {
-    using Father = ktl::SingleExtends_t<ktl::TemplateList<IArray, IMatData, IMatArray, IMatOpt>, mat<Col, Raw, T>>;
+    using Father = ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, ktm::IMatData, ktm::IMatArray, ktm::IMatOpt>, mat<Col, Raw, T>>;
     using Father::Father;
 };
 
