@@ -37,8 +37,8 @@ struct ktm::detail::mat_common_implement::determinant<ktm::mat<N, N, T>>
         {
             return reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[0])[0] *
                    reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[1])[1] -
-                   reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[0])[1] *
-                   reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[1])[0];
+                   reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[1])[0] *
+                   reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[0])[1];
                    
         }
         else if constexpr(N == 3)
@@ -117,4 +117,90 @@ struct ktm::detail::mat_common_implement::determinant<ktm::mat<N, N, T>>
     }
 };
 
+template<size_t N, typename T>
+struct ktm::detail::mat_common_implement::inverse<ktm::mat<N, N, T>>
+{
+    static_assert(N >= 2 && N <= 4 && std::is_floating_point_v<T>);
+    using M = mat<N, N, T>;
+    using ColT = mat_traits_col_t<M>;
+    static CHTHOLLY_INLINE M call(const M& m) noexcept
+    {
+        if constexpr(N == 2)
+        {
+            T one_over_det = one<T> / determinant<M>::call(m);
+
+            M ret;
+            reinterpret_cast<T*>(&reinterpret_cast<ColT*>(&ret)[0])[0] = reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[1])[1] * one_over_det;
+            reinterpret_cast<T*>(&reinterpret_cast<ColT*>(&ret)[0])[1] = - reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[1])[0] * one_over_det; 
+            reinterpret_cast<T*>(&reinterpret_cast<ColT*>(&ret)[1])[0] = - reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[0])[1] * one_over_det; 
+            reinterpret_cast<T*>(&reinterpret_cast<ColT*>(&ret)[1])[1] = reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[0])[0] * one_over_det; 
+
+			return ret;
+        }
+        if constexpr(N == 3)
+        {
+            T one_over_det = one<T> / determinant<M>::call(m);
+
+            M ret;
+            reinterpret_cast<T*>(&reinterpret_cast<ColT*>(&ret)[0])[0] = one_over_det *
+                (reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[1])[1] *
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[2])[2] -
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[2])[1] *
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[1])[2]);
+
+            reinterpret_cast<T*>(&reinterpret_cast<ColT*>(&ret)[0])[1] = one_over_det *
+                (reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[2])[1] *
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[0])[2] -
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[0])[1] *
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[2])[2]);
+
+            reinterpret_cast<T*>(&reinterpret_cast<ColT*>(&ret)[0])[2] = one_over_det *
+                (reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[0])[1] *
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[1])[2] -
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[1])[1] *
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[0])[2]);
+
+            reinterpret_cast<T*>(&reinterpret_cast<ColT*>(&ret)[1])[0] = one_over_det *
+                (reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[2])[0] *
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[1])[2] -
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[1])[0] *
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[2])[2]);
+            
+            reinterpret_cast<T*>(&reinterpret_cast<ColT*>(&ret)[1])[1] = one_over_det *
+                (reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[0])[0] *
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[2])[2] -
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[2])[0] *
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[0])[2]);
+
+            reinterpret_cast<T*>(&reinterpret_cast<ColT*>(&ret)[1])[2] = one_over_det *
+                (reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[1])[0] *
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[0])[2] -
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[0])[0] *
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[1])[2]);
+
+            reinterpret_cast<T*>(&reinterpret_cast<ColT*>(&ret)[2])[0] = one_over_det *
+                (reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[1])[0] *
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[2])[1] -
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[2])[0] *
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[1])[1]);
+
+            reinterpret_cast<T*>(&reinterpret_cast<ColT*>(&ret)[2])[1] = one_over_det *
+                (reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[2])[0] *
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[0])[1] -
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[0])[0] *
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[2])[1]);
+
+            reinterpret_cast<T*>(&reinterpret_cast<ColT*>(&ret)[2])[2] = one_over_det *
+                (reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[0])[0] *
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[1])[1] -
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[1])[0] *
+                 reinterpret_cast<const T*>(&reinterpret_cast<const ColT*>(&m)[0])[1]);
+            return ret;
+        }
+        else
+        {
+
+        }
+    }
+};
 #endif

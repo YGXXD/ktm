@@ -13,6 +13,8 @@ struct transpose;
 template<class M>
 struct determinant;
 
+template<class M>
+struct inverse;
 }
 }
 }

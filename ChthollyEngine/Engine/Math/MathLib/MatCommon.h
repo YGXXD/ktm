@@ -17,6 +17,12 @@ namespace ktm
     {
         return detail::mat_common_implement::determinant<M>::call(m);
     }
+
+    template<class M>
+    CHTHOLLY_INLINE std::enable_if_t<mat_traits_col_n<M> == mat_traits_raw_n<M> && std::is_floating_point_v<mat_traits_t<M>>, M> inverse(const M& m)
+    {
+        return detail::mat_common_implement::inverse<M>::call(m);
+    }
 }
 
 #endif
