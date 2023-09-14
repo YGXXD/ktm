@@ -31,10 +31,10 @@ template<class Tp, class Up>
 inline constexpr bool is_same_vs<Tp, Up> = is_same_v<Tp, Up>;
 
 template<class Tp>
-inline constexpr bool is_same_vs<Tp> = false;
+inline constexpr bool is_same_vs<Tp> = true;
 
 template<>
-inline constexpr bool is_same_vs<> = false;
+inline constexpr bool is_same_vs<> = true;
 
 // 多个类型检测,都为数学基本类型返回true,有一个不为数学基本类型返回false
 template<class ...Tps>
@@ -83,10 +83,10 @@ template<template<typename ...> class Tp, template<typename ...> class Up>
 inline constexpr bool is_template_same_vs<Tp, Up> = is_template_same_v<Tp, Up>;
 
 template<template<typename ...> class Tp>
-inline constexpr bool is_template_same_vs<Tp> = false;
+inline constexpr bool is_template_same_vs<Tp> = true;
 
 template<>
-inline constexpr bool is_template_same_vs<> = false;
+inline constexpr bool is_template_same_vs<> = true;
 
 // 检测存在模版类型相同
 template<template<typename ...> class ...Tps>

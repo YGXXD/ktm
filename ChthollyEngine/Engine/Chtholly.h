@@ -65,6 +65,7 @@
 #include <cstdint>
 #include <cassert>
 #include <vector>
+#include <array>
 #include <unordered_map>
 #include <thread>
 #include <cmath>
