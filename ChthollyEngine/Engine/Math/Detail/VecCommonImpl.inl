@@ -2,8 +2,26 @@
 #define _VEC_COMMON_IMPL_INL_
 
 #include "VecCommonImpl.h"
-#include <Math/MathType/BaseType.h>
-#include <Math/MathLib/Common.h>
+#include "Math/MathLib/Common.h"
+
+template<size_t N, class V>
+struct ktm::detail::vec_common_implement::elem_move
+{
+    static_assert(N > 0 && N < vec_traits_len<V>);
+    using T = vec_traits_t<V>;
+    static CHTHOLLY_INLINE V call(const V& x) noexcept
+    {
+        return call(x, std::make_index_sequence<vec_traits_len<V>>());
+    }
+private:
+    template<size_t ...Ns>
+    static CHTHOLLY_INLINE V call(const V& x, std::index_sequence<Ns...>) noexcept
+    {
+        V ret;
+        ((reinterpret_cast<T*>(&ret)[Ns] = reinterpret_cast<const T*>(&x)[(Ns + N) < vec_traits_len<V> ? Ns + N : Ns + N - vec_traits_len<V>]), ...);
+        return ret;
+    }
+};
 
 template<class V>
 struct ktm::detail::vec_common_implement::reduce_add
@@ -83,7 +101,7 @@ private:
     static CHTHOLLY_INLINE V call(const V& x, std::index_sequence<Ns...>) noexcept
     {
         V ret;
-        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::abs<T>(reinterpret_cast<const T*>(&x)[Ns])), ...);
+        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::abs(reinterpret_cast<const T*>(&x)[Ns])), ...);
         return ret;
     }
 };
@@ -101,7 +119,7 @@ private:
     static CHTHOLLY_INLINE V call(const V& x, const V& y, std::index_sequence<Ns...>) noexcept
     {
         V ret;
-        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::min<T>(reinterpret_cast<const T*>(&x)[Ns], reinterpret_cast<const T*>(&y)[Ns])), ...);
+        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::min(reinterpret_cast<const T*>(&x)[Ns], reinterpret_cast<const T*>(&y)[Ns])), ...);
         return ret;
     }
 };
@@ -119,7 +137,7 @@ private:
     static CHTHOLLY_INLINE V call(const V& x, const V& y, std::index_sequence<Ns...>) noexcept
     {
         V ret;
-        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::max<T>(reinterpret_cast<const T*>(&x)[Ns], reinterpret_cast<const T*>(&y)[Ns])), ...);
+        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::max(reinterpret_cast<const T*>(&x)[Ns], reinterpret_cast<const T*>(&y)[Ns])), ...);
         return ret;
     }
 };
@@ -137,7 +155,7 @@ private:
     static CHTHOLLY_INLINE V call(const V& v, const V& min, const V& max, std::index_sequence<Ns...>) noexcept
     {
         V ret;
-        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::clamp<T>(reinterpret_cast<const T*>(&v)[Ns], reinterpret_cast<const T*>(&min)[Ns], reinterpret_cast<const T*>(&max)[Ns])), ...);
+        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::clamp(reinterpret_cast<const T*>(&v)[Ns], reinterpret_cast<const T*>(&min)[Ns], reinterpret_cast<const T*>(&max)[Ns])), ...);
         return ret;
     }
 };
@@ -156,7 +174,7 @@ private:
     static CHTHOLLY_INLINE V call(const V& x, const V& y, T t, std::index_sequence<Ns...>) noexcept
     {
         V ret;
-        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::mix<T>(reinterpret_cast<const T*>(&x)[Ns], reinterpret_cast<const T*>(&y)[Ns], t)), ...);
+        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::mix(reinterpret_cast<const T*>(&x)[Ns], reinterpret_cast<const T*>(&y)[Ns], t)), ...);
         return ret;
     }
 };
@@ -175,7 +193,7 @@ private:
     static CHTHOLLY_INLINE V call(const V& x, const V& y, const V& t, std::index_sequence<Ns...>) noexcept
     {
         V ret;
-        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::mix<T>(reinterpret_cast<const T*>(&x)[Ns], reinterpret_cast<const T*>(&y)[Ns], reinterpret_cast<const T*>(&t)[Ns])), ...);
+        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::mix(reinterpret_cast<const T*>(&x)[Ns], reinterpret_cast<const T*>(&y)[Ns], reinterpret_cast<const T*>(&t)[Ns])), ...);
         return ret;
     }
 };
@@ -200,25 +218,6 @@ private:
 };
 
 template<class V>
-struct ktm::detail::vec_common_implement::rsqrt
-{
-    using T = vec_traits_t<V>;
-    static_assert(std::is_floating_point_v<T>);
-    static CHTHOLLY_INLINE V call(const V& x) noexcept
-    {
-        return call(x, std::make_index_sequence<vec_traits_len<V>>());
-    }
-private:
-    template<size_t ...Ns>
-    static CHTHOLLY_INLINE V call(const V& x, std::index_sequence<Ns...>) noexcept
-    {
-        V ret;
-        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::rsqrt<T>(reinterpret_cast<const T*>(&x)[Ns])), ...);
-        return ret;
-    }
-};
-
-template<class V>
 struct ktm::detail::vec_common_implement::step
 {
     using T = vec_traits_t<V>;
@@ -232,7 +231,7 @@ private:
     static CHTHOLLY_INLINE V call(const V& edge, const V& x, std::index_sequence<Ns...>) noexcept
     {
         V ret;
-        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::step<T>(reinterpret_cast<const T*>(&edge)[Ns], reinterpret_cast<const T*>(&x)[Ns])), ...);
+        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::step(reinterpret_cast<const T*>(&edge)[Ns], reinterpret_cast<const T*>(&x)[Ns])), ...);
         return ret;
     }
 };
@@ -251,7 +250,7 @@ private:
     static CHTHOLLY_INLINE V call(const V& edge0, const V& edge1, const V& x, std::index_sequence<Ns...>) noexcept
     {
         V ret;
-        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::smoothstep<T>(reinterpret_cast<const T*>(&edge0)[Ns], reinterpret_cast<const T*>(&edge1)[Ns], reinterpret_cast<const T*>(&x)[Ns])), ...);
+        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::smoothstep(reinterpret_cast<const T*>(&edge0)[Ns], reinterpret_cast<const T*>(&edge1)[Ns], reinterpret_cast<const T*>(&x)[Ns])), ...);
         return ret;
     }
 };
@@ -270,7 +269,7 @@ private:
     static CHTHOLLY_INLINE V call(const V& x, std::index_sequence<Ns...>) noexcept
     {
         V ret;
-        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::fract<T>(reinterpret_cast<const T*>(&x))), ...);
+        ((reinterpret_cast<T*>(&ret)[Ns] = ktm::fract(reinterpret_cast<const T*>(&x)[Ns])), ...);
         return ret;
     }
 };

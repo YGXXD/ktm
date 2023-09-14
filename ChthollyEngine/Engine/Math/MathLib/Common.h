@@ -106,6 +106,17 @@ static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> round(T 
 }
 
 template<typename T>
+static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> sqrt(T x) noexcept
+{
+    if constexpr(std::is_same_v<T, float>)
+        return ::sqrtf(x);
+    else if constexpr(std::is_same_v<T, double>)
+        return ::sqrt(x);
+    else 
+        return ::sqrtl(x);
+}
+
+template<typename T>
 static CHTHOLLY_INLINE std::enable_if_t<(std::is_arithmetic_v<T> && !std::is_unsigned_v<T>), T> abs(T x) noexcept
 {
     return x < 0 ? -x : x;
@@ -126,7 +137,7 @@ static CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> min(T x, T y
 template<typename T>
 static CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> clamp(T v, T min, T max) noexcept
 {
-    return v < min ? min : v > max ? max : v;
+    return ktm::min<T>(ktm::max<T>(v, min), max);
 }
 
 template<typename T>
@@ -176,14 +187,14 @@ static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> step(T e
 template<typename T>
 static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> smoothstep(T edge0, T edge1, T x) noexcept
 {
-    const T tmp = clamp<T>((x - edge0) / (edge1 - edge0), zero<T>, one<T>);
+    const T tmp = ktm::clamp<T>((x - edge0) / (edge1 - edge0), zero<T>, one<T>);
     return tmp * tmp * (static_cast<T>(3) - static_cast<T>(2) * tmp);
 }
 
 template<typename T>
 static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> fract(T x) noexcept
 {
-    return min<T>(x - floor(x), 0x1.fffffep-1f);
+    return min(x - ktm::floor<T>(x), one<T>);
 } 
 
 }

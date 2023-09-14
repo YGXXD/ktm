@@ -7,9 +7,11 @@ namespace detail
 {
 namespace mat_common_implement
 {
-
 template<class M>
 struct transpose;
+
+template<class M>
+struct determinant;
 
 }
 }

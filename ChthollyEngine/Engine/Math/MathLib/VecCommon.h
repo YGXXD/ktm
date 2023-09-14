@@ -7,6 +7,12 @@
 namespace ktm
 {
 
+template<size_t N, class V>
+static CHTHOLLY_INLINE std::enable_if_t<(N > 0 && N < vec_traits_len<V>), V> elem_move(const V& x) noexcept
+{
+    return detail::vec_common_implement::elem_move<N, V>::call(x);
+}
+
 template<class V>
 static CHTHOLLY_INLINE vec_traits_t<V> reduce_add(const V& x) noexcept
 {

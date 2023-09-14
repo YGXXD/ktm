@@ -1,12 +1,18 @@
 #ifndef _VEC_COMMON_IMPL_H_
 #define _VEC_COMMON_IMPL_H_
 
+#include <cstddef>
+
 namespace ktm
 {
 namespace detail
 {
 namespace vec_common_implement
 {
+
+template<size_t N, class V>
+struct elem_move;
+
 template<class V>
 struct reduce_add;
 
@@ -38,9 +44,6 @@ template<class V>
 struct recip;
 
 template<class V>
-struct rsqrt;
-
-template<class V>
 struct step;
 
 template<class V>
@@ -54,4 +57,5 @@ struct fract;
 }
 
 #include "VecCommonImpl.inl"
+#include "VecCommonImplSimd.inl"
 #endif
