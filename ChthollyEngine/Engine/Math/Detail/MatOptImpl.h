@@ -30,4 +30,5 @@ struct equal;
 }
 
 #include "MatOptImpl.inl"
+#include "MatOptImplSimd.inl"
 #endif
