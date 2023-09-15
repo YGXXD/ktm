@@ -56,11 +56,11 @@ private:
         RawV ret;
         if constexpr(Col == 2)
         {
-           ((
+            ((
             reinterpret_cast<float*>(&ret)[Ns] = (float32_t) __builtin_neon_vaddv_f32(
                 ((float32x2_t) __builtin_neon_vld1_v(reinterpret_cast<const float*>(&reinterpret_cast<const ColV*>(&m)[Ns]), 9)) *
                 ((float32x2_t) __builtin_neon_vld1_v(reinterpret_cast<const float*>(&v), 9)))
-           ), ...);
+            ), ...);
         }
         else
         {
@@ -68,7 +68,77 @@ private:
             reinterpret_cast<float*>(&ret)[Ns] = (float32_t) __builtin_neon_vaddvq_f32(
                 ((float32x4_t) __builtin_neon_vld1q_v(reinterpret_cast<const float*>(&reinterpret_cast<const ColV*>(&m)[Ns]), 41)) *
                 ((float32x4_t) __builtin_neon_vld1q_v(reinterpret_cast<const float*>(&v), 41)))
-           ), ...);
+            ), ...);
+        }
+        return ret;
+    }
+};
+
+template<size_t Col, size_t Raw>
+struct ktm::detail::mat_opt_implement::add<ktm::mat<Col, Raw, std::enable_if_t<Col >= 2 && Col <=4, float>>>
+{
+     using M = mat<Col, Raw, float>;
+    using ColV = mat_traits_col_t<M>;
+    using RawV = mat_traits_raw_t<M>;
+    static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
+    {
+        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_raw_n<M>>());
+    }
+private:
+    template<size_t ...Ns>
+    static CHTHOLLY_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
+    {
+        M ret;
+        if constexpr(Col == 2)
+        {
+            ((
+            __builtin_neon_vst1_v(reinterpret_cast<float*>(&reinterpret_cast<ColV*>(&ret)[Ns]),  
+                ((float32x2_t) __builtin_neon_vld1_v(reinterpret_cast<const float*>(&reinterpret_cast<const ColV*>(&m1)[Ns]), 9)) +
+                ((float32x2_t) __builtin_neon_vld1_v(reinterpret_cast<const float*>(&reinterpret_cast<const ColV*>(&m2)[Ns]), 9)), 9)
+            ), ...);
+        }
+        else
+        { 
+            ((
+            __builtin_neon_vst1q_v(reinterpret_cast<float*>(&reinterpret_cast<ColV*>(&ret)[Ns]),  
+                ((float32x4_t) __builtin_neon_vld1q_v(reinterpret_cast<const float*>(&reinterpret_cast<const ColV*>(&m1)[Ns]), 41)) +
+                ((float32x4_t) __builtin_neon_vld1q_v(reinterpret_cast<const float*>(&reinterpret_cast<const ColV*>(&m2)[Ns]), 41)), 41)
+            ), ...); 
+        }
+        return ret;
+    }
+};
+
+template<size_t Col, size_t Raw>
+struct ktm::detail::mat_opt_implement::minus<ktm::mat<Col, Raw, std::enable_if_t<Col >= 2 && Col <=4, float>>>
+{
+     using M = mat<Col, Raw, float>;
+    using ColV = mat_traits_col_t<M>;
+    using RawV = mat_traits_raw_t<M>;
+    static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
+    {
+        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_raw_n<M>>());
+    }
+private:
+    template<size_t ...Ns>
+    static CHTHOLLY_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
+    {
+        M ret;
+        if constexpr(Col == 2)
+        {
+            ((
+            __builtin_neon_vst1_v(reinterpret_cast<float*>(&reinterpret_cast<ColV*>(&ret)[Ns]),  
+                ((float32x2_t) __builtin_neon_vld1_v(reinterpret_cast<const float*>(&reinterpret_cast<const ColV*>(&m1)[Ns]), 9)) -
+                ((float32x2_t) __builtin_neon_vld1_v(reinterpret_cast<const float*>(&reinterpret_cast<const ColV*>(&m2)[Ns]), 9)), 9)
+            ), ...);
+        }
+        else
+        { 
+            ((
+            __builtin_neon_vst1q_v(reinterpret_cast<float*>(&reinterpret_cast<ColV*>(&ret)[Ns]),  
+                ((float32x4_t) __builtin_neon_vld1q_v(reinterpret_cast<const float*>(&reinterpret_cast<const ColV*>(&m1)[Ns]), 41)) -
+                ((float32x4_t) __builtin_neon_vld1q_v(reinterpret_cast<const float*>(&reinterpret_cast<const ColV*>(&m2)[Ns]), 41)), 41)
+            ), ...); 
         }
         return ret;
     }
@@ -122,11 +192,11 @@ private:
         RawV ret;
         if constexpr(Col == 2)
         {
-           ((
+            ((
             reinterpret_cast<int*>(&ret)[Ns] = (int32_t) __builtin_neon_vaddv_f32(
                 ((int32x2_t) __builtin_neon_vld1_v(reinterpret_cast<const int*>(&reinterpret_cast<const ColV*>(&m)[Ns]), 2)) *
                 ((int32x2_t) __builtin_neon_vld1_v(reinterpret_cast<const int*>(&v), 2)))
-           ), ...);
+            ), ...);
         }
         else
         {
@@ -134,7 +204,77 @@ private:
             reinterpret_cast<int*>(&ret)[Ns] = (int32_t) __builtin_neon_vaddvq_f32(
                 ((int32x4_t) __builtin_neon_vld1q_v(reinterpret_cast<const int*>(&reinterpret_cast<const ColV*>(&m)[Ns]), 34)) *
                 ((int32x4_t) __builtin_neon_vld1q_v(reinterpret_cast<const int*>(&v), 34)))
-           ), ...);
+            ), ...);
+        }
+        return ret;
+    }
+};
+
+template<size_t Col, size_t Raw>
+struct ktm::detail::mat_opt_implement::add<ktm::mat<Col, Raw, std::enable_if_t<Col >= 2 && Col <=4, int>>>
+{
+     using M = mat<Col, Raw, int>;
+    using ColV = mat_traits_col_t<M>;
+    using RawV = mat_traits_raw_t<M>;
+    static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
+    {
+        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_raw_n<M>>());
+    }
+private:
+    template<size_t ...Ns>
+    static CHTHOLLY_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
+    {
+        M ret;
+        if constexpr(Col == 2)
+        {
+            ((
+            __builtin_neon_vst1_v(reinterpret_cast<int*>(&reinterpret_cast<ColV*>(&ret)[Ns]),  
+                ((int32x2_t) __builtin_neon_vld1_v(reinterpret_cast<const int*>(&reinterpret_cast<const ColV*>(&m1)[Ns]), 2)) +
+                ((int32x2_t) __builtin_neon_vld1_v(reinterpret_cast<const int*>(&reinterpret_cast<const ColV*>(&m2)[Ns]), 2)), 2)
+            ), ...);
+        }
+        else
+        { 
+            ((
+            __builtin_neon_vst1q_v(reinterpret_cast<int*>(&reinterpret_cast<ColV*>(&ret)[Ns]),  
+                ((int32x4_t) __builtin_neon_vld1q_v(reinterpret_cast<const int*>(&reinterpret_cast<const ColV*>(&m1)[Ns]), 34)) +
+                ((int32x4_t) __builtin_neon_vld1q_v(reinterpret_cast<const int*>(&reinterpret_cast<const ColV*>(&m2)[Ns]), 34)), 34)
+            ), ...); 
+        }
+        return ret;
+    }
+};
+
+template<size_t Col, size_t Raw>
+struct ktm::detail::mat_opt_implement::minus<ktm::mat<Col, Raw, std::enable_if_t<Col >= 2 && Col <=4, int>>>
+{
+     using M = mat<Col, Raw, int>;
+    using ColV = mat_traits_col_t<M>;
+    using RawV = mat_traits_raw_t<M>;
+    static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
+    {
+        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_raw_n<M>>());
+    }
+private:
+    template<size_t ...Ns>
+    static CHTHOLLY_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
+    {
+        M ret;
+        if constexpr(Col == 2)
+        {
+            ((
+            __builtin_neon_vst1_v(reinterpret_cast<int*>(&reinterpret_cast<ColV*>(&ret)[Ns]),  
+                ((int32x2_t) __builtin_neon_vld1_v(reinterpret_cast<const int*>(&reinterpret_cast<const ColV*>(&m1)[Ns]), 2)) -
+                ((int32x2_t) __builtin_neon_vld1_v(reinterpret_cast<const int*>(&reinterpret_cast<const ColV*>(&m2)[Ns]), 2)), 2)
+            ), ...);
+        }
+        else
+        { 
+            ((
+            __builtin_neon_vst1q_v(reinterpret_cast<int*>(&reinterpret_cast<ColV*>(&ret)[Ns]),  
+                ((int32x4_t) __builtin_neon_vld1q_v(reinterpret_cast<const int*>(&reinterpret_cast<const ColV*>(&m1)[Ns]), 34)) -
+                ((int32x4_t) __builtin_neon_vld1q_v(reinterpret_cast<const int*>(&reinterpret_cast<const ColV*>(&m2)[Ns]), 34)), 34)
+            ), ...); 
         }
         return ret;
     }
@@ -188,11 +328,11 @@ private:
         RawV ret;
         if constexpr(Col == 2)
         {
-           ((
+            ((
             reinterpret_cast<unsigned int*>(&ret)[Ns] = (uint32_t) __builtin_neon_vaddv_f32(
                 ((uint32x2_t) __builtin_neon_vld1_v(reinterpret_cast<const unsigned int*>(&reinterpret_cast<const ColV*>(&m)[Ns]), 18)) *
                 ((uint32x2_t) __builtin_neon_vld1_v(reinterpret_cast<const unsigned int*>(&v), 18)))
-           ), ...);
+            ), ...);
         }
         else
         {
@@ -200,7 +340,77 @@ private:
             reinterpret_cast<unsigned int*>(&ret)[Ns] = (uint32_t) __builtin_neon_vaddvq_f32(
                 ((uint32x4_t) __builtin_neon_vld1q_v(reinterpret_cast<const unsigned int*>(&reinterpret_cast<const ColV*>(&m)[Ns]), 50)) *
                 ((uint32x4_t) __builtin_neon_vld1q_v(reinterpret_cast<const unsigned int*>(&v), 50)))
-           ), ...);
+            ), ...);
+        }
+        return ret;
+    }
+};
+
+template<size_t Col, size_t Raw>
+struct ktm::detail::mat_opt_implement::add<ktm::mat<Col, Raw, std::enable_if_t<Col >= 2 && Col <=4, unsigned int>>>
+{
+     using M = mat<Col, Raw, unsigned int>;
+    using ColV = mat_traits_col_t<M>;
+    using RawV = mat_traits_raw_t<M>;
+    static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
+    {
+        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_raw_n<M>>());
+    }
+private:
+    template<size_t ...Ns>
+    static CHTHOLLY_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
+    {
+        M ret;
+        if constexpr(Col == 2)
+        {
+            ((
+            __builtin_neon_vst1_v(reinterpret_cast<unsigned int*>(&reinterpret_cast<ColV*>(&ret)[Ns]),  
+                ((uint32x2_t) __builtin_neon_vld1_v(reinterpret_cast<const unsigned int*>(&reinterpret_cast<const ColV*>(&m1)[Ns]), 18)) +
+                ((uint32x2_t) __builtin_neon_vld1_v(reinterpret_cast<const unsigned int*>(&reinterpret_cast<const ColV*>(&m2)[Ns]), 18)), 18)
+            ), ...);
+        }
+        else
+        { 
+            ((
+            __builtin_neon_vst1q_v(reinterpret_cast<unsigned int*>(&reinterpret_cast<ColV*>(&ret)[Ns]),  
+                ((uint32x4_t) __builtin_neon_vld1q_v(reinterpret_cast<const unsigned int*>(&reinterpret_cast<const ColV*>(&m1)[Ns]), 50)) +
+                ((uint32x4_t) __builtin_neon_vld1q_v(reinterpret_cast<const unsigned int*>(&reinterpret_cast<const ColV*>(&m2)[Ns]), 50)), 50)
+            ), ...); 
+        }
+        return ret;
+    }
+};
+
+template<size_t Col, size_t Raw>
+struct ktm::detail::mat_opt_implement::minus<ktm::mat<Col, Raw, std::enable_if_t<Col >= 2 && Col <=4, unsigned int>>>
+{
+     using M = mat<Col, Raw, unsigned int>;
+    using ColV = mat_traits_col_t<M>;
+    using RawV = mat_traits_raw_t<M>;
+    static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
+    {
+        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_raw_n<M>>());
+    }
+private:
+    template<size_t ...Ns>
+    static CHTHOLLY_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
+    {
+        M ret;
+        if constexpr(Col == 2)
+        {
+            ((
+            __builtin_neon_vst1_v(reinterpret_cast<unsigned int*>(&reinterpret_cast<ColV*>(&ret)[Ns]),  
+                ((uint32x2_t) __builtin_neon_vld1_v(reinterpret_cast<const unsigned int*>(&reinterpret_cast<const ColV*>(&m1)[Ns]), 18)) -
+                ((uint32x2_t) __builtin_neon_vld1_v(reinterpret_cast<const unsigned int*>(&reinterpret_cast<const ColV*>(&m2)[Ns]), 18)), 18)
+            ), ...);
+        }
+        else
+        { 
+            ((
+            __builtin_neon_vst1q_v(reinterpret_cast<unsigned int*>(&reinterpret_cast<ColV*>(&ret)[Ns]),  
+                ((uint32x4_t) __builtin_neon_vld1q_v(reinterpret_cast<const unsigned int*>(&reinterpret_cast<const ColV*>(&m1)[Ns]), 50)) -
+                ((uint32x4_t) __builtin_neon_vld1q_v(reinterpret_cast<const unsigned int*>(&reinterpret_cast<const ColV*>(&m2)[Ns]), 50)), 50)
+            ), ...); 
         }
         return ret;
     }
