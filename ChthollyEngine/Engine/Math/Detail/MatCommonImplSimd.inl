@@ -7,6 +7,39 @@
 #ifdef __ARM_NEON__
 #include <arm_neon.h>
 
+template<size_t N>
+struct ktm::detail::mat_common_implement::transpose<ktm::mat<N, N, std::enable_if_t<N == 4, float>>>
+{
+    using M = mat<N, N, float>;
+    using RetM = mat_traits_tp_t<M>;
+    using ColT = mat_traits_col_t<M>;
+    using RawT = mat_traits_raw_t<M>; 
+    static CHTHOLLY_INLINE RetM call(const M& m) noexcept
+    {
+        float32x4_t c_0 = vld1q_f32(reinterpret_cast<const float*>(&reinterpret_cast<const ColT*>(&m)[0]));
+        float32x4_t c_1 = vld1q_f32(reinterpret_cast<const float*>(&reinterpret_cast<const ColT*>(&m)[1]));
+        float32x4_t c_2 = vld1q_f32(reinterpret_cast<const float*>(&reinterpret_cast<const ColT*>(&m)[2]));
+        float32x4_t c_3 = vld1q_f32(reinterpret_cast<const float*>(&reinterpret_cast<const ColT*>(&m)[3]));
+
+        float32x4_t tmp0 = __builtin_shufflevector(c_0, c_1, 0, 1, 4, 5);
+        float32x4_t tmp2 = __builtin_shufflevector(c_0, c_1, 2, 3, 6, 7);
+        float32x4_t tmp1 = __builtin_shufflevector(c_2, c_3, 0, 1, 4, 5);
+        float32x4_t tmp3 = __builtin_shufflevector(c_2, c_3, 2, 3, 6, 7);
+
+        float32x4_t ret0 = __builtin_shufflevector(tmp0, tmp1, 0, 2, 4, 6);
+        float32x4_t ret1 = __builtin_shufflevector(tmp0, tmp1, 1, 3, 5, 7);
+        float32x4_t ret2 = __builtin_shufflevector(tmp2, tmp3, 0, 2, 4, 6);
+        float32x4_t ret3 = __builtin_shufflevector(tmp2, tmp3, 1, 3, 5, 7);
+
+        RetM ret;
+        vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<RawT*>(&ret)[0]), ret0);
+        vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<RawT*>(&ret)[1]), ret1);
+        vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<RawT*>(&ret)[2]), ret2);
+        vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<RawT*>(&ret)[3]), ret3);
+        return ret;
+    }
+};
+
 #define NEON_DET3_SHUFFLE_MUL(col0, col1, col2) col0 * \
 (__builtin_shufflevector(col1, col1, 1, 2, 0, 3) * \
  __builtin_shufflevector(col2, col2, 2, 0, 1, 3) - \
