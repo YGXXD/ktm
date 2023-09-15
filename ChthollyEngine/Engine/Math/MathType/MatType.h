@@ -4,15 +4,16 @@
 #include "BaseType.h"
 #include "Math/Interface/ICommon/IArray.h"
 #include "Math/Interface/IMatrix/IMatData.h"
+#include "Math/Interface/IMatrix/IMatMake.h"
 #include "Math/Interface/IMatrix/IMatArray.h"
 #include "Math/Interface/IMatrix/IMatOpt.h"
 
 namespace ktm
 {
 template<size_t Col, size_t Raw, typename T>
-struct mat<Col, Raw, T> : ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, ktm::IMatData, ktm::IMatArray, ktm::IMatOpt>, mat<Col, Raw, T>>
+struct mat<Col, Raw, T> : ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, ktm::IMatData, ktm::IMatMake, ktm::IMatArray, ktm::IMatOpt>, mat<Col, Raw, T>>
 {
-    using Father = ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, ktm::IMatData, ktm::IMatArray, ktm::IMatOpt>, mat<Col, Raw, T>>;
+    using Father = ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, ktm::IMatData, ktm::IMatMake, ktm::IMatArray, ktm::IMatOpt>, mat<Col, Raw, T>>;
     using Father::Father;
 };
 
