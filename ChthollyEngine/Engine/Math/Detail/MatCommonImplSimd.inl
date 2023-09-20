@@ -23,11 +23,11 @@ struct ktm::detail::mat_common_implement::transpose<ktm::mat<N, N, std::enable_i
             float32x4_t c_2 = vld1q_f32(reinterpret_cast<const float*>(&reinterpret_cast<const ColV*>(&m)[2]));
 
             float32x4_t tmp0 = __builtin_shufflevector(c_0, c_1, 0, 1, 4, 5);
-            float32x4_t tmp1 = __builtin_shufflevector(c_0, c_1, 2, 3, 6, 7);
+            float32x4_t tmp1 = __builtin_shufflevector(c_0, c_1, 2, 3, 6, 3);
 
-            float32x4_t ret0 = __builtin_shufflevector(tmp0, c_2, 0, 2, 4, 7);
-            float32x4_t ret1 = __builtin_shufflevector(tmp0, c_2, 1, 3, 5, 7);
-            float32x4_t ret2 = __builtin_shufflevector(tmp1, c_2, 0, 2, 4, 7);
+            float32x4_t ret0 = __builtin_shufflevector(tmp0, c_2, 0, 2, 4, 3);
+            float32x4_t ret1 = __builtin_shufflevector(tmp0, c_2, 1, 3, 5, 3);
+            float32x4_t ret2 = __builtin_shufflevector(tmp1, c_2, 0, 2, 4, 3);
 
             RetM ret;
             vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<RawV*>(&ret)[0]), ret0);
@@ -185,11 +185,11 @@ struct ktm::detail::mat_common_implement::transpose<ktm::mat<N, N, std::enable_i
  __builtin_shufflevector(col2, col2, 3, 0, 1, 2) * \
  __builtin_shufflevector(col3, col3, 2, 3, 0, 1)) \
  + \
- __builtin_shufflevector(col1, col1, 2, 3, 0, 1) * \
+  __builtin_shufflevector(col1, col1, 2, 3, 0, 1) * \
  (__builtin_shufflevector(col2, col2, 3, 0, 1, 2) * \
- __builtin_shufflevector(col3, col3, 1, 2, 3, 0) - \
- __builtin_shufflevector(col2, col2, 1, 2, 3, 0) * \
- __builtin_shufflevector(col3, col3, 3, 0, 1, 2)) \
+  __builtin_shufflevector(col3, col3, 1, 2, 3, 0) - \
+  __builtin_shufflevector(col2, col2, 1, 2, 3, 0) * \
+  __builtin_shufflevector(col3, col3, 3, 0, 1, 2)) \
  + \
  __builtin_shufflevector(col1, col1, 3, 0, 1, 2) * \
 (__builtin_shufflevector(col2, col2, 1, 2, 3, 0) * \
@@ -210,7 +210,7 @@ struct ktm::detail::mat_common_implement::determinant<ktm::mat<N, N, std::enable
             float32x4_t t_col1 = vld1q_f32(reinterpret_cast<const float*>(&reinterpret_cast<const ColV*>(&m)[1]));
             float32x4_t t_col2 = vld1q_f32(reinterpret_cast<const float*>(&reinterpret_cast<const ColV*>(&m)[2]));
             float32x4_t tmp = NEON_DET3_SHUFFLE_MUL(t_col0, t_col1, t_col2);
-            return vaddvq_f32(tmp);
+            return vaddvq_f32(vsetq_lane_f32(zero<float>, tmp, 3));
         }
         else 
         {
@@ -238,7 +238,7 @@ struct ktm::detail::mat_common_implement::determinant<ktm::mat<N, N, std::enable
             int32x4_t t_col1 = vld1q_s32(reinterpret_cast<const int*>(&reinterpret_cast<const ColV*>(&m)[1]));
             int32x4_t t_col2 = vld1q_s32(reinterpret_cast<const int*>(&reinterpret_cast<const ColV*>(&m)[2]));
             int32x4_t tmp = NEON_DET3_SHUFFLE_MUL(t_col0, t_col1, t_col2);
-            return vaddvq_s32(tmp);
+            return vaddvq_s32(vsetq_lane_s32(zero<int>, tmp, 3));
         }
         else 
         {
@@ -266,7 +266,7 @@ struct ktm::detail::mat_common_implement::determinant<ktm::mat<N, N, std::enable
             uint32x4_t t_col1 = vld1q_u32(reinterpret_cast<const unsigned int*>(&reinterpret_cast<const ColV*>(&m)[1]));
             uint32x4_t t_col2 = vld1q_u32(reinterpret_cast<const unsigned int*>(&reinterpret_cast<const ColV*>(&m)[2]));
             uint32x4_t tmp = NEON_DET3_SHUFFLE_MUL(t_col0, t_col1, t_col2);
-            return vaddvq_u32(tmp);
+            return vaddvq_u32(vsetq_lane_u32(zero<unsigned int>, tmp, 3));
         }
         else 
         {

@@ -122,7 +122,7 @@ struct ktm::detail::vec_common_implement::reduce_add<ktm::vec<N, std::enable_if_
         else if constexpr(N == 3)
         {
             float32x4_t tmp = vld1q_f32(reinterpret_cast<const float*>(&x));
-            return vaddvq_f32(vsetq_lane_f32(0, tmp, 3)); 
+            return vaddvq_f32(vsetq_lane_f32(zero<float>, tmp, 3)); 
         }
         else
         {
@@ -144,7 +144,7 @@ struct ktm::detail::vec_common_implement::reduce_add<ktm::vec<N, std::enable_if_
         else if constexpr(N == 3)
         {
             int32x4_t tmp = vld1q_s32(reinterpret_cast<const int*>(&x));
-            return vaddvq_s32(vsetq_lane_s32(0, tmp, 3)); 
+            return vaddvq_s32(vsetq_lane_s32(zero<int>, tmp, 3)); 
         }
         else
         {
@@ -166,7 +166,7 @@ struct ktm::detail::vec_common_implement::reduce_add<ktm::vec<N, std::enable_if_
         else if constexpr(N == 3)
         {
             uint32x4_t tmp = vld1q_u32(reinterpret_cast<const unsigned int*>(&x));
-            return vaddvq_u32(vsetq_lane_u32(0, tmp, 3)); 
+            return vaddvq_u32(vsetq_lane_u32(zero<unsigned int>, tmp, 3)); 
         }
         else
         {
