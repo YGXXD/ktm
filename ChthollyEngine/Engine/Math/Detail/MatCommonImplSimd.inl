@@ -185,11 +185,11 @@ struct ktm::detail::mat_common_implement::transpose<ktm::mat<N, N, std::enable_i
  __builtin_shufflevector(col2, col2, 3, 0, 1, 2) * \
  __builtin_shufflevector(col3, col3, 2, 3, 0, 1)) \
  + \
-  __builtin_shufflevector(col1, col1, 2, 3, 0, 1) * \
- (__builtin_shufflevector(col2, col2, 3, 0, 1, 2) * \
-  __builtin_shufflevector(col3, col3, 1, 2, 3, 0) - \
-  __builtin_shufflevector(col2, col2, 1, 2, 3, 0) * \
-  __builtin_shufflevector(col3, col3, 3, 0, 1, 2)) \
+ __builtin_shufflevector(col1, col1, 2, 3, 0, 1) * \
+(__builtin_shufflevector(col2, col2, 3, 0, 1, 2) * \
+ __builtin_shufflevector(col3, col3, 1, 2, 3, 0) - \
+ __builtin_shufflevector(col2, col2, 1, 2, 3, 0) * \
+ __builtin_shufflevector(col3, col3, 3, 0, 1, 2)) \
  + \
  __builtin_shufflevector(col1, col1, 3, 0, 1, 2) * \
 (__builtin_shufflevector(col2, col2, 1, 2, 3, 0) * \
