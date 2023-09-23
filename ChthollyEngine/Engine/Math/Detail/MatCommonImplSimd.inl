@@ -8,7 +8,7 @@
 #include <arm_neon.h>
 
 template<size_t N>
-struct ktm::detail::mat_common_implement::transpose<ktm::mat<N, N, std::enable_if_t<N == 3 || N == 4, float>>>
+struct ktm::detail::mat_common_implement::transpose<N, N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using M = mat<N, N, float>;
     using RetM = mat_traits_tp_t<M>;
@@ -63,7 +63,7 @@ struct ktm::detail::mat_common_implement::transpose<ktm::mat<N, N, std::enable_i
 };
 
 template<size_t N>
-struct ktm::detail::mat_common_implement::transpose<ktm::mat<N, N, std::enable_if_t<N == 3 || N == 4, int>>>
+struct ktm::detail::mat_common_implement::transpose<N, N, std::enable_if_t<N == 3 || N == 4, int>>
 {
     using M = mat<N, N, int>;
     using RetM = mat_traits_tp_t<M>;
@@ -118,7 +118,7 @@ struct ktm::detail::mat_common_implement::transpose<ktm::mat<N, N, std::enable_i
 };
 
 template<size_t N>
-struct ktm::detail::mat_common_implement::transpose<ktm::mat<N, N, std::enable_if_t<N == 3 || N == 4, unsigned int>>>
+struct ktm::detail::mat_common_implement::transpose<N, N, std::enable_if_t<N == 3 || N == 4, unsigned int>>
 {
     using M = mat<N, N, unsigned int>;
     using RetM = mat_traits_tp_t<M>;
@@ -198,7 +198,7 @@ struct ktm::detail::mat_common_implement::transpose<ktm::mat<N, N, std::enable_i
  __builtin_shufflevector(col3, col3, 1, 2, 3, 0)))
 
 template<size_t N>
-struct ktm::detail::mat_common_implement::determinant<ktm::mat<N, N, std::enable_if_t<N == 3 || N == 4, float>>>
+struct ktm::detail::mat_common_implement::determinant<N, N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using M = mat<N, N, float>;
     using ColV = mat_traits_col_t<M>;
@@ -226,7 +226,7 @@ struct ktm::detail::mat_common_implement::determinant<ktm::mat<N, N, std::enable
 };
 
 template<size_t N>
-struct ktm::detail::mat_common_implement::determinant<ktm::mat<N, N, std::enable_if_t<N == 3 || N == 4, int>>>
+struct ktm::detail::mat_common_implement::determinant<N, N, std::enable_if_t<N == 3 || N == 4, int>>
 {
     using M = mat<N, N, int>;
     using ColV = mat_traits_col_t<M>;
@@ -254,7 +254,7 @@ struct ktm::detail::mat_common_implement::determinant<ktm::mat<N, N, std::enable
 };
 
 template<size_t N>
-struct ktm::detail::mat_common_implement::determinant<ktm::mat<N, N, std::enable_if_t<N == 3 || N == 4, unsigned int>>>
+struct ktm::detail::mat_common_implement::determinant<N, N, std::enable_if_t<N == 3 || N == 4, unsigned int>>
 {
     using M = mat<N, N, unsigned int>;
     using ColV = mat_traits_col_t<M>;

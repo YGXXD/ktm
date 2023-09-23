@@ -1,19 +1,21 @@
 #ifndef _MAT_COMMON_IMPL_H_
 #define _MAT_COMMON_IMPL_H_
 
+#include <cstddef>
+
 namespace ktm
 {
 namespace detail
 {
 namespace mat_common_implement
 {
-template<class M>
+template<size_t Col, size_t Raw, typename T>
 struct transpose;
 
-template<class M>
+template<size_t Col, size_t Raw, typename T>
 struct determinant;
 
-template<class M>
+template<size_t Col, size_t Raw, typename T>
 struct inverse;
 }
 }

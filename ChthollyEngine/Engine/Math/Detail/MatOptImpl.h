@@ -1,28 +1,30 @@
 #ifndef _MAT_OPT_IMPL_H_
 #define _MAT_OPT_IMPL_H_
 
+#include <cstddef>
+
 namespace ktm
 {
 namespace detail
 {
 namespace mat_opt_implement
 {
-template<class M>
+template<size_t Col, size_t Raw, typename T>
 struct mat_mul_vec;
 
-template<class M>
+template<size_t Col, size_t Raw, typename T>
 struct vec_mul_mat;
 
-template<class M>
+template<size_t Col, size_t Raw, typename T>
 struct mat_mul_mat;
 
-template<class M>
+template<size_t Col, size_t Raw, typename T>
 struct add;
 
-template<class M>
+template<size_t Col, size_t Raw, typename T>
 struct minus;
 
-template<class M>
+template<size_t Col, size_t Raw, typename T>
 struct equal;
 
 }

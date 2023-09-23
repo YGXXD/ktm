@@ -16,57 +16,57 @@ struct IVecOpt<Father, vec<N, T>> : Father
     
     CHTHOLLY_INLINE vec<N, T> operator+(const vec<N, T>& y) const noexcept
     {
-        return detail::vec_opt_implement::add<vec<N, T>>::call(reinterpret_cast<const vec<N, T>&>(*this), y);
+        return detail::vec_opt_implement::add<N, T>::call(reinterpret_cast<const vec<N, T>&>(*this), y);
     }
 
     CHTHOLLY_INLINE vec<N, T>& operator+=(const vec<N, T>& y) noexcept
     {
-        return detail::vec_opt_implement::add_to_self<vec<N, T>>::call(reinterpret_cast<vec<N, T>&>(*this), y);
+        return detail::vec_opt_implement::add_to_self<N, T>::call(reinterpret_cast<vec<N, T>&>(*this), y);
     }
 
     CHTHOLLY_INLINE vec<N, T> operator-(const vec<N, T>& y) const noexcept
     {
-        return detail::vec_opt_implement::minus<vec<N, T>>::call(reinterpret_cast<const vec<N, T>&>(*this), y);
+        return detail::vec_opt_implement::minus<N, T>::call(reinterpret_cast<const vec<N, T>&>(*this), y);
     }
 
     CHTHOLLY_INLINE vec<N, T>& operator-=(const vec<N, T>& y) noexcept
     {
-        return detail::vec_opt_implement::minus_to_self<vec<N, T>>::call(reinterpret_cast<vec<N, T>&>(*this), y);
+        return detail::vec_opt_implement::minus_to_self<N, T>::call(reinterpret_cast<vec<N, T>&>(*this), y);
     }
     
     CHTHOLLY_INLINE vec<N, T> operator*(const vec<N, T>& y) const noexcept
     {
-        return detail::vec_opt_implement::mul<vec<N, T>>::call(reinterpret_cast<const vec<N, T>&>(*this), y);
+        return detail::vec_opt_implement::mul<N, T>::call(reinterpret_cast<const vec<N, T>&>(*this), y);
     }
 
     CHTHOLLY_INLINE vec<N, T>& operator*=(const vec<N, T>& y) noexcept
     {
-        return detail::vec_opt_implement::mul_to_self<vec<N, T>>::call(reinterpret_cast<vec<N, T>&>(*this), y);
+        return detail::vec_opt_implement::mul_to_self<N, T>::call(reinterpret_cast<vec<N, T>&>(*this), y);
     }
 
     CHTHOLLY_INLINE vec<N, T> operator/(const vec<N, T>& y) const noexcept
     {
-        return detail::vec_opt_implement::div<vec<N, T>>::call(reinterpret_cast<const vec<N, T>&>(*this), y);
+        return detail::vec_opt_implement::div<N, T>::call(reinterpret_cast<const vec<N, T>&>(*this), y);
     }
 
     CHTHOLLY_INLINE vec<N, T>& operator/=(const vec<N, T>& y) noexcept
     {
-        return detail::vec_opt_implement::div_to_self<vec<N, T>>::call(reinterpret_cast<vec<N, T>&>(*this), y);
+        return detail::vec_opt_implement::div_to_self<N, T>::call(reinterpret_cast<vec<N, T>&>(*this), y);
     }
 
     CHTHOLLY_INLINE vec<N, T> operator-() const noexcept
     {
-        return detail::vec_opt_implement::opposite<vec<N, T>>::call(reinterpret_cast<const vec<N, T>&>(*this));
+        return detail::vec_opt_implement::opposite<N, T>::call(reinterpret_cast<const vec<N, T>&>(*this));
     }
 
     CHTHOLLY_INLINE vec<N, T> operator+(T scalar) const noexcept
     {
-        return detail::vec_opt_implement::add_scalar<vec<N, T>>::call(reinterpret_cast<const vec<N, T>&>(*this), scalar);
+        return detail::vec_opt_implement::add_scalar<N, T>::call(reinterpret_cast<const vec<N, T>&>(*this), scalar);
     }
 
     CHTHOLLY_INLINE vec<N, T>& operator+=(T scalar) noexcept
     {
-        return detail::vec_opt_implement::add_scalar_to_self<vec<N, T>>::call(reinterpret_cast<vec<N, T>&>(*this), scalar);
+        return detail::vec_opt_implement::add_scalar_to_self<N, T>::call(reinterpret_cast<vec<N, T>&>(*this), scalar);
     }
 
     friend CHTHOLLY_INLINE vec<N, T> operator+(T a, const vec<N, T>& x) noexcept 
@@ -76,22 +76,22 @@ struct IVecOpt<Father, vec<N, T>> : Father
 
     CHTHOLLY_INLINE vec<N, T> operator-(T scalar) const noexcept
     {
-        return detail::vec_opt_implement::minus_scalar<vec<N, T>>::call(reinterpret_cast<const vec<N, T>&>(*this), scalar);
+        return detail::vec_opt_implement::minus_scalar<N, T>::call(reinterpret_cast<const vec<N, T>&>(*this), scalar);
     }
 
     CHTHOLLY_INLINE vec<N, T>& operator-=(T scalar) noexcept
     {
-        return detail::vec_opt_implement::minus_scalar_to_self<vec<N, T>>::call(reinterpret_cast<vec<N, T>&>(*this), scalar);
+        return detail::vec_opt_implement::minus_scalar_to_self<N, T>::call(reinterpret_cast<vec<N, T>&>(*this), scalar);
     }
 
     CHTHOLLY_INLINE vec<N, T> operator*(T scalar) const noexcept
     {
-        return detail::vec_opt_implement::mul_scalar<vec<N, T>>::call(reinterpret_cast<const vec<N, T>&>(*this), scalar);
+        return detail::vec_opt_implement::mul_scalar<N, T>::call(reinterpret_cast<const vec<N, T>&>(*this), scalar);
     }
 
     CHTHOLLY_INLINE vec<N, T>& operator*=(T scalar) noexcept
     {
-        return detail::vec_opt_implement::mul_scalar_to_self<vec<N, T>>::call(reinterpret_cast<vec<N, T>&>(*this), scalar);
+        return detail::vec_opt_implement::mul_scalar_to_self<N, T>::call(reinterpret_cast<vec<N, T>&>(*this), scalar);
     }
 
     friend CHTHOLLY_INLINE vec<N, T> operator*(T a, const vec<N, T>& x) noexcept 
@@ -101,22 +101,22 @@ struct IVecOpt<Father, vec<N, T>> : Father
     
     CHTHOLLY_INLINE vec<N, T> operator/(T scalar) const noexcept
     {
-        return detail::vec_opt_implement::div_scalar<vec<N, T>>::call(reinterpret_cast<const vec<N, T>&>(*this), scalar);
+        return detail::vec_opt_implement::div_scalar<N, T>::call(reinterpret_cast<const vec<N, T>&>(*this), scalar);
     }
 
     CHTHOLLY_INLINE vec<N, T>& operator/=(T scalar) noexcept
     {
-        return detail::vec_opt_implement::div_scalar_to_self<vec<N, T>>::call(reinterpret_cast<vec<N, T>&>(*this), scalar);
+        return detail::vec_opt_implement::div_scalar_to_self<N, T>::call(reinterpret_cast<vec<N, T>&>(*this), scalar);
     }
 
     CHTHOLLY_INLINE bool operator==(const vec<N, T>& y) const noexcept
     {
-        return detail::vec_opt_implement::equal<vec<N, T>>::call(reinterpret_cast<const vec<N, T>&>(*this), y);
+        return detail::vec_opt_implement::equal<N, T>::call(reinterpret_cast<const vec<N, T>&>(*this), y);
     }
 
     CHTHOLLY_INLINE bool operator!=(const vec<N, T>& y) const noexcept
     {
-        return !detail::vec_opt_implement::equal<vec<N, T>>::call(reinterpret_cast<const vec<N, T>&>(*this), y);
+        return !detail::vec_opt_implement::equal<N, T>::call(reinterpret_cast<const vec<N, T>&>(*this), y);
     }
 };
 

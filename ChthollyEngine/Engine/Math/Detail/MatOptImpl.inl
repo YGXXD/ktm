@@ -5,10 +5,10 @@
 #include "Math/MathType/BaseType.h"
 #include "Math/MathLib/VecCommon.h"
 
-template<class M>
+template<size_t Col, size_t Raw, typename T>
 struct ktm::detail::mat_opt_implement::mat_mul_vec
 {
-    using T = mat_traits_t<M>;
+	using M = mat<Col, Raw, T>;
     using ColV = mat_traits_col_t<M>;
     using RawV = mat_traits_raw_t<M>;
     static CHTHOLLY_INLINE ColV call(const M& m, const RawV& v) noexcept
@@ -25,10 +25,10 @@ private:
     }
 };
 
-template<class M>
+template<size_t Col, size_t Raw, typename T>
 struct ktm::detail::mat_opt_implement::vec_mul_mat
 {
-    using T = mat_traits_t<M>;
+    using M = mat<Col, Raw, T>;
     using ColV = mat_traits_col_t<M>;
     using RawV = mat_traits_raw_t<M>;
     static CHTHOLLY_INLINE RawV call(const ColV& v, const M& m) noexcept
@@ -45,10 +45,10 @@ private:
     }
 };
 
-template<class M>
+template<size_t Col, size_t Raw, typename T>
 struct ktm::detail::mat_opt_implement::mat_mul_mat
 {
-    using T = mat_traits_t<M>;
+    using M = mat<Col, Raw, T>;
     using ColV = mat_traits_col_t<M>;
     using RawV = mat_traits_raw_t<M>;
 
@@ -67,14 +67,15 @@ private:
     static CHTHOLLY_INLINE RetM<U> call(const M& m1 , const M2<U>& m2, std::index_sequence<Ns...>) noexcept
     {
         RetM<U> ret;
-        ((reinterpret_cast<ColV*>(&ret)[Ns] = mat_mul_vec<M>::call(m1, reinterpret_cast<const RawV*>(&m2)[Ns])), ...);
+        ((reinterpret_cast<ColV*>(&ret)[Ns] = mat_mul_vec<Col, Raw, T>::call(m1, reinterpret_cast<const RawV*>(&m2)[Ns])), ...);
         return ret;
     }
 };
 
-template<class M>
+template<size_t Col, size_t Raw, typename T>
 struct ktm::detail::mat_opt_implement::add
 {
+	using M = mat<Col, Raw, T>;
     using ColV = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
@@ -90,9 +91,10 @@ private:
     }
 };
 
-template<class M>
+template<size_t Col, size_t Raw, typename T>
 struct ktm::detail::mat_opt_implement::minus
 {
+	using M = mat<Col, Raw, T>;
     using ColV = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
@@ -108,9 +110,10 @@ private:
     }
 };
 
-template<class M>
+template<size_t Col, size_t Raw, typename T>
 struct ktm::detail::mat_opt_implement::equal
 {
+	using M = mat<Col, Raw, T>;
     using ColV = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE bool call(const M& m1, const M& m2) noexcept
     {

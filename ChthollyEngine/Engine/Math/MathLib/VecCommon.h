@@ -7,88 +7,88 @@
 namespace ktm
 {
 
-template<size_t N, class V>
-static CHTHOLLY_INLINE std::enable_if_t<(N > 0 && N < vec_traits_len<V>), V> elem_move(const V& x) noexcept
+template<size_t StepN, class V>
+static CHTHOLLY_INLINE std::enable_if_t<(StepN > 0 && StepN < vec_traits_len<V>), V> elem_move(const V& x) noexcept
 {
-    return detail::vec_common_implement::elem_move<N, V>::call(x);
+    return detail::vec_common_implement::elem_move<StepN, vec_traits_len<V>, vec_traits_t<V>>::call(x);
 }
 
 template<class V>
 static CHTHOLLY_INLINE vec_traits_t<V> reduce_add(const V& x) noexcept
 {
-    return detail::vec_common_implement::reduce_add<V>::call(x);
+    return detail::vec_common_implement::reduce_add<vec_traits_len<V>, vec_traits_t<V>>::call(x);
 }
 
 template<class V>
 static CHTHOLLY_INLINE vec_traits_t<V> reduce_min(const V& x) noexcept
 {
-    return detail::vec_common_implement::reduce_min<V>::call(x);
+    return detail::vec_common_implement::reduce_min<vec_traits_len<V>, vec_traits_t<V>>::call(x);
 }
 
 template<class V>
 static CHTHOLLY_INLINE vec_traits_t<V> reduce_max(const V& x) noexcept
 {
-    return detail::vec_common_implement::reduce_max<V>::call(x);
+    return detail::vec_common_implement::reduce_max<vec_traits_len<V>, vec_traits_t<V>>::call(x);
 }
 
 template<class V>
 static CHTHOLLY_INLINE vec_traits_self_t<V> abs(const V& x) noexcept
 {
-    return detail::vec_common_implement::abs<V>::call(x);
+    return detail::vec_common_implement::abs<vec_traits_len<V>, vec_traits_t<V>>::call(x);
 }
 
 template<class V>
 static CHTHOLLY_INLINE vec_traits_self_t<V> min(const V& x, const V& y) noexcept
 {
-    return detail::vec_common_implement::min<V>::call(x, y);
+    return detail::vec_common_implement::min<vec_traits_len<V>, vec_traits_t<V>>::call(x, y);
 }
 
 template<class V>
 static CHTHOLLY_INLINE vec_traits_self_t<V> max(const V& x, const V& y) noexcept
 {
-    return detail::vec_common_implement::max<V>::call(x, y);
+    return detail::vec_common_implement::max<vec_traits_len<V>, vec_traits_t<V>>::call(x, y);
 }
 
 template<class V>
 static CHTHOLLY_INLINE vec_traits_self_t<V> clamp(const V& v, const V& min, const V& max) noexcept
 {
-    return detail::vec_common_implement::clamp<V>::call(v, min, max);
+    return detail::vec_common_implement::clamp<vec_traits_len<V>, vec_traits_t<V>>::call(v, min, max);
 }
 
 template<class V>
 static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<vec_traits_t<V>>, V> lerp(const V& x, const V& y, vec_traits_t<V> t) noexcept
 {
-    return detail::vec_common_implement::lerp<V>::call(x, y, t);
+    return detail::vec_common_implement::lerp<vec_traits_len<V>, vec_traits_t<V>>::call(x, y, t);
 }
 
 template<class V>
 static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<vec_traits_t<V>>, V> mix(const V& x, const V& y, const V& t) noexcept
 {
-    return detail::vec_common_implement::mix<V>::call(x, y, t);
+    return detail::vec_common_implement::mix<vec_traits_len<V>, vec_traits_t<V>>::call(x, y, t);
 }
 
 template<class V>
 static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<vec_traits_t<V>>, V> recip(const V& x) noexcept
 {
-    return detail::vec_common_implement::recip<V>::call(x);
+    return detail::vec_common_implement::recip<vec_traits_len<V>, vec_traits_t<V>>::call(x);
 } 
 
 template<class V>
 static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<vec_traits_t<V>>, V> step(const V& edge, const V& x) noexcept
 {
-    return detail::vec_common_implement::step<V>::call(edge, x);
+    return detail::vec_common_implement::step<vec_traits_len<V>, vec_traits_t<V>>::call(edge, x);
 } 
 
 template<class V>
 static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<vec_traits_t<V>>, V> smoothstep(const V& edge0, const V& edge1, const V& x) noexcept
 {
-    return detail::vec_common_implement::smoothstep<V>::call(edge0, edge1, x);
+    return detail::vec_common_implement::smoothstep<vec_traits_len<V>, vec_traits_t<V>>::call(edge0, edge1, x);
 }
 
 template<class V>
 static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<vec_traits_t<V>>, V> fract(const V& x) noexcept
 {
-    return detail::vec_common_implement::fract<V>::call(x);
+    return detail::vec_common_implement::fract<vec_traits_len<V>, vec_traits_t<V>>::call(x);
 }
 
 }   

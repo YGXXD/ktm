@@ -4,9 +4,10 @@
 #include "Math/MathType/BaseType.h"
 #include "MatCommonImpl.h"
 
-template<class M>
+template<size_t Col, size_t Raw, typename T>
 struct ktm::detail::mat_common_implement::transpose
 {
+	using M = mat<Col, Raw, T>;
     using RetM = mat_traits_tp_t<M>;
     using ColV = mat_traits_col_t<M>;
     using RawV = mat_traits_raw_t<M>;
@@ -26,7 +27,7 @@ private:
 };
 
 template<size_t N, typename T>
-struct ktm::detail::mat_common_implement::determinant<ktm::mat<N, N, T>>
+struct ktm::detail::mat_common_implement::determinant<N, N, T>
 {
     static_assert(N >= 2 && N <= 4);
     using M = mat<N, N, T>;
@@ -118,14 +119,14 @@ struct ktm::detail::mat_common_implement::determinant<ktm::mat<N, N, T>>
 };
 
 template<size_t N, typename T>
-struct ktm::detail::mat_common_implement::inverse<ktm::mat<N, N, T>>
+struct ktm::detail::mat_common_implement::inverse<N, N, T>
 {
     static_assert(N >= 2 && N <= 4 && std::is_floating_point_v<T>);
     using M = mat<N, N, T>;
     using ColT = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE M call(const M& m) noexcept
     {
-        T one_over_det = one<T> / determinant<M>::call(m);
+        T one_over_det = one<T> / determinant<N, N, T>::call(m);
         M ret;
         if constexpr(N == 2)
         {

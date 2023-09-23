@@ -4,11 +4,11 @@
 #include "VecCommonImpl.h"
 #include "Math/MathLib/Common.h"
 
-template<size_t N, class V>
+template<size_t StepN, size_t N, typename T>
 struct ktm::detail::vec_common_implement::elem_move
 {
-    static_assert(N > 0 && N < vec_traits_len<V>);
-    using T = vec_traits_t<V>;
+    static_assert(StepN > 0 && StepN < N);
+	using V = vec<N, T>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
         return call(x, std::make_index_sequence<vec_traits_len<V>>());
@@ -23,10 +23,10 @@ private:
     }
 };
 
-template<class V>
+template<size_t N, typename T>
 struct ktm::detail::vec_common_implement::reduce_add
 {
-    using T = vec_traits_t<V>;
+    using V = vec<N, T>;
     static CHTHOLLY_INLINE T call(const V& x) noexcept
     {
         return call(x, std::make_index_sequence<vec_traits_len<V>>());
@@ -39,10 +39,10 @@ private:
     }
 };
 
-template<class V>
+template<size_t N, typename T>
 struct ktm::detail::vec_common_implement::reduce_min
 {
-    using T = vec_traits_t<V>;
+    using V = vec<N, T>;
     static CHTHOLLY_INLINE T call(const V& x) noexcept
     {
         return call(x, std::make_index_sequence<vec_traits_len<V> - 1>());
@@ -62,10 +62,10 @@ private:
     }
 };
 
-template<class V>
+template<size_t N, typename T>
 struct ktm::detail::vec_common_implement::reduce_max
 {
-    using T = vec_traits_t<V>;
+    using V = vec<N, T>;
     static CHTHOLLY_INLINE T call(const V& x) noexcept
     {
         return call(x, std::make_index_sequence<vec_traits_len<V> - 1>());
@@ -85,10 +85,10 @@ private:
     }
 };
 
-template<class V>
+template<size_t N, typename T>
 struct ktm::detail::vec_common_implement::abs
 {
-    using T = vec_traits_t<V>;
+    using V = vec<N, T>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
         if constexpr(std::is_unsigned_v<T>)
@@ -106,10 +106,10 @@ private:
     }
 };
 
-template<class V>
+template<size_t N, typename T>
 struct ktm::detail::vec_common_implement::min
 {
-    using T = vec_traits_t<V>;
+    using V = vec<N, T>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
     {
         return call(x, y, std::make_index_sequence<vec_traits_len<V>>());
@@ -124,10 +124,10 @@ private:
     }
 };
 
-template<class V>
+template<size_t N, typename T>
 struct ktm::detail::vec_common_implement::max
 {
-    using T = vec_traits_t<V>;
+    using V = vec<N, T>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
     {
         return call(x, y, std::make_index_sequence<vec_traits_len<V>>());
@@ -142,10 +142,10 @@ private:
     }
 };
 
-template<class V>
+template<size_t N, typename T>
 struct ktm::detail::vec_common_implement::clamp
 {
-    using T = vec_traits_t<V>;
+    using V = vec<N, T>;
     static CHTHOLLY_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
         return call(v, min, max, std::make_index_sequence<vec_traits_len<V>>());
@@ -160,10 +160,10 @@ private:
     }
 };
 
-template<class V>
+template<size_t N, typename T>
 struct ktm::detail::vec_common_implement::lerp
 {
-    using T = vec_traits_t<V>;
+    using V = vec<N, T>;
     static_assert(std::is_floating_point_v<T>);
     static CHTHOLLY_INLINE V call(const V& x, const V& y, T t) noexcept
     {
@@ -179,10 +179,10 @@ private:
     }
 };
 
-template<class V>
+template<size_t N, typename T>
 struct ktm::detail::vec_common_implement::mix
 {
-    using T = vec_traits_t<V>;
+    using V = vec<N, T>;
     static_assert(std::is_floating_point_v<T>);
     static CHTHOLLY_INLINE V call(const V& x, const V& y, const V& t) noexcept
     {
@@ -198,10 +198,10 @@ private:
     }
 };
 
-template<class V>
+template<size_t N, typename T>
 struct ktm::detail::vec_common_implement::recip
 {
-    using T = vec_traits_t<V>;
+    using V = vec<N, T>;
     static_assert(std::is_floating_point_v<T>);
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
@@ -217,10 +217,10 @@ private:
     }
 };
 
-template<class V>
+template<size_t N, typename T>
 struct ktm::detail::vec_common_implement::step
 {
-    using T = vec_traits_t<V>;
+    using V = vec<N, T>;
     static_assert(std::is_floating_point_v<T>);
     static CHTHOLLY_INLINE V call(const V& edge, const V& x) noexcept
     {
@@ -236,10 +236,10 @@ private:
     }
 };
 
-template<class V>
+template<size_t N, typename T>
 struct ktm::detail::vec_common_implement::smoothstep
 {
-    using T = vec_traits_t<V>;
+    using V = vec<N, T>;
     static_assert(std::is_floating_point_v<T>);
     static CHTHOLLY_INLINE V call(const V& edge0, const V& edge1, const V& x) noexcept
     {
@@ -255,10 +255,10 @@ private:
     }
 };
 
-template<class V>
+template<size_t N, typename T>
 struct ktm::detail::vec_common_implement::fract
 {
-    using T = vec_traits_t<V>;
+    using V = vec<N, T>;
     static_assert(std::is_floating_point_v<T>);
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {

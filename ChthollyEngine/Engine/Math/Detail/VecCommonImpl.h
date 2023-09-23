@@ -10,46 +10,46 @@ namespace detail
 namespace vec_common_implement
 {
 
-template<size_t N, class V>
+template<size_t StepN, size_t N, typename T>
 struct elem_move;
 
-template<class V>
+template<size_t N, typename T>
 struct reduce_add;
 
-template<class V>
+template<size_t N, typename T>
 struct reduce_min;
 
-template<class V>
+template<size_t N, typename T>
 struct reduce_max;
 
-template<class V>
+template<size_t N, typename T>
 struct abs;
 
-template<class V>
+template<size_t N, typename T>
 struct min;
 
-template<class V>
+template<size_t N, typename T>
 struct max;
 
-template<class V>
+template<size_t N, typename T>
 struct clamp;
 
-template<class V>
+template<size_t N, typename T>
 struct lerp;
 
-template<class V>
+template<size_t N, typename T>
 struct mix;
 
-template<class V>
+template<size_t N, typename T>
 struct recip;
 
-template<class V>
+template<size_t N, typename T>
 struct step;
 
-template<class V>
+template<size_t N, typename T>
 struct smoothstep;
 
-template<class V>
+template<size_t N, typename T>
 struct fract;
 
 }

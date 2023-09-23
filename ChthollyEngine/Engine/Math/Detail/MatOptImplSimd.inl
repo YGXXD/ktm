@@ -8,7 +8,7 @@
 #include <arm_neon.h>
 
 template<size_t Col, size_t Raw>
-struct ktm::detail::mat_opt_implement::mat_mul_vec<ktm::mat<Col, Raw, std::enable_if_t<Col >= 2 && Col <=4, float>>>
+struct ktm::detail::mat_opt_implement::mat_mul_vec<Col, Raw, std::enable_if_t<Col >= 2 && Col <= 4, float>>
 {
     using M = mat<Col, Raw, float>;
     using ColV = mat_traits_col_t<M>;
@@ -42,7 +42,7 @@ private:
 };
 
 template<size_t Col, size_t Raw>
-struct ktm::detail::mat_opt_implement::vec_mul_mat<ktm::mat<Col, Raw, std::enable_if_t<Col >= 2 && Col <=4, float>>>
+struct ktm::detail::mat_opt_implement::vec_mul_mat<Col, Raw, std::enable_if_t<Col >= 2 && Col <= 4, float>>
 {
     using M = mat<Col, Raw, float>;
     using ColV = mat_traits_col_t<M>;
@@ -79,7 +79,7 @@ private:
 };
 
 template<size_t Col, size_t Raw>
-struct ktm::detail::mat_opt_implement::add<ktm::mat<Col, Raw, std::enable_if_t<Col >= 2 && Col <=4, float>>>
+struct ktm::detail::mat_opt_implement::add<Col, Raw, std::enable_if_t<Col >= 2 && Col <= 4, float>>
 {
     using M = mat<Col, Raw, float>;
     using ColV = mat_traits_col_t<M>;
@@ -111,7 +111,7 @@ private:
 };
 
 template<size_t Col, size_t Raw>
-struct ktm::detail::mat_opt_implement::minus<ktm::mat<Col, Raw, std::enable_if_t<Col >= 2 && Col <=4, float>>>
+struct ktm::detail::mat_opt_implement::minus<Col, Raw, std::enable_if_t<Col >= 2 && Col <= 4, float>>
 {
     using M = mat<Col, Raw, float>;
     using ColV = mat_traits_col_t<M>;
@@ -143,7 +143,7 @@ private:
 };
 
 template<size_t Col, size_t Raw>
-struct ktm::detail::mat_opt_implement::mat_mul_vec<ktm::mat<Col, Raw, std::enable_if_t<Col >= 2 && Col <=4, int>>>
+struct ktm::detail::mat_opt_implement::mat_mul_vec<Col, Raw, std::enable_if_t<Col >= 2 && Col <= 4, int>>
 {
     using M = mat<Col, Raw, int>;
     using ColV = mat_traits_col_t<M>;
@@ -177,7 +177,7 @@ private:
 };
 
 template<size_t Col, size_t Raw>
-struct ktm::detail::mat_opt_implement::vec_mul_mat<ktm::mat<Col, Raw, std::enable_if_t<Col >= 2 && Col <=4, int>>>
+struct ktm::detail::mat_opt_implement::vec_mul_mat<Col, Raw, std::enable_if_t<Col >= 2 && Col <= 4, int>>
 {
     using M = mat<Col, Raw, int>;
     using ColV = mat_traits_col_t<M>;
@@ -214,7 +214,7 @@ private:
 };
 
 template<size_t Col, size_t Raw>
-struct ktm::detail::mat_opt_implement::add<ktm::mat<Col, Raw, std::enable_if_t<Col >= 2 && Col <=4, int>>>
+struct ktm::detail::mat_opt_implement::add<Col, Raw, std::enable_if_t<Col >= 2 && Col <= 4, int>>
 {
     using M = mat<Col, Raw, int>;
     using ColV = mat_traits_col_t<M>;
@@ -246,7 +246,7 @@ private:
 };
 
 template<size_t Col, size_t Raw>
-struct ktm::detail::mat_opt_implement::minus<ktm::mat<Col, Raw, std::enable_if_t<Col >= 2 && Col <=4, int>>>
+struct ktm::detail::mat_opt_implement::minus<Col, Raw, std::enable_if_t<Col >= 2 && Col <= 4, int>>
 {
     using M = mat<Col, Raw, int>;
     using ColV = mat_traits_col_t<M>;
@@ -278,7 +278,7 @@ private:
 };
 
 template<size_t Col, size_t Raw>
-struct ktm::detail::mat_opt_implement::mat_mul_vec<ktm::mat<Col, Raw, std::enable_if_t<Col >= 2 && Col <=4, unsigned int>>>
+struct ktm::detail::mat_opt_implement::mat_mul_vec<Col, Raw, std::enable_if_t<Col >= 2 && Col <= 4, unsigned int>>
 {
     using M = mat<Col, Raw, unsigned int>;
     using ColV = mat_traits_col_t<M>;
@@ -312,7 +312,7 @@ private:
 };
 
 template<size_t Col, size_t Raw>
-struct ktm::detail::mat_opt_implement::vec_mul_mat<ktm::mat<Col, Raw, std::enable_if_t<Col >= 2 && Col <=4, unsigned int>>>
+struct ktm::detail::mat_opt_implement::vec_mul_mat<Col, Raw, std::enable_if_t<Col >= 2 && Col <= 4, unsigned int>>
 {
     using M = mat<Col, Raw, unsigned int>;
     using ColV = mat_traits_col_t<M>;
@@ -349,7 +349,7 @@ private:
 };
 
 template<size_t Col, size_t Raw>
-struct ktm::detail::mat_opt_implement::add<ktm::mat<Col, Raw, std::enable_if_t<Col >= 2 && Col <=4, unsigned int>>>
+struct ktm::detail::mat_opt_implement::add<Col, Raw, std::enable_if_t<Col >= 2 && Col <= 4, unsigned int>>
 {
     using M = mat<Col, Raw, unsigned int>;
     using ColV = mat_traits_col_t<M>;
@@ -381,7 +381,7 @@ private:
 };
 
 template<size_t Col, size_t Raw>
-struct ktm::detail::mat_opt_implement::minus<ktm::mat<Col, Raw, std::enable_if_t<Col >= 2 && Col <=4, unsigned int>>>
+struct ktm::detail::mat_opt_implement::minus<Col, Raw, std::enable_if_t<Col >= 2 && Col <= 4, unsigned int>>
 {
     using M = mat<Col, Raw, unsigned int>;
     using ColV = mat_traits_col_t<M>;
