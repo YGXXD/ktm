@@ -23,6 +23,12 @@ namespace ktm
     {
         return detail::mat_common_implement::inverse<mat_traits_col_n<M>, mat_traits_row_n<M>, mat_traits_t<M>>::call(m);
     }
+
+    template<class M>
+    CHTHOLLY_INLINE std::enable_if_t<mat_traits_col_n<M> == mat_traits_row_n<M>, mat_traits_t<M>> trace(const M& m)
+    {
+        return detail::mat_common_implement::trace<mat_traits_col_n<M>, mat_traits_row_n<M>, mat_traits_t<M>>::call(m);
+    }
 }
 
 #endif

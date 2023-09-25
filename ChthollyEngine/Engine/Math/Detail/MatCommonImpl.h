@@ -17,6 +17,9 @@ struct determinant;
 
 template<size_t Col, size_t Row, typename T>
 struct inverse;
+
+template<size_t Col, size_t Row, typename T>
+struct trace;
 }
 }
 }

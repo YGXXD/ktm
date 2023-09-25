@@ -516,4 +516,22 @@ struct ktm::detail::mat_common_implement::inverse<N, N, T>
         return ret;
     }
 };
+
+template<size_t N, typename T>
+struct ktm::detail::mat_common_implement::trace<N, N, T>
+{
+    static_assert(N >= 2 && N <= 4);
+    using M = mat<N, N, T>;
+    using ColV = mat_traits_col_t<M>;
+    static CHTHOLLY_INLINE T call(const M& m) noexcept
+    {
+        return call(m, std::make_index_sequence<N>());
+    }
+private:
+    template<size_t ...Ns>
+    static CHTHOLLY_INLINE T call(const M& m, std::index_sequence<Ns...>) noexcept
+    {
+        return ((reinterpret_cast<const T*>(&reinterpret_cast<const ColV*>(&m)[Ns])[Ns])+ ...);
+    }
+};
 #endif
