@@ -8,11 +8,11 @@ namespace ktm
 template<class Father, class Child>
 struct IMatArray;
 
-template<class Father, size_t Col, size_t Raw, typename T>
-struct IMatArray<Father, mat<Col, Raw, T>> : Father
+template<class Father, size_t Col, size_t Row, typename T>
+struct IMatArray<Father, mat<Col, Row, T>> : Father
 {
     using Father::Father;
-    using array_type = std::array<vec<Col, T>, Raw>;
+    using array_type = std::array<vec<Col, T>, Row>;
 };
 }
 

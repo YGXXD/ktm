@@ -9,13 +9,13 @@ namespace detail
 {
 namespace mat_common_implement
 {
-template<size_t Col, size_t Raw, typename T>
+template<size_t Col, size_t Row, typename T>
 struct transpose;
 
-template<size_t Col, size_t Raw, typename T>
+template<size_t Col, size_t Row, typename T>
 struct determinant;
 
-template<size_t Col, size_t Raw, typename T>
+template<size_t Col, size_t Row, typename T>
 struct inverse;
 }
 }

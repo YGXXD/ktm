@@ -9,22 +9,22 @@ namespace detail
 {
 namespace mat_opt_implement
 {
-template<size_t Col, size_t Raw, typename T>
+template<size_t Col, size_t Row, typename T>
 struct mat_mul_vec;
 
-template<size_t Col, size_t Raw, typename T>
+template<size_t Col, size_t Row, typename T>
 struct vec_mul_mat;
 
-template<size_t Col, size_t Raw, typename T>
+template<size_t Col, size_t Row, typename T>
 struct mat_mul_mat;
 
-template<size_t Col, size_t Raw, typename T>
+template<size_t Col, size_t Row, typename T>
 struct add;
 
-template<size_t Col, size_t Raw, typename T>
+template<size_t Col, size_t Row, typename T>
 struct minus;
 
-template<size_t Col, size_t Raw, typename T>
+template<size_t Col, size_t Row, typename T>
 struct equal;
 
 }

@@ -13,7 +13,7 @@ struct ktm::detail::mat_common_implement::transpose<N, N, std::enable_if_t<N == 
     using M = mat<N, N, float>;
     using RetM = mat_traits_tp_t<M>;
     using ColV = mat_traits_col_t<M>;
-    using RawV = mat_traits_raw_t<M>; 
+    using RowV = mat_traits_row_t<M>; 
     static CHTHOLLY_INLINE RetM call(const M& m) noexcept
     {
         if constexpr(N == 3)
@@ -30,9 +30,9 @@ struct ktm::detail::mat_common_implement::transpose<N, N, std::enable_if_t<N == 
             float32x4_t ret2 = __builtin_shufflevector(tmp1, c_2, 0, 2, 4, 3);
 
             RetM ret;
-            vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<RawV*>(&ret)[0]), ret0);
-            vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<RawV*>(&ret)[1]), ret1);
-            vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<RawV*>(&ret)[2]), ret2);
+            vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<RowV*>(&ret)[0]), ret0);
+            vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<RowV*>(&ret)[1]), ret1);
+            vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<RowV*>(&ret)[2]), ret2);
             return ret; 
         }
         else
@@ -53,10 +53,10 @@ struct ktm::detail::mat_common_implement::transpose<N, N, std::enable_if_t<N == 
             float32x4_t ret3 = __builtin_shufflevector(tmp2, tmp3, 1, 3, 5, 7);
 
             RetM ret;
-            vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<RawV*>(&ret)[0]), ret0);
-            vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<RawV*>(&ret)[1]), ret1);
-            vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<RawV*>(&ret)[2]), ret2);
-            vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<RawV*>(&ret)[3]), ret3);
+            vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<RowV*>(&ret)[0]), ret0);
+            vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<RowV*>(&ret)[1]), ret1);
+            vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<RowV*>(&ret)[2]), ret2);
+            vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<RowV*>(&ret)[3]), ret3);
             return ret;
         }
     }
@@ -68,7 +68,7 @@ struct ktm::detail::mat_common_implement::transpose<N, N, std::enable_if_t<N == 
     using M = mat<N, N, int>;
     using RetM = mat_traits_tp_t<M>;
     using ColV = mat_traits_col_t<M>;
-    using RawV = mat_traits_raw_t<M>; 
+    using RowV = mat_traits_row_t<M>; 
     static CHTHOLLY_INLINE RetM call(const M& m) noexcept
     {
         if constexpr(N == 3)
@@ -85,9 +85,9 @@ struct ktm::detail::mat_common_implement::transpose<N, N, std::enable_if_t<N == 
             int32x4_t ret2 = __builtin_shufflevector(tmp1, c_2, 0, 2, 4, 7);
 
             RetM ret;
-            vst1q_s32(reinterpret_cast<int*>(&reinterpret_cast<RawV*>(&ret)[0]), ret0);
-            vst1q_s32(reinterpret_cast<int*>(&reinterpret_cast<RawV*>(&ret)[1]), ret1);
-            vst1q_s32(reinterpret_cast<int*>(&reinterpret_cast<RawV*>(&ret)[2]), ret2);
+            vst1q_s32(reinterpret_cast<int*>(&reinterpret_cast<RowV*>(&ret)[0]), ret0);
+            vst1q_s32(reinterpret_cast<int*>(&reinterpret_cast<RowV*>(&ret)[1]), ret1);
+            vst1q_s32(reinterpret_cast<int*>(&reinterpret_cast<RowV*>(&ret)[2]), ret2);
             return ret; 
         }
         else
@@ -108,10 +108,10 @@ struct ktm::detail::mat_common_implement::transpose<N, N, std::enable_if_t<N == 
             int32x4_t ret3 = __builtin_shufflevector(tmp2, tmp3, 1, 3, 5, 7);
 
             RetM ret;
-            vst1q_s32(reinterpret_cast<int*>(&reinterpret_cast<RawV*>(&ret)[0]), ret0);
-            vst1q_s32(reinterpret_cast<int*>(&reinterpret_cast<RawV*>(&ret)[1]), ret1);
-            vst1q_s32(reinterpret_cast<int*>(&reinterpret_cast<RawV*>(&ret)[2]), ret2);
-            vst1q_s32(reinterpret_cast<int*>(&reinterpret_cast<RawV*>(&ret)[3]), ret3);
+            vst1q_s32(reinterpret_cast<int*>(&reinterpret_cast<RowV*>(&ret)[0]), ret0);
+            vst1q_s32(reinterpret_cast<int*>(&reinterpret_cast<RowV*>(&ret)[1]), ret1);
+            vst1q_s32(reinterpret_cast<int*>(&reinterpret_cast<RowV*>(&ret)[2]), ret2);
+            vst1q_s32(reinterpret_cast<int*>(&reinterpret_cast<RowV*>(&ret)[3]), ret3);
             return ret;
         }
     }
@@ -123,7 +123,7 @@ struct ktm::detail::mat_common_implement::transpose<N, N, std::enable_if_t<N == 
     using M = mat<N, N, unsigned int>;
     using RetM = mat_traits_tp_t<M>;
     using ColV = mat_traits_col_t<M>;
-    using RawV = mat_traits_raw_t<M>; 
+    using RowV = mat_traits_row_t<M>; 
     static CHTHOLLY_INLINE RetM call(const M& m) noexcept
     {
         if constexpr(N == 3)
@@ -140,9 +140,9 @@ struct ktm::detail::mat_common_implement::transpose<N, N, std::enable_if_t<N == 
             uint32x4_t ret2 = __builtin_shufflevector(tmp1, c_2, 0, 2, 4, 7);
 
             RetM ret;
-            vst1q_u32(reinterpret_cast<unsigned int*>(&reinterpret_cast<RawV*>(&ret)[0]), ret0);
-            vst1q_u32(reinterpret_cast<unsigned int*>(&reinterpret_cast<RawV*>(&ret)[1]), ret1);
-            vst1q_u32(reinterpret_cast<unsigned int*>(&reinterpret_cast<RawV*>(&ret)[2]), ret2);
+            vst1q_u32(reinterpret_cast<unsigned int*>(&reinterpret_cast<RowV*>(&ret)[0]), ret0);
+            vst1q_u32(reinterpret_cast<unsigned int*>(&reinterpret_cast<RowV*>(&ret)[1]), ret1);
+            vst1q_u32(reinterpret_cast<unsigned int*>(&reinterpret_cast<RowV*>(&ret)[2]), ret2);
             return ret; 
         }
         else
@@ -163,10 +163,10 @@ struct ktm::detail::mat_common_implement::transpose<N, N, std::enable_if_t<N == 
             uint32x4_t ret3 = __builtin_shufflevector(tmp2, tmp3, 1, 3, 5, 7);
 
             RetM ret;
-            vst1q_u32(reinterpret_cast<unsigned int*>(&reinterpret_cast<RawV*>(&ret)[0]), ret0);
-            vst1q_u32(reinterpret_cast<unsigned int*>(&reinterpret_cast<RawV*>(&ret)[1]), ret1);
-            vst1q_u32(reinterpret_cast<unsigned int*>(&reinterpret_cast<RawV*>(&ret)[2]), ret2);
-            vst1q_u32(reinterpret_cast<unsigned int*>(&reinterpret_cast<RawV*>(&ret)[3]), ret3);
+            vst1q_u32(reinterpret_cast<unsigned int*>(&reinterpret_cast<RowV*>(&ret)[0]), ret0);
+            vst1q_u32(reinterpret_cast<unsigned int*>(&reinterpret_cast<RowV*>(&ret)[1]), ret1);
+            vst1q_u32(reinterpret_cast<unsigned int*>(&reinterpret_cast<RowV*>(&ret)[2]), ret2);
+            vst1q_u32(reinterpret_cast<unsigned int*>(&reinterpret_cast<RowV*>(&ret)[3]), ret3);
             return ret;
         }
     }

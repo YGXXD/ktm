@@ -8,51 +8,51 @@ namespace ktm
 template<class Father, class Child>
 struct IMatMake;
 
-template<class Father, size_t Raw, typename T>
-struct IMatMake<Father, mat<2, Raw, T>> : Father
+template<class Father, size_t Row, typename T>
+struct IMatMake<Father, mat<2, Row, T>> : Father
 {
-    static CHTHOLLY_INLINE mat<2, Raw, T> from_raw(const vec<Raw, T>& raw0, const vec<Raw, T>& raw1) noexcept
+    static CHTHOLLY_INLINE mat<2, Row, T> from_row(const vec<Row, T>& row0, const vec<Row, T>& row1) noexcept
     {
-        return from_raw(raw0, raw1, std::make_index_sequence<Raw>());
+        return from_row(row0, row1, std::make_index_sequence<Row>());
     }
 private:
     template<size_t ...Ns>
-    static CHTHOLLY_INLINE mat<2, Raw, T> from_raw(const vec<Raw, T>& raw0, const vec<Raw, T>& raw1, std::index_sequence<Ns...>) noexcept
+    static CHTHOLLY_INLINE mat<2, Row, T> from_row(const vec<Row, T>& row0, const vec<Row, T>& row1, std::index_sequence<Ns...>) noexcept
     {
-        return mat<2, Raw, T>({ reinterpret_cast<const T*>(&raw0)[Ns], reinterpret_cast<const T*>(&raw1)[Ns] }...);
+        return mat<2, Row, T>({ reinterpret_cast<const T*>(&row0)[Ns], reinterpret_cast<const T*>(&row1)[Ns] }...);
     }
 };
 
 
-template<class Father, size_t Raw, typename T>
-struct IMatMake<Father, mat<3, Raw, T>> : Father
+template<class Father, size_t Row, typename T>
+struct IMatMake<Father, mat<3, Row, T>> : Father
 {
-    static CHTHOLLY_INLINE mat<3, Raw, T> from_raw(const vec<Raw, T>& raw0, const vec<Raw, T>& raw1, const vec<Raw, T>& raw2) noexcept
+    static CHTHOLLY_INLINE mat<3, Row, T> from_row(const vec<Row, T>& row0, const vec<Row, T>& row1, const vec<Row, T>& row2) noexcept
     {
-        return from_raw(raw0, raw1, raw2, std::make_index_sequence<Raw>());
+        return from_row(row0, row1, row2, std::make_index_sequence<Row>());
     }
 private:
     template<size_t ...Ns>
-    static CHTHOLLY_INLINE mat<3, Raw, T> from_raw(const vec<Raw, T>& raw0, const vec<Raw, T>& raw1, const vec<Raw, T>& raw2, std::index_sequence<Ns...>) noexcept
+    static CHTHOLLY_INLINE mat<3, Row, T> from_row(const vec<Row, T>& row0, const vec<Row, T>& row1, const vec<Row, T>& row2, std::index_sequence<Ns...>) noexcept
     {
-        return mat<3, Raw, T>({ reinterpret_cast<const T*>(&raw0)[Ns], reinterpret_cast<const T*>(&raw1)[Ns], reinterpret_cast<const T*>(&raw2)[Ns] }...);
+        return mat<3, Row, T>({ reinterpret_cast<const T*>(&row0)[Ns], reinterpret_cast<const T*>(&row1)[Ns], reinterpret_cast<const T*>(&row2)[Ns] }...);
     }
 };
 
 
-template<class Father, size_t Raw, typename T>
-struct IMatMake<Father, mat<4, Raw, T>> : Father
+template<class Father, size_t Row, typename T>
+struct IMatMake<Father, mat<4, Row, T>> : Father
 {
-    static CHTHOLLY_INLINE mat<4, Raw, T> from_raw(const vec<Raw, T>& raw0, const vec<Raw, T>& raw1, const vec<Raw, T>& raw2, const vec<Raw, T>& raw3) noexcept
+    static CHTHOLLY_INLINE mat<4, Row, T> from_row(const vec<Row, T>& row0, const vec<Row, T>& row1, const vec<Row, T>& row2, const vec<Row, T>& row3) noexcept
     {
-        return from_raw(raw0, raw1, raw2, raw3, std::make_index_sequence<Raw>());
+        return from_row(row0, row1, row2, row3, std::make_index_sequence<Row>());
     }
 private:
     template<size_t ...Ns>
-    static CHTHOLLY_INLINE mat<4, Raw, T> from_raw(const vec<Raw, T>& raw0, const vec<Raw, T>& raw1, const vec<Raw, T>& raw2, const vec<Raw, T>& raw3, std::index_sequence<Ns...>) noexcept
+    static CHTHOLLY_INLINE mat<4, Row, T> from_row(const vec<Row, T>& row0, const vec<Row, T>& row1, const vec<Row, T>& row2, const vec<Row, T>& row3, std::index_sequence<Ns...>) noexcept
     {
-        return mat<4, Raw, T>({ reinterpret_cast<const T*>(&raw0)[Ns], reinterpret_cast<const T*>(&raw1)[Ns],
-                                reinterpret_cast<const T*>(&raw2)[Ns], reinterpret_cast<const T*>(&raw3)[Ns] }...);
+        return mat<4, Row, T>({ reinterpret_cast<const T*>(&row0)[Ns], reinterpret_cast<const T*>(&row1)[Ns],
+                                reinterpret_cast<const T*>(&row2)[Ns], reinterpret_cast<const T*>(&row3)[Ns] }...);
     }
 };
 }
