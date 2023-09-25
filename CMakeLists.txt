@@ -13,7 +13,6 @@ set(ENGINE_DLL_NAME ChthollyEngine)
 if(APPLE)
 	set(CHTHOLLY_PLATFORM CHTHOLLY_PLATFORM_APPLE)
 	set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-	set(CMAKE_CXX_COMPILER /usr/bin/clang++)
 	
 	add_compile_options(-x objective-c++)
 	#add_compile_options(-fno-elide-constructors)
