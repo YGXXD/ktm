@@ -281,6 +281,176 @@ struct ktm::detail::mat_common_implement::determinant<N, N, std::enable_if_t<N =
     }
 };
 
+template<size_t N>
+struct ktm::detail::mat_common_implement::inverse<N, N, std::enable_if_t<N == 4, float>>
+{
+    using M = mat<N, N, float>;
+    using ColV = ktm::mat_traits_col_t<M>;
+    static CHTHOLLY_INLINE M call(const M& m) noexcept
+    {
+        float32x4_t t_col0 = vld1q_f32(reinterpret_cast<const float*>(&reinterpret_cast<const ColV*>(&m)[0]));
+        float32x4_t t_col1 = vld1q_f32(reinterpret_cast<const float*>(&reinterpret_cast<const ColV*>(&m)[1]));
+        float32x4_t t_col2 = vld1q_f32(reinterpret_cast<const float*>(&reinterpret_cast<const ColV*>(&m)[2]));
+        float32x4_t t_col3 = vld1q_f32(reinterpret_cast<const float*>(&reinterpret_cast<const ColV*>(&m)[3]));
+
+        float32x4_t fac_0;
+        {
+            float32x4_t swp_0a = __builtin_shufflevector(t_col3, t_col2, 3, 3, 7, 7);
+            float32x4_t swp_0b = __builtin_shufflevector(t_col3, t_col2, 2, 2, 6, 6);
+
+            float32x4_t swp_00 = __builtin_shufflevector(t_col2, t_col1, 2, 2, 6, 6);
+            float32x4_t swp_01 = __builtin_shufflevector(swp_0a, swp_0a, 0, 0, 0, 2);
+            float32x4_t swp_02 = __builtin_shufflevector(swp_0b, swp_0b, 0, 0, 0, 2);
+            float32x4_t swp_03 = __builtin_shufflevector(t_col2, t_col1, 3, 3, 7, 7);
+
+            float32x4_t mul_00 = vmulq_f32(swp_00, swp_01);
+            float32x4_t mul_01 = vmulq_f32(swp_02, swp_03);
+            fac_0 = vsubq_f32(mul_00, mul_01);
+        }
+
+        float32x4_t fac_1;
+        {
+            float32x4_t swp_0a = __builtin_shufflevector(t_col3, t_col2, 3, 3, 7, 7);
+            float32x4_t swp_0b = __builtin_shufflevector(t_col3, t_col2, 1, 1, 5, 5);
+
+            float32x4_t swp_00 = __builtin_shufflevector(t_col2, t_col1, 1, 1, 5, 5);
+            float32x4_t swp_01 = __builtin_shufflevector(swp_0a, swp_0a, 0, 0, 0, 2);
+            float32x4_t swp_02 = __builtin_shufflevector(swp_0b, swp_0b, 0, 0, 0, 2);
+            float32x4_t swp_03 = __builtin_shufflevector(t_col2, t_col1, 3, 3, 7, 7);
+
+            float32x4_t mul_00 = vmulq_f32(swp_00, swp_01);
+            float32x4_t mul_01 = vmulq_f32(swp_02, swp_03);
+            fac_1 = vsubq_f32(mul_00, mul_01);
+        }
+
+        float32x4_t fac_2;
+        {
+            float32x4_t swp_0a = __builtin_shufflevector(t_col3, t_col2, 2, 2, 6, 6);
+            float32x4_t swp_0b = __builtin_shufflevector(t_col3, t_col2, 1, 1, 5, 5);
+
+            float32x4_t swp_00 = __builtin_shufflevector(t_col2, t_col1, 1, 1, 5, 5);
+            float32x4_t swp_01 = __builtin_shufflevector(swp_0a, swp_0a, 0, 0, 0, 2);
+            float32x4_t swp_02 = __builtin_shufflevector(swp_0b, swp_0b, 0, 0, 0, 2);
+            float32x4_t swp_03 = __builtin_shufflevector(t_col2, t_col1, 2, 2, 6, 6);
+
+            float32x4_t mul_00 = vmulq_f32(swp_00, swp_01);
+            float32x4_t mul_01 = vmulq_f32(swp_02, swp_03);
+            fac_2 = vsubq_f32(mul_00, mul_01);
+        }
+
+        float32x4_t fac_3;
+        {
+            float32x4_t swp_0a = __builtin_shufflevector(t_col3, t_col2, 3, 3, 7, 7);
+            float32x4_t swp_0b = __builtin_shufflevector(t_col3, t_col2, 0, 0, 4, 4);
+
+            float32x4_t swp_00 = __builtin_shufflevector(t_col2, t_col1, 0, 0, 4, 4);
+            float32x4_t swp_01 = __builtin_shufflevector(swp_0a, swp_0a, 0, 0, 0, 2);
+            float32x4_t swp_02 = __builtin_shufflevector(swp_0b, swp_0b, 0, 0, 0, 2);
+            float32x4_t swp_03 = __builtin_shufflevector(t_col2, t_col1, 3, 3, 7, 7);
+
+            float32x4_t mul_00 = vmulq_f32(swp_00, swp_01);
+            float32x4_t mul_01 = vmulq_f32(swp_02, swp_03);
+            fac_3 = vsubq_f32(mul_00, mul_01);
+        }
+
+        float32x4_t fac_4;
+        {
+            float32x4_t swp_0a = __builtin_shufflevector(t_col3, t_col2, 2, 2, 6, 6);
+            float32x4_t swp_0b = __builtin_shufflevector(t_col3, t_col2, 0, 0, 4, 4);
+
+            float32x4_t swp_00 = __builtin_shufflevector(t_col2, t_col1, 0, 0, 4, 4);
+            float32x4_t swp_01 = __builtin_shufflevector(swp_0a, swp_0a, 0, 0, 0, 2);
+            float32x4_t swp_02 = __builtin_shufflevector(swp_0b, swp_0b, 0, 0, 0, 2);
+            float32x4_t swp_03 = __builtin_shufflevector(t_col2, t_col1, 2, 2, 6, 6);
+
+            float32x4_t mul_00 = vmulq_f32(swp_00, swp_01);
+            float32x4_t mul_01 = vmulq_f32(swp_02, swp_03);
+            fac_4 = vsubq_f32(mul_00, mul_01);
+        }
+
+        float32x4_t fac_5;
+        {
+            float32x4_t swp_0a = __builtin_shufflevector(t_col3, t_col2, 1, 1, 5, 5);
+            float32x4_t swp_0b = __builtin_shufflevector(t_col3, t_col2, 0, 0, 4, 4);
+
+            float32x4_t swp_00 = __builtin_shufflevector(t_col2, t_col1, 0, 0, 4, 4);
+            float32x4_t swp_01 = __builtin_shufflevector(swp_0a, swp_0a, 0, 0, 0, 2);
+            float32x4_t swp_02 = __builtin_shufflevector(swp_0b, swp_0b, 0, 0, 0, 2);
+            float32x4_t swp_03 = __builtin_shufflevector(t_col2, t_col1, 1, 1, 5, 5);
+
+            float32x4_t mul_00 = vmulq_f32(swp_00, swp_01);
+            float32x4_t mul_01 = vmulq_f32(swp_02, swp_03);
+            fac_5 = vsubq_f32(mul_00, mul_01);
+        }
+
+        float32x4_t sign_a = vsetq_lane_f32(-one<float>, vsetq_lane_f32(-one<float>, vdupq_n_f32(one<float>), 0), 2);
+        float32x4_t sign_b = vsetq_lane_f32(-one<float>, vsetq_lane_f32(-one<float>, vdupq_n_f32(one<float>), 1), 3);
+
+        // v_0 = { m[1][0], m[0][0], m[0][0], m[0][0] }
+        float32x4_t tmp_0 = __builtin_shufflevector(t_col1, t_col0, 0, 0, 4, 4);
+        float32x4_t v_0 = __builtin_shufflevector(tmp_0, tmp_0, 0, 2, 2, 2);
+
+        // v_0 = { m[1][1], m[0][1], m[0][1], m[0][1] }
+        float32x4_t tmp_1 = __builtin_shufflevector(t_col1, t_col0, 1, 1, 5, 5);
+        float32x4_t v_1 = __builtin_shufflevector(tmp_1, tmp_1, 0, 2, 2, 2);
+
+        // v_0 = { m[1][2], m[0][2], m[0][2], m[0][2] }
+        float32x4_t tmp_2 = __builtin_shufflevector(t_col1, t_col0, 2, 2, 6, 6);
+        float32x4_t v_2 = __builtin_shufflevector(tmp_2, tmp_2, 0, 2, 2, 2);
+
+        // v_0 = { m[1][3], m[0][3], m[0][3], m[0][3] }
+        float32x4_t tmp_3 = __builtin_shufflevector(t_col1, t_col0, 3, 3, 7, 7);
+        float32x4_t v_3 = __builtin_shufflevector(tmp_3, tmp_3, 0, 2, 2, 2);
+
+        // inv_0
+        // + (v_1[0] * fac_0[0] - v_2[0] * fac_1[0] + v_3[0] * fac_2[0])
+        // - (v_1[1] * fac_0[1] - v_2[1] * fac_1[1] + v_3[1] * fac_2[1])
+        // + (v_1[2] * fac_0[2] - v_2[2] * fac_1[2] + v_3[2] * fac_2[2])
+        // - (v_1[3] * fac_0[3] - v_2[3] * fac_1[3] + v_3[3] * fac_2[3])
+        float32x4_t inv_0 = sign_b * (v_1 * fac_0 - v_2 * fac_1 + v_3 * fac_2);
+
+        // inv_1
+        // - (v_0[0] * fac_0[0] - v_2[0] * fac_3[0] + v_3[0] * fac_4[0])
+        // + (v_0[0] * fac_0[1] - v_2[1] * fac_3[1] + v_3[1] * fac_4[1])
+        // - (v_0[0] * fac_0[2] - v_2[2] * fac_3[2] + v_3[2] * fac_4[2])
+        // + (v_0[0] * fac_0[3] - v_2[3] * fac_3[3] + v_3[3] * fac_4[3])
+        float32x4_t inv_1 = sign_a * (v_0 * fac_0 - v_2 * fac_3 + v_3 * fac_4);
+
+        // inv_2
+        // + (v_0[0] * fac_1[0] - v_1[0] * fac_3[0] + v_3[0] * fac_5[0])
+        // - (v_0[0] * fac_1[1] - v_1[1] * fac_3[1] + v_3[1] * fac_5[1])
+        // + (v_0[0] * fac_1[2] - v_1[2] * fac_3[2] + v_3[2] * fac_5[2])
+        // - (v_0[0] * fac_1[3] - v_1[3] * fac_3[3] + v_3[3] * fac_5[3])
+        float32x4_t inv_2 = sign_b * (v_0 * fac_1 - v_1 * fac_3 + v_3 * fac_5);
+
+        // inv_3
+        // - (v_0[0] * fac_2[0] - v_1[0] * fac_4[0] + v_2[0] * fac_5[0])
+        // + (v_0[0] * fac_2[1] - v_1[1] * fac_4[1] + v_2[1] * fac_5[1])
+        // - (v_0[0] * fac_2[2] - v_1[2] * fac_4[2] + v_2[2] * fac_5[2])
+        // + (v_0[0] * fac_2[3] - v_1[3] * fac_4[3] + v_2[3] * fac_5[3])
+        float32x4_t inv_3 = sign_a * (v_0 * fac_2 - v_1 * fac_4 + v_2 * fac_5);
+
+        // det
+        // + m[0][0] * Inverse[0][0]
+        // + m[0][1] * Inverse[1][0]
+        // + m[0][2] * Inverse[2][0]
+        // + m[0][3] * Inverse[3][0];
+        float32x4_t i_tmp_0 = __builtin_shufflevector(inv_0, inv_1, 0, 0, 4, 4);
+        float32x4_t i_tmp_1 = __builtin_shufflevector(inv_2, inv_3, 0, 0, 4, 4);
+        float32x4_t i_row0 = __builtin_shufflevector(i_tmp_0, i_tmp_1, 1, 3, 5, 7);
+        float one_over_det = one<float> / vaddvq_f32(t_col0 * i_row0);
+
+        M ret;
+
+        vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<ColV*>(&ret)[0]), inv_0 * one_over_det); 
+        vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<ColV*>(&ret)[1]), inv_1 * one_over_det); 
+        vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<ColV*>(&ret)[2]), inv_2 * one_over_det); 
+        vst1q_f32(reinterpret_cast<float*>(&reinterpret_cast<ColV*>(&ret)[3]), inv_3 * one_over_det); 
+
+        return ret;
+    }
+};
+
 #endif
 
 #endif
