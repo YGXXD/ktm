@@ -15,13 +15,13 @@ struct ktm::detail::vec_opt_implement::add<N, std::enable_if_t<N >= 2 && N <= 4,
     {
         if constexpr(N == 2)
         {
-            float32x2_t ret = vadd_f32(vld1_f32(reinterpret_cast<const float*>(&x)), vld1_f32(reinterpret_cast<const float*>(&y)));
-            return *(reinterpret_cast<V*>(&ret)); 
+            float32x2_t ret = vadd_f32(vld1_f32(&x[0]), vld1_f32(&y[0]));
+            return *reinterpret_cast<V*>(&ret); 
         }
         else
         {
-            float32x4_t ret = vaddq_f32(vld1q_f32(reinterpret_cast<const float*>(&x)), vld1q_f32(reinterpret_cast<const float*>(&y)));
-            return *(reinterpret_cast<V*>(&ret));
+            float32x4_t ret = vaddq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]));
+            return *reinterpret_cast<V*>(&ret);
         }
     }
 };
@@ -34,13 +34,13 @@ struct ktm::detail::vec_opt_implement::add_to_self<N, std::enable_if_t<N >= 2 &&
     {
         if constexpr(N == 2)
         {
-            float32x2_t ret = vadd_f32(vld1_f32(reinterpret_cast<const float*>(&x)), vld1_f32(reinterpret_cast<const float*>(&y)));
-            vst1_f32(reinterpret_cast<float*>(&x), ret);
+            float32x2_t ret = vadd_f32(vld1_f32(&x[0]), vld1_f32(&y[0]));
+            vst1_f32(&x[0], ret);
         }
         else
         {
-            float32x4_t ret = vaddq_f32(vld1q_f32(reinterpret_cast<const float*>(&x)), vld1q_f32(reinterpret_cast<const float*>(&y)));
-            vst1q_f32(reinterpret_cast<float*>(&x), ret);
+            float32x4_t ret = vaddq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]));
+            vst1q_f32(&x[0], ret);
         }
         return x;
     }
@@ -54,13 +54,13 @@ struct ktm::detail::vec_opt_implement::minus<N, std::enable_if_t<N >= 2 && N <= 
     {
         if constexpr(N == 2)
         {
-            float32x2_t ret = vsub_f32(vld1_f32(reinterpret_cast<const float*>(&x)), vld1_f32(reinterpret_cast<const float*>(&y)));
-            return *(reinterpret_cast<V*>(&ret));
+            float32x2_t ret = vsub_f32(vld1_f32(&x[0]), vld1_f32(&y[0]));
+            return *reinterpret_cast<V*>(&ret);
         }
         else
         {
-            float32x4_t ret = vsubq_f32(vld1q_f32(reinterpret_cast<const float*>(&x)), vld1q_f32(reinterpret_cast<const float*>(&y)));
-            return *(reinterpret_cast<V*>(&ret));
+            float32x4_t ret = vsubq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]));
+            return *reinterpret_cast<V*>(&ret);
         }
     }
 };
@@ -73,13 +73,13 @@ struct ktm::detail::vec_opt_implement::minus_to_self<N, std::enable_if_t<N >= 2 
     {
         if constexpr(N == 2)
         {
-            float32x2_t ret = vsub_f32(vld1_f32(reinterpret_cast<const float*>(&x)), vld1_f32(reinterpret_cast<const float*>(&y)));
-            vst1_f32(reinterpret_cast<float*>(&x), ret);
+            float32x2_t ret = vsub_f32(vld1_f32(&x[0]), vld1_f32(&y[0]));
+            vst1_f32(&x[0], ret);
         }
         else
         {
-            float32x4_t ret = vsubq_f32(vld1q_f32(reinterpret_cast<const float*>(&x)), vld1q_f32(reinterpret_cast<const float*>(&y)));
-            vst1q_f32(reinterpret_cast<float*>(&x), ret);
+            float32x4_t ret = vsubq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]));
+            vst1q_f32(&x[0], ret);
         }
         return x;
     }
@@ -93,13 +93,13 @@ struct ktm::detail::vec_opt_implement::mul<N, std::enable_if_t<N >= 2 && N <= 4,
     {
         if constexpr(N == 2)
         {
-            float32x2_t ret = vmul_f32(vld1_f32(reinterpret_cast<const float*>(&x)), vld1_f32(reinterpret_cast<const float*>(&y)));
-            return *(reinterpret_cast<V*>(&ret)); 
+            float32x2_t ret = vmul_f32(vld1_f32(&x[0]), vld1_f32(&y[0]));
+            return *reinterpret_cast<V*>(&ret); 
         }
         else
         {
-            float32x4_t ret = vmulq_f32(vld1q_f32(reinterpret_cast<const float*>(&x)), vld1q_f32(reinterpret_cast<const float*>(&y)));
-            return *(reinterpret_cast<V*>(&ret));
+            float32x4_t ret = vmulq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]));
+            return *reinterpret_cast<V*>(&ret);
         }
     }
 };
@@ -112,13 +112,13 @@ struct ktm::detail::vec_opt_implement::mul_to_self<N, std::enable_if_t<N >= 2 &&
     {
         if constexpr(N == 2)
         {
-            float32x2_t ret = vmul_f32(vld1_f32(reinterpret_cast<const float*>(&x)), vld1_f32(reinterpret_cast<const float*>(&y)));
-            vst1_f32(reinterpret_cast<float*>(&x), ret);
+            float32x2_t ret = vmul_f32(vld1_f32(&x[0]), vld1_f32(&y[0]));
+            vst1_f32(&x[0], ret);
         }
         else
         {
-            float32x4_t ret = vmulq_f32(vld1q_f32(reinterpret_cast<const float*>(&x)), vld1q_f32(reinterpret_cast<const float*>(&y)));
-            vst1q_f32(reinterpret_cast<float*>(&x), ret);
+            float32x4_t ret = vmulq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]));
+            vst1q_f32(&x[0], ret);
         }
         return x;
     }
@@ -132,13 +132,13 @@ struct ktm::detail::vec_opt_implement::div<N, std::enable_if_t<N >= 2 && N <= 4,
     {
         if constexpr(N == 2)
         {
-            float32x2_t ret = vdiv_f32(vld1_f32(reinterpret_cast<const float*>(&x)), vld1_f32(reinterpret_cast<const float*>(&y)));
-            return *(reinterpret_cast<V*>(&ret)); 
+            float32x2_t ret = vdiv_f32(vld1_f32(&x[0]), vld1_f32(&y[0]));
+            return *reinterpret_cast<V*>(&ret); 
         }
         else
         {
-            float32x4_t ret = vdivq_f32(vld1q_f32(reinterpret_cast<const float*>(&x)), vld1q_f32(reinterpret_cast<const float*>(&y)));
-            return *(reinterpret_cast<V*>(&ret));
+            float32x4_t ret = vdivq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]));
+            return *reinterpret_cast<V*>(&ret);
         }
     }
 };
@@ -151,13 +151,13 @@ struct ktm::detail::vec_opt_implement::div_to_self<N, std::enable_if_t<N >= 2 &&
     {
         if constexpr(N == 2)
         {
-            float32x2_t ret = vdiv_f32(vld1_f32(reinterpret_cast<const float*>(&x)), vld1_f32(reinterpret_cast<const float*>(&y)));
-            vst1_f32(reinterpret_cast<float*>(&x), ret);
+            float32x2_t ret = vdiv_f32(vld1_f32(&x[0]), vld1_f32(&y[0]));
+            vst1_f32(&x[0], ret);
         }
         else
         {
-            float32x4_t ret = vdivq_f32(vld1q_f32(reinterpret_cast<const float*>(&x)), vld1q_f32(reinterpret_cast<const float*>(&y)));
-            vst1q_f32(reinterpret_cast<float*>(&x), ret);
+            float32x4_t ret = vdivq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]));
+            vst1q_f32(&x[0], ret);
         }
         return x;
     }
@@ -171,13 +171,13 @@ struct ktm::detail::vec_opt_implement::opposite<N, std::enable_if_t<N >= 2 && N 
     {
         if constexpr(N == 2)
         {
-            float32x2_t ret = vneg_f32(vld1_f32(reinterpret_cast<const float*>(&x)));
-            return *(reinterpret_cast<V*>(&ret));
+            float32x2_t ret = vneg_f32(vld1_f32(&x[0]));
+            return *reinterpret_cast<V*>(&ret);
         }
         else
         {
-            float32x4_t ret = vnegq_f32(vld1q_f32(reinterpret_cast<const float*>(&x)));
-            return *(reinterpret_cast<V*>(&ret));
+            float32x4_t ret = vnegq_f32(vld1q_f32(&x[0]));
+            return *reinterpret_cast<V*>(&ret);
         }
     }
 };
@@ -190,13 +190,13 @@ struct ktm::detail::vec_opt_implement::add_scalar<N, std::enable_if_t<N >= 2 && 
     {
         if constexpr(N == 2)
         {
-            float32x2_t ret = vadd_f32(vld1_f32(reinterpret_cast<const float*>(&x)), vdup_n_f32(scalar));
-            return *(reinterpret_cast<V*>(&ret));
+            float32x2_t ret = vadd_f32(vld1_f32(&x[0]), vdup_n_f32(scalar));
+            return *reinterpret_cast<V*>(&ret);
         }
         else
         {
-            float32x4_t ret = vaddq_f32(vld1q_f32(reinterpret_cast<const float*>(&x)), vdupq_n_f32(scalar));
-            return *(reinterpret_cast<V*>(&ret));
+            float32x4_t ret = vaddq_f32(vld1q_f32(&x[0]), vdupq_n_f32(scalar));
+            return *reinterpret_cast<V*>(&ret);
         }
     }
 
@@ -210,13 +210,13 @@ struct ktm::detail::vec_opt_implement::add_scalar_to_self<N, std::enable_if_t<N 
     {
         if constexpr(N == 2)
         {
-            float32x2_t ret = vadd_f32(vld1_f32(reinterpret_cast<const float*>(&x)), vdup_n_f32(scalar));
-            vst1_f32(reinterpret_cast<float*>(&x), ret);
+            float32x2_t ret = vadd_f32(vld1_f32(&x[0]), vdup_n_f32(scalar));
+            vst1_f32(&x[0], ret);
         }
         else
         {
-            float32x4_t ret = vaddq_f32(vld1q_f32(reinterpret_cast<const float*>(&x)), vdupq_n_f32(scalar));
-            vst1q_f32(reinterpret_cast<float*>(&x), ret);
+            float32x4_t ret = vaddq_f32(vld1q_f32(&x[0]), vdupq_n_f32(scalar));
+            vst1q_f32(&x[0], ret);
         }
         return x;
     }
@@ -230,13 +230,13 @@ struct ktm::detail::vec_opt_implement::minus_scalar<N, std::enable_if_t<N >= 2 &
     {
         if constexpr(N == 2)
         {
-            float32x2_t ret = vsub_f32(vld1_f32(reinterpret_cast<const float*>(&x)), vdup_n_f32(scalar));
-            return *(reinterpret_cast<V*>(&ret));
+            float32x2_t ret = vsub_f32(vld1_f32(&x[0]), vdup_n_f32(scalar));
+            return *reinterpret_cast<V*>(&ret);
         }
         else
         {
-            float32x4_t ret = vsubq_f32(vld1q_f32(reinterpret_cast<const float*>(&x)), vdupq_n_f32(scalar));
-            return *(reinterpret_cast<V*>(&ret));
+            float32x4_t ret = vsubq_f32(vld1q_f32(&x[0]), vdupq_n_f32(scalar));
+            return *reinterpret_cast<V*>(&ret);
         }
     }
 };
@@ -249,13 +249,13 @@ struct ktm::detail::vec_opt_implement::minus_scalar_to_self<N, std::enable_if_t<
     {
         if constexpr(N == 2)
         {
-            float32x2_t ret = vsub_f32(vld1_f32(reinterpret_cast<const float*>(&x)), vdup_n_f32(scalar));
-            vst1_f32(reinterpret_cast<float*>(&x), ret);
+            float32x2_t ret = vsub_f32(vld1_f32(&x[0]), vdup_n_f32(scalar));
+            vst1_f32(&x[0], ret);
         }
         else
         {
-            float32x4_t ret = vsubq_f32(vld1q_f32(reinterpret_cast<const float*>(&x)), vdupq_n_f32(scalar));
-            vst1q_f32(reinterpret_cast<float*>(&x), ret);
+            float32x4_t ret = vsubq_f32(vld1q_f32(&x[0]), vdupq_n_f32(scalar));
+            vst1q_f32(&x[0], ret);
         }
         return x;
     }
@@ -269,13 +269,13 @@ struct ktm::detail::vec_opt_implement::mul_scalar<N, std::enable_if_t<N >= 2 && 
     {
         if constexpr(N == 2)
         {
-            float32x2_t ret = vmul_f32(vld1_f32(reinterpret_cast<const float*>(&x)), vdup_n_f32(scalar));
-            return *(reinterpret_cast<V*>(&ret));
+            float32x2_t ret = vmul_f32(vld1_f32(&x[0]), vdup_n_f32(scalar));
+            return *reinterpret_cast<V*>(&ret);
         }
         else
         {
-            float32x4_t ret = vmulq_f32(vld1q_f32(reinterpret_cast<const float*>(&x)), vdupq_n_f32(scalar));
-            return *(reinterpret_cast<V*>(&ret));
+            float32x4_t ret = vmulq_f32(vld1q_f32(&x[0]), vdupq_n_f32(scalar));
+            return *reinterpret_cast<V*>(&ret);
         }
     }
 };
@@ -288,13 +288,13 @@ struct ktm::detail::vec_opt_implement::mul_scalar_to_self<N, std::enable_if_t<N 
     {
         if constexpr(N == 2)
         {
-            float32x2_t ret = vmul_f32(vld1_f32(reinterpret_cast<const float*>(&x)), vdup_n_f32(scalar));
-            vst1_f32(reinterpret_cast<float*>(&x), ret);
+            float32x2_t ret = vmul_f32(vld1_f32(&x[0]), vdup_n_f32(scalar));
+            vst1_f32(&x[0], ret);
         }
         else
         {
-            float32x4_t ret = vmulq_f32(vld1q_f32(reinterpret_cast<const float*>(&x)), vdupq_n_f32(scalar));
-            vst1q_f32(reinterpret_cast<float*>(&x), ret);
+            float32x4_t ret = vmulq_f32(vld1q_f32(&x[0]), vdupq_n_f32(scalar));
+            vst1q_f32(&x[0], ret);
         }
         return x;
     }
@@ -308,13 +308,13 @@ struct ktm::detail::vec_opt_implement::div_scalar<N, std::enable_if_t<N >= 2 && 
     {   
         if constexpr(N == 2)
         {
-            float32x2_t ret = vdiv_f32(vld1_f32(reinterpret_cast<const float*>(&x)), vdup_n_f32(scalar));
-            return *(reinterpret_cast<V*>(&ret));
+            float32x2_t ret = vdiv_f32(vld1_f32(&x[0]), vdup_n_f32(scalar));
+            return *reinterpret_cast<V*>(&ret);
         }
         else
         {
-            float32x4_t ret = vdivq_f32(vld1q_f32(reinterpret_cast<const float*>(&x)), vdupq_n_f32(scalar));
-            return *(reinterpret_cast<V*>(&ret));
+            float32x4_t ret = vdivq_f32(vld1q_f32(&x[0]), vdupq_n_f32(scalar));
+            return *reinterpret_cast<V*>(&ret);
         }
     }
 };
@@ -327,13 +327,13 @@ struct ktm::detail::vec_opt_implement::div_scalar_to_self<N, std::enable_if_t<N 
     {
         if constexpr(N == 2)
         {
-            float32x2_t ret = vdiv_f32(vld1_f32(reinterpret_cast<const float*>(&x)), vdup_n_f32(scalar));
-            vst1_f32(reinterpret_cast<float*>(&x), ret);
+            float32x2_t ret = vdiv_f32(vld1_f32(&x[0]), vdup_n_f32(scalar));
+            vst1_f32(&x[0], ret);
         }
         else
         {
-            float32x4_t ret = vdivq_f32(vld1q_f32(reinterpret_cast<const float*>(&x)), vdupq_n_f32(scalar));
-            vst1q_f32(reinterpret_cast<float*>(&x), ret);
+            float32x4_t ret = vdivq_f32(vld1q_f32(&x[0]), vdupq_n_f32(scalar));
+            vst1q_f32(&x[0], ret);
         }
         return x;
     }
@@ -347,18 +347,18 @@ struct ktm::detail::vec_opt_implement::equal<N, std::enable_if_t<N >= 2 && N <= 
     {
         if constexpr(N == 2)
         {
-            float32x2_t ret = vceq_f32(vld1_f32(reinterpret_cast<const float*>(&x)), vld1_f32(reinterpret_cast<const float*>(&y)));
+            float32x2_t ret = vceq_f32(vld1_f32(&x[0]), vld1_f32(&y[0]));
             return static_cast<bool>(vminv_u32(ret)); 
         }
         else if constexpr(N == 3)
         {
-            float32x4_t ret = vceqq_f32(vld1q_f32(reinterpret_cast<const float*>(&x)), vld1q_f32(reinterpret_cast<const float*>(&y)));
+            float32x4_t ret = vceqq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]));
             ret = vsetq_lane_f32(ret[2], ret, 3);
             return static_cast<bool>(vminvq_u32(ret)); 
         }
         else
         {
-            float32x4_t ret = vceqq_f32(vld1q_f32(reinterpret_cast<const float*>(&x)), vld1q_f32(reinterpret_cast<const float*>(&y)));
+            float32x4_t ret = vceqq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]));
             uint32x4_t tmp = vreinterpretq_u32_f32(ret);
             return static_cast<bool>(vminvq_u32(ret)); 
         }
@@ -373,13 +373,13 @@ struct ktm::detail::vec_opt_implement::add<N, std::enable_if_t<N >= 2 && N <= 4,
     {
         if constexpr(N == 2)
         {
-            int32x2_t ret = vadd_s32(vld1_s32(reinterpret_cast<const int*>(&x)), vld1_s32(reinterpret_cast<const int*>(&y)));
-            return *(reinterpret_cast<V*>(&ret)); 
+            int32x2_t ret = vadd_s32(vld1_s32(&x[0]), vld1_s32(&y[0]));
+            return *reinterpret_cast<V*>(&ret); 
         }
         else
         {
-            int32x4_t ret = vaddq_s32(vld1q_s32(reinterpret_cast<const int*>(&x)), vld1q_s32(reinterpret_cast<const int*>(&y)));
-            return *(reinterpret_cast<V*>(&ret));
+            int32x4_t ret = vaddq_s32(vld1q_s32(&x[0]), vld1q_s32(&y[0]));
+            return *reinterpret_cast<V*>(&ret);
         }
     }
 };
@@ -392,13 +392,13 @@ struct ktm::detail::vec_opt_implement::add_to_self<N, std::enable_if_t<N >= 2 &&
     {
         if constexpr(N == 2)
         {
-            int32x2_t ret = vadd_s32(vld1_s32(reinterpret_cast<const int*>(&x)), vld1_s32(reinterpret_cast<const int*>(&y)));
-            vst1_s32(reinterpret_cast<int*>(&x), ret);
+            int32x2_t ret = vadd_s32(vld1_s32(&x[0]), vld1_s32(&y[0]));
+            vst1_s32(&x[0], ret);
         }
         else
         {
-            int32x4_t ret = vaddq_s32(vld1q_s32(reinterpret_cast<const int*>(&x)), vld1q_s32(reinterpret_cast<const int*>(&y)));
-            vst1q_s32(reinterpret_cast<int*>(&x), ret);
+            int32x4_t ret = vaddq_s32(vld1q_s32(&x[0]), vld1q_s32(&y[0]));
+            vst1q_s32(&x[0], ret);
         }
         return x;
     }
@@ -412,13 +412,13 @@ struct ktm::detail::vec_opt_implement::minus<N, std::enable_if_t<N >= 2 && N <= 
     {
         if constexpr(N == 2)
         {
-            int32x2_t ret = vsub_s32(vld1_s32(reinterpret_cast<const int*>(&x)), vld1_s32(reinterpret_cast<const int*>(&y)));
-            return *(reinterpret_cast<V*>(&ret));
+            int32x2_t ret = vsub_s32(vld1_s32(&x[0]), vld1_s32(&y[0]));
+            return *reinterpret_cast<V*>(&ret);
         }
         else
         {
-            int32x4_t ret = vsubq_s32(vld1q_s32(reinterpret_cast<const int*>(&x)), vld1q_s32(reinterpret_cast<const int*>(&y)));
-            return *(reinterpret_cast<V*>(&ret));
+            int32x4_t ret = vsubq_s32(vld1q_s32(&x[0]), vld1q_s32(&y[0]));
+            return *reinterpret_cast<V*>(&ret);
         }
     }
 };
@@ -431,13 +431,13 @@ struct ktm::detail::vec_opt_implement::minus_to_self<N, std::enable_if_t<N >= 2 
     {
         if constexpr(N == 2)
         {
-            int32x2_t ret = vsub_s32(vld1_s32(reinterpret_cast<const int*>(&x)), vld1_s32(reinterpret_cast<const int*>(&y)));
-            vst1_s32(reinterpret_cast<int*>(&x), ret);
+            int32x2_t ret = vsub_s32(vld1_s32(&x[0]), vld1_s32(&y[0]));
+            vst1_s32(&x[0], ret);
         }
         else
         {
-            int32x4_t ret = vsubq_s32(vld1q_s32(reinterpret_cast<const int*>(&x)), vld1q_s32(reinterpret_cast<const int*>(&y)));
-            vst1q_s32(reinterpret_cast<int*>(&x), ret);
+            int32x4_t ret = vsubq_s32(vld1q_s32(&x[0]), vld1q_s32(&y[0]));
+            vst1q_s32(&x[0], ret);
         }
         return x;
     }
@@ -451,13 +451,13 @@ struct ktm::detail::vec_opt_implement::mul<N, std::enable_if_t<N >= 2 && N <= 4,
     {
         if constexpr(N == 2)
         {
-            int32x2_t ret = vmul_s32(vld1_s32(reinterpret_cast<const int*>(&x)), vld1_s32(reinterpret_cast<const int*>(&y)));
-            return *(reinterpret_cast<V*>(&ret)); 
+            int32x2_t ret = vmul_s32(vld1_s32(&x[0]), vld1_s32(&y[0]));
+            return *reinterpret_cast<V*>(&ret); 
         }
         else
         {
-            int32x4_t ret = vmulq_s32(vld1q_s32(reinterpret_cast<const int*>(&x)), vld1q_s32(reinterpret_cast<const int*>(&y)));
-            return *(reinterpret_cast<V*>(&ret));
+            int32x4_t ret = vmulq_s32(vld1q_s32(&x[0]), vld1q_s32(&y[0]));
+            return *reinterpret_cast<V*>(&ret);
         }
     }
 };
@@ -470,13 +470,13 @@ struct ktm::detail::vec_opt_implement::mul_to_self<N, std::enable_if_t<N >= 2 &&
     {
         if constexpr(N == 2)
         {
-            int32x2_t ret = vmul_s32(vld1_s32(reinterpret_cast<const int*>(&x)), vld1_s32(reinterpret_cast<const int*>(&y)));
-            vst1_s32(reinterpret_cast<int*>(&x), ret);
+            int32x2_t ret = vmul_s32(vld1_s32(&x[0]), vld1_s32(&y[0]));
+            vst1_s32(&x[0], ret);
         }
         else
         {
-            int32x4_t ret = vmulq_s32(vld1q_s32(reinterpret_cast<const int*>(&x)), vld1q_s32(reinterpret_cast<const int*>(&y)));
-            vst1q_s32(reinterpret_cast<int*>(&x), ret);
+            int32x4_t ret = vmulq_s32(vld1q_s32(&x[0]), vld1q_s32(&y[0]));
+            vst1q_s32(&x[0], ret);
         }
         return x;
     }
@@ -490,13 +490,13 @@ struct ktm::detail::vec_opt_implement::opposite<N, std::enable_if_t<N >= 2 && N 
     {
         if constexpr(N == 2)
         {
-            int32x2_t ret = vneg_s32(vld1_s32(reinterpret_cast<const int*>(&x)));
-            return *(reinterpret_cast<V*>(&ret));
+            int32x2_t ret = vneg_s32(vld1_s32(&x[0]));
+            return *reinterpret_cast<V*>(&ret);
         }
         else
         {
-            int32x4_t ret = vnegq_s32(vld1q_s32(reinterpret_cast<const int*>(&x)));
-            return *(reinterpret_cast<V*>(&ret));
+            int32x4_t ret = vnegq_s32(vld1q_s32(&x[0]));
+            return *reinterpret_cast<V*>(&ret);
         }
     }
 };
@@ -509,13 +509,13 @@ struct ktm::detail::vec_opt_implement::add_scalar<N, std::enable_if_t<N >= 2 && 
     {
         if constexpr(N == 2)
         {
-            int32x2_t ret = vadd_s32(vld1_s32(reinterpret_cast<const int*>(&x)), vdup_n_s32(scalar));
-            return *(reinterpret_cast<V*>(&ret));
+            int32x2_t ret = vadd_s32(vld1_s32(&x[0]), vdup_n_s32(scalar));
+            return *reinterpret_cast<V*>(&ret);
         }
         else
         {
-            int32x4_t ret = vaddq_s32(vld1q_s32(reinterpret_cast<const int*>(&x)), vdupq_n_s32(scalar));
-            return *(reinterpret_cast<V*>(&ret));
+            int32x4_t ret = vaddq_s32(vld1q_s32(&x[0]), vdupq_n_s32(scalar));
+            return *reinterpret_cast<V*>(&ret);
         }
     }
 
@@ -529,13 +529,13 @@ struct ktm::detail::vec_opt_implement::add_scalar_to_self<N, std::enable_if_t<N 
     {
         if constexpr(N == 2)
         {
-            int32x2_t ret = vadd_s32(vld1_s32(reinterpret_cast<const int*>(&x)), vdup_n_s32(scalar));
-            vst1_s32(reinterpret_cast<int*>(&x), ret);
+            int32x2_t ret = vadd_s32(vld1_s32(&x[0]), vdup_n_s32(scalar));
+            vst1_s32(&x[0], ret);
         }
         else
         {
-            int32x4_t ret = vaddq_s32(vld1q_s32(reinterpret_cast<const int*>(&x)), vdupq_n_s32(scalar));
-            vst1q_s32(reinterpret_cast<int*>(&x), ret);
+            int32x4_t ret = vaddq_s32(vld1q_s32(&x[0]), vdupq_n_s32(scalar));
+            vst1q_s32(&x[0], ret);
         }
         return x;
     }
@@ -549,13 +549,13 @@ struct ktm::detail::vec_opt_implement::minus_scalar<N, std::enable_if_t<N >= 2 &
     {
         if constexpr(N == 2)
         {
-            int32x2_t ret = vsub_s32(vld1_s32(reinterpret_cast<const int*>(&x)), vdup_n_s32(scalar));
-            return *(reinterpret_cast<V*>(&ret));
+            int32x2_t ret = vsub_s32(vld1_s32(&x[0]), vdup_n_s32(scalar));
+            return *reinterpret_cast<V*>(&ret);
         }
         else
         {
-            int32x4_t ret = vsubq_s32(vld1q_s32(reinterpret_cast<const int*>(&x)), vdupq_n_s32(scalar));
-            return *(reinterpret_cast<V*>(&ret));
+            int32x4_t ret = vsubq_s32(vld1q_s32(&x[0]), vdupq_n_s32(scalar));
+            return *reinterpret_cast<V*>(&ret);
         }
     }
 };
@@ -568,13 +568,13 @@ struct ktm::detail::vec_opt_implement::minus_scalar_to_self<N, std::enable_if_t<
     {
         if constexpr(N == 2)
         {
-            int32x2_t ret = vsub_s32(vld1_s32(reinterpret_cast<const int*>(&x)), vdup_n_s32(scalar));
-            vst1_s32(reinterpret_cast<int*>(&x), ret);
+            int32x2_t ret = vsub_s32(vld1_s32(&x[0]), vdup_n_s32(scalar));
+            vst1_s32(&x[0], ret);
         }
         else
         {
-            int32x4_t ret = vsubq_s32(vld1q_s32(reinterpret_cast<const int*>(&x)), vdupq_n_s32(scalar));
-            vst1q_s32(reinterpret_cast<int*>(&x), ret);
+            int32x4_t ret = vsubq_s32(vld1q_s32(&x[0]), vdupq_n_s32(scalar));
+            vst1q_s32(&x[0], ret);
         }
         return x;
     }
@@ -588,13 +588,13 @@ struct ktm::detail::vec_opt_implement::mul_scalar<N, std::enable_if_t<N >= 2 && 
     {
         if constexpr(N == 2)
         {
-            int32x2_t ret = vmul_s32(vld1_s32(reinterpret_cast<const int*>(&x)), vdup_n_s32(scalar));
-            return *(reinterpret_cast<V*>(&ret));
+            int32x2_t ret = vmul_s32(vld1_s32(&x[0]), vdup_n_s32(scalar));
+            return *reinterpret_cast<V*>(&ret);
         }
         else
         {
-            int32x4_t ret = vmulq_s32(vld1q_s32(reinterpret_cast<const int*>(&x)), vdupq_n_s32(scalar));
-            return *(reinterpret_cast<V*>(&ret));
+            int32x4_t ret = vmulq_s32(vld1q_s32(&x[0]), vdupq_n_s32(scalar));
+            return *reinterpret_cast<V*>(&ret);
         }
     }
 };
@@ -607,13 +607,13 @@ struct ktm::detail::vec_opt_implement::mul_scalar_to_self<N, std::enable_if_t<N 
     {
         if constexpr(N == 2)
         {
-            int32x2_t ret = vmul_s32(vld1_s32(reinterpret_cast<const int*>(&x)), vdup_n_s32(scalar));
-            vst1_s32(reinterpret_cast<int*>(&x), ret);
+            int32x2_t ret = vmul_s32(vld1_s32(&x[0]), vdup_n_s32(scalar));
+            vst1_s32(&x[0], ret);
         }
         else
         {
-            int32x4_t ret = vmulq_s32(vld1q_s32(reinterpret_cast<const int*>(&x)), vdupq_n_s32(scalar));
-            vst1q_s32(reinterpret_cast<int*>(&x), ret);
+            int32x4_t ret = vmulq_s32(vld1q_s32(&x[0]), vdupq_n_s32(scalar));
+            vst1q_s32(&x[0], ret);
         }
         return x;
     }
@@ -627,18 +627,18 @@ struct ktm::detail::vec_opt_implement::equal<N, std::enable_if_t<N >= 2 && N <= 
     {
         if constexpr(N == 2)
         {
-            int32x2_t ret = vceq_s32(vld1_s32(reinterpret_cast<const int*>(&x)), vld1_s32(reinterpret_cast<const int*>(&y)));
+            int32x2_t ret = vceq_s32(vld1_s32(&x[0]), vld1_s32(&y[0]));
             return static_cast<bool>(vmaxv_s32(ret)); 
         }
         else if constexpr(N == 3)
         {
-            int32x4_t ret = vceqq_s32(vld1q_s32(reinterpret_cast<const int*>(&x)), vld1q_s32(reinterpret_cast<const int*>(&y)));
+            int32x4_t ret = vceqq_s32(vld1q_s32(&x[0]), vld1q_s32(&y[0]));
             ret = vsetq_lane_s32(ret[2], ret, 3);
             return static_cast<bool>(vmaxvq_s32(ret)); 
         }
         else
         {
-            int32x4_t ret = vceqq_s32(vld1q_s32(reinterpret_cast<const int*>(&x)), vld1q_s32(reinterpret_cast<const int*>(&y)));
+            int32x4_t ret = vceqq_s32(vld1q_s32(&x[0]), vld1q_s32(&y[0]));
             return static_cast<bool>(vmaxvq_s32(ret)); 
         }
     }
@@ -652,13 +652,13 @@ struct ktm::detail::vec_opt_implement::add<N, std::enable_if_t<N >= 2 && N <= 4,
     {
         if constexpr(N == 2)
         {
-            uint32x2_t ret = vadd_u32(vld1_u32(reinterpret_cast<const unsigned int*>(&x)), vld1_u32(reinterpret_cast<const unsigned int*>(&y)));
-            return *(reinterpret_cast<V*>(&ret)); 
+            uint32x2_t ret = vadd_u32(vld1_u32(&x[0]), vld1_u32(&y[0]));
+            return *reinterpret_cast<V*>(&ret); 
         }
         else
         {
-            uint32x4_t ret = vaddq_u32(vld1q_u32(reinterpret_cast<const unsigned int*>(&x)), vld1q_u32(reinterpret_cast<const unsigned int*>(&y)));
-            return *(reinterpret_cast<V*>(&ret));
+            uint32x4_t ret = vaddq_u32(vld1q_u32(&x[0]), vld1q_u32(&y[0]));
+            return *reinterpret_cast<V*>(&ret);
         }
     }
 };
@@ -671,13 +671,13 @@ struct ktm::detail::vec_opt_implement::add_to_self<N, std::enable_if_t<N >= 2 &&
     {
         if constexpr(N == 2)
         {
-            uint32x2_t ret = vadd_u32(vld1_u32(reinterpret_cast<const unsigned int*>(&x)), vld1_u32(reinterpret_cast<const unsigned int*>(&y)));
-            vst1_u32(reinterpret_cast<unsigned int*>(&x), ret);
+            uint32x2_t ret = vadd_u32(vld1_u32(&x[0]), vld1_u32(&y[0]));
+            vst1_u32(&x[0], ret);
         }
         else
         {
-            uint32x4_t ret = vaddq_u32(vld1q_u32(reinterpret_cast<const unsigned int*>(&x)), vld1q_u32(reinterpret_cast<const unsigned int*>(&y)));
-            vst1q_u32(reinterpret_cast<unsigned int*>(&x), ret);
+            uint32x4_t ret = vaddq_u32(vld1q_u32(&x[0]), vld1q_u32(&y[0]));
+            vst1q_u32(&x[0], ret);
         }
         return x;
     }
@@ -691,13 +691,13 @@ struct ktm::detail::vec_opt_implement::minus<N, std::enable_if_t<N >= 2 && N <= 
     {
         if constexpr(N == 2)
         {
-            uint32x2_t ret = vsub_u32(vld1_u32(reinterpret_cast<const unsigned int*>(&x)), vld1_u32(reinterpret_cast<const unsigned int*>(&y)));
-            return *(reinterpret_cast<V*>(&ret));
+            uint32x2_t ret = vsub_u32(vld1_u32(&x[0]), vld1_u32(&y[0]));
+            return *reinterpret_cast<V*>(&ret);
         }
         else
         {
-            uint32x4_t ret = vsubq_u32(vld1q_u32(reinterpret_cast<const unsigned int*>(&x)), vld1q_u32(reinterpret_cast<const unsigned int*>(&y)));
-            return *(reinterpret_cast<V*>(&ret));
+            uint32x4_t ret = vsubq_u32(vld1q_u32(&x[0]), vld1q_u32(&y[0]));
+            return *reinterpret_cast<V*>(&ret);
         }
     }
 };
@@ -710,13 +710,13 @@ struct ktm::detail::vec_opt_implement::minus_to_self<N, std::enable_if_t<N >= 2 
     {
         if constexpr(N == 2)
         {
-            uint32x2_t ret = vsub_u32(vld1_u32(reinterpret_cast<const unsigned int*>(&x)), vld1_u32(reinterpret_cast<const unsigned int*>(&y)));
-            vst1_u32(reinterpret_cast<unsigned int*>(&x), ret);
+            uint32x2_t ret = vsub_u32(vld1_u32(&x[0]), vld1_u32(&y[0]));
+            vst1_u32(&x[0], ret);
         }
         else
         {
-            uint32x4_t ret = vsubq_u32(vld1q_u32(reinterpret_cast<const unsigned int*>(&x)), vld1q_u32(reinterpret_cast<const unsigned int*>(&y)));
-            vst1q_u32(reinterpret_cast<unsigned int*>(&x), ret);
+            uint32x4_t ret = vsubq_u32(vld1q_u32(&x[0]), vld1q_u32(&y[0]));
+            vst1q_u32(&x[0], ret);
         }
         return x;
     }
@@ -730,13 +730,13 @@ struct ktm::detail::vec_opt_implement::mul<N, std::enable_if_t<N >= 2 && N <= 4,
     {
         if constexpr(N == 2)
         {
-            uint32x2_t ret = vmul_u32(vld1_u32(reinterpret_cast<const unsigned int*>(&x)), vld1_u32(reinterpret_cast<const unsigned int*>(&y)));
-            return *(reinterpret_cast<V*>(&ret)); 
+            uint32x2_t ret = vmul_u32(vld1_u32(&x[0]), vld1_u32(&y[0]));
+            return *reinterpret_cast<V*>(&ret); 
         }
         else
         {
-            uint32x4_t ret = vmulq_u32(vld1q_u32(reinterpret_cast<const unsigned int*>(&x)), vld1q_u32(reinterpret_cast<const unsigned int*>(&y)));
-            return *(reinterpret_cast<V*>(&ret));
+            uint32x4_t ret = vmulq_u32(vld1q_u32(&x[0]), vld1q_u32(&y[0]));
+            return *reinterpret_cast<V*>(&ret);
         }
     }
 };
@@ -749,13 +749,13 @@ struct ktm::detail::vec_opt_implement::mul_to_self<N, std::enable_if_t<N >= 2 &&
     {
         if constexpr(N == 2)
         {
-            uint32x2_t ret = vmul_u32(vld1_u32(reinterpret_cast<const unsigned int*>(&x)), vld1_u32(reinterpret_cast<const unsigned int*>(&y)));
-            vst1_u32(reinterpret_cast<unsigned int*>(&x), ret);
+            uint32x2_t ret = vmul_u32(vld1_u32(&x[0]), vld1_u32(&y[0]));
+            vst1_u32(&x[0], ret);
         }
         else
         {
-            uint32x4_t ret = vmulq_u32(vld1q_u32(reinterpret_cast<const unsigned int*>(&x)), vld1q_u32(reinterpret_cast<const unsigned int*>(&y)));
-            vst1q_u32(reinterpret_cast<unsigned int*>(&x), ret);
+            uint32x4_t ret = vmulq_u32(vld1q_u32(&x[0]), vld1q_u32(&y[0]));
+            vst1q_u32(&x[0], ret);
         }
         return x;
     }
@@ -769,13 +769,13 @@ struct ktm::detail::vec_opt_implement::add_scalar<N, std::enable_if_t<N >= 2 && 
     {
         if constexpr(N == 2)
         {
-            uint32x2_t ret = vadd_u32(vld1_u32(reinterpret_cast<const unsigned int*>(&x)), vdup_n_u32(scalar));
-            return *(reinterpret_cast<V*>(&ret));
+            uint32x2_t ret = vadd_u32(vld1_u32(&x[0]), vdup_n_u32(scalar));
+            return *reinterpret_cast<V*>(&ret);
         }
         else
         {
-            uint32x4_t ret = vaddq_u32(vld1q_u32(reinterpret_cast<const unsigned int*>(&x)), vdupq_n_u32(scalar));
-            return *(reinterpret_cast<V*>(&ret));
+            uint32x4_t ret = vaddq_u32(vld1q_u32(&x[0]), vdupq_n_u32(scalar));
+            return *reinterpret_cast<V*>(&ret);
         }
     }
 
@@ -789,13 +789,13 @@ struct ktm::detail::vec_opt_implement::add_scalar_to_self<N, std::enable_if_t<N 
     {
         if constexpr(N == 2)
         {
-            uint32x2_t ret = vadd_u32(vld1_u32(reinterpret_cast<const unsigned int*>(&x)), vdup_n_u32(scalar));
-            vst1_u32(reinterpret_cast<unsigned int*>(&x), ret);
+            uint32x2_t ret = vadd_u32(vld1_u32(&x[0]), vdup_n_u32(scalar));
+            vst1_u32(&x[0], ret);
         }
         else
         {
-            uint32x4_t ret = vaddq_u32(vld1q_u32(reinterpret_cast<const unsigned int*>(&x)), vdupq_n_u32(scalar));
-            vst1q_u32(reinterpret_cast<unsigned int*>(&x), ret);
+            uint32x4_t ret = vaddq_u32(vld1q_u32(&x[0]), vdupq_n_u32(scalar));
+            vst1q_u32(&x[0], ret);
         }
         return x;
     }
@@ -809,13 +809,13 @@ struct ktm::detail::vec_opt_implement::minus_scalar<N, std::enable_if_t<N >= 2 &
     {
         if constexpr(N == 2)
         {
-            uint32x2_t ret = vsub_u32(vld1_u32(reinterpret_cast<const unsigned int*>(&x)), vdup_n_u32(scalar));
-            return *(reinterpret_cast<V*>(&ret));
+            uint32x2_t ret = vsub_u32(vld1_u32(&x[0]), vdup_n_u32(scalar));
+            return *reinterpret_cast<V*>(&ret);
         }
         else
         {
-            uint32x4_t ret = vsubq_u32(vld1q_u32(reinterpret_cast<const unsigned int*>(&x)), vdupq_n_u32(scalar));
-            return *(reinterpret_cast<V*>(&ret));
+            uint32x4_t ret = vsubq_u32(vld1q_u32(&x[0]), vdupq_n_u32(scalar));
+            return *reinterpret_cast<V*>(&ret);
         }
     }
 };
@@ -828,13 +828,13 @@ struct ktm::detail::vec_opt_implement::minus_scalar_to_self<N, std::enable_if_t<
     {
         if constexpr(N == 2)
         {
-            uint32x2_t ret = vsub_u32(vld1_u32(reinterpret_cast<const unsigned int*>(&x)), vdup_n_u32(scalar));
-            vst1_u32(reinterpret_cast<unsigned int*>(&x), ret);
+            uint32x2_t ret = vsub_u32(vld1_u32(&x[0]), vdup_n_u32(scalar));
+            vst1_u32(&x[0], ret);
         }
         else
         {
-            uint32x4_t ret = vsubq_u32(vld1q_u32(reinterpret_cast<const unsigned int*>(&x)), vdupq_n_u32(scalar));
-            vst1q_u32(reinterpret_cast<unsigned int*>(&x), ret);
+            uint32x4_t ret = vsubq_u32(vld1q_u32(&x[0]), vdupq_n_u32(scalar));
+            vst1q_u32(&x[0], ret);
         }
         return x;
     }
@@ -848,13 +848,13 @@ struct ktm::detail::vec_opt_implement::mul_scalar<N, std::enable_if_t<N >= 2 && 
     {
         if constexpr(N == 2)
         {
-            uint32x2_t ret = vmul_u32(vld1_u32(reinterpret_cast<const unsigned int*>(&x)), vdup_n_u32(scalar));
-            return *(reinterpret_cast<V*>(&ret));
+            uint32x2_t ret = vmul_u32(vld1_u32(&x[0]), vdup_n_u32(scalar));
+            return *reinterpret_cast<V*>(&ret);
         }
         else
         {
-            uint32x4_t ret = vmulq_u32(vld1q_u32(reinterpret_cast<const unsigned int*>(&x)), vdupq_n_u32(scalar));
-            return *(reinterpret_cast<V*>(&ret));
+            uint32x4_t ret = vmulq_u32(vld1q_u32(&x[0]), vdupq_n_u32(scalar));
+            return *reinterpret_cast<V*>(&ret);
         }
     }
 };
@@ -867,13 +867,13 @@ struct ktm::detail::vec_opt_implement::mul_scalar_to_self<N, std::enable_if_t<N 
     {
         if constexpr(N == 2)
         {
-            uint32x2_t ret = vmul_u32(vld1_u32(reinterpret_cast<const unsigned int*>(&x)), vdup_n_u32(scalar));
-            vst1_u32(reinterpret_cast<unsigned int*>(&x), ret);
+            uint32x2_t ret = vmul_u32(vld1_u32(&x[0]), vdup_n_u32(scalar));
+            vst1_u32(&x[0], ret);
         }
         else
         {
-            uint32x4_t ret = vmulq_u32(vld1q_u32(reinterpret_cast<const unsigned int*>(&x)), vdupq_n_u32(scalar));
-            vst1q_u32(reinterpret_cast<unsigned int*>(&x), ret);
+            uint32x4_t ret = vmulq_u32(vld1q_u32(&x[0]), vdupq_n_u32(scalar));
+            vst1q_u32(&x[0], ret);
         }
         return x;
     }
@@ -887,18 +887,18 @@ struct ktm::detail::vec_opt_implement::equal<N, std::enable_if_t<N >= 2 && N <= 
     {
         if constexpr(N == 2)
         {
-            uint32x2_t ret = vceq_u32(vld1_u32(reinterpret_cast<const unsigned int*>(&x)), vld1_u32(reinterpret_cast<const unsigned int*>(&y)));
+            uint32x2_t ret = vceq_u32(vld1_u32(&x[0]), vld1_u32(&y[0]));
             return static_cast<bool>(vminv_u32(ret)); 
         }
         else if constexpr(N == 3)
         {
-            uint32x4_t ret = vceqq_u32(vld1q_u32(reinterpret_cast<const unsigned int*>(&x)), vld1q_u32(reinterpret_cast<const unsigned int*>(&y)));
+            uint32x4_t ret = vceqq_u32(vld1q_u32(&x[0]), vld1q_u32(&y[0]));
             ret = vsetq_lane_u32(ret[2], ret, 3);
             return static_cast<bool>(vminvq_u32(ret)); 
         }
         else
         {
-            uint32x4_t ret = vceqq_u32(vld1q_u32(reinterpret_cast<const unsigned int*>(&x)), vld1q_u32(reinterpret_cast<const unsigned int*>(&y)));
+            uint32x4_t ret = vceqq_u32(vld1q_u32(&x[0]), vld1q_u32(&y[0]));
             return static_cast<bool>(vminvq_u32(ret)); 
         }
     }

@@ -17,7 +17,7 @@ private:
     static CHTHOLLY_INLINE V call(const V& x, const V& y, std::index_sequence<Ns...>) noexcept
     {
         V ret;
-        ((reinterpret_cast<T*>(&ret)[Ns] = reinterpret_cast<const T*>(&x)[Ns] + reinterpret_cast<const T*>(&y)[Ns]), ...);
+        ((ret[Ns] = x[Ns] + y[Ns]), ...);
         return ret;
     }
 };
@@ -34,7 +34,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE V& call(V& x, const V& y, std::index_sequence<Ns...>) noexcept
     {
-        ((reinterpret_cast<T*>(&x)[Ns] += reinterpret_cast<const T*>(&y)[Ns]), ...);
+        ((x[Ns] += y[Ns]), ...);
         return x; 
     }
 };
@@ -52,7 +52,7 @@ private:
     static CHTHOLLY_INLINE V call(const V& x, const V& y, std::index_sequence<Ns...>) noexcept
     {
         V ret;
-        ((reinterpret_cast<T*>(&ret)[Ns] = reinterpret_cast<const T*>(&x)[Ns] - reinterpret_cast<const T*>(&y)[Ns]), ...);
+        ((ret[Ns] = x[Ns] - y[Ns]), ...);
         return ret;
     }
 };
@@ -69,7 +69,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE V& call(V& x, const V& y, std::index_sequence<Ns...>) noexcept
     {
-        ((reinterpret_cast<T*>(&x)[Ns] -= reinterpret_cast<const T*>(&y)[Ns]), ...);
+        ((x[Ns] -= y[Ns]), ...);
         return x; 
     }
 };
@@ -87,7 +87,7 @@ private:
     static CHTHOLLY_INLINE V call(const V& x, const V& y, std::index_sequence<Ns...>) noexcept
     {
         V ret;
-        ((reinterpret_cast<T*>(&ret)[Ns] = reinterpret_cast<const T*>(&x)[Ns] * reinterpret_cast<const T*>(&y)[Ns]), ...);
+        ((ret[Ns] = x[Ns] * y[Ns]), ...);
         return ret;
     }
 };
@@ -104,7 +104,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE V& call(V& x, const V& y, std::index_sequence<Ns...>) noexcept
     {
-        ((reinterpret_cast<T*>(&x)[Ns] *= reinterpret_cast<const T*>(&y)[Ns]), ...);
+        ((x[Ns] *= y[Ns]), ...);
         return x; 
     }
 };
@@ -122,7 +122,7 @@ private:
     static CHTHOLLY_INLINE V call(const V& x, const V& y, std::index_sequence<Ns...>) noexcept
     {
         V ret;
-        ((reinterpret_cast<T*>(&ret)[Ns] = reinterpret_cast<const T*>(&x)[Ns] / reinterpret_cast<const T*>(&y)[Ns]), ...);
+        ((ret[Ns] = x[Ns] / y[Ns]), ...);
         return ret;
     }
 };
@@ -139,7 +139,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE V& call(V& x, const V& y, std::index_sequence<Ns...>) noexcept
     {
-        ((reinterpret_cast<T*>(&x)[Ns] /= reinterpret_cast<const T*>(&y)[Ns]), ...);
+        ((x[Ns] /= y[Ns]), ...);
         return x; 
     }
 };
@@ -157,7 +157,7 @@ private:
     static CHTHOLLY_INLINE V call(const V& x, std::index_sequence<Ns...>) noexcept
     {
         V ret;
-        ((reinterpret_cast<T*>(&ret)[Ns] = -reinterpret_cast<const T*>(&x)[Ns]), ...);
+        ((ret[Ns] = -x[Ns]), ...);
         return ret;
     }
 };
@@ -175,7 +175,7 @@ private:
     static CHTHOLLY_INLINE V call(const V& x, T scalar, std::index_sequence<Ns...>) noexcept
     {
         V ret;
-        ((reinterpret_cast<T*>(&ret)[Ns] = reinterpret_cast<const T*>(&x)[Ns] + scalar), ...);
+        ((ret[Ns] = x[Ns] + scalar), ...);
         return ret;
     }
 };
@@ -192,7 +192,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE V& call(V& x, T scalar, std::index_sequence<Ns...>) noexcept
     {
-        ((reinterpret_cast<T*>(&x)[Ns] += scalar), ...);
+        ((x[Ns] += scalar), ...);
         return x; 
     }
 };
@@ -210,7 +210,7 @@ private:
     static CHTHOLLY_INLINE V call(const V& x, T scalar, std::index_sequence<Ns...>) noexcept
     {
         V ret;
-        ((reinterpret_cast<T*>(&ret)[Ns] = reinterpret_cast<const T*>(&x)[Ns] - scalar), ...);
+        ((ret[Ns] = x[Ns] - scalar), ...);
         return ret;
     }
 };
@@ -227,7 +227,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE V& call(V& x, T scalar, std::index_sequence<Ns...>) noexcept
     {
-        ((reinterpret_cast<T*>(&x)[Ns] -= scalar), ...);
+        ((x[Ns] -= scalar), ...);
         return x; 
     }
 };
@@ -245,7 +245,7 @@ private:
     static CHTHOLLY_INLINE V call(const V& x, T scalar, std::index_sequence<Ns...>) noexcept
     {
         V ret;
-        ((reinterpret_cast<T*>(&ret)[Ns] = reinterpret_cast<const T*>(&x)[Ns] * scalar), ...);
+        ((ret[Ns] = x[Ns] * scalar), ...);
         return ret;
     }
 };
@@ -262,7 +262,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE V& call(V& x, T scalar, std::index_sequence<Ns...>) noexcept
     {
-        ((reinterpret_cast<T*>(&x)[Ns] *= scalar), ...);
+        ((x[Ns] *= scalar), ...);
         return x; 
     }
 };
@@ -283,7 +283,7 @@ private:
     static CHTHOLLY_INLINE V call(const V& x, T scalar, std::index_sequence<Ns...>) noexcept
     {
         V ret;
-        ((reinterpret_cast<T*>(&ret)[Ns] = reinterpret_cast<const T*>(&x)[Ns] / scalar), ...);
+        ((ret[Ns] = x[Ns] / scalar), ...);
         return ret;
     }
 };
@@ -303,7 +303,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE V& call(V& x, T scalar, std::index_sequence<Ns...>) noexcept
     {
-        ((reinterpret_cast<T*>(&x)[Ns] /= scalar), ...);
+        ((x[Ns] /= scalar), ...);
         return x; 
     }
 };
@@ -320,7 +320,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE bool call(const V& x, const V& y, std::index_sequence<Ns...>) noexcept
     {
-        return ((reinterpret_cast<const T*>(&x)[Ns] == reinterpret_cast<const T*>(&y)[Ns]) && ...);
+        return ((x[Ns] == y[Ns]) && ...);
     }
 };
 
