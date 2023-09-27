@@ -13,13 +13,19 @@ template<size_t Col, size_t Row, typename T>
 struct transpose;
 
 template<size_t Col, size_t Row, typename T>
+struct trace;
+
+template<size_t Col, size_t Row, typename T>
 struct determinant;
 
 template<size_t Col, size_t Row, typename T>
 struct inverse;
 
 template<size_t Col, size_t Row, typename T>
-struct trace;
+struct factor_lu;
+
+template<size_t Col, size_t Row, typename T>
+struct factor_qr;
 }
 }
 }

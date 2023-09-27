@@ -2,6 +2,7 @@
 #define _MAT_COMMON_IMPL_INL_
 
 #include "Math/MathType/BaseType.h"
+#include "Math/MathLib/Common.h"
 #include "MatCommonImpl.h"
 
 template<size_t Col, size_t Row, typename T>
@@ -22,6 +23,23 @@ private:
         size_t row_index;
         ((row_index = Rs, ret[Rs] = RowV(m[Cs][row_index]...)), ...);
         return ret;
+    }
+};
+
+template<size_t N, typename T>
+struct ktm::detail::mat_common_implement::trace<N, N, T>
+{
+    static_assert(N >= 2 && N <= 4);
+    using M = mat<N, N, T>;
+    static CHTHOLLY_INLINE T call(const M& m) noexcept
+    {
+        return call(m, std::make_index_sequence<N>());
+    }
+private:
+    template<size_t ...Ns>
+    static CHTHOLLY_INLINE T call(const M& m, std::index_sequence<Ns...>) noexcept
+    {
+        return ((m[Ns][Ns])+ ...);
     }
 };
 
@@ -160,19 +178,126 @@ struct ktm::detail::mat_common_implement::inverse<N, N, T>
 };
 
 template<size_t N, typename T>
-struct ktm::detail::mat_common_implement::trace<N, N, T>
+struct ktm::detail::mat_common_implement::factor_lu<N, N, T>
 {
-    static_assert(N >= 2 && N <= 4);
+    static_assert(N >= 2 && N <= 4 && std::is_floating_point_v<T>);
     using M = mat<N, N, T>;
-    static CHTHOLLY_INLINE T call(const M& m) noexcept
+    static CHTHOLLY_INLINE std::tuple<M, M> call(const M& m) noexcept
     {
-        return call(m, std::make_index_sequence<N>());
-    }
-private:
-    template<size_t ...Ns>
-    static CHTHOLLY_INLINE T call(const M& m, std::index_sequence<Ns...>) noexcept
-    {
-        return ((m[Ns][Ns])+ ...);
+        M l { }, u { };
+        // u[i][0] = m[i][0]
+        // l[0][j] = m[0][j] / u[0][0]
+        for(int i = 0; i < N; ++i)
+        {
+            u[i][0] = m[i][0];
+            l[i][i] = one<T>;
+            l[0][i] = m[0][i];
+        }
+
+        for (int i = 1; i < N; i++)
+        {
+            //                     \- j-1
+            // u[i][j] = m[i][j] - |  l[k][j] * u[i][k]
+            //                     /- k=0
+            for(int j = 1; j <= i; ++j)
+            {
+                u[i][j] = m[i][j];
+                for(int k = 0; k < j; ++k)
+                {
+                    u[i][j] -= l[k][j] * u[i][k];
+                }
+            }
+
+            //                     \- i-1
+            // l[i][j] = m[i][j] - |  l[k][j] * u[i][k] / u[i][i]
+            //                     /- k=0
+            for(int j = i + 1; j < N; ++j)
+            {
+                l[i][j] = m[i][j];
+                for(int k = 0; k < i; ++k)
+                {
+                    l[i][j] -= l[k][j] * u[i][k];
+                }
+                l[i][j] /= u[i][i];
+            }
+        }
+        return { l, u };
     }
 };
+
+template<size_t N, typename T>
+struct ktm::detail::mat_common_implement::factor_qr<N, N, T>
+{
+    static_assert(N >= 2 && N <= 4 && std::is_floating_point_v<T>);
+    using M = mat<N, N, T>;
+    static CHTHOLLY_INLINE std::tuple<M, M> call(const M& m) noexcept
+    {
+        M q { }, r { m };
+
+        for(int i = 0; i < N; ++i)
+        {
+            q[i][i] = one<T>;
+        }
+
+        for(int k = 0; k < N; ++k)
+        {
+            T eta = zero<T>;
+            for(int i = k; i < N; ++i)
+            {
+                eta = max(eta, abs(r[k][i]));
+            }
+
+            T alpha = zero<T>;
+            for(int i = k; i < N; ++i)
+            {
+                alpha += r[k][i] * r[k][i] / (eta * eta);
+            }
+            if(r[k][k] > zero<T>)
+            {
+                eta = -eta;
+            }
+            alpha = eta * sqrt(alpha);
+
+            T rho = sqrt(static_cast<T>(2) * alpha * (alpha - r[k][k]));
+            r[k][k] = (r[k][k] - alpha) / rho;
+            for(int i = k + 1; i < N; ++i)
+            {
+                r[k][i] /= rho;
+            }
+
+            for(int j = 0; j < N; ++j)
+            {
+                T t = zero<T>;
+                for(int l = k; l < N; ++l)
+                {
+                    t += r[k][l] * q[j][l];
+                }
+                for(int i = k; i < N; ++i)
+                {
+                    q[j][i] -= static_cast<T>(2) * t * q[k][i];
+                }
+            }
+
+            for(int j = 0; j < N; ++j)
+            {
+                T t = zero<T>;
+                for(int l = k; l < N; ++l)
+                {
+                    t += r[k][l] * r[j][l];
+                }
+                for(int i = k; i < N; ++i)
+                {
+                    r[j][i] -= static_cast<T>(2) * t * r[k][i];
+                }
+            }
+            r[k][k] = alpha;
+            for(int i = k + 1; i < N; ++i)
+            {
+                r[k][i] = zero<T>;
+            }
+        }
+        return { transpose<N, N, T>::call(q), r };
+    }
+};
+
 #endif
