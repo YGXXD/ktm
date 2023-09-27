@@ -239,61 +239,41 @@ struct ktm::detail::mat_common_implement::factor_qr<N, N, T>
             q[i][i] = one<T>;
         }
 
-        for(int k = 0; k < N; ++k)
+        for(int i = 0; i < N; ++i)
         {
-            T eta = zero<T>;
-            for(int i = k; i < N; ++i)
-            {
-                eta = max(eta, abs(r[k][i]));
-            }
-
             T alpha = zero<T>;
-            for(int i = k; i < N; ++i)
+            for(int j = i; j < N; ++j)
             {
-                alpha += r[k][i] * r[k][i] / (eta * eta);
+                alpha += r[i][j] * r[i][j];
             }
-            if(r[k][k] > zero<T>)
-            {
-                eta = -eta;
-            }
-            alpha = eta * sqrt(alpha);
+            alpha = r[i][i] > zero<T> ? -sqrt(alpha) : sqrt(alpha);
 
-            T rho = sqrt(static_cast<T>(2) * alpha * (alpha - r[k][k]));
-            r[k][k] = (r[k][k] - alpha) / rho;
-            for(int i = k + 1; i < N; ++i)
+            T r_rho = rsqrt(static_cast<T>(2) * alpha * (alpha - r[i][i]));
+            r[i][i] = (r[i][i] - alpha) * r_rho;
+            for(int j = i + 1; j < N; ++j)
             {
-                r[k][i] /= rho;
+                r[i][j] *= r_rho;
             }
 
-            for(int j = 0; j < N; ++j)
+            for(int k = 0; k < N; ++k)
             {
-                T t = zero<T>;
-                for(int l = k; l < N; ++l)
+                T tq = zero<T>;
+                T tr = zero<T>;
+                for(int j = i; j < N; ++j)
                 {
-                    t += r[k][l] * q[j][l];
+                    tq += r[i][j] * q[k][j];
+                    tr += r[i][j] * r[k][j];
                 }
-                for(int i = k; i < N; ++i)
+                for(int j = i; j < N; ++j)
                 {
-                    q[j][i] -= static_cast<T>(2) * t * q[k][i];
+                    q[k][j] -= static_cast<T>(2) * tq * r[i][j];
+                    r[k][j] -= static_cast<T>(2) * tr * r[i][j];
                 }
             }
-
-            for(int j = 0; j < N; ++j)
+            r[i][i] = alpha;
+            for(int j = i + 1; j < N; ++j)
             {
-                T t = zero<T>;
-                for(int l = k; l < N; ++l)
-                {
-                    t += r[k][l] * r[j][l];
-                }
-                for(int i = k; i < N; ++i)
-                {
-                    r[j][i] -= static_cast<T>(2) * t * r[k][i];
-                }
-            }
-            r[k][k] = alpha;
-            for(int i = k + 1; i < N; ++i)
-            {
-                r[k][i] = zero<T>;
+                r[i][j] = zero<T>;
             }
         }
         return { transpose<N, N, T>::call(q), r };

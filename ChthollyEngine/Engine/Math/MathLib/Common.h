@@ -172,7 +172,8 @@ static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> rsqrt(T 
         
         //用牛顿迭代法进行迭代增加精度
         ret = ret * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * ret * ret));
-        // a = a * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * a * a));
+        ret = ret * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * ret * ret));
+        // ret = ret * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * ret * ret));
             
         return ret;
     }
