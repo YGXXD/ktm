@@ -26,6 +26,9 @@ struct factor_lu;
 
 template<size_t Col, size_t Row, typename T>
 struct factor_qr;
+
+template<size_t Col, size_t Row, typename T>
+struct factor_svd;
 }
 }
 }

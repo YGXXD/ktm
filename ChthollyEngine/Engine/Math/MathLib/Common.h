@@ -73,6 +73,17 @@ static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> atan(T x
 }
 
 template<typename T>
+static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> atan2(T x, T y) noexcept
+{
+    if constexpr(std::is_same_v<T, float>)
+        return ::atan2f(x, y);
+    else if constexpr(std::is_same_v<T, double>)
+        return ::atan2(x, y);
+    else 
+        return ::atan2l(x, y); 
+}
+
+template<typename T>
 static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> floor(T x) noexcept
 {
     if constexpr(std::is_same_v<T, float>)
@@ -141,6 +152,18 @@ static CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> clamp(T v, T
 }
 
 template<typename T>
+static CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> pow2(T x) noexcept
+{
+    return x * x;
+}
+
+template<typename T>
+static CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> pow5(T x) noexcept
+{
+    return pow2(x) * pow2(x) * x;
+}
+
+template<typename T>
 static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> mix(T x, T y, T t) noexcept
 {
     return x + t * (y - x);
@@ -173,9 +196,27 @@ static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> rsqrt(T 
         //用牛顿迭代法进行迭代增加精度
         ret = ret * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * ret * ret));
         ret = ret * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * ret * ret));
-        // ret = ret * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * ret * ret));
-            
+        // ret = ret * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * ret * ret)); 
+
+        if constexpr(std::is_same_v<integral_type, unsigned long long>)
+        {
+            ret = ret * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * ret * ret)); 
+        }
+
         return ret;
+    }
+}
+
+template<typename T>
+static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, bool> near_zero(T x) noexcept
+{
+    if constexpr(std::is_same_v<T, float>)
+    {
+        return abs(x) < 1e-4f;
+    }
+    else 
+    {
+        return abs(x) < 1e-8;
     }
 }
 

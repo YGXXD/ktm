@@ -233,7 +233,7 @@ struct ktm::detail::mat_common_implement::factor_qr<N, N, T>
     static CHTHOLLY_INLINE std::tuple<M, M> call(const M& m) noexcept
     {
         M q { }, r { m };
-
+        // householder
         for(int i = 0; i < N; ++i)
         {
             q[i][i] = one<T>;
@@ -280,4 +280,56 @@ struct ktm::detail::mat_common_implement::factor_qr<N, N, T>
     }
 };
 
+template<size_t N, typename T>
+struct ktm::detail::mat_common_implement::factor_svd<N, N, T>
+{
+    static_assert(N >= 2 && N <= 4 && std::is_floating_point_v<T>);
+    using M = mat<N, N, T>;
+
+    static CHTHOLLY_INLINE std::tuple<M, M, M> call(const M& m)
+    {
+        M u, s, v;
+        if constexpr(N == 2)
+        {
+            T a = m[0][0];
+            T c = m[0][1];
+            T b = m[1][0];
+            T d = m[1][1];
+            T a2 = pow2(a);
+            T b2 = pow2(b);
+            T c2 = pow2(c);
+            T d2 = pow2(d);
+            T a2_p_b2 = a2 + b2;
+            T c2_p_d2 = c2 + d2;
+            T ac_p_bd = a * c + b * d;
+            T two_ac_p_bd = 2 * ac_p_bd;
+            T a2_p_b2_m_c2_m_d2 = a2_p_b2 - c2_p_d2;
+
+            T theta = static_cast<T>(0.5) * atan2(two_ac_p_bd, a2_p_b2_m_c2_m_d2);
+            T cos_theta = cos(theta);
+            T sin_theta = sin(theta);
+
+            u = { { cos_theta, sin_theta }, { -sin_theta, cos_theta } };
+            
+            T sg1 = a2_p_b2 + c2_p_d2;
+            T sg2 = sqrt(pow2(a2_p_b2_m_c2_m_d2) + pow2(two_ac_p_bd));
+            T sigma1 = sqrt(static_cast<T>(0.5) * (sg1 + sg2));
+            T sigma2 = sqrt(static_cast<T>(0.5) * (sg1 - sg2));
+            s = { { sigma1, 0 }, { 0, sigma2 } };
+
+            T phi   = static_cast<T>(0.5) * atan2(static_cast<T>(2) * (a * b + c * d), a2 - b2 + c2 - d2);
+            T cos_phi   = cos(phi);
+            T sin_phi   = sin(phi);
+
+            T s11 = (a * cos_theta + c * sin_theta) * cos_theta + ( b * cos_theta + d * sin_theta) * sin_phi;
+            T s22 = (a * sin_theta - c * cos_theta) * sin_phi   + (-b * sin_theta + d * cos_theta) * cos_phi;
+            T sign_s11 = static_cast<T>(s11 > 0 ? 1 : (s11 < 0 ? -1 : 0));
+            T sign_s22 = static_cast<T>(s22 > 0 ? 1 : (s22 < 0 ? -1 : 0));
+
+            v = { { sign_s11 * cos_phi, sign_s11 * sin_phi }, { -sign_s22 * sin_phi, sign_s22 * cos_phi } };
+        }
+
+        return { u, s, v };
+    }
+};
 #endif
