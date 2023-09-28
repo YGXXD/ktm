@@ -37,6 +37,12 @@ struct IMatMake<Father, mat<2, 2, T>> : Father
         return mat<2, 2, T>({ { reinterpret_cast<const T*>(&diag)[0], zero<T> },
                               { zero<T>, reinterpret_cast<const T*>(&diag)[1] } });
     }
+
+    static CHTHOLLY_INLINE mat<2, 2, T> from_eye() noexcept
+    {
+        return mat<2, 2, T>({ { one<T>, zero<T> },
+                              { zero<T>, one<T> } });
+    } 
 };
 
 template<class Father, size_t Row, typename T>
@@ -69,6 +75,13 @@ struct IMatMake<Father, mat<3, 3, T>> : Father
         return mat<3, 3, T>({ { reinterpret_cast<const T*>(&diag)[0], zero<T>, zero<T> },
                               { zero<T>, reinterpret_cast<const T*>(&diag)[1], zero<T> }, 
                               { zero<T>, zero<T>, reinterpret_cast<const T*>(&diag)[2] } });
+    }
+
+    static CHTHOLLY_INLINE mat<3, 3, T> from_eye() noexcept
+    {
+        return mat<3, 3, T>({ { one<T>, zero<T>, zero<T> },
+                              { zero<T>, one<T>, zero<T> }, 
+                              { zero<T>, zero<T>, one<T> } }); 
     }
 };
 
@@ -105,6 +118,14 @@ struct IMatMake<Father, mat<4, 4, T>> : Father
                               { zero<T>, reinterpret_cast<const T*>(&diag)[1], zero<T>, zero<T> }, 
                               { zero<T>, zero<T>, reinterpret_cast<const T*>(&diag)[2], zero<T> },
                               { zero<T>, zero<T>, zero<T>, reinterpret_cast<const T*>(&diag)[3] } });
+    }
+
+    static CHTHOLLY_INLINE mat<4, 4, T> from_eye() noexcept
+    {
+        return mat<4, 4, T>({ { one<T>, zero<T>, zero<T>, zero<T> },
+                              { zero<T>, one<T>, zero<T>, zero<T> }, 
+                              { zero<T>, zero<T>, one<T>, zero<T> },
+                              { zero<T>, zero<T>, zero<T>, one<T> } }); 
     }
 };
 }

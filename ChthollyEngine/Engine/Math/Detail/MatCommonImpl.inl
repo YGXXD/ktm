@@ -182,14 +182,13 @@ struct ktm::detail::mat_common_implement::factor_lu
     using M = mat<N, N, T>;
     static CHTHOLLY_INLINE std::tuple<M, M> call(const M& m) noexcept
     {
-        M l { }, u { };
+        M l = M::from_eye(), u { };
         // u[i][0] = m[i][0]
         // l[0][j] = m[0][j] / u[0][0]
         for(int i = 0; i < N; ++i)
         {
             u[i][0] = m[i][0];
-            l[i][i] = one<T>;
-            l[0][i] = m[0][i];
+            l[0][i] = m[0][i] / u[0][0];
         }
 
         for (int i = 1; i < N; i++)
@@ -230,13 +229,8 @@ struct ktm::detail::mat_common_implement::factor_qr
     using M = mat<N, N, T>;
     static CHTHOLLY_INLINE std::tuple<M, M> call(const M& m) noexcept
     {
-        M q { }, r { m };
+        M q = M::from_eye(), r { m };
         // householder
-        for(int i = 0; i < N; ++i)
-        {
-            q[i][i] = one<T>;
-        }
-
         for(int i = 0; i < N; ++i)
         {
             T alpha = zero<T>;
