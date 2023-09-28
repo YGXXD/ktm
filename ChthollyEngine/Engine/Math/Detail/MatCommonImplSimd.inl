@@ -21,11 +21,11 @@ struct ktm::detail::mat_common_implement::transpose<N, N, std::enable_if_t<N == 
             float32x4_t c_2 = vld1q_f32(&m[2][0]);
 
             float32x4_t tmp0 = __builtin_shufflevector(c_0, c_1, 0, 1, 4, 5);
-            float32x4_t tmp1 = __builtin_shufflevector(c_0, c_1, 2, 3, 6, 3);
+            float32x4_t tmp1 = __builtin_shufflevector(c_0, c_1, 2, 3, 6, 7);
 
-            float32x4_t ret0 = __builtin_shufflevector(tmp0, c_2, 0, 2, 4, 3);
-            float32x4_t ret1 = __builtin_shufflevector(tmp0, c_2, 1, 3, 5, 3);
-            float32x4_t ret2 = __builtin_shufflevector(tmp1, c_2, 0, 2, 4, 3);
+            float32x4_t ret0 = __builtin_shufflevector(tmp0, c_2, 0, 2, 4, 7);
+            float32x4_t ret1 = __builtin_shufflevector(tmp0, c_2, 1, 3, 5, 7);
+            float32x4_t ret2 = __builtin_shufflevector(tmp1, c_2, 0, 2, 6, 7);
 
             RetM ret;
             vst1q_f32(&ret[0][0], ret0);
@@ -78,7 +78,7 @@ struct ktm::detail::mat_common_implement::transpose<N, N, std::enable_if_t<N == 
 
             int32x4_t ret0 = __builtin_shufflevector(tmp0, c_2, 0, 2, 4, 7);
             int32x4_t ret1 = __builtin_shufflevector(tmp0, c_2, 1, 3, 5, 7);
-            int32x4_t ret2 = __builtin_shufflevector(tmp1, c_2, 0, 2, 4, 7);
+            int32x4_t ret2 = __builtin_shufflevector(tmp1, c_2, 0, 2, 6, 7);
 
             RetM ret;
             vst1q_s32(&ret[0][0], ret0);
@@ -131,7 +131,7 @@ struct ktm::detail::mat_common_implement::transpose<N, N, std::enable_if_t<N == 
 
             uint32x4_t ret0 = __builtin_shufflevector(tmp0, c_2, 0, 2, 4, 7);
             uint32x4_t ret1 = __builtin_shufflevector(tmp0, c_2, 1, 3, 5, 7);
-            uint32x4_t ret2 = __builtin_shufflevector(tmp1, c_2, 0, 2, 4, 7);
+            uint32x4_t ret2 = __builtin_shufflevector(tmp1, c_2, 0, 2, 6, 7);
 
             RetM ret;
             vst1q_u32(&ret[0][0], ret0);
