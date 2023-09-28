@@ -28,6 +28,9 @@ template<size_t N, typename T>
 struct factor_qr;
 
 template<size_t N, typename T>
+struct eigen;
+
+template<size_t N, typename T>
 struct factor_svd;
 }
 }

@@ -181,7 +181,7 @@ static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> rsqrt(T 
         using integral_type = std::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
         integral_type i = *reinterpret_cast<const integral_type*>(&x);
 
-        //原算法u的值为0.0450465
+        // 雷神三算法u的值为0.0450465
         if constexpr(std::is_same_v<integral_type, unsigned int>)
         {
             i = 0x5f3759df - (i >> 1);
@@ -190,18 +190,13 @@ static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> rsqrt(T 
         {
             i = 0x5fe6eb3bfb58d152 - (i >> 1);
         }
-        //求出平方根倒数近似解
+        // 求出平方根倒数近似解
         T ret = *reinterpret_cast<T*>(&i); 
         
-        //用牛顿迭代法进行迭代增加精度
+        // 用牛顿迭代法进行迭代增加精度
         ret = ret * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * ret * ret));
         ret = ret * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * ret * ret));
-        // ret = ret * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * ret * ret)); 
-
-        if constexpr(std::is_same_v<integral_type, unsigned long long>)
-        {
-            ret = ret * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * ret * ret)); 
-        }
+        ret = ret * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * ret * ret)); 
 
         return ret;
     }
@@ -218,6 +213,12 @@ static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, bool> near_
     {
         return abs(x) < 1e-8;
     }
+}
+
+template<typename T>
+static CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, bool> equal_zero(T x) noexcept
+{
+    return abs(x) < std::numeric_limits<T>::epsilon();
 }
 
 template<typename T>

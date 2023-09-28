@@ -273,6 +273,40 @@ struct ktm::detail::mat_common_implement::factor_qr
 };
 
 template<size_t N, typename T>
+struct ktm::detail::mat_common_implement::eigen
+{
+    using M = mat<N, N, T>;
+    using E = vec<N, T>;
+    static CHTHOLLY_INLINE std::tuple<E, M> call(const M& m) noexcept
+    {
+        // qr iterator calc eigen vector and value
+        M a { m }, eigen_vec = M::from_eye();
+        E eigen_value, last_eigen_value;
+
+        for(int i = 0; i < N; ++i)
+        {
+            eigen_value[i] = a[i][i]; 
+        }
+        
+        for(int it = 0; it < 100; ++it) 
+        {
+            last_eigen_value = eigen_value;
+            std::tuple<M, M> qr = factor_qr<N, T>::call(a);
+            a = std::get<1>(qr) * std::get<0>(qr);
+            eigen_vec = eigen_vec * std::get<0>(qr);
+
+            for(int i = 0; i < N; ++i)
+            {
+                eigen_value[i] = a[i][i]; 
+            }
+            if(equal_zero(reduce_max(abs(eigen_value - last_eigen_value))))
+                break;
+        }
+        return { eigen_value, eigen_vec };
+    }
+};
+
+template<size_t N, typename T>
 struct ktm::detail::mat_common_implement::factor_svd
 {
     static_assert(std::is_floating_point_v<T>);
@@ -280,17 +314,10 @@ struct ktm::detail::mat_common_implement::factor_svd
 
     static CHTHOLLY_INLINE std::tuple<M, M, M> call(const M& m)
     {
-        M u, s, v;
         if constexpr(N == 2)
         {
-            T a = m[0][0];
-            T c = m[0][1];
-            T b = m[1][0];
-            T d = m[1][1];
-            T a2 = pow2(a);
-            T b2 = pow2(b);
-            T c2 = pow2(c);
-            T d2 = pow2(d);
+            T a = m[0][0], c = m[0][1], b = m[1][0], d = m[1][1];
+            T a2 = pow2(a), b2 = pow2(b), c2 = pow2(c), d2 = pow2(d);
             T a2_p_b2 = a2 + b2;
             T c2_p_d2 = c2 + d2;
             T ac_p_bd = a * c + b * d;
@@ -301,13 +328,13 @@ struct ktm::detail::mat_common_implement::factor_svd
             T cos_theta = cos(theta);
             T sin_theta = sin(theta);
 
-            u = { { cos_theta, sin_theta }, { -sin_theta, cos_theta } };
+            M u = { { cos_theta, sin_theta }, { -sin_theta, cos_theta } };
             
             T sg1 = a2_p_b2 + c2_p_d2;
             T sg2 = sqrt(pow2(a2_p_b2_m_c2_m_d2) + pow2(two_ac_p_bd));
             T sigma1 = sqrt(static_cast<T>(0.5) * (sg1 + sg2));
             T sigma2 = sqrt(static_cast<T>(0.5) * (sg1 - sg2));
-            s = { { sigma1, 0 }, { 0, sigma2 } };
+            M s = { { sigma1, 0 }, { 0, sigma2 } };
 
             T phi   = static_cast<T>(0.5) * atan2(static_cast<T>(2) * (a * b + c * d), a2 - b2 + c2 - d2);
             T cos_phi   = cos(phi);
@@ -318,10 +345,26 @@ struct ktm::detail::mat_common_implement::factor_svd
             T sign_s11 = static_cast<T>(s11 > 0 ? 1 : (s11 < 0 ? -1 : 0));
             T sign_s22 = static_cast<T>(s22 > 0 ? 1 : (s22 < 0 ? -1 : 0));
 
-            v = { { sign_s11 * cos_phi, sign_s11 * sin_phi }, { -sign_s22 * sin_phi, sign_s22 * cos_phi } };
+            M v = { { sign_s11 * cos_phi, sign_s11 * sin_phi }, { -sign_s22 * sin_phi, sign_s22 * cos_phi } };
+            return { u, s, v };
         }
-
-        return { u, s, v };
+        else
+        {
+            std::tuple<vec<N, T>, M> ata_eigen = eigen<N, T>::call(transpose<N, N, T>::call(m) * m);
+            vec<N, T>& ata_eigen_value_ref = std::get<0>(ata_eigen);
+            for(int i = 0; i < N; ++i)
+            {
+                ata_eigen_value_ref[i] = sqrt(abs(ata_eigen_value_ref[i])); 
+            }
+            M v = transpose<N, N, T>::call(std::get<1>(ata_eigen));
+            M s = M::from_diag(ata_eigen_value_ref);
+            for(int i = 0; i < N; ++i)
+            {
+                ata_eigen_value_ref[i] = one<T> / ata_eigen_value_ref[i];  
+            }
+            M u = m * std::get<1>(ata_eigen) * M::from_diag(ata_eigen_value_ref);
+            return { u, s, v };
+        }
     }
 };
 #endif
