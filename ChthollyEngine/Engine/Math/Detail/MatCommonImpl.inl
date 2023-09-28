@@ -27,9 +27,8 @@ private:
 };
 
 template<size_t N, typename T>
-struct ktm::detail::mat_common_implement::trace<N, N, T>
+struct ktm::detail::mat_common_implement::trace
 {
-    static_assert(N >= 2 && N <= 4);
     using M = mat<N, N, T>;
     static CHTHOLLY_INLINE T call(const M& m) noexcept
     {
@@ -44,9 +43,8 @@ private:
 };
 
 template<size_t N, typename T>
-struct ktm::detail::mat_common_implement::determinant<N, N, T>
+struct ktm::detail::mat_common_implement::determinant
 {
-    static_assert(N >= 2 && N <= 4);
     using M = mat<N, N, T>;
     static CHTHOLLY_INLINE T call(const M& m) noexcept
     {
@@ -60,7 +58,7 @@ struct ktm::detail::mat_common_implement::determinant<N, N, T>
                    m[1][0] * (m[2][1] * m[0][2] - m[0][1] * m[2][2]) +
                    m[2][0] * (m[0][1] * m[1][2] - m[1][1] * m[0][2]);
         }
-        else if constexpr(N == 4)
+        else
         {
             T d00 = m[2][2] * m[3][3] - m[3][2] * m[2][3];
             T d01 = m[3][2] * m[1][3] - m[1][2] * m[3][3];
@@ -80,13 +78,13 @@ struct ktm::detail::mat_common_implement::determinant<N, N, T>
 };
 
 template<size_t N, typename T>
-struct ktm::detail::mat_common_implement::inverse<N, N, T>
+struct ktm::detail::mat_common_implement::inverse
 {
-    static_assert(N >= 2 && N <= 4 && std::is_floating_point_v<T>);
+    static_assert(std::is_floating_point_v<T>);
     using M = mat<N, N, T>;
     static CHTHOLLY_INLINE M call(const M& m) noexcept
     {
-        T one_over_det = one<T> / determinant<N, N, T>::call(m);
+        T one_over_det = one<T> / determinant<N, T>::call(m);
         M ret;
         if constexpr(N == 2)
         {
@@ -178,9 +176,9 @@ struct ktm::detail::mat_common_implement::inverse<N, N, T>
 };
 
 template<size_t N, typename T>
-struct ktm::detail::mat_common_implement::factor_lu<N, N, T>
+struct ktm::detail::mat_common_implement::factor_lu
 {
-    static_assert(N >= 2 && N <= 4 && std::is_floating_point_v<T>);
+    static_assert(std::is_floating_point_v<T>);
     using M = mat<N, N, T>;
     static CHTHOLLY_INLINE std::tuple<M, M> call(const M& m) noexcept
     {
@@ -226,9 +224,9 @@ struct ktm::detail::mat_common_implement::factor_lu<N, N, T>
 };
 
 template<size_t N, typename T>
-struct ktm::detail::mat_common_implement::factor_qr<N, N, T>
+struct ktm::detail::mat_common_implement::factor_qr
 {
-    static_assert(N >= 2 && N <= 4 && std::is_floating_point_v<T>);
+    static_assert(std::is_floating_point_v<T>);
     using M = mat<N, N, T>;
     static CHTHOLLY_INLINE std::tuple<M, M> call(const M& m) noexcept
     {
@@ -281,9 +279,9 @@ struct ktm::detail::mat_common_implement::factor_qr<N, N, T>
 };
 
 template<size_t N, typename T>
-struct ktm::detail::mat_common_implement::factor_svd<N, N, T>
+struct ktm::detail::mat_common_implement::factor_svd
 {
-    static_assert(N >= 2 && N <= 4 && std::is_floating_point_v<T>);
+    static_assert(std::is_floating_point_v<T>);
     using M = mat<N, N, T>;
 
     static CHTHOLLY_INLINE std::tuple<M, M, M> call(const M& m)

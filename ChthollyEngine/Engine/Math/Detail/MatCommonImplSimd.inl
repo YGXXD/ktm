@@ -192,7 +192,7 @@ struct ktm::detail::mat_common_implement::transpose<N, N, std::enable_if_t<N == 
  __builtin_shufflevector(col3, col3, 1, 2, 3, 0)))
 
 template<size_t N>
-struct ktm::detail::mat_common_implement::determinant<N, N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::mat_common_implement::determinant<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using M = mat<N, N, float>;
     static CHTHOLLY_INLINE float call(const M& m) noexcept
@@ -219,7 +219,7 @@ struct ktm::detail::mat_common_implement::determinant<N, N, std::enable_if_t<N =
 };
 
 template<size_t N>
-struct ktm::detail::mat_common_implement::determinant<N, N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::mat_common_implement::determinant<N, std::enable_if_t<N == 3 || N == 4, int>>
 {
     using M = mat<N, N, int>;
     static CHTHOLLY_INLINE float call(const M& m) noexcept
@@ -246,7 +246,7 @@ struct ktm::detail::mat_common_implement::determinant<N, N, std::enable_if_t<N =
 };
 
 template<size_t N>
-struct ktm::detail::mat_common_implement::determinant<N, N, std::enable_if_t<N == 3 || N == 4, unsigned int>>
+struct ktm::detail::mat_common_implement::determinant<N, std::enable_if_t<N == 3 || N == 4, unsigned int>>
 {
     using M = mat<N, N, unsigned int>;
     static CHTHOLLY_INLINE float call(const M& m) noexcept
@@ -273,7 +273,7 @@ struct ktm::detail::mat_common_implement::determinant<N, N, std::enable_if_t<N =
 };
 
 template<size_t N>
-struct ktm::detail::mat_common_implement::inverse<N, N, std::enable_if_t<N == 4, float>>
+struct ktm::detail::mat_common_implement::inverse<N, std::enable_if_t<N == 4, float>>
 {
     using M = mat<N, N, float>;
     static CHTHOLLY_INLINE M call(const M& m) noexcept

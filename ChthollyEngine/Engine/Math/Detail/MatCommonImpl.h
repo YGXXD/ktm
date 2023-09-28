@@ -12,22 +12,22 @@ namespace mat_common_implement
 template<size_t Col, size_t Row, typename T>
 struct transpose;
 
-template<size_t Col, size_t Row, typename T>
+template<size_t N, typename T>
 struct trace;
 
-template<size_t Col, size_t Row, typename T>
+template<size_t N, typename T>
 struct determinant;
 
-template<size_t Col, size_t Row, typename T>
+template<size_t N, typename T>
 struct inverse;
 
-template<size_t Col, size_t Row, typename T>
+template<size_t N, typename T>
 struct factor_lu;
 
-template<size_t Col, size_t Row, typename T>
+template<size_t N, typename T>
 struct factor_qr;
 
-template<size_t Col, size_t Row, typename T>
+template<size_t N, typename T>
 struct factor_svd;
 }
 }
