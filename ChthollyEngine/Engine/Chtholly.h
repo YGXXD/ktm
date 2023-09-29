@@ -16,6 +16,7 @@
 
 	#ifdef __clang__
 		#define CHTHOLLY_INLINE __inline__ __attribute__((always_inline))
+		#define CHTHOLLY_NOINLINE __attribute__((noinline))
 		#ifdef CHTHOLLY_BUILD_DLL 
 			#define CHTHOLLY_API __attribute__ ((visibility("default")))
 		#else
@@ -38,6 +39,7 @@
 
 	#ifdef _MSC_VER
 		#define CHTHOLLY_INLINE __forceinline
+		#define CHTHOLLY_NOINLINE __declspec(noinline)
 		#ifdef CHTHOLLY_BUILD_DLL 
 			#define CHTHOLLY_API __declspec(dllexport) 
 		#else

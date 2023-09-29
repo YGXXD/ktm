@@ -5,6 +5,22 @@
 #include "Math/MathLib/Common.h"
 #include "MatCommonImpl.h"
 
+template<size_t N, typename T>
+struct ktm::detail::mat_common_implement::trace
+{
+    using M = mat<N, N, T>;
+    static CHTHOLLY_INLINE T call(const M& m) noexcept
+    {
+        return call(m, std::make_index_sequence<N>());
+    }
+private:
+    template<size_t ...Ns>
+    static CHTHOLLY_INLINE T call(const M& m, std::index_sequence<Ns...>) noexcept
+    {
+        return ((m[Ns][Ns])+ ...);
+    }
+};
+
 template<size_t Col, size_t Row, typename T>
 struct ktm::detail::mat_common_implement::transpose
 {
@@ -23,22 +39,6 @@ private:
         size_t row_index;
         ((row_index = Rs, ret[Rs] = RowV(m[Cs][row_index]...)), ...);
         return ret;
-    }
-};
-
-template<size_t N, typename T>
-struct ktm::detail::mat_common_implement::trace
-{
-    using M = mat<N, N, T>;
-    static CHTHOLLY_INLINE T call(const M& m) noexcept
-    {
-        return call(m, std::make_index_sequence<N>());
-    }
-private:
-    template<size_t ...Ns>
-    static CHTHOLLY_INLINE T call(const M& m, std::index_sequence<Ns...>) noexcept
-    {
-        return ((m[Ns][Ns])+ ...);
     }
 };
 
@@ -180,7 +180,7 @@ struct ktm::detail::mat_common_implement::factor_lu
 {
     static_assert(std::is_floating_point_v<T>);
     using M = mat<N, N, T>;
-    static CHTHOLLY_INLINE std::tuple<M, M> call(const M& m) noexcept
+    static CHTHOLLY_NOINLINE std::tuple<M, M> call(const M& m) noexcept
     {
         M l = M::from_eye(), u { };
         // u[i][0] = m[i][0]
@@ -227,7 +227,7 @@ struct ktm::detail::mat_common_implement::factor_qr
 {
     static_assert(std::is_floating_point_v<T>);
     using M = mat<N, N, T>;
-    static CHTHOLLY_INLINE std::tuple<M, M> call(const M& m) noexcept
+    static CHTHOLLY_NOINLINE std::tuple<M, M> call(const M& m) noexcept
     {
         M q = M::from_eye(), r { m };
         // householder
@@ -277,7 +277,7 @@ struct ktm::detail::mat_common_implement::eigen
 {
     using M = mat<N, N, T>;
     using E = vec<N, T>;
-    static CHTHOLLY_INLINE std::tuple<E, M> call(const M& m) noexcept
+    static CHTHOLLY_NOINLINE std::tuple<E, M> call(const M& m) noexcept
     {
         // qr iterator calc eigen vector and value
         M a { m }, eigen_vec = M::from_eye();
@@ -312,7 +312,7 @@ struct ktm::detail::mat_common_implement::factor_svd
     static_assert(std::is_floating_point_v<T>);
     using M = mat<N, N, T>;
 
-    static CHTHOLLY_INLINE std::tuple<M, M, M> call(const M& m)
+    static CHTHOLLY_NOINLINE std::tuple<M, M, M> call(const M& m)
     {
         if constexpr(N == 2)
         {

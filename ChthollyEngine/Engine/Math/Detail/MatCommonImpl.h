@@ -9,11 +9,11 @@ namespace detail
 {
 namespace mat_common_implement
 {
-template<size_t Col, size_t Row, typename T>
-struct transpose;
-
 template<size_t N, typename T>
 struct trace;
+
+template<size_t Col, size_t Row, typename T>
+struct transpose;
 
 template<size_t N, typename T>
 struct determinant;
