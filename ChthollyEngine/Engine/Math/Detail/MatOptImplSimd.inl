@@ -4,7 +4,7 @@
 #include "Math/MathType/BaseType.h"
 #include "MatOptImpl.h"
 
-#ifdef __ARM_NEON__
+#if defined(CHTHOLLY_SIMD_NEON)
 #include <arm_neon.h>
 
 template<size_t Col, size_t Row>

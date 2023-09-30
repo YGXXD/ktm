@@ -9,15 +9,16 @@ file(GLOB_RECURSE CHTHOLLY_ENGINE_SOURCE_FILES ${CHTHOLLY_ENGINE_SOURCE_DIR}/Eng
 
 set(EXECUTABLE_NAME ChthollySandBox)
 set(ENGINE_DLL_NAME ChthollyEngine)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if(APPLE)
 	set(CHTHOLLY_PLATFORM CHTHOLLY_PLATFORM_APPLE)
-	set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-	
-	add_compile_options(-x objective-c++)
-	#add_compile_options(-fno-elide-constructors)
-	#add_compile_options(-fobjc-arc)
-	
+
+	if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+		add_compile_options(-x objective-c++)
+		# add_compile_options(-fobjc-arc)
+	endif()
+
     # target engine
 	file(GLOB_RECURSE CHTHOLLY_PLATFORM_SOURCE_FILES ${CHTHOLLY_ENGINE_SOURCE_DIR}/Platform/Mac/*.mm)
 	file(GLOB_RECURSE CHTHOLLY_RENDER_API_SOURCE_FILES ${CHTHOLLY_ENGINE_SOURCE_DIR}/RenderAPI/Metal/*.mm)
@@ -37,8 +38,11 @@ if(APPLE)
 
 elseif(WIN32)
 	set(CHTHOLLY_PLATFORM CHTHOLLY_PLATFORM_WINDOWS)
-	add_compile_options(/source-charset:utf-8)
-	add_compile_options(/execution-charset:utf-8)
+
+	if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+		add_compile_options(/source-charset:utf-8)
+		add_compile_options(/execution-charset:utf-8)
+	endif()
 	
 	# target engine
 	file(GLOB_RECURSE CHTHOLLY_PLATFORM_SOURCE_FILES ${CHTHOLLY_ENGINE_SOURCE_DIR}/Platform/Windows/*.cpp)
