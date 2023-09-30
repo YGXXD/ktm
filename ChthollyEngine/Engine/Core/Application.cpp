@@ -5,6 +5,7 @@
 #include "Event/AppEvent.h"
 #include "Event/MouseEvent.h"
 #include "Event/KeyEvent.h"
+#include "Math/Math.h"
 
 bool ktl::Application::bIsQuit = false;
 std::unique_ptr<ktl::Window> ktl::Application::mainWindow;
@@ -24,6 +25,8 @@ void ktl::Application::Destroy()
 
 void ktl::Application::Run()
 {
+	mathTest2();
+	return;
     mainWindow = std::unique_ptr<Window>(Window::Create(WindowProps()));
  	mainWindow->eventCallback.BindAnyFunc(&Application::OnEvent);	
 	mainGraphics = std::unique_ptr<GraphicsContext>(GraphicsContext::Create(mainWindow->GetNativeWindow()));	
@@ -32,7 +35,7 @@ void ktl::Application::Run()
     {
 		Window::PollEvent();
         mainWindow->OnUpdate();
-		mainGraphics->SwapBuffer();
+		//mainGraphics->SwapBuffer();
     }
 	
 	mainGraphics.reset();

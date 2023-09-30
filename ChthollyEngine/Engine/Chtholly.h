@@ -62,16 +62,18 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <memory>
-#include <cstdint>
-#include <cassert>
-#include <cstring>
 #include <vector>
 #include <array>
 #include <unordered_map>
-#include <thread>
-#include <cmath>
 #include <algorithm>
+#include <thread>
+#include <memory>
+
+#include <cstdint>
+#include <cassert>
+#include <cstring>
+#include <cmath>
+
 #include "Kutori.h"
 
 #endif
