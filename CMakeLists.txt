@@ -14,7 +14,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 if(APPLE)
 	set(CHTHOLLY_PLATFORM CHTHOLLY_PLATFORM_APPLE)
 
-	if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+	if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
 		add_compile_options(-x objective-c++)
 		# add_compile_options(-fobjc-arc)
 	endif()
