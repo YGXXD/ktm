@@ -347,18 +347,18 @@ struct ktm::detail::vec_opt_implement::equal<N, std::enable_if_t<N >= 2 && N <= 
     {
         if constexpr(N == 2)
         {
-            float32x2_t ret = vceq_f32(vabs_f32(vsub_f32(vld1_f32(&x[0]), vld1_f32(&y[0]))), vdup_n_f32(std::numeric_limits<float>::epsilon()));
+            float32x2_t ret = vclt_f32(vabs_f32(vsub_f32(vld1_f32(&x[0]), vld1_f32(&y[0]))), vdup_n_f32(std::numeric_limits<float>::epsilon()));
             return static_cast<bool>(vminv_u32(ret)); 
         }
         else if constexpr(N == 3)
         {
-            float32x4_t ret = vceqq_f32(vabsq_f32(vsubq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]))), vdupq_n_f32(std::numeric_limits<float>::epsilon()));
+            float32x4_t ret = vcltq_f32(vabsq_f32(vsubq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]))), vdupq_n_f32(std::numeric_limits<float>::epsilon()));
             ret = vsetq_lane_f32(ret[2], ret, 3);
             return static_cast<bool>(vminvq_u32(ret)); 
         }
         else
         {
-            float32x4_t ret = vceqq_f32(vabsq_f32(vsubq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]))), vdupq_n_f32(std::numeric_limits<float>::epsilon()));
+            float32x4_t ret = vcltq_f32(vabsq_f32(vsubq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]))), vdupq_n_f32(std::numeric_limits<float>::epsilon()));
             uint32x4_t tmp = vreinterpretq_u32_f32(ret);
             return static_cast<bool>(vminvq_u32(ret)); 
         }
