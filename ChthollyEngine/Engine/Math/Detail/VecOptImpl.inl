@@ -3,6 +3,7 @@
 
 #include "VecOptImpl.h"
 #include "Math/MathType/BaseType.h"
+#include "Math/MathLib/Common.h"
 
 template<size_t N, typename T>
 struct ktm::detail::vec_opt_implement::add
