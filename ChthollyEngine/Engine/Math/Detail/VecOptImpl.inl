@@ -320,7 +320,14 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE bool call(const V& x, const V& y, std::index_sequence<Ns...>) noexcept
     {
-        return ((x[Ns] == y[Ns]) && ...);
+        if constexpr(std::is_floating_point_v<T>)
+        {
+            return (ktm::equal_zero(x[Ns] - y[Ns]) && ...);
+        }
+        else
+        {
+            return ((x[Ns] == y[Ns]) && ...);
+        }
     }
 };
 
