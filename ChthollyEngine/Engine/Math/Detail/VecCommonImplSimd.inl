@@ -5,7 +5,6 @@
 #include "Math/MathLib/Common.h"
 
 #if defined(CHTHOLLY_SIMD_NEON)
-#include <arm_neon.h>
 
 template<size_t L, size_t N>
 struct ktm::detail::vec_common_implement::elem_move<L, N, std::enable_if_t<N >= 2 && N <= 4, float>>

@@ -5,7 +5,6 @@
 #include <Math/MathType/BaseType.h>
 
 #if defined(CHTHOLLY_SIMD_NEON)
-#include <arm_neon.h>
 
 template<size_t N>
 struct ktm::detail::vec_opt_implement::add<N, std::enable_if_t<N >= 2 && N <= 4, float>>
@@ -904,8 +903,7 @@ struct ktm::detail::vec_opt_implement::equal<N, std::enable_if_t<N >= 2 && N <= 
     }
 };
 
-#elif defined(CHTHOLLY_SIMD_SSE2)
-#include <emmintrin.h>
+#elif defined(CHTHOLLY_SIMD_SSE)
 
 template<size_t N>
 struct ktm::detail::vec_opt_implement::add<N, std::enable_if_t<N == 3 || N == 4, float>>
@@ -1110,26 +1108,229 @@ struct ktm::detail::vec_opt_implement::equal<N, std::enable_if_t<N == 3 || N == 
     using V = vec<N, float>;
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
+        const int mask_bit = 0x7fffffff;
         if constexpr(N == 3)
         {
             __m128 delta = _mm_sub_ps(_mm_load_ps(&x[0]), _mm_load_ps(&y[0]));
-            __m128 mask = _mm_castsi128_ps(_mm_set1_epi32(0x7fffffff));
+            __m128 mask = _mm_set1_ps(*reinterpret_cast<const float*>(&mask_bit));
             __m128 ret = _mm_cmplt_ps(_mm_and_ps(delta, mask), _mm_set1_ps(std::numeric_limits<float>::epsilon()));     
-            __m128 and1 = _mm_and_ps(ret, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(2, 3, 1, 0)));
-            __m128 and2 = _mm_and_ps(and1, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(1, 3, 2, 0)));
+            __m128 and1 = _mm_and_ps(ret, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(0, 3, 2, 1)));
+            __m128 and2 = _mm_and_ps(and1, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(1, 0, 3, 2)));
             return *reinterpret_cast<unsigned int*>(&and2);
         }
         else 
         {
             __m128 delta = _mm_sub_ps(_mm_load_ps(&x[0]), _mm_load_ps(&y[0]));
-            __m128 mask = _mm_castsi128_ps(_mm_set1_epi32(0x7fffffff));
+            __m128 mask = _mm_set1_ps(*reinterpret_cast<const float*>(&mask_bit));
             __m128 ret = _mm_cmplt_ps(_mm_and_ps(delta, mask), _mm_set1_ps(std::numeric_limits<float>::epsilon()));     
             __m128 and1 = _mm_and_ps(ret, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(1, 0, 3, 2)));
-            __m128 and2 = _mm_and_ps(and1, _mm_shuffle_ps(and1, and1, _MM_SHUFFLE(2, 3, 1, 0)));
+            __m128 and2 = _mm_and_ps(and1, _mm_shuffle_ps(and1, and1, _MM_SHUFFLE(0, 3, 2, 1)));
             return *reinterpret_cast<unsigned int*>(&and2);
         }
     }
 };
+
+#if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE2_FLAG
+
+template<size_t N>
+struct ktm::detail::vec_opt_implement::add<N, std::enable_if_t<N == 3 || N == 4, int>>
+{
+    using V = vec<N, int>;
+    static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
+    {
+        __m128i t_x = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&x[0])));
+        __m128i t_y = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&y[0])));
+        __m128i ret = _mm_add_epi32(t_x, t_y);
+        return *reinterpret_cast<V*>(&ret);
+    }
+};
+
+template<size_t N>
+struct ktm::detail::vec_opt_implement::add_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
+{
+    using V = vec<N, int>;
+    static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
+    {
+        __m128i t_x = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&x[0])));
+        __m128i t_y = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&y[0])));
+        __m128i ret = _mm_add_epi32(t_x, t_y);
+        _mm_store_ps(reinterpret_cast<float*>(&x[0]), _mm_castsi128_ps(ret));
+        return x;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::vec_opt_implement::minus<N, std::enable_if_t<N == 3 || N == 4, int>>
+{
+    using V = vec<N, int>;
+    static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
+    {
+        __m128i t_x = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&x[0])));
+        __m128i t_y = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&y[0])));
+        __m128i ret = _mm_sub_epi32(t_x, t_y);
+        return *reinterpret_cast<V*>(&ret);
+    }
+};
+
+template<size_t N>
+struct ktm::detail::vec_opt_implement::minus_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
+{
+    using V = vec<N, int>;
+    static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
+    {
+        __m128i t_x = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&x[0])));
+        __m128i t_y = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&y[0])));
+        __m128i ret = _mm_sub_epi32(t_x, t_y);
+        _mm_store_ps(reinterpret_cast<float*>(&x[0]), _mm_castsi128_ps(ret));
+        return x;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::vec_opt_implement::opposite<N, std::enable_if_t<N == 3 || N == 4, int>>
+{
+    using V = vec<N, int>;
+    static CHTHOLLY_INLINE V call(const V& x) noexcept
+    {
+        __m128i t_x = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&x[0])));
+        __m128i ret = _mm_sub_epi32(_mm_set1_epi32(zero<int>), t_x);
+        return *reinterpret_cast<V*>(&ret);
+    }
+};
+
+template<size_t N>
+struct ktm::detail::vec_opt_implement::add_scalar<N, std::enable_if_t<N == 3 || N == 4, int>>
+{
+    using V = vec<N, int>;
+    static CHTHOLLY_INLINE V call(const V& x, int scalar) noexcept
+    {
+        __m128i t_x = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&x[0])));
+        __m128i ret = _mm_add_epi32(t_x, _mm_set1_epi32(scalar));
+        return *reinterpret_cast<V*>(&ret);
+    }
+};
+
+template<size_t N>
+struct ktm::detail::vec_opt_implement::add_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
+{
+    using V = vec<N, int>;
+    static CHTHOLLY_INLINE V& call(V& x, int scalar) noexcept
+    {
+        __m128i t_x = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&x[0])));
+        __m128i ret = _mm_add_epi32(t_x, _mm_set1_epi32(scalar));
+        _mm_store_ps(reinterpret_cast<float*>(&x[0]), _mm_castsi128_ps(ret));
+        return x;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::vec_opt_implement::minus_scalar<N, std::enable_if_t<N == 3 || N == 4, int>>
+{
+    using V = vec<N, int>;
+    static CHTHOLLY_INLINE V call(const V& x, int scalar) noexcept
+    {
+        __m128i t_x = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&x[0])));
+        __m128i ret = _mm_sub_epi32(t_x, _mm_set1_epi32(scalar));
+        return *reinterpret_cast<V*>(&ret);
+    }
+};
+
+template<size_t N>
+struct ktm::detail::vec_opt_implement::minus_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
+{
+    using V = vec<N, int>;
+    static CHTHOLLY_INLINE V& call(V& x, int scalar) noexcept
+    {
+        __m128i t_x = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&x[0])));
+        __m128i ret = _mm_sub_epi32(t_x, _mm_set1_epi32(scalar));
+        _mm_store_ps(reinterpret_cast<float*>(&x[0]), _mm_castsi128_ps(ret));
+        return x;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::vec_opt_implement::equal<N, std::enable_if_t<N == 3 || N == 4, int>>
+{
+    using V = vec<N, int>;
+    static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
+    {
+        if constexpr(N == 3)
+        {
+            __m128i t_x = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&x[0])));
+            __m128i t_y = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&y[0])));
+            __m128i ret = _mm_cmpeq_epi32(t_x, t_y);   
+            __m128i and1 = _mm_and_si128(ret, _mm_shuffle_epi32(ret, _MM_SHUFFLE(0, 3, 2, 1)));
+            __m128i and2 = _mm_and_si128(and1, _mm_shuffle_epi32(ret, _MM_SHUFFLE(1, 0, 3, 2)));
+            return *reinterpret_cast<unsigned int*>(&and2);
+        }
+        else 
+        {
+            __m128i t_x = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&x[0])));
+            __m128i t_y = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&y[0])));
+            __m128i ret = _mm_cmpeq_epi32(t_x, t_y);
+            __m128i and1 = _mm_and_si128(ret, _mm_shuffle_epi32(ret, _MM_SHUFFLE(1, 0, 3, 2)));
+            __m128i and2 = _mm_and_si128(and1, _mm_shuffle_epi32(and1, _MM_SHUFFLE(0, 3, 2, 1)));
+            return *reinterpret_cast<unsigned int*>(&and2);
+        }
+    }
+};
+
+#endif // CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE2_FLAG
+
+#if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE4_1_FLAG
+template<size_t N>
+struct ktm::detail::vec_opt_implement::mul<N, std::enable_if_t<N == 3 || N == 4, int>>
+{
+    using V = vec<N, int>;
+    static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
+    {
+        __m128i t_x = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&x[0])));
+        __m128i t_y = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&y[0])));
+        __m128i ret = _mm_mullo_epi32(t_x, t_y);
+        return *reinterpret_cast<V*>(&ret);
+    }
+};
+
+template<size_t N>
+struct ktm::detail::vec_opt_implement::mul_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
+{
+    using V = vec<N, int>;
+    static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
+    {
+        __m128i t_x = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&x[0])));
+        __m128i t_y = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&y[0])));
+        __m128i ret = _mm_mullo_epi32(t_x, t_y);
+        _mm_store_ps(reinterpret_cast<float*>(&x[0]), _mm_castsi128_ps(ret));
+        return x;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::vec_opt_implement::mul_scalar<N, std::enable_if_t<N == 3 || N == 4, int>>
+{
+    using V = vec<N, int>;
+    static CHTHOLLY_INLINE V call(const V& x, int scalar) noexcept
+    {
+        __m128i t_x = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&x[0])));
+        __m128i ret = _mm_mullo_epi32(t_x, _mm_set1_epi32(scalar));
+        return *reinterpret_cast<V*>(&ret);
+    }
+};
+
+template<size_t N>
+struct ktm::detail::vec_opt_implement::mul_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
+{
+    using V = vec<N, int>;
+    static CHTHOLLY_INLINE V& call(V& x, int scalar) noexcept
+    {
+        __m128i t_x = _mm_castps_si128(_mm_load_ps(reinterpret_cast<const float*>(&x[0])));
+        __m128i ret = _mm_mullo_epi32(t_x, _mm_set1_epi32(scalar));
+        _mm_store_ps(reinterpret_cast<float*>(&x[0]), _mm_castsi128_ps(ret));
+        return x;
+    }
+};
+
+#endif // CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE4_1_FLAG
 
 #endif
 

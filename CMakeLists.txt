@@ -42,8 +42,9 @@ elseif(WIN32)
 	if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 		add_compile_options(/source-charset:utf-8)
 		add_compile_options(/execution-charset:utf-8)
+	elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+		add_compile_options(-march=native)
 	endif()
-	
 	# target engine
 	file(GLOB_RECURSE CHTHOLLY_PLATFORM_SOURCE_FILES ${CHTHOLLY_ENGINE_SOURCE_DIR}/Platform/Windows/*.cpp)
     add_library(${ENGINE_DLL_NAME} SHARED ${CHTHOLLY_ENGINE_SOURCE_FILES} ${CHTHOLLY_PLATFORM_SOURCE_FILES})

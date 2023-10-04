@@ -53,10 +53,30 @@
 #endif
 
 // simd support
+#define CHTHOLLY_SIMD_SSE_FLAG 1
+#define CHTHOLLY_SIMD_SSE2_FLAG 2
+#define CHTHOLLY_SIMD_SSE3_FLAG 4
+#define CHTHOLLY_SIMD_SSE4_1_FLAG 8
+#define CHTHOLLY_SIMD_SSE4_2_FLAG 16
+
 #if defined(__ARM_NEON) || defined(__ARM_NEON__)
 	#define CHTHOLLY_SIMD_NEON
+	#include <arm_neon.h>
+#elif defined(__SSE4_2__)
+	#define CHTHOLLY_SIMD_SSE (CHTHOLLY_SIMD_SSE4_2_FLAG | CHTHOLLY_SIMD_SSE4_1_FLAG | CHTHOLLY_SIMD_SSE3_FLAG | CHTHOLLY_SIMD_SSE2_FLAG | CHTHOLLY_SIMD_SSE_FLAG)
+	#include <nmmintrin.h>
+#elif defined(__SSE4_1__)
+	#define CHTHOLLY_SIMD_SSE (CHTHOLLY_SIMD_SSE4_1_FLAG | CHTHOLLY_SIMD_SSE3_FLAG | CHTHOLLY_SIMD_SSE2_FLAG | CHTHOLLY_SIMD_SSE_FLAG)
+	#include <smmintrin.h>
+#elif defined(__SSE3__)
+	#define CHTHOLLY_SIMD_SSE (CHTHOLLY_SIMD_SSE3_FLAG | CHTHOLLY_SIMD_SSE2_FLAG | CHTHOLLY_SIMD_SSE_FLAG)
+	#include <pmmintrin.h>
 #elif defined(__SSE2__) || defined(_M_X64)
-	#define CHTHOLLY_SIMD_SSE2
+	#define CHTHOLLY_SIMD_SSE (CHTHOLLY_SIMD_SSE2_FLAG | CHTHOLLY_SIMD_SSE_FLAG)
+	#include <emmintrin.h>
+#elif defined(__SSE__)
+	#define CHTHOLLY_SIMD_SSE (CHTHOLLY_SIMD_SSE_FLAG)
+	#include <xmmintrin.h>
 #endif
 
 #include <iostream>

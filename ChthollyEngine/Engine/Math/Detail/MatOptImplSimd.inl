@@ -5,7 +5,6 @@
 #include "MatOptImpl.h"
 
 #if defined(CHTHOLLY_SIMD_NEON)
-#include <arm_neon.h>
 
 template<size_t Col, size_t Row>
 struct ktm::detail::mat_opt_implement::mat_mul_vec<Col, Row, std::enable_if_t<Col >= 2 && Col <= 4, float>>

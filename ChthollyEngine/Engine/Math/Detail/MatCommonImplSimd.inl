@@ -5,7 +5,6 @@
 #include "MatCommonImpl.h"
 
 #if defined(CHTHOLLY_SIMD_NEON)
-#include <arm_neon.h>
 
 template<size_t N>
 struct ktm::detail::mat_common_implement::transpose<N, N, std::enable_if_t<N == 3 || N == 4, float>>
