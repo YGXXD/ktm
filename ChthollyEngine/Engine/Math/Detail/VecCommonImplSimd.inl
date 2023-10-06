@@ -757,7 +757,6 @@ struct ktm::detail::vec_common_implement::reduce_max<N, std::enable_if_t<N == 3 
         if constexpr(N == 3)
         {
             __m128 tmp = _mm_load_ps(&x[0]);
-            auto pp = _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(3, 2, 1, 0));
             __m128 max1 = _mm_max_ss(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(0, 3, 2, 1)));
             __m128 max2 = _mm_max_ss(max1, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
             return *reinterpret_cast<float*>(&max2); 
