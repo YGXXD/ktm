@@ -854,18 +854,18 @@ struct ktm::detail::vec_opt_implement::equal<N, std::enable_if_t<N == 3 || N == 
             __m128 delta = _mm_sub_ps(_mm_load_ps(&x[0]), _mm_load_ps(&y[0]));
             __m128 mask = _mm_set1_ps(*reinterpret_cast<const float*>(&mask_bit));
             __m128 ret = _mm_cmplt_ps(_mm_and_ps(delta, mask), _mm_set1_ps(std::numeric_limits<float>::epsilon()));     
-            __m128 and1 = _mm_and_ps(ret, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(0, 3, 2, 1)));
-            __m128 and2 = _mm_and_ps(and1, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(1, 0, 3, 2)));
-            return *reinterpret_cast<unsigned int*>(&and2);
+            __m128 and_0 = _mm_and_ps(ret, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(0, 3, 2, 1)));
+            __m128 and_1 = _mm_and_ps(and_0, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(1, 0, 3, 2)));
+            return *reinterpret_cast<unsigned int*>(&and_1);
         }
         else 
         {
             __m128 delta = _mm_sub_ps(_mm_load_ps(&x[0]), _mm_load_ps(&y[0]));
             __m128 mask = _mm_set1_ps(*reinterpret_cast<const float*>(&mask_bit));
             __m128 ret = _mm_cmplt_ps(_mm_and_ps(delta, mask), _mm_set1_ps(std::numeric_limits<float>::epsilon()));     
-            __m128 and1 = _mm_and_ps(ret, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(1, 0, 3, 2)));
-            __m128 and2 = _mm_and_ps(and1, _mm_shuffle_ps(and1, and1, _MM_SHUFFLE(0, 3, 2, 1)));
-            return *reinterpret_cast<unsigned int*>(&and2);
+            __m128 and_0 = _mm_and_ps(ret, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(1, 0, 3, 2)));
+            __m128 and_1 = _mm_and_ps(and_0, _mm_shuffle_ps(and_0, and_0, _MM_SHUFFLE(0, 3, 2, 1)));
+            return *reinterpret_cast<unsigned int*>(&and_1);
         }
     }
 };
@@ -999,18 +999,18 @@ struct ktm::detail::vec_opt_implement::equal<N, std::enable_if_t<N == 3 || N == 
             __m128i t_x = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
             __m128i t_y = _mm_load_si128(reinterpret_cast<const __m128i*>(&y[0]));
             __m128i ret = _mm_cmpeq_epi32(t_x, t_y);   
-            __m128i and1 = _mm_and_si128(ret, _mm_shuffle_epi32(ret, _MM_SHUFFLE(0, 3, 2, 1)));
-            __m128i and2 = _mm_and_si128(and1, _mm_shuffle_epi32(ret, _MM_SHUFFLE(1, 0, 3, 2)));
-            return *reinterpret_cast<unsigned int*>(&and2);
+            __m128i and_0 = _mm_and_si128(ret, _mm_shuffle_epi32(ret, _MM_SHUFFLE(0, 3, 2, 1)));
+            __m128i and_1 = _mm_and_si128(and_0, _mm_shuffle_epi32(ret, _MM_SHUFFLE(1, 0, 3, 2)));
+            return *reinterpret_cast<unsigned int*>(&and_1);
         }
         else 
         {
             __m128i t_x = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
             __m128i t_y = _mm_load_si128(reinterpret_cast<const __m128i*>(&y[0]));
             __m128i ret = _mm_cmpeq_epi32(t_x, t_y);
-            __m128i and1 = _mm_and_si128(ret, _mm_shuffle_epi32(ret, _MM_SHUFFLE(1, 0, 3, 2)));
-            __m128i and2 = _mm_and_si128(and1, _mm_shuffle_epi32(and1, _MM_SHUFFLE(0, 3, 2, 1)));
-            return *reinterpret_cast<unsigned int*>(&and2);
+            __m128i and_0 = _mm_and_si128(ret, _mm_shuffle_epi32(ret, _MM_SHUFFLE(1, 0, 3, 2)));
+            __m128i and_1 = _mm_and_si128(and_0, _mm_shuffle_epi32(and_0, _MM_SHUFFLE(0, 3, 2, 1)));
+            return *reinterpret_cast<unsigned int*>(&and_1);
         }
     }
 };

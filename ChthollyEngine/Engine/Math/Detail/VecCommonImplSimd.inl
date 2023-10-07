@@ -552,16 +552,16 @@ struct ktm::detail::vec_common_implement::reduce_add<N, std::enable_if_t<N == 3 
         if constexpr(N == 3)
         {
             __m128 tmp = _mm_load_ps(&x[0]);
-            __m128 sum1 = _mm_add_ss(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(0, 3, 2, 1)));
-            __m128 sum2 = _mm_add_ss(sum1, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            return *reinterpret_cast<float*>(&sum2); 
+            __m128 sum_0 = _mm_add_ss(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(0, 3, 2, 1)));
+            __m128 sum_1 = _mm_add_ss(sum_0, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+            return *reinterpret_cast<float*>(&sum_1); 
         }
         else
         {
             __m128 tmp = _mm_load_ps(&x[0]);
-            __m128 sum1 = _mm_add_ps(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            __m128 sum2 = _mm_add_ss(sum1, _mm_shuffle_ps(sum1, sum1, _MM_SHUFFLE(0, 3, 2, 1)));
-            return *reinterpret_cast<float*>(&sum2); 
+            __m128 sum_0 = _mm_add_ps(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+            __m128 sum_1 = _mm_add_ss(sum_0, _mm_shuffle_ps(sum_0, sum_0, _MM_SHUFFLE(0, 3, 2, 1)));
+            return *reinterpret_cast<float*>(&sum_1); 
         }
     }
 };
@@ -575,16 +575,16 @@ struct ktm::detail::vec_common_implement::reduce_min<N, std::enable_if_t<N == 3 
         if constexpr(N == 3)
         {
             __m128 tmp = _mm_load_ps(&x[0]);
-            __m128 min1 = _mm_min_ss(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(0, 3, 2, 1)));
-            __m128 min2 = _mm_min_ss(min1, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            return *reinterpret_cast<float*>(&min2); 
+            __m128 min_0 = _mm_min_ss(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(0, 3, 2, 1)));
+            __m128 min_1 = _mm_min_ss(min_0, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+            return *reinterpret_cast<float*>(&min_1); 
         }
         else
         {
             __m128 tmp = _mm_load_ps(&x[0]);
-            __m128 min1 = _mm_min_ps(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            __m128 min2 = _mm_min_ss(min1, _mm_shuffle_ps(min1, min1, _MM_SHUFFLE(0, 3, 2, 1)));
-            return *reinterpret_cast<float*>(&min2); 
+            __m128 min_0 = _mm_min_ps(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+            __m128 min_1 = _mm_min_ss(min_0, _mm_shuffle_ps(min_0, min_0, _MM_SHUFFLE(0, 3, 2, 1)));
+            return *reinterpret_cast<float*>(&min_1); 
         }
     }
 };
@@ -598,16 +598,16 @@ struct ktm::detail::vec_common_implement::reduce_max<N, std::enable_if_t<N == 3 
         if constexpr(N == 3)
         {
             __m128 tmp = _mm_load_ps(&x[0]);
-            __m128 max1 = _mm_max_ss(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(0, 3, 2, 1)));
-            __m128 max2 = _mm_max_ss(max1, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            return *reinterpret_cast<float*>(&max2); 
+            __m128 max_0 = _mm_max_ss(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(0, 3, 2, 1)));
+            __m128 max_1 = _mm_max_ss(max_0, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+            return *reinterpret_cast<float*>(&max_1); 
         }
         else
         {
             __m128 tmp = _mm_load_ps(&x[0]);
-            __m128 max1 = _mm_max_ps(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            __m128 max2 = _mm_max_ss(max1, _mm_shuffle_ps(max1, max1, _MM_SHUFFLE(0, 3, 2, 1)));
-            return *reinterpret_cast<float*>(&max2); 
+            __m128 max_0 = _mm_max_ps(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+            __m128 max_1 = _mm_max_ss(max_0, _mm_shuffle_ps(max_0, max_0, _MM_SHUFFLE(0, 3, 2, 1)));
+            return *reinterpret_cast<float*>(&max_1); 
         }
     }
 };
@@ -765,16 +765,16 @@ struct ktm::detail::vec_common_implement::reduce_add<N, std::enable_if_t<N == 3 
         if constexpr(N == 3)
         {
             __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
-            __m128i sum1 = _mm_add_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(0, 3, 2, 1)));
-            __m128i sum2 = _mm_add_epi32(sum1, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            return *reinterpret_cast<int*>(&sum2); 
+            __m128i sum_0 = _mm_add_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(0, 3, 2, 1)));
+            __m128i sum_1 = _mm_add_epi32(sum_0, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+            return *reinterpret_cast<int*>(&sum_1); 
         }
         else
         {
             __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
-            __m128i sum1 = _mm_add_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            __m128i sum2 = _mm_add_epi32(sum1, _mm_shuffle_epi32(sum1, _MM_SHUFFLE(0, 3, 2, 1)));
-            return *reinterpret_cast<int*>(&sum2); 
+            __m128i sum_0 = _mm_add_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+            __m128i sum_1 = _mm_add_epi32(sum_0, _mm_shuffle_epi32(sum_0, _MM_SHUFFLE(0, 3, 2, 1)));
+            return *reinterpret_cast<int*>(&sum_1); 
         }
     }
 };
@@ -807,16 +807,16 @@ struct ktm::detail::vec_common_implement::reduce_min<N, std::enable_if_t<N == 3 
         if constexpr(N == 3)
         {
             __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
-            __m128i min1 = _mm_min_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(0, 3, 2, 1)));
-            __m128i min2 = _mm_min_epi32(min1, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            return *reinterpret_cast<int*>(&min2); 
+            __m128i min_0 = _mm_min_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(0, 3, 2, 1)));
+            __m128i min_1 = _mm_min_epi32(min_0, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+            return *reinterpret_cast<int*>(&min_1); 
         }
         else
         {
             __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
-            __m128i min1 = _mm_min_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            __m128i min2 = _mm_min_epi32(min1, _mm_shuffle_epi32(min1, _MM_SHUFFLE(0, 3, 2, 1)));
-            return *reinterpret_cast<int*>(&min2); 
+            __m128i min_0 = _mm_min_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+            __m128i min_1 = _mm_min_epi32(min_0, _mm_shuffle_epi32(min_0, _MM_SHUFFLE(0, 3, 2, 1)));
+            return *reinterpret_cast<int*>(&min_1); 
         }
     }
 };
@@ -830,16 +830,16 @@ struct ktm::detail::vec_common_implement::reduce_max<N, std::enable_if_t<N == 3 
         if constexpr(N == 3)
         {
             __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
-            __m128i max1 = _mm_max_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(0, 3, 2, 1)));
-            __m128i max2 = _mm_max_epi32(max1, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            return *reinterpret_cast<int*>(&max2); 
+            __m128i max_0 = _mm_max_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(0, 3, 2, 1)));
+            __m128i max_1 = _mm_max_epi32(max_0, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+            return *reinterpret_cast<int*>(&max_1); 
         }
         else
         {
             __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
-            __m128i max1 = _mm_max_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            __m128i max2 = _mm_max_epi32(max1, _mm_shuffle_epi32(max1, _MM_SHUFFLE(0, 3, 2, 1)));
-            return *reinterpret_cast<int*>(&max2); 
+            __m128i max_0 = _mm_max_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+            __m128i max_1 = _mm_max_epi32(max_0, _mm_shuffle_epi32(max_0, _MM_SHUFFLE(0, 3, 2, 1)));
+            return *reinterpret_cast<int*>(&max_1); 
         }
     }
 };
