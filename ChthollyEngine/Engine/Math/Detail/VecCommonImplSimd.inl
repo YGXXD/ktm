@@ -17,7 +17,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, N, std::enable_if_t<N >= 
         {
             constexpr size_t i1 = 1 + L < N ? 1 + L : 1 + L - N;
             float32x2_t ret = vld1_f32(&x[0]);
-            ret = __builtin_shufflevector(ret, ret, L, i1);
+            ret = _neon_shuffle_f32(ret, ret, i1, L);
             return *reinterpret_cast<V*>(&ret);
         }
         else if constexpr(N == 3)
@@ -25,7 +25,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, N, std::enable_if_t<N >= 
             constexpr size_t i1 = 1 + L < N ? 1 + L : 1 + L - N;
             constexpr size_t i2 = 2 + L < N ? 2 + L : 2 + L - N; 
             float32x4_t ret = vld1q_f32(&x[0]);
-            ret = __builtin_shufflevector(ret, ret, L, i1, i2, 3);
+            ret = _neon_shuffleq_f32(ret, ret, 3, i2, i1, L);
             return *reinterpret_cast<V*>(&ret);
         }
         else
@@ -34,7 +34,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, N, std::enable_if_t<N >= 
             constexpr size_t i2 = 2 + L < N ? 2 + L : 2 + L - N; 
             constexpr size_t i3 = 3 + L < N ? 3 + L : 3 + L - N;  
             float32x4_t ret = vld1q_f32(&x[0]);
-            ret = __builtin_shufflevector(ret, ret, L, i1, i2, i3);
+            ret = _neon_shuffleq_f32(ret, ret, i3, i2, i1, L);
             return *reinterpret_cast<V*>(&ret);
         }
     }
@@ -51,7 +51,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, N, std::enable_if_t<N >= 
         {
             constexpr size_t i1 = 1 + L < N ? 1 + L : 1 + L - N;
             int32x2_t ret = vld1_s32(&x[0]);
-            ret = __builtin_shufflevector(ret, ret, L, i1);
+            ret = _neon_shuffle_s32(ret, ret, i1, L);
             return *reinterpret_cast<V*>(&ret);
         }
         else if constexpr(N == 3)
@@ -59,7 +59,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, N, std::enable_if_t<N >= 
             constexpr size_t i1 = 1 + L < N ? 1 + L : 1 + L - N;
             constexpr size_t i2 = 2 + L < N ? 2 + L : 2 + L - N; 
             int32x4_t ret = vld1q_s32(&x[0]);
-            ret = __builtin_shufflevector(ret, ret, L, i1, i2, 3);
+            ret = _neon_shuffleq_s32(ret, ret, 3, i2, i1, L);
             return *reinterpret_cast<V*>(&ret);
         }
         else
@@ -68,41 +68,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, N, std::enable_if_t<N >= 
             constexpr size_t i2 = 2 + L < N ? 2 + L : 2 + L - N; 
             constexpr size_t i3 = 3 + L < N ? 3 + L : 3 + L - N;  
             int32x4_t ret = vld1q_s32(&x[0]);
-            ret = __builtin_shufflevector(ret, ret, L, i1, i2, i3);
-            return *reinterpret_cast<V*>(&ret);
-        }
-    }
-};
-
-template<size_t L, size_t N>
-struct ktm::detail::vec_common_implement::elem_move<L, N, std::enable_if_t<N >= 2 && N <= 4, unsigned int>>
-{
-    static_assert(L > 0 && L < N);
-    using V = vec<N, unsigned int>;
-    static CHTHOLLY_INLINE V call(const V& x) noexcept
-    {
-        if constexpr(N == 2)
-        {
-            constexpr size_t i1 = 1 + L < N ? 1 + L : 1 + L - N;
-            uint32x2_t ret = vld1_u32(&x[0]);
-            ret = __builtin_shufflevector(ret, ret, L, i1);
-            return *reinterpret_cast<V*>(&ret);
-        }
-        else if constexpr(N == 3)
-        {
-            constexpr size_t i1 = 1 + L < N ? 1 + L : 1 + L - N;
-            constexpr size_t i2 = 2 + L < N ? 2 + L : 2 + L - N; 
-            uint32x4_t ret = vld1q_u32(&x[0]);
-            ret = __builtin_shufflevector(ret, ret, L, i1, i2, 3);
-            return *reinterpret_cast<V*>(&ret);
-        }
-        else
-        {
-            constexpr size_t i1 = 1 + L < N ? 1 + L : 1 + L - N;
-            constexpr size_t i2 = 2 + L < N ? 2 + L : 2 + L - N; 
-            constexpr size_t i3 = 3 + L < N ? 3 + L : 3 + L - N;  
-            uint32x4_t ret = vld1q_u32(&x[0]);
-            ret = __builtin_shufflevector(ret, ret, L, i1, i2, i3);
+            ret = _neon_shuffleq_s32(ret, ret, i3, i2, i1, L);
             return *reinterpret_cast<V*>(&ret);
         }
     }
@@ -153,28 +119,6 @@ struct ktm::detail::vec_common_implement::reduce_add<N, std::enable_if_t<N >= 2 
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::reduce_add<N, std::enable_if_t<N >= 2 && N <= 4, unsigned int>>
-{
-    using V = vec<N, unsigned int>;
-    static CHTHOLLY_INLINE unsigned int call(const V& x) noexcept
-    {
-        if constexpr(N == 2)
-        {
-            return vaddv_u32(vld1_u32(&x[0]));
-        }
-        else if constexpr(N == 3)
-        {
-            uint32x4_t tmp = vld1q_u32(&x[0]);
-            return vaddvq_u32(vsetq_lane_u32(zero<unsigned int>, tmp, 3)); 
-        }
-        else
-        {
-            return vaddvq_u32(vld1q_u32(&x[0])); 
-        }
-    }
-};
-
-template<size_t N>
 struct ktm::detail::vec_common_implement::reduce_min<N, std::enable_if_t<N >= 2 && N <= 4, float>>
 {
     using V = vec<N, float>;
@@ -219,28 +163,6 @@ struct ktm::detail::vec_common_implement::reduce_min<N, std::enable_if_t<N >= 2 
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::reduce_min<N, std::enable_if_t<N >= 2 && N <= 4, unsigned int>>
-{
-    using V = vec<N, unsigned int>;
-    static CHTHOLLY_INLINE unsigned int call(const V& x) noexcept
-    {
-        if constexpr(N == 2)
-        {
-            return vminv_u32(vld1_u32(&x[0]));
-        }
-        else if constexpr(N == 3)
-        {
-            uint32x4_t tmp = vld1q_u32(&x[0]);
-            return vminvq_u32(vsetq_lane_u32(tmp[2], tmp, 3)); 
-        }
-        else
-        {
-            return vminvq_u32(vld1q_u32(&x[0])); 
-        }
-    }
-};
-
-template<size_t N>
 struct ktm::detail::vec_common_implement::reduce_max<N, std::enable_if_t<N >= 2 && N <= 4, float>>
 {
     using V = vec<N, float>;
@@ -280,28 +202,6 @@ struct ktm::detail::vec_common_implement::reduce_max<N, std::enable_if_t<N >= 2 
         else
         {
             return vmaxvq_s32(vld1q_s32(&x[0])); 
-        }
-    }
-};
-
-template<size_t N>
-struct ktm::detail::vec_common_implement::reduce_max<N, std::enable_if_t<N >= 2 && N <= 4, unsigned int>>
-{
-    using V = vec<N, unsigned int>;
-    static CHTHOLLY_INLINE unsigned int call(const V& x) noexcept
-    {
-        if constexpr(N == 2)
-        {
-            return vmaxv_u32(vld1_u32(&x[0]));
-        }
-        else if constexpr(N == 3)
-        {
-            uint32x4_t tmp = vld1q_u32(&x[0]);
-            return vmaxvq_u32(vsetq_lane_u32(tmp[2], tmp, 3)); 
-        }
-        else
-        {
-            return vmaxvq_u32(vld1q_u32(&x[0])); 
         }
     }
 };
@@ -387,25 +287,6 @@ struct ktm::detail::vec_common_implement::min<N, std::enable_if_t<N >= 2 && N <=
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::min<N, std::enable_if_t<N >= 2 && N <= 4, unsigned int>>
-{
-    using V = vec<N, unsigned int>;
-    static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
-    {
-        if constexpr(N == 2)
-        {
-            uint32x2_t ret = vmin_u32(vld1_u32(&x[0]), vld1_u32(&y[0]));
-            return *reinterpret_cast<V*>(&ret);
-        }
-        else
-        {
-            uint32x4_t ret = vminq_u32(vld1q_u32(&x[0]), vld1q_u32(&y[0]));
-            return *reinterpret_cast<V*>(&ret);
-        }
-    }
-};
-
-template<size_t N>
 struct ktm::detail::vec_common_implement::max<N, std::enable_if_t<N >= 2 && N <= 4, float>>
 {
     using V = vec<N, float>;
@@ -438,25 +319,6 @@ struct ktm::detail::vec_common_implement::max<N, std::enable_if_t<N >= 2 && N <=
         else
         {
             int32x4_t ret = vmaxq_s32(vld1q_s32(&x[0]), vld1q_s32(&y[0]));
-            return *reinterpret_cast<V*>(&ret);
-        }
-    }
-};
-
-template<size_t N>
-struct ktm::detail::vec_common_implement::max<N, std::enable_if_t<N >= 2 && N <= 4, unsigned int>>
-{
-    using V = vec<N, unsigned int>;
-    static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
-    {
-        if constexpr(N == 2)
-        {
-            uint32x2_t ret = vmax_u32(vld1_u32(&x[0]), vld1_u32(&y[0]));
-            return *reinterpret_cast<V*>(&ret);
-        }
-        else
-        {
-            uint32x4_t ret = vmaxq_u32(vld1q_u32(&x[0]), vld1q_u32(&y[0]));
             return *reinterpret_cast<V*>(&ret);
         }
     }
@@ -499,27 +361,6 @@ struct ktm::detail::vec_common_implement::clamp<N, std::enable_if_t<N >= 2 && N 
         {
             int32x4_t tmp = vmaxq_s32(vld1q_s32(&v[0]), vld1q_s32(&min[0]));
             int32x4_t ret = vminq_s32(tmp, vld1q_s32(&max[0]));
-            return *reinterpret_cast<V*>(&ret);
-        }
-    }
-};
-
-template<size_t N>
-struct ktm::detail::vec_common_implement::clamp<N, std::enable_if_t<N >= 2 && N <= 4, unsigned int>>
-{
-    using V = vec<N, unsigned int>;
-    static CHTHOLLY_INLINE V call(const V& v, const V& min, const V& max) noexcept
-    {
-        if constexpr(N == 2)
-        {
-            uint32x2_t tmp = vmax_u32(vld1_u32(&v[0]), vld1_u32(&min[0]));
-            uint32x2_t ret = vmin_u32(tmp, vld1_u32(&max[0]));
-            return *reinterpret_cast<V*>(&ret); 
-        }
-        else
-        {
-            uint32x4_t tmp = vmaxq_u32(vld1q_u32(&v[0]), vld1q_u32(&min[0]));
-            uint32x4_t ret = vminq_u32(tmp, vld1q_u32(&max[0]));
             return *reinterpret_cast<V*>(&ret);
         }
     }
