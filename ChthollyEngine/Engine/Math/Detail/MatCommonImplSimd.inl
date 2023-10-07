@@ -409,9 +409,12 @@ struct ktm::detail::mat_common_implement::inverse<N, std::enable_if_t<N == 4, fl
         // + m[0][3] * Inverse[3][0];
         float32x4_t i_tmp_0 = _neon_shuffleq_f32(inv_0, inv_1, 0, 0, 0, 0);
         float32x4_t i_tmp_1 = _neon_shuffleq_f32(inv_2, inv_3, 0, 0, 0, 0);
-        float32x4_t i_row0 = _neon_shuffleq_f32(i_tmp_0, i_tmp_1, 3, 1, 3, 1);
-        float32x4_t one_over_det = vdupq_n_f32(one<float> / vaddvq_f32(vmulq_f32(c_0, i_row0)));
-
+        float32x4_t i_row_0 = _neon_shuffleq_f32(i_tmp_0, i_tmp_1, 3, 1, 3, 1);
+        float32x4_t i_mul_0 = vmulq_f32(c_0, i_row_0);
+        float32x4_t i_add_0 = vpaddq_f32(i_mul_0, i_mul_0);
+        float32x4_t i_add_1 = vpaddq_f32(i_add_0, i_add_0);
+        float32x4_t one_over_det = vdivq_f32(vdupq_n_f32(one<float>), i_add_1);
+        
         M ret;
 
         vst1q_f32(&ret[0][0], vmulq_f32(inv_0, one_over_det)); 
@@ -473,6 +476,59 @@ struct ktm::detail::mat_common_implement::transpose<N, N, std::enable_if_t<N == 
             _mm_store_ps(&ret[1][0], ret_1);
             _mm_store_ps(&ret[2][0], ret_2);
             _mm_store_ps(&ret[3][0], ret_3);
+            return ret;
+        }
+    }
+};
+
+template<size_t N>
+struct ktm::detail::mat_common_implement::transpose<N, N, std::enable_if_t<N == 3 || N == 4, int>>
+{
+    using M = mat<N, N, int>;
+    using RetM = mat_traits_tp_t<M>;
+    static CHTHOLLY_INLINE RetM call(const M& m) noexcept
+    {
+        if constexpr(N == 3)
+        {
+            __m128 c_0 = _mm_load_ps(reinterpret_cast<const float*>(&m[0][0]));
+            __m128 c_1 = _mm_load_ps(reinterpret_cast<const float*>(&m[1][0]));
+            __m128 c_2 = _mm_load_ps(reinterpret_cast<const float*>(&m[2][0]));
+
+            __m128 tmp_0 = _mm_shuffle_ps(c_0, c_1, _MM_SHUFFLE(1, 0, 1, 0));
+            __m128 tmp_1 = _mm_shuffle_ps(c_0, c_1, _MM_SHUFFLE(3, 2, 3, 2));
+
+            __m128 ret_0 = _mm_shuffle_ps(tmp_0, c_2, _MM_SHUFFLE(3, 0, 2, 0));
+            __m128 ret_1 = _mm_shuffle_ps(tmp_0, c_2, _MM_SHUFFLE(3, 1, 3, 1));
+            __m128 ret_2 = _mm_shuffle_ps(tmp_1, c_2, _MM_SHUFFLE(3, 2, 2, 0));
+
+            RetM ret;
+            _mm_store_ps(reinterpret_cast<float*>(&ret[0][0]), ret_0);
+            _mm_store_ps(reinterpret_cast<float*>(&ret[1][0]), ret_1);
+            _mm_store_ps(reinterpret_cast<float*>(&ret[2][0]), ret_2);
+            return ret; 
+        }
+        else
+        {
+            __m128 c_0 = _mm_load_ps(reinterpret_cast<const float*>(&m[0][0]));
+            __m128 c_1 = _mm_load_ps(reinterpret_cast<const float*>(&m[1][0]));
+            __m128 c_2 = _mm_load_ps(reinterpret_cast<const float*>(&m[2][0]));
+            __m128 c_3 = _mm_load_ps(reinterpret_cast<const float*>(&m[3][0]));
+
+            __m128 tmp_0 = _mm_shuffle_ps(c_0, c_1, _MM_SHUFFLE(1, 0, 1, 0));
+            __m128 tmp_2 = _mm_shuffle_ps(c_0, c_1, _MM_SHUFFLE(3, 2, 3, 2));
+            __m128 tmp_1 = _mm_shuffle_ps(c_2, c_3, _MM_SHUFFLE(1, 0, 1, 0));
+            __m128 tmp_3 = _mm_shuffle_ps(c_2, c_3, _MM_SHUFFLE(3, 2, 3, 2));
+
+            __m128 ret_0 = _mm_shuffle_ps(tmp_0, tmp_1, _MM_SHUFFLE(2, 0, 2, 0));
+            __m128 ret_1 = _mm_shuffle_ps(tmp_0, tmp_1, _MM_SHUFFLE(3, 1, 3, 1));
+            __m128 ret_2 = _mm_shuffle_ps(tmp_2, tmp_3, _MM_SHUFFLE(2, 0, 2, 0));
+            __m128 ret_3 = _mm_shuffle_ps(tmp_2, tmp_3, _MM_SHUFFLE(3, 1, 3, 1));
+
+            RetM ret;
+            _mm_store_ps(reinterpret_cast<float*>(&ret[0][0]), ret_0);
+            _mm_store_ps(reinterpret_cast<float*>(&ret[1][0]), ret_1);
+            _mm_store_ps(reinterpret_cast<float*>(&ret[2][0]), ret_2);
+            _mm_store_ps(reinterpret_cast<float*>(&ret[3][0]), ret_3);
             return ret;
         }
     }
@@ -741,6 +797,70 @@ struct ktm::detail::mat_common_implement::inverse<N, std::enable_if_t<N == 4, fl
         return ret;
     }
 };
+
+#if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE4_1_FLAG
+
+template<size_t N>
+struct ktm::detail::mat_common_implement::determinant<N, std::enable_if_t<N == 3 || N == 4, int>>
+{
+    using M = mat<N, N, int>;
+    static CHTHOLLY_INLINE float call(const M& m) noexcept
+    {
+        if constexpr(N == 3)
+        {
+            __m128i c_0 = _mm_load_si128(reinterpret_cast<const __m128i*>(&m[0][0]));
+            __m128i c_1 = _mm_load_si128(reinterpret_cast<const __m128i*>(&m[1][0]));
+            __m128i c_2 = _mm_load_si128(reinterpret_cast<const __m128i*>(&m[2][0]));
+            __m128i mul_00 = _mm_mullo_epi32(_mm_shuffle_epi32(c_1, _MM_SHUFFLE(3, 0, 2, 1)), _mm_shuffle_epi32(c_2, _MM_SHUFFLE(3, 1, 0, 2)));
+            __m128i mul_01 = _mm_mullo_epi32(_mm_shuffle_epi32(c_1, _MM_SHUFFLE(3, 1, 0, 2)), _mm_shuffle_epi32(c_2, _MM_SHUFFLE(3, 0, 2, 1)));
+            __m128i sub_0 = _mm_sub_epi32(mul_00, mul_01);  
+            __m128i mul_0 = _mm_mullo_epi32(c_0, sub_0);
+
+            __m128i sum_0 = _mm_add_epi32(mul_0, _mm_shuffle_epi32(mul_0, _MM_SHUFFLE(0, 3, 2, 1)));
+            __m128i sum_1 = _mm_add_epi32(sum_0, _mm_shuffle_epi32(mul_0, _MM_SHUFFLE(1, 0, 3, 2)));
+            return *reinterpret_cast<int*>(&sum_1); 
+        }
+        else 
+        {
+            __m128i c_0 = _mm_load_si128(reinterpret_cast<const __m128i*>(&m[0][0]));
+            __m128i c_1 = _mm_load_si128(reinterpret_cast<const __m128i*>(&m[1][0]));
+            __m128i c_2 = _mm_load_si128(reinterpret_cast<const __m128i*>(&m[2][0]));
+            __m128i c_3 = _mm_load_si128(reinterpret_cast<const __m128i*>(&m[3][0]));
+
+            __m128i mul_0;
+            {
+                __m128i mul_00 = _mm_mullo_epi32(_mm_shuffle_epi32(c_2, _MM_SHUFFLE(1, 0, 3, 2)), _mm_shuffle_epi32(c_3, _MM_SHUFFLE(2, 1, 0, 3)));
+                __m128i mul_01 = _mm_mullo_epi32(_mm_shuffle_epi32(c_2, _MM_SHUFFLE(2, 1, 0, 3)), _mm_shuffle_epi32(c_3, _MM_SHUFFLE(1, 0, 3, 2)));
+                __m128i sub_0 = _mm_sub_epi32(mul_00, mul_01);
+                mul_0 = _mm_mullo_epi32(_mm_shuffle_epi32(c_1, _MM_SHUFFLE(0, 3, 2, 1)), sub_0);
+            }
+
+            __m128i mul_1;
+            {
+                __m128i mul_00 = _mm_mullo_epi32(_mm_shuffle_epi32(c_2, _MM_SHUFFLE(2, 1, 0, 3)), _mm_shuffle_epi32(c_3, _MM_SHUFFLE(0, 3, 2, 1)));
+                __m128i mul_01 = _mm_mullo_epi32(_mm_shuffle_epi32(c_2, _MM_SHUFFLE(0, 3, 2, 1)), _mm_shuffle_epi32(c_3, _MM_SHUFFLE(2, 1, 0, 3)));
+                __m128i sub_0 = _mm_sub_epi32(mul_00, mul_01);
+                mul_1 = _mm_mullo_epi32(_mm_shuffle_epi32(c_1, _MM_SHUFFLE(1, 0, 3, 2)), sub_0);
+            }
+
+            __m128i mul_2;
+            {
+                __m128i mul_00 = _mm_mullo_epi32(_mm_shuffle_epi32(c_2, _MM_SHUFFLE(0, 3, 2, 1)), _mm_shuffle_epi32(c_3, _MM_SHUFFLE(1, 0, 3, 2)));
+                __m128i mul_01 = _mm_mullo_epi32(_mm_shuffle_epi32(c_2, _MM_SHUFFLE(1, 0, 3, 2)), _mm_shuffle_epi32(c_3, _MM_SHUFFLE(0, 3, 2, 1)));
+                __m128i sub_0 = _mm_sub_epi32(mul_00, mul_01);
+                mul_2 = _mm_mullo_epi32(_mm_shuffle_epi32(c_1, _MM_SHUFFLE(2, 1, 0, 3)), sub_0);
+            }
+
+            __m128i mul_3 = _mm_mullo_epi32(c_0, _mm_add_epi32(_mm_add_epi32(mul_0, mul_1), mul_2)); 
+            mul_3 = _mm_shuffle_epi32(mul_3, _MM_SHUFFLE(3, 1, 2, 0));
+            __m128i sub_0 = _mm_sub_epi32(mul_3, _mm_shuffle_epi32(mul_3, _MM_SHUFFLE(1, 0, 3, 2)));
+            __m128i sum_0 = _mm_add_ss(sub_0, _mm_shuffle_epi32(sub_0, _MM_SHUFFLE(0, 3, 2, 1)));
+            return *reinterpret_cast<int*>(&sum_0);
+        }
+    }
+};
+
+#endif // CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE2_FLAG 
 
 #endif
 

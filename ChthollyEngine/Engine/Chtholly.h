@@ -71,9 +71,9 @@
 	#define CHTHOLLY_SIMD_NEON
 	#include <arm_neon.h>
 	#if defined(CHTHOLLY_COMPILER_CLANG)
-		#define _neon_shuffle_f32(a, b, s2, s1) __builtin_shufflevector(a, b, s1, s2 + 2)
+		#define _neon_shuffle_f32(a, b, s2, s1) __builtin_shufflevector(a, b, s1, (s2) + 2)
 		#define _neon_shuffle_s32(a, b, s2, s1) _neon_shuffle_f32(a, b, s2, s1)
-		#define _neon_shuffleq_f32(a, b, s4, s3, s2, s1) __builtin_shufflevector(a, b, s1, s2, s3 + 4, s4 + 4)
+		#define _neon_shuffleq_f32(a, b, s4, s3, s2, s1) __builtin_shufflevector(a, b, s1, s2, (s3) + 4, (s4) + 4)
 		#define _neon_shuffleq_s32(a, b, s4, s3, s2, s1) _neon_shuffleq_f32(a, b, s4, s3, s2, s1)
 
 	#elif defined(CHTHOLLY_COMPILER_GCC)
