@@ -783,8 +783,14 @@ struct ktm::detail::mat_common_implement::inverse<N, std::enable_if_t<N == 4, fl
         __m128 i_tmp_1 = _mm_shuffle_ps(inv_2, inv_3, 0);
         __m128 i_row_0 = _mm_shuffle_ps(i_tmp_0, i_tmp_1,  _MM_SHUFFLE(3, 1, 3, 1));
         __m128 i_mul_0 = _mm_mul_ps(c_0, i_row_0);
-		__m128 i_add_0 = _mm_add_ps(i_mul_0, _mm_shuffle_ps(i_mul_0, i_mul_0, _MM_SHUFFLE(2, 3, 0, 1)));
-		__m128 i_add_1 = _mm_add_ps(i_add_0, _mm_shuffle_ps(i_add_0, i_add_0, _MM_SHUFFLE(0, 1, 2, 3)));
+
+#if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE3_FLAG
+		__m128 i_add_0 = _mm_hadd_ps(i_mul_0, i_mul_0);;
+		__m128 i_add_1 = _mm_hadd_ps(i_add_0, i_add_0);;
+#else
+        __m128 i_add_0 = _mm_add_ps(i_mul_0, _mm_shuffle_ps(i_mul_0, i_mul_0, _MM_SHUFFLE(2, 3, 0, 1)));
+		__m128 i_add_1 = _mm_add_ps(i_add_0, _mm_shuffle_ps(i_add_0, i_add_0, _MM_SHUFFLE(0, 1, 2, 3))); 
+#endif
         __m128 one_over_det = _mm_div_ps(_mm_set1_ps(one<float>), i_add_1);
 
         M ret;
