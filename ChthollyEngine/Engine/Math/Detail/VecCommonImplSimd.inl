@@ -653,8 +653,8 @@ struct ktm::detail::vec_common_implement::clamp<N, std::enable_if_t<N == 3 || N 
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
-        __m128 tmp = _mm_max_ps(mm_load_ps(&v[0]), mm_load_ps(&min[0]));
-        __m128 ret = _mm_min_ps(tmp, mm_load_ps(&max[0]));
+        __m128 tmp = _mm_max_ps(_mm_load_ps(&v[0]), _mm_load_ps(&min[0]));
+        __m128 ret = _mm_min_ps(tmp, _mm_load_ps(&max[0]));
         return *reinterpret_cast<V*>(&ret); 
     }
 };

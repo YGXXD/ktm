@@ -860,7 +860,7 @@ struct ktm::detail::mat_common_implement::determinant<N, std::enable_if_t<N == 3
             __m128i mul_3 = _mm_mullo_epi32(c_0, _mm_add_epi32(_mm_add_epi32(mul_0, mul_1), mul_2)); 
             mul_3 = _mm_shuffle_epi32(mul_3, _MM_SHUFFLE(3, 1, 2, 0));
             __m128i sub_0 = _mm_sub_epi32(mul_3, _mm_shuffle_epi32(mul_3, _MM_SHUFFLE(1, 0, 3, 2)));
-            __m128i sum_0 = _mm_add_ss(sub_0, _mm_shuffle_epi32(sub_0, _MM_SHUFFLE(0, 3, 2, 1)));
+            __m128i sum_0 = _mm_add_epi32(sub_0, _mm_shuffle_epi32(sub_0, _MM_SHUFFLE(0, 3, 2, 1)));
             return *reinterpret_cast<int*>(&sum_0);
         }
     }
