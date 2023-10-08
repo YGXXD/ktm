@@ -3,7 +3,6 @@
 
 #include "Chtholly.h"
 #include "Event/Event.h"
-#include "Delegate.h"
 
 namespace ktl
 {

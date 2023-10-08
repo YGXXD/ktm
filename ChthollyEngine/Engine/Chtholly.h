@@ -1,149 +1,11 @@
 #ifndef _CHTHOLLY_H_
 #define _CHTHOLLY_H_
 
-// os platform, only support 64-bit os
-#if defined(__APPLE__)
-	#if defined(__LP64__)
-		#define CHTHOLLY_PLATFORM_APPLE
-		#include <TargetConditionals.h>
-		#if TARGET_IPHONE_SIMULATOR == 1
-			#error "Chtholly Engine don't support ios simulator!"
-		#elif TARGET_OS_IPHONE == 1
-			#error "Chtholly Engine don't support ios!"
-		#elif TARGET_OS_MAC == 1
-			#define CHTHOLLY_RENDER_API_METAL
-		#else
-			#error "Chtholly Engine don't support unkown apple platform!"
-		#endif
-	#else 
-		#error "Chtholly Engine don't support apple 32-bit platform!"	
-	#endif
-#elif defined(_WIN32)
-	#if defined(_WIN64)
-		#define CHTHOLLY_PLATFORM_WINDOWS
-		#define CHTHOLLY_RENDER_API_DX12
-	#else
-		#error "Chtholly Engine don't support windows 32-bit platform!"
-	#endif
-#elif defined(__linux__)
-	#define CHTHOLLY_PLATFORM_LINUX
-	#error "Chtholly Engine don't support linux!"
-#elif defined(__ANDROID__)
-	#define CHTHOLLY_PLATFORM_ANDROID
-	#error "Chtholly Engine don't support android!"
-#else
-	#error "Chtholly Engine don't support the unknown platform!"
-#endif
-
-// c++ compiler
-#if defined(__clang__)
-	#define CHTHOLLY_COMPILER_CLANG
-#elif defined(__GNUC__) || defined(__MINGW32__)
-	#define CHTHOLLY_COMPILER_GCC
-#elif defined(_MSC_VER)
-	#define CHTHOLLY_COMPILER_MSVC
-#else
-	#error "Chtholly Engine don't support unkown c++ compiler, it's only support clang++, g++ and visual c++"
-#endif
-
-// function inline
-#if defined(CHTHOLLY_COMPILER_CLANG) || defined(CHTHOLLY_COMPILER_GCC)
-	#define CHTHOLLY_INLINE __inline__ __attribute__((always_inline))
-	#define CHTHOLLY_NOINLINE __attribute__((noinline))
-#elif defined(CHTHOLLY_COMPILER_MSVC)
-	#define CHTHOLLY_INLINE __forceinline
-	#define CHTHOLLY_NOINLINE __declspec(noinline)
-#endif
-
-// build engine
-#if defined(CHTHOLLY_COMPILER_CLANG)
-	#define CHTHOLLY_ENGINE_API __attribute__ ((visibility("default")))
-#elif defined(CHTHOLLY_COMPILER_GCC)
-	#if defined(CHTHOLLY_PLATFORM_WINDOWS)
-		#ifdef CHTHOLLY_BUILD_DLL 
-			#define CHTHOLLY_ENGINE_API __attribute__((dllexport))
-		#else
-			#define CHTHOLLY_ENGINE_API __attribute__((dllimport))
-		#endif	
-	#else
-		#define CHTHOLLY_ENGINE_API __attribute__ ((visibility("default")))	
-	#endif
-#elif defined(CHTHOLLY_COMPILER_MSVC)
-	#ifdef CHTHOLLY_BUILD_DLL 
-		#define CHTHOLLY_ENGINE_API __declspec(dllexport) 
-	#else
-		#define CHTHOLLY_ENGINE_API __declspec(dllimport) 
-	#endif
-#endif
-
-// simd support
-#define CHTHOLLY_SIMD_SSE_FLAG 1
-#define CHTHOLLY_SIMD_SSE2_FLAG 2
-#define CHTHOLLY_SIMD_SSE3_FLAG 4
-#define CHTHOLLY_SIMD_SSE4_1_FLAG 8
-#define CHTHOLLY_SIMD_SSE4_2_FLAG 16
-
-#if defined(__ARM_NEON) || defined(__ARM_NEON__)
-	#define CHTHOLLY_SIMD_NEON
-	#include <arm_neon.h>
-	#if defined(CHTHOLLY_COMPILER_CLANG)
-		#define _neon_shuffle_f32(a, b, s2, s1) __builtin_shufflevector(a, b, s1, (s2) + 2)
-		#define _neon_shuffle_s32(a, b, s2, s1) _neon_shuffle_f32(a, b, s2, s1)
-		#define _neon_shuffleq_f32(a, b, s4, s3, s2, s1) __builtin_shufflevector(a, b, s1, s2, (s3) + 4, (s4) + 4)
-		#define _neon_shuffleq_s32(a, b, s4, s3, s2, s1) _neon_shuffleq_f32(a, b, s4, s3, s2, s1)
-
-	#elif defined(CHTHOLLY_COMPILER_GCC)
-		#define _neon_shuffle_f32(a, b, s2, s1) __extension__({ \
-			float32x2_t ret; \
-			ret = vmov_n_f32(vget_lane_f32(a, s1)); \
-			ret = vset_lane_f32(vget_lane_f32(b, s2), ret, 1); \
-			ret; \
-		})
-		#define _neon_shuffle_s32(a, b, s2, s1) __extension__({ \
-			int32x2_t ret; \
-			ret = vmov_n_s32(vget_lane_s32(a, s1)); \
-			ret = vset_lane_s32(vget_lane_s32(b, s2), ret, 1); \
-			ret; \
-		})
-		#define _neon_shuffleq_f32(a, b, s4, s3, s2, s1) __extension__({ \
-			float32x4_t ret; \
-			ret = vmovq_n_f32(vgetq_lane_f32(a, s1)); \
-			ret = vsetq_lane_f32(vgetq_lane_f32(a, s2), ret, 1); \
-			ret = vsetq_lane_f32(vgetq_lane_f32(b, s3), ret, 2); \
-			ret = vsetq_lane_f32(vgetq_lane_f32(b, s4), ret, 3); \
-			ret; \
-		})
-		#define _neon_shuffleq_s32(a, b, s4, s3, s2, s1) __extension__({ \
-			int32x4_t ret; \
-			ret = vmovq_n_s32(vgetq_lane_s32(a, s1)); \
-			ret = vsetq_lane_s32(vgetq_lane_s32(a, s2), ret, 1); \
-			ret = vsetq_lane_s32(vgetq_lane_s32(b, s3), ret, 2); \
-			ret = vsetq_lane_s32(vgetq_lane_s32(b, s4), ret, 3); \
-			ret; \
-		})
-	#elif defined(CHTHOLLY_COMPILER_MSVC)
-		#define _neon_shuffle_f32(a, b, s2, s1) vset_lane_f32(vget_lane_f32(b, s2), vmov_n_f32(vget_lane_f32(a, s1)), 1)
-		#define _neon_shuffle_s32(a, b, s2, s1) vset_lane_s32(vget_lane_s32(b, s2), vmov_n_s32(vget_lane_s32(a, s1)), 1)
-		#define _neon_shuffleq_f32(a, b, s4, s3, s2, s1) vsetq_lane_f32(vgetq_lane_f32(b, s4), vsetq_lane_f32(vgetq_lane_f32(b, s3), vsetq_lane_f32(vgetq_lane_f32(a, s2), vmovq_n_f32(vgetq_lane_f32(a, s1)), 1), 2), 3)
-		#define _neon_shuffleq_s32(a, b, s4, s3, s2, s1) vsetq_lane_s32(vgetq_lane_s32(b, s4), vsetq_lane_s32(vgetq_lane_s32(b, s3), vsetq_lane_s32(vgetq_lane_s32(a, s2), vmovq_n_s32(vgetq_lane_s32(a, s1)), 1), 2), 3)
-	#endif
-
-#elif defined(__SSE4_2__)
-	#define CHTHOLLY_SIMD_SSE (CHTHOLLY_SIMD_SSE4_2_FLAG | CHTHOLLY_SIMD_SSE4_1_FLAG | CHTHOLLY_SIMD_SSE3_FLAG | CHTHOLLY_SIMD_SSE2_FLAG | CHTHOLLY_SIMD_SSE_FLAG)
-	#include <nmmintrin.h>
-#elif defined(__SSE4_1__)
-	#define CHTHOLLY_SIMD_SSE (CHTHOLLY_SIMD_SSE4_1_FLAG | CHTHOLLY_SIMD_SSE3_FLAG | CHTHOLLY_SIMD_SSE2_FLAG | CHTHOLLY_SIMD_SSE_FLAG)
-	#include <smmintrin.h>
-#elif defined(__SSE3__)
-	#define CHTHOLLY_SIMD_SSE (CHTHOLLY_SIMD_SSE3_FLAG | CHTHOLLY_SIMD_SSE2_FLAG | CHTHOLLY_SIMD_SSE_FLAG)
-	#include <pmmintrin.h>
-#elif defined(__SSE2__) || defined(_M_X64)
-	#define CHTHOLLY_SIMD_SSE (CHTHOLLY_SIMD_SSE2_FLAG | CHTHOLLY_SIMD_SSE_FLAG)
-	#include <emmintrin.h>
-#elif defined(__SSE__)
-	#define CHTHOLLY_SIMD_SSE (CHTHOLLY_SIMD_SSE_FLAG)
-	#include <xmmintrin.h>
-#endif
+#include "Util/Config.h"
+#include "Util/KutoriTp.h"
+#include "Util/KSimd.h"
+#include "Util/Delegate.h"
+#include "Util/Singleton.h"
 
 #include <iostream>
 #include <sstream>
@@ -159,7 +21,5 @@
 #include <cassert>
 #include <cstring>
 #include <cmath>
-
-#include "Kutori.h"
 
 #endif

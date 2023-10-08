@@ -1,6 +1,5 @@
 #include "MacWindow.h"
 #include "Log/Logger.h"
-#include "Core/Delegate.h"
 
 void ktl::MacWindow::MacCocoaInit()
 {

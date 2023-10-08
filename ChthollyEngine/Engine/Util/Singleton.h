@@ -8,7 +8,6 @@ class Singleton final
 {
 public:
 	static T& Get();
-
 private:
 	struct SingletonAutoRelease final
 	{
@@ -18,7 +17,6 @@ private:
 			SingletonInstance = nullptr;
 		};	
 	};
-
 	static T* SingletonInstance;
 };
 }
@@ -38,15 +36,7 @@ inline T& ktl::Singleton<T>::Get()
 }
 
 #define SINGLETON_REGISTER(className) \
-public: \
 static inline className& Get() { return ktl::Singleton<className>::Get(); } \
-private: \
-friend class Singleton<className>; \
-className(); \
-className(const className&) = delete; \
-className(className&&) = delete; \
-~className(); \
-className& operator=(const className&) = delete; \
-className& operator=(className&&) = delete;
+friend class Singleton<className>;
 
 #endif
