@@ -2,24 +2,15 @@
 #define _CHTHOLLY_H_
 
 #include "Util/Config.h"
-#include "Util/KutoriTp.h"
 #include "Util/KSimd.h"
 #include "Util/Delegate.h"
 #include "Util/Singleton.h"
+#include "Util/KutoriTp.h"
 
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
-#include <array>
-#include <unordered_map>
-#include <algorithm>
-#include <thread>
-#include <memory>
+#include "Core/Application.h"
+#include "Log/Logger.h"
+#include "Math/KutoriMath.h"
 
-#include <cstdint>
-#include <cassert>
-#include <cstring>
-#include <cmath>
+#include "Renderer/GraphicsContext.h"
 
 #endif

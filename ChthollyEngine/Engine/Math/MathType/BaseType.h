@@ -1,7 +1,8 @@
 #ifndef _BASE_TYPE_H_
 #define _BASE_TYPE_H_
 
-#include "Chtholly.h"
+#include "Util/KSimd.h"
+#include "Util/KutoriTp.h"
 
 namespace ktm
 {

@@ -97,4 +97,19 @@
 	#define CHTHOLLY_SIMD_SSE (CHTHOLLY_SIMD_SSE_FLAG)
 #endif
 
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
+#include <array>
+#include <unordered_map>
+#include <algorithm>
+#include <thread>
+#include <memory>
+
+#include <cstdint>
+#include <cassert>
+#include <cstring>
+#include <cmath>
+
 #endif

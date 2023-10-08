@@ -1,7 +1,7 @@
 #ifndef _EVENT_H_
 #define _EVENT_H_
 
-#include "Chtholly.h"
+#include "Util/Config.h"
 
 namespace ktl
 {

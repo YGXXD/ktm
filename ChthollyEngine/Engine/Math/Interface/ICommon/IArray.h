@@ -1,7 +1,7 @@
 #ifndef _I_ARRAY_H_
 #define _I_ARRAY_H_
 
-#include "Chtholly.h"
+#include "Util/Config.h"
 
 namespace ktm
 {

@@ -1,7 +1,8 @@
 #ifndef _WINDOW_H_
 #define _WINDOW_H_
 
-#include "Chtholly.h"
+#include "Util/Config.h"
+#include "Util/Delegate.h"
 #include "Event/Event.h"
 
 namespace ktl

@@ -8,7 +8,7 @@
 #define KTL_ERROR(...) KTL_LOG(ktl::LogLevelError, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
 #define KTL_FATAL(...) KTL_LOG(ktl::LogLevelFatal, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
 
-#include "Chtholly.h"
+#include "Util/Config.h"
 
 namespace ktl
 {

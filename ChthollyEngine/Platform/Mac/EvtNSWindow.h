@@ -2,13 +2,14 @@
 #define _MAC_SUPPORT_H_
 
 #include "Event/Event.h"
+#include "Util/Delegate.h"
 
 namespace ktl
 {
 class EvtNSDelegate
 {
 public:
-	virtual class SingleDelegate<void, Event&>& GetEventCallback() = 0;
+	virtual SingleDelegate<void, Event&>& GetEventCallback() = 0;
 };
 }
 
