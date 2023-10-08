@@ -1,5 +1,5 @@
-#ifndef _TEMPLATE_H_
-#define _TEMPLATE_H_
+#ifndef _KUTORI_H_
+#define _KUTORI_H_
 
 #include <type_traits>
 

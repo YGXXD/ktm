@@ -12,9 +12,8 @@ set(ENGINE_DLL_NAME ChthollyEngine)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if(APPLE)
-	set(CHTHOLLY_PLATFORM CHTHOLLY_PLATFORM_APPLE)
-
 	if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+		add_compile_options(-fvisibility=hidden)
 		add_compile_options(-x objective-c++)
 		# add_compile_options(-fobjc-arc)
 	endif()
@@ -37,24 +36,22 @@ if(APPLE)
 	)
 
 elseif(WIN32)
-	set(CHTHOLLY_PLATFORM CHTHOLLY_PLATFORM_WINDOWS)
-
 	if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 		add_compile_options(/source-charset:utf-8)
 		add_compile_options(/execution-charset:utf-8)
 	elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+		add_compile_options(-fvisibility=hidden)
 		add_compile_options(-march=native)
 	endif()
+	
 	# target engine
 	file(GLOB_RECURSE CHTHOLLY_PLATFORM_SOURCE_FILES ${CHTHOLLY_ENGINE_SOURCE_DIR}/Platform/Windows/*.cpp)
     add_library(${ENGINE_DLL_NAME} SHARED ${CHTHOLLY_ENGINE_SOURCE_FILES} ${CHTHOLLY_PLATFORM_SOURCE_FILES})
 
 elseif(LINUX)
-	set(CHTHOLLY_PLATFORM CHTHOLLY_PLATFORM_LINUX)
 	add_library(${ENGINE_DLL_NAME} SHARED ${CHTHOLLY_ENGINE_SOURCE_FILES})
 
 elseif(ANDROID)
-	set(CHTHOLLY_PLATFORM CHTHOLLY_PLATFORM_ANDROID)
 	add_library(${ENGINE_DLL_NAME} SHARED ${CHTHOLLY_ENGINE_SOURCE_FILES})
 
 endif()
@@ -62,11 +59,9 @@ endif()
 target_include_directories(${ENGINE_DLL_NAME} PRIVATE ${CHTHOLLY_ENGINE_SOURCE_DIR}/Platform)
 target_include_directories(${ENGINE_DLL_NAME} PRIVATE ${CHTHOLLY_ENGINE_SOURCE_DIR}/RenderAPI)
 target_include_directories(${ENGINE_DLL_NAME} PUBLIC ${CHTHOLLY_ENGINE_SOURCE_DIR}/Engine)
-target_compile_definitions(${ENGINE_DLL_NAME} PRIVATE ${CHTHOLLY_PLATFORM})
 target_compile_definitions(${ENGINE_DLL_NAME} PRIVATE CHTHOLLY_BUILD_DLL)
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/ChthollySandBox/. CHTHOLLY_SAND_BOX_SOURCE_FILES)
 add_executable(${EXECUTABLE_NAME} ${CHTHOLLY_SAND_BOX_SOURCE_FILES}) 
-target_compile_definitions(${EXECUTABLE_NAME} PRIVATE ${CHTHOLLY_PLATFORM})
 target_link_libraries(${EXECUTABLE_NAME} PRIVATE ${ENGINE_DLL_NAME}) 
 

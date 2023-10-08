@@ -1,63 +1,79 @@
-#ifndef CHTHOLLY_HPP
-#define CHTHOLLY_HPP
+#ifndef _CHTHOLLY_H_
+#define _CHTHOLLY_H_
 
-// os platform
-#if defined(CHTHOLLY_PLATFORM_APPLE)
-	#include <TargetConditionals.h>
-	#if TARGET_IPHONE_SIMULATOR == 1
-		#error "Chtholly Engine don't support ios simulator!"
-	#elif TARGET_OS_IPHONE == 1
-		#error "Chtholly Engine don't support ios!"
-	#elif TARGET_OS_MAC == 1
-		#define CHTHOLLY_RENDER_API_METAL
-	#else
-		#error "Chtholly Engine don't support unkown apple platform!"
-	#endif
-#elif defined(CHTHOLLY_PLATFORM_WINDOWS)
-	#ifdef _WIN32
-		#ifdef _WIN64
-			#define CHTHOLLY_RENDER_API_DX12
+// os platform, only support 64-bit os
+#if defined(__APPLE__)
+	#if defined(__LP64__)
+		#define CHTHOLLY_PLATFORM_APPLE
+		#include <TargetConditionals.h>
+		#if TARGET_IPHONE_SIMULATOR == 1
+			#error "Chtholly Engine don't support ios simulator!"
+		#elif TARGET_OS_IPHONE == 1
+			#error "Chtholly Engine don't support ios!"
+		#elif TARGET_OS_MAC == 1
+			#define CHTHOLLY_RENDER_API_METAL
 		#else
-			#error "Chtholly Engine don't support windows x86!"
+			#error "Chtholly Engine don't support unkown apple platform!"
 		#endif
-	#else
-		#error "Chtholly Engine don't support unkown windows platform!"	
+	#else 
+		#error "Chtholly Engine don't support apple 32-bit platform!"	
 	#endif
-#elif defined(CHTHOLLY_PLATFORM_LINUX)
+#elif defined(_WIN32)
+	#if defined(_WIN64)
+		#define CHTHOLLY_PLATFORM_WINDOWS
+		#define CHTHOLLY_RENDER_API_DX12
+	#else
+		#error "Chtholly Engine don't support windows 32-bit platform!"
+	#endif
+#elif defined(__linux__)
+	#define CHTHOLLY_PLATFORM_LINUX
 	#error "Chtholly Engine don't support linux!"
-#elif defined(CHTHOLLY_PLATFORM_ANDROID)
+#elif defined(__ANDROID__)
+	#define CHTHOLLY_PLATFORM_ANDROID
 	#error "Chtholly Engine don't support android!"
 #else
 	#error "Chtholly Engine don't support the unknown platform!"
 #endif
 
 // c++ compiler
-#if defined(__clang__) && defined(__GNUC__)
+#if defined(__clang__)
 	#define CHTHOLLY_COMPILER_CLANG
 #elif defined(__GNUC__) || defined(__MINGW32__)
 	#define CHTHOLLY_COMPILER_GCC
 #elif defined(_MSC_VER)
 	#define CHTHOLLY_COMPILER_MSVC
+#else
+	#error "Chtholly Engine don't support unkown c++ compiler, it's only support clang++, g++ and visual c++"
 #endif
 
+// function inline
 #if defined(CHTHOLLY_COMPILER_CLANG) || defined(CHTHOLLY_COMPILER_GCC)
 	#define CHTHOLLY_INLINE __inline__ __attribute__((always_inline))
 	#define CHTHOLLY_NOINLINE __attribute__((noinline))
-	#ifdef CHTHOLLY_BUILD_DLL 
-		#define CHTHOLLY_API __attribute__ ((visibility("default")))
-	#else
-		#define CHTHOLLY_API __attribute__ ((visibility("default")))
-	#endif
 #elif defined(CHTHOLLY_COMPILER_MSVC)
 	#define CHTHOLLY_INLINE __forceinline
 	#define CHTHOLLY_NOINLINE __declspec(noinline)
-	#ifdef CHTHOLLY_BUILD_DLL 
-		#define CHTHOLLY_API __declspec(dllexport) 
+#endif
+
+// build engine
+#if defined(CHTHOLLY_COMPILER_CLANG)
+	#define CHTHOLLY_ENGINE_API __attribute__ ((visibility("default")))
+#elif defined(CHTHOLLY_COMPILER_GCC)
+	#if defined(CHTHOLLY_PLATFORM_WINDOWS)
+		#ifdef CHTHOLLY_BUILD_DLL 
+			#define CHTHOLLY_ENGINE_API __attribute__((dllexport))
+		#else
+			#define CHTHOLLY_ENGINE_API __attribute__((dllimport))
+		#endif	
 	#else
-		#define CHTHOLLY_API __declspec(dllimport) 
+		#define CHTHOLLY_ENGINE_API __attribute__ ((visibility("default")))	
 	#endif
-#else
-	#error "Chtholly Engine don't support unkown c++ compiler, it's only support clang++, g++ and visual c++"
+#elif defined(CHTHOLLY_COMPILER_MSVC)
+	#ifdef CHTHOLLY_BUILD_DLL 
+		#define CHTHOLLY_ENGINE_API __declspec(dllexport) 
+	#else
+		#define CHTHOLLY_ENGINE_API __declspec(dllimport) 
+	#endif
 #endif
 
 // simd support

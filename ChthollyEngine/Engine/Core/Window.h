@@ -19,7 +19,7 @@ struct WindowProps
     }
 };
 
-class CHTHOLLY_API Window
+class CHTHOLLY_ENGINE_API Window
 {
 public: 	
 	static Window* Create(const WindowProps &props = WindowProps());

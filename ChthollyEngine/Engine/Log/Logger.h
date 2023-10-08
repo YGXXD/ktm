@@ -21,7 +21,7 @@ enum LogLevel : unsigned char
     LogLevelFatal
 };
 
-class CHTHOLLY_API Logger
+class CHTHOLLY_ENGINE_API Logger
 {
 public:
     Logger();

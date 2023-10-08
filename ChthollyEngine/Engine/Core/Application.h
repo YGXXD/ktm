@@ -8,7 +8,7 @@ namespace ktl
 class Event;
 class Window;
 class GraphicsContext;
-class CHTHOLLY_API Application final
+class CHTHOLLY_ENGINE_API Application final
 {
 public:
 	static void Initialize();

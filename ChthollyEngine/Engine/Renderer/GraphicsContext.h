@@ -5,7 +5,7 @@
 
 namespace ktl
 {
-class CHTHOLLY_API GraphicsContext
+class CHTHOLLY_ENGINE_API GraphicsContext
 {
 public:
     static GraphicsContext* Create(void* window);

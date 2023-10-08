@@ -5,7 +5,7 @@
 
 namespace ktl
 {
-class CHTHOLLY_API VertexBuffer
+class CHTHOLLY_ENGINE_API VertexBuffer
 {
 public:
     virtual ~VertexBuffer() { };
@@ -15,7 +15,7 @@ public:
     static VertexBuffer* Create(float* vertices, uint32_t size);
 };   
 
-class CHTHOLLY_API IndexBuffer
+class CHTHOLLY_ENGINE_API IndexBuffer
 {
 public:
     virtual ~IndexBuffer() { };
