@@ -37,6 +37,18 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> pers
 }
 
 template<typename T>
+CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> ortho(T left, T right, T top, T bottom, T znear, T zfar)
+{
+    T dx = right - left;
+    T dy = top - bottom;
+    T dz = zfar - znear;
+    return mat<4, 4, T>({ static_cast<T>(2) / dx, zero<T>, zero<T>, (right + left) / (-dx) },
+                        { zero<T>, static_cast<T>(2) / dy, zero<T>, (top + bottom) / (-dy) },
+                        { zero<T>, zero<T>, static_cast<T>(2) / dz, (top + bottom) / (-dz) },
+                        { zero<T>, zero<T>, zero<T>, one<T>});
+}
+
+template<typename T>
 CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_x(float angle_radians)
 {
     return mat<4, 4, T>({ one<T>, zero<T>, zero<T>, zero<T> },
