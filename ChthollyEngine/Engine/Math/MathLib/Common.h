@@ -1,5 +1,5 @@
-#ifndef _K_MATH_H_
-#define _K_MATH_H_
+#ifndef _COMMON_H_
+#define _COMMON_H_
 
 #include "Math/MathType/BaseType.h"
 

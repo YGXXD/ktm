@@ -1,5 +1,5 @@
-#ifndef _K_GEOMETRY_H_
-#define _K_GEOMETRY_H_
+#ifndef _GEOMETRY_H_
+#define _GEOMETRY_H_
 
 #include "Math/MathType/VecType.h"
 #include "Math/MathLib/VecCommon.h"
@@ -18,16 +18,16 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<vec_traits_t<V>>, V> p
     return dot(x, y) / dot(y, y) * y; 
 }
 
-template<class V>
-CHTHOLLY_INLINE std::enable_if_t<(std::is_floating_point_v<vec_traits_t<V>> && vec_traits_len<V> == 3), V> cross(const V& x, const V& y) noexcept
+template<typename T>
+CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, vec<3, T>> cross(const vec<3, T>& x, const vec<3, T>& y) noexcept
 {
     return { x[1] * y[2] - x[2] * y[1], x[2] * y[0] - x[0] * y[2], x[0] * y[1] - x[1] * y[0] };
 }
 
-template<class V>
-CHTHOLLY_INLINE std::enable_if_t<(std::is_floating_point_v<vec_traits_t<V>> && vec_traits_len<V> == 2), vec<3, vec_traits_t<V>>> cross(const V& x, const V& y) noexcept
+template<typename T>
+CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, vec<3, T>> cross(const vec<2, T>& x, const vec<2, T>& y) noexcept
 {
-    return { zero<vec_traits_t<V>>, zero<vec_traits_t<V>>, x[0] * y[1] - x[1] * y[0] };
+    return { zero<T>, zero<T>, x[0] * y[1] - x[1] * y[0] };
 }
 
 template<class V>
