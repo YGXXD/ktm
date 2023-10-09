@@ -44,7 +44,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> orth
     T dz = zfar - znear;
     return mat<4, 4, T>({ static_cast<T>(2) / dx, zero<T>, zero<T>, (right + left) / (-dx) },
                         { zero<T>, static_cast<T>(2) / dy, zero<T>, (top + bottom) / (-dy) },
-                        { zero<T>, zero<T>, static_cast<T>(2) / dz, (top + bottom) / (-dz) },
+                        { zero<T>, zero<T>, one<T> / dz, znear / (-dz) },
                         { zero<T>, zero<T>, zero<T>, one<T>});
 }
 
