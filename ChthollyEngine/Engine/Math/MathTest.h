@@ -1,12 +1,7 @@
 #ifndef _MATH_TEST_H_
 #define _MATH_TEST_H_
 
-#include "MathType/BaseType.h"
-#include "MathType/VecType.h"
-#include "Math/MathLib/Geometry.h"
-#include "Math/MathType/MatType.h"
-#include "Math/MathLib/MatCommon.h"
-#include "Math/MathLib/VecCommon.h"
+#include "KutoriMath.h"
 
 static void VecTest()
 {
