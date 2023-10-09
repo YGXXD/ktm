@@ -38,7 +38,7 @@ static void VecTest()
 static void MatTest()
 {
     std::cout << "mat_mul_vec test:" << std::endl;
-    ktm::fmat2x3 mt1 = { { 1, 2}, { 1, 2 }, {3, 4} };
+    ktm::fmat3x2 mt1 = { { 1, 2}, { 1, 2 }, {3, 4} };
     ktm::fvec3 v1 = { 2, 2, 2};
 
     std::cout << mt1 << std::endl;
@@ -46,7 +46,7 @@ static void MatTest()
     std::cout << mt1 * v1 << std::endl;
 
     std::cout << "vec_mul_mat test:" << std::endl;
-    ktm::fmat2x3 mt2 = { { 3, 2}, { 1, 2 }, {3, 4} };
+    ktm::fmat3x2 mt2 = { { 3, 2}, { 1, 2 }, {3, 4} };
     ktm::fvec2 v2 = { 2, 1 };
 
     std::cout << mt2 << std::endl;
@@ -54,20 +54,20 @@ static void MatTest()
     std::cout << v2 * mt2 << std::endl;
 
     std::cout << "mat_mul_mat test:" << std::endl; 
-    ktm::fmat2x3 mt3 = { { 3, 2}, { 1, 2 }, {3, 4} };
-    ktm::fmat3x2 mt4 = { {3, 3, 3}, { 1, 1, 1}};
+    ktm::fmat3x2 mt3 = { { 3, 2}, { 1, 2 }, {3, 4} };
+    ktm::fmat2x3 mt4 = { {3, 3, 3}, { 1, 1, 1}};
     std::cout << mt3 << std::endl;
     std::cout << mt4 << std::endl;
     std::cout << mt3 * mt4 << std::endl;
 
     std::cout << "add test:" << std::endl; 
-    ktm::fmat3x4 mt5 = { {3, 3, 3}, { 1, 1, 1}, { 2, 3, 3}, { }};
+    ktm::fmat4x3 mt5 = { {3, 3, 3}, { 1, 1, 1}, { 2, 3, 3}, { }};
     std::cout << mt5 << std::endl;
     std::cout << mt5 + mt5 << std::endl;
 
     std::cout << "equal test:" << std::endl; 
-    ktm::fmat3x4 mt6 = mt5; 
-    std::cout << (mt5 == mt6) << "," << (mt5 == ktm::fmat3x4()) << std::endl;
+    ktm::fmat4x3 mt6 = mt5; 
+    std::cout << (mt5 == mt6) << "," << (mt5 == ktm::fmat4x3()) << std::endl;
 
     std::cout << "transpose test:" << std::endl; 
     ktm::fmat3x3 mt7 = { { 2, -1, 207 }, {-1, 2, -1}, { 20, -1, 2 } };

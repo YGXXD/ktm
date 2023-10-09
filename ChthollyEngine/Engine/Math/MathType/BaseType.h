@@ -39,20 +39,20 @@ using vec_traits_self_t = typename vec_traits<T>::self_type;
 template<typename T>
 inline constexpr size_t vec_traits_len = vec_traits<T>::len;
 
-// 定义matrix, Col为列的长度, Row为行的长度
-template<size_t Col, size_t Row, typename T, typename = std::enable_if_t<(Col > 1) && (Row > 1) && std::is_arithmetic_v<T>>> struct mat;
+// 定义matrix, Row为行的长度, Col为列的长度
+template<size_t Row, size_t Col, typename T, typename = std::enable_if_t<(Row > 1) && (Col > 1) && std::is_arithmetic_v<T>>> struct mat;
 
 template<typename T>
 struct mat_traits;
 
-template<size_t Col, size_t Row, typename T>
-struct mat_traits<mat<Col, Row, T>>
+template<size_t Row, size_t Col, typename T>
+struct mat_traits<mat<Row, Col, T>>
 {
     using type = T;
-    using self_type = mat<Col, Row, T>;
+    using self_type = mat<Row, Col, T>;
+    using tp_type = mat<Col, Row, T>;
     using col_type = vec<Col, T>;
     using row_type = vec<Row, T>;
-    using tp_type = mat<Row, Col, T>;
     static constexpr size_t col = Col;
     static constexpr size_t row = Row;
 };
@@ -64,13 +64,13 @@ template<typename T>
 using mat_traits_self_t = typename mat_traits<T>::self_type;
 
 template<typename T>
+using mat_traits_tp_t = typename mat_traits<T>::tp_type;
+
+template<typename T>
 using mat_traits_col_t = typename mat_traits<T>::col_type;
 
 template<typename T>
 using mat_traits_row_t = typename mat_traits<T>::row_type;
-
-template<typename T>
-using mat_traits_tp_t = typename mat_traits<T>::tp_type;
 
 template<typename T>
 inline constexpr size_t mat_traits_col_n = mat_traits<T>::col;

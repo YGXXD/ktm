@@ -9,17 +9,17 @@ template<class Father, class Child>
 struct IMatMake;
 
 template<class Father, size_t Row, typename T>
-struct IMatMake<Father, mat<2, Row, T>> : Father
+struct IMatMake<Father, mat<Row, 2, T>> : Father
 {
-    static CHTHOLLY_INLINE mat<2, Row, T> from_row(const vec<Row, T>& row0, const vec<Row, T>& row1) noexcept
+    static CHTHOLLY_INLINE mat<Row, 2, T> from_row(const vec<Row, T>& row0, const vec<Row, T>& row1) noexcept
     {
         return from_row(row0, row1, std::make_index_sequence<Row>());
     }
 private:
     template<size_t ...Ns>
-    static CHTHOLLY_INLINE mat<2, Row, T> from_row(const vec<Row, T>& row0, const vec<Row, T>& row1, std::index_sequence<Ns...>) noexcept
+    static CHTHOLLY_INLINE mat<Row, 2, T> from_row(const vec<Row, T>& row0, const vec<Row, T>& row1, std::index_sequence<Ns...>) noexcept
     {
-        return mat<2, Row, T>({ reinterpret_cast<const T*>(&row0)[Ns], reinterpret_cast<const T*>(&row1)[Ns] }...);
+        return mat<Row, 2, T>({ reinterpret_cast<const T*>(&row0)[Ns], reinterpret_cast<const T*>(&row1)[Ns] }...);
     }
 };
 
@@ -46,17 +46,17 @@ struct IMatMake<Father, mat<2, 2, T>> : Father
 };
 
 template<class Father, size_t Row, typename T>
-struct IMatMake<Father, mat<3, Row, T>> : Father
+struct IMatMake<Father, mat<Row, 3, T>> : Father
 {
-    static CHTHOLLY_INLINE mat<3, Row, T> from_row(const vec<Row, T>& row0, const vec<Row, T>& row1, const vec<Row, T>& row2) noexcept
+    static CHTHOLLY_INLINE mat<Row, 3, T> from_row(const vec<Row, T>& row0, const vec<Row, T>& row1, const vec<Row, T>& row2) noexcept
     {
         return from_row(row0, row1, row2, std::make_index_sequence<Row>());
     }
 private:
     template<size_t ...Ns>
-    static CHTHOLLY_INLINE mat<3, Row, T> from_row(const vec<Row, T>& row0, const vec<Row, T>& row1, const vec<Row, T>& row2, std::index_sequence<Ns...>) noexcept
+    static CHTHOLLY_INLINE mat<Row, 3, T> from_row(const vec<Row, T>& row0, const vec<Row, T>& row1, const vec<Row, T>& row2, std::index_sequence<Ns...>) noexcept
     {
-        return mat<3, Row, T>({ reinterpret_cast<const T*>(&row0)[Ns], reinterpret_cast<const T*>(&row1)[Ns], reinterpret_cast<const T*>(&row2)[Ns] }...);
+        return mat<Row, 3, T>({ reinterpret_cast<const T*>(&row0)[Ns], reinterpret_cast<const T*>(&row1)[Ns], reinterpret_cast<const T*>(&row2)[Ns] }...);
     }
 };
 
@@ -86,17 +86,17 @@ struct IMatMake<Father, mat<3, 3, T>> : Father
 };
 
 template<class Father, size_t Row, typename T>
-struct IMatMake<Father, mat<4, Row, T>> : Father
+struct IMatMake<Father, mat<Row, 4, T>> : Father
 {
-    static CHTHOLLY_INLINE mat<4, Row, T> from_row(const vec<Row, T>& row0, const vec<Row, T>& row1, const vec<Row, T>& row2, const vec<Row, T>& row3) noexcept
+    static CHTHOLLY_INLINE mat<Row, 4, T> from_row(const vec<Row, T>& row0, const vec<Row, T>& row1, const vec<Row, T>& row2, const vec<Row, T>& row3) noexcept
     {
         return from_row(row0, row1, row2, row3, std::make_index_sequence<Row>());
     }
 private:
     template<size_t ...Ns>
-    static CHTHOLLY_INLINE mat<4, Row, T> from_row(const vec<Row, T>& row0, const vec<Row, T>& row1, const vec<Row, T>& row2, const vec<Row, T>& row3, std::index_sequence<Ns...>) noexcept
+    static CHTHOLLY_INLINE mat<Row, 4, T> from_row(const vec<Row, T>& row0, const vec<Row, T>& row1, const vec<Row, T>& row2, const vec<Row, T>& row3, std::index_sequence<Ns...>) noexcept
     {
-        return mat<4, Row, T>({ reinterpret_cast<const T*>(&row0)[Ns], reinterpret_cast<const T*>(&row1)[Ns],
+        return mat<Row, 4, T>({ reinterpret_cast<const T*>(&row0)[Ns], reinterpret_cast<const T*>(&row1)[Ns],
                                 reinterpret_cast<const T*>(&row2)[Ns], reinterpret_cast<const T*>(&row3)[Ns] }...);
     }
 };

@@ -10,15 +10,15 @@
 
 namespace ktm
 {
-template<size_t Col, size_t Raw, typename T>
-struct mat<Col, Raw, T> : ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, ktm::IMatData, ktm::IMatMake, ktm::IMatArray, ktm::IMatOpt>, mat<Col, Raw, T>>
+template<size_t Row, size_t Col, typename T>
+struct mat<Row, Col, T> : ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, ktm::IMatData, ktm::IMatMake, ktm::IMatArray, ktm::IMatOpt>, mat<Row, Col, T>>
 {
-    using Father = ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, ktm::IMatData, ktm::IMatMake, ktm::IMatArray, ktm::IMatOpt>, mat<Col, Raw, T>>;
+    using Father = ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, ktm::IMatData, ktm::IMatMake, ktm::IMatArray, ktm::IMatOpt>, mat<Row, Col, T>>;
     using Father::Father;
 };
 
-template<size_t Col, size_t Raw>
-using fmat = mat<Col, Raw, float>;
+template<size_t Row, size_t Col>
+using fmat = mat<Row, Col, float>;
 using fmat2x2 = fmat<2, 2>;
 using fmat2x3 = fmat<2, 3>;
 using fmat2x4 = fmat<2, 4>;
@@ -29,8 +29,8 @@ using fmat4x2 = fmat<4, 2>;
 using fmat4x3 = fmat<4, 3>;
 using fmat4x4 = fmat<4, 4>;
 
-template<size_t Col, size_t Raw>
-using smat = mat<Col, Raw, int>;
+template<size_t Row, size_t Col>
+using smat = mat<Row, Col, int>;
 using smat2x2 = smat<2, 2>;
 using smat2x3 = smat<2, 3>;
 using smat2x4 = smat<2, 4>;
@@ -41,8 +41,8 @@ using smat4x2 = smat<4, 2>;
 using smat4x3 = smat<4, 3>;
 using smat4x4 = smat<4, 4>;
 
-template<size_t Col, size_t Raw>
-using umat = mat<Col, Raw, unsigned int>;
+template<size_t Row, size_t Col>
+using umat = mat<Row, Col, unsigned int>;
 using umat2x2 = umat<2, 2>;
 using umat2x3 = umat<2, 3>;
 using umat2x4 = umat<2, 4>;
@@ -53,8 +53,8 @@ using umat4x2 = umat<4, 2>;
 using umat4x3 = umat<4, 3>;
 using umat4x4 = umat<4, 4>;
 
-template<size_t Col, size_t Raw>
-using dmat = mat<Col, Raw, double>;
+template<size_t Row, size_t Col>
+using dmat = mat<Row, Col, double>;
 using dmat2x2 = dmat<2, 2>;
 using dmat2x3 = dmat<2, 3>;
 using dmat2x4 = dmat<2, 4>;

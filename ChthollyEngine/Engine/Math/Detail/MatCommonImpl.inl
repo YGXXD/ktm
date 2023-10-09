@@ -21,10 +21,10 @@ private:
     }
 };
 
-template<size_t Col, size_t Row, typename T>
+template<size_t Row, size_t Col, typename T>
 struct ktm::detail::mat_common_implement::transpose
 {
-	using M = mat<Col, Row, T>;
+	using M = mat<Row, Col, T>;
     using RetM = mat_traits_tp_t<M>;
     using RowV = mat_traits_row_t<M>;
     static CHTHOLLY_INLINE RetM call(const M& m) noexcept

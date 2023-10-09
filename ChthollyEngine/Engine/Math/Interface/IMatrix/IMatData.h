@@ -6,7 +6,7 @@ template<class Father, class Child>
 struct IMatData;
 
 template<class Father, size_t Col, typename T>
-struct alignas(sizeof(vec<Col, T>)) IMatData<Father, mat<Col, 2, T>> : Father
+struct alignas(sizeof(vec<Col, T>)) IMatData<Father, mat<2, Col, T>> : Father
 {
     using Father::Father;
     IMatData(const vec<Col, T>& col0, const vec<Col, T>& col1) noexcept : columns{ col0, col1 } { }
@@ -15,7 +15,7 @@ private:
 };
 
 template<class Father, size_t Col, typename T>
-struct alignas(sizeof(vec<Col, T>)) IMatData<Father, mat<Col, 3, T>> : Father
+struct alignas(sizeof(vec<Col, T>)) IMatData<Father, mat<3, Col, T>> : Father
 {
     using Father::Father;
     IMatData(const vec<Col, T>& col0, const vec<Col, T>& col1, const vec<Col, T>& col2) noexcept : columns{ col0, col1, col2 } { }
@@ -24,7 +24,7 @@ private:
 };
 
 template<class Father, size_t Col, typename T>
-struct alignas(sizeof(vec<Col, T>)) IMatData<Father, mat<Col, 4, T>> : Father
+struct alignas(sizeof(vec<Col, T>)) IMatData<Father, mat<4, Col, T>> : Father
 {
     using Father::Father;
     IMatData(const vec<Col, T>& col0, const vec<Col, T>& col1, const vec<Col, T>& col2, const vec<Col, T>& col3) noexcept : columns{ col0, col1, col2, col3 } { }

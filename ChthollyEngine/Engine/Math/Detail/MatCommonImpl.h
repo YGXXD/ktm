@@ -12,7 +12,7 @@ namespace mat_common_implement
 template<size_t N, typename T>
 struct trace;
 
-template<size_t Col, size_t Row, typename T>
+template<size_t Row, size_t Col, typename T>
 struct transpose;
 
 template<size_t N, typename T>

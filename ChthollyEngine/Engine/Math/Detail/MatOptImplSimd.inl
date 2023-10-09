@@ -6,10 +6,10 @@
 
 #if defined(CHTHOLLY_SIMD_NEON)
 
-template<size_t Col, size_t Row>
-struct ktm::detail::mat_opt_implement::mat_mul_vec<Col, Row, std::enable_if_t<Col >= 2 && Col <= 4, float>>
+template<size_t Row, size_t Col>
+struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, std::enable_if_t<Col >= 2 && Col <= 4, float>>
 {
-    using M = mat<Col, Row, float>;
+    using M = mat<Row, Col, float>;
     using ColV = mat_traits_col_t<M>;
     using RowV = mat_traits_row_t<M>;
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v) noexcept
@@ -40,10 +40,10 @@ private:
     } 
 };
 
-template<size_t Col, size_t Row>
-struct ktm::detail::mat_opt_implement::vec_mul_mat<Col, Row, std::enable_if_t<Col >= 2 && Col <= 4, float>>
+template<size_t Row, size_t Col>
+struct ktm::detail::mat_opt_implement::vec_mul_mat<Row, Col, std::enable_if_t<Col >= 2 && Col <= 4, float>>
 {
-    using M = mat<Col, Row, float>;
+    using M = mat<Row, Col, float>;
     using ColV = mat_traits_col_t<M>;
     using RowV = mat_traits_row_t<M>;
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m) noexcept
@@ -77,10 +77,10 @@ private:
     }
 };
 
-template<size_t Col, size_t Row>
-struct ktm::detail::mat_opt_implement::add<Col, Row, std::enable_if_t<Col >= 2 && Col <= 4, float>>
+template<size_t Row, size_t Col>
+struct ktm::detail::mat_opt_implement::add<Row, Col, std::enable_if_t<Col >= 2 && Col <= 4, float>>
 {
-    using M = mat<Col, Row, float>;
+    using M = mat<Row, Col, float>;
     using ColV = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
@@ -108,10 +108,10 @@ private:
     }
 };
 
-template<size_t Col, size_t Row>
-struct ktm::detail::mat_opt_implement::minus<Col, Row, std::enable_if_t<Col >= 2 && Col <= 4, float>>
+template<size_t Row, size_t Col>
+struct ktm::detail::mat_opt_implement::minus<Row, Col, std::enable_if_t<Col >= 2 && Col <= 4, float>>
 {
-    using M = mat<Col, Row, float>;
+    using M = mat<Row, Col, float>;
     using ColV = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
@@ -139,10 +139,10 @@ private:
     }
 };
 
-template<size_t Col, size_t Row>
-struct ktm::detail::mat_opt_implement::mat_mul_vec<Col, Row, std::enable_if_t<Col >= 2 && Col <= 4, int>>
+template<size_t Row, size_t Col>
+struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, std::enable_if_t<Col >= 2 && Col <= 4, int>>
 {
-    using M = mat<Col, Row, int>;
+    using M = mat<Row, Col, int>;
     using ColV = mat_traits_col_t<M>;
     using RowV = mat_traits_row_t<M>;
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v) noexcept
@@ -173,10 +173,10 @@ private:
     } 
 };
 
-template<size_t Col, size_t Row>
-struct ktm::detail::mat_opt_implement::vec_mul_mat<Col, Row, std::enable_if_t<Col >= 2 && Col <= 4, int>>
+template<size_t Row, size_t Col>
+struct ktm::detail::mat_opt_implement::vec_mul_mat<Row, Col, std::enable_if_t<Col >= 2 && Col <= 4, int>>
 {
-    using M = mat<Col, Row, int>;
+    using M = mat<Row, Col, int>;
     using ColV = mat_traits_col_t<M>;
     using RowV = mat_traits_row_t<M>;
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m) noexcept
@@ -210,10 +210,10 @@ private:
     }
 };
 
-template<size_t Col, size_t Row>
-struct ktm::detail::mat_opt_implement::add<Col, Row, std::enable_if_t<Col >= 2 && Col <= 4, int>>
+template<size_t Row, size_t Col>
+struct ktm::detail::mat_opt_implement::add<Row, Col, std::enable_if_t<Col >= 2 && Col <= 4, int>>
 {
-    using M = mat<Col, Row, int>;
+    using M = mat<Row, Col, int>;
     using ColV = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
@@ -241,10 +241,10 @@ private:
     }
 };
 
-template<size_t Col, size_t Row>
-struct ktm::detail::mat_opt_implement::minus<Col, Row, std::enable_if_t<Col >= 2 && Col <= 4, int>>
+template<size_t Row, size_t Col>
+struct ktm::detail::mat_opt_implement::minus<Row, Col, std::enable_if_t<Col >= 2 && Col <= 4, int>>
 {
-    using M = mat<Col, Row, int>;
+    using M = mat<Row, Col, int>;
     using ColV = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
@@ -276,10 +276,10 @@ private:
 
 #if defined(CHTHOLLY_SIMD_SSE)
 
-template<size_t Col, size_t Row>
-struct ktm::detail::mat_opt_implement::mat_mul_vec<Col, Row, std::enable_if_t<Col == 3 || Col == 4, float>>
+template<size_t Row, size_t Col>
+struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, std::enable_if_t<Col == 3 || Col == 4, float>>
 {
-    using M = mat<Col, Row, float>;
+    using M = mat<Row, Col, float>;
     using ColV = mat_traits_col_t<M>;
     using RowV = mat_traits_row_t<M>;
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v) noexcept
@@ -302,10 +302,10 @@ private:
     } 
 };
 
-template<size_t Col, size_t Row>
-struct ktm::detail::mat_opt_implement::vec_mul_mat<Col, Row, std::enable_if_t<Col == 3 || Col == 4, float>>
+template<size_t Row, size_t Col>
+struct ktm::detail::mat_opt_implement::vec_mul_mat<Row, Col, std::enable_if_t<Col == 3 || Col == 4, float>>
 {
-    using M = mat<Col, Row, float>;
+    using M = mat<Row, Col, float>;
     using ColV = mat_traits_col_t<M>;
     using RowV = mat_traits_row_t<M>;
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m) noexcept
@@ -339,10 +339,10 @@ private:
     }
 };
 
-template<size_t Col, size_t Row>
-struct ktm::detail::mat_opt_implement::add<Col, Row, std::enable_if_t<Col == 3 || Col == 4, float>>
+template<size_t Row, size_t Col>
+struct ktm::detail::mat_opt_implement::add<Row, Col, std::enable_if_t<Col == 3 || Col == 4, float>>
 {
-    using M = mat<Col, Row, float>;
+    using M = mat<Row, Col, float>;
     using ColV = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
@@ -363,10 +363,10 @@ private:
     }
 };
 
-template<size_t Col, size_t Row>
-struct ktm::detail::mat_opt_implement::minus<Col, Row, std::enable_if_t<Col == 3 || Col == 4, float>>
+template<size_t Row, size_t Col>
+struct ktm::detail::mat_opt_implement::minus<Row, Col, std::enable_if_t<Col == 3 || Col == 4, float>>
 {
-    using M = mat<Col, Row, float>;
+    using M = mat<Row, Col, float>;
     using ColV = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
@@ -389,10 +389,10 @@ private:
 
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE2_FLAG
 
-template<size_t Col, size_t Row>
-struct ktm::detail::mat_opt_implement::add<Col, Row, std::enable_if_t<Col == 3 || Col == 4, int>>
+template<size_t Row, size_t Col>
+struct ktm::detail::mat_opt_implement::add<Row, Col, std::enable_if_t<Col == 3 || Col == 4, int>>
 {
-    using M = mat<Col, Row, int>;
+    using M = mat<Row, Col, int>;
     using ColV = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
@@ -413,10 +413,10 @@ private:
     }
 };
 
-template<size_t Col, size_t Row>
-struct ktm::detail::mat_opt_implement::minus<Col, Row, std::enable_if_t<Col == 3 || Col == 4, int>>
+template<size_t Row, size_t Col>
+struct ktm::detail::mat_opt_implement::minus<Row, Col, std::enable_if_t<Col == 3 || Col == 4, int>>
 {
-    using M = mat<Col, Row, int>;
+    using M = mat<Row, Col, int>;
     using ColV = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
@@ -441,10 +441,10 @@ private:
 
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE4_1_FLAG
 
-template<size_t Col, size_t Row>
-struct ktm::detail::mat_opt_implement::mat_mul_vec<Col, Row, std::enable_if_t<Col == 3 || Col == 4, int>>
+template<size_t Row, size_t Col>
+struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, std::enable_if_t<Col == 3 || Col == 4, int>>
 {
-    using M = mat<Col, Row, int>;
+    using M = mat<Row, Col, int>;
     using ColV = mat_traits_col_t<M>;
     using RowV = mat_traits_row_t<M>;
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v) noexcept
@@ -467,10 +467,10 @@ private:
     } 
 };
 
-template<size_t Col, size_t Row>
-struct ktm::detail::mat_opt_implement::vec_mul_mat<Col, Row, std::enable_if_t<Col == 3 || Col == 4, int>>
+template<size_t Row, size_t Col>
+struct ktm::detail::mat_opt_implement::vec_mul_mat<Row, Col, std::enable_if_t<Col == 3 || Col == 4, int>>
 {
-    using M = mat<Col, Row, int>;
+    using M = mat<Row, Col, int>;
     using ColV = mat_traits_col_t<M>;
     using RowV = mat_traits_row_t<M>;
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m) noexcept
