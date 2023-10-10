@@ -4,7 +4,7 @@
 #include <windows.h>
 #include <unordered_map>
 
-namespace ktl
+namespace keg
 {
 class EvtWin32Delegate
 {

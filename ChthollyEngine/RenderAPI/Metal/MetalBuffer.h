@@ -3,7 +3,7 @@
 
 #include "Renderer/Buffer.h"
 
-namespace ktl 
+namespace keg 
 {
 class MetalVertexBuffer : public VertexBuffer
 {

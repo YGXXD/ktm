@@ -6,12 +6,12 @@
 
 #endif
 
-ktl::VertexBuffer* ktl::VertexBuffer::Create(float* vertices, uint32_t size)
+keg::VertexBuffer* keg::VertexBuffer::Create(float* vertices, uint32_t size)
 {
     return nullptr;
 }
 
-ktl::IndexBuffer* ktl::IndexBuffer::Create(uint32_t* indices, uint32_t size)
+keg::IndexBuffer* keg::IndexBuffer::Create(uint32_t* indices, uint32_t size)
 {
     return nullptr;
 }

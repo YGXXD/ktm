@@ -3,7 +3,7 @@
 
 #include "Event.h"
 
-namespace ktl
+namespace keg
 {
 class MouseMovedEvent : public Event
 {

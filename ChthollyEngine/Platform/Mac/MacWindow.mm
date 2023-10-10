@@ -1,7 +1,7 @@
 #include "MacWindow.h"
 #include "Log/Logger.h"
 
-void ktl::MacWindow::MacCocoaInit()
+void keg::MacWindow::MacCocoaInit()
 {
 	assert(NSApp == nil);
     @autoreleasepool
@@ -13,7 +13,7 @@ void ktl::MacWindow::MacCocoaInit()
     }
 }
 
-void ktl::MacWindow::MacCocoaPollEvent()
+void keg::MacWindow::MacCocoaPollEvent()
 {
     @autoreleasepool
     {
@@ -28,7 +28,7 @@ void ktl::MacWindow::MacCocoaPollEvent()
     }
 }
 
-void ktl::MacWindow::MacCocoaQuit()
+void keg::MacWindow::MacCocoaQuit()
 {
     assert(NSApp != nil);
     @autoreleasepool
@@ -38,22 +38,22 @@ void ktl::MacWindow::MacCocoaQuit()
     }
 }
 
-ktl::MacWindow::MacWindow(const WindowProps& props)
+keg::MacWindow::MacWindow(const WindowProps& props)
 {
     InitProps(props);
 }
 
-ktl::MacWindow::~MacWindow()
+keg::MacWindow::~MacWindow()
 {
 	[window release];
 }
 
-ktl::SingleDelegate<void, ktl::Event&>& ktl::MacWindow::GetEventCallback()
+keg::EventCallbackDelegate& keg::MacWindow::GetEventCallback()
 {
 	return eventCallback;
 }
 
-void ktl::MacWindow::InitProps(const WindowProps& props)
+void keg::MacWindow::InitProps(const WindowProps& props)
 {
     @autoreleasepool
     {
@@ -79,32 +79,32 @@ void ktl::MacWindow::InitProps(const WindowProps& props)
     }
 }
 
-void ktl::MacWindow::OnUpdate()
+void keg::MacWindow::OnUpdate()
 {
 
 }
 
-uint32_t ktl::MacWindow::GetWidth() const
+uint32_t keg::MacWindow::GetWidth() const
 {
     return window.contentView.frame.size.width;
 }
 
-uint32_t ktl::MacWindow::GetHeight() const
+uint32_t keg::MacWindow::GetHeight() const
 {
     return window.contentView.frame.size.height;
 }
 
-void ktl::MacWindow::SetVSync(bool enabled)
+void keg::MacWindow::SetVSync(bool enabled)
 {
 
 }
 
-bool ktl::MacWindow::IsVSync() const
+bool keg::MacWindow::IsVSync() const
 {
     return false;
 }
 
-void* ktl::MacWindow::GetNativeWindow() const
+void* keg::MacWindow::GetNativeWindow() const
 {
     return (__bridge void*)window;
 }

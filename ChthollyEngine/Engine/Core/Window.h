@@ -5,7 +5,7 @@
 #include "Util/Delegate.h"
 #include "Event/Event.h"
 
-namespace ktl
+namespace keg
 {
 struct WindowProps
 {
@@ -18,6 +18,8 @@ struct WindowProps
     {
     }
 };
+
+DECLARE_FUNCTION_DELEGATE(EventCallbackDelegate, void, keg::Event&)
 
 class CHTHOLLY_ENGINE_API Window
 {
@@ -38,7 +40,7 @@ public:
  	virtual bool IsVSync() const = 0;
  	virtual void* GetNativeWindow() const = 0;
 	
-	SingleDelegate<void, Event&> eventCallback;
+	EventCallbackDelegate eventCallback;
 
 private:
 	static bool bisInitialized;

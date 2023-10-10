@@ -1,16 +1,16 @@
 #ifndef _LOGGER_H_
 #define _LOGGER_H_
 
-#define KTL_LOG(LogLevel, ...) ktl::Logger::Log((LogLevel), __VA_ARGS__);
-#define KTL_DEBUG(...) KTL_LOG(ktl::LogLevelDebug, __VA_ARGS__)
-#define KTL_INFO(...) KTL_LOG(ktl::LogLevelInfo, __VA_ARGS__)
-#define KTL_WARN(...) KTL_LOG(ktl::LogLevelWarn, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
-#define KTL_ERROR(...) KTL_LOG(ktl::LogLevelError, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
-#define KTL_FATAL(...) KTL_LOG(ktl::LogLevelFatal, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
+#define KEG_LOG(LogLevel, ...) keg::Logger::Log((LogLevel), __VA_ARGS__);
+#define KEG_DEBUG(...) KEG_LOG(keg::LogLevelDebug, __VA_ARGS__)
+#define KEG_INFO(...) KEG_LOG(keg::LogLevelInfo, __VA_ARGS__)
+#define KEG_WARN(...) KEG_LOG(keg::LogLevelWarn, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
+#define KEG_ERROR(...) KEG_LOG(keg::LogLevelError, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
+#define KEG_FATAL(...) KEG_LOG(keg::LogLevelFatal, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
 
 #include "Util/Config.h"
 
-namespace ktl
+namespace keg
 {
 enum LogLevel : unsigned char
 {
@@ -56,7 +56,7 @@ private:
 } 
 
 template<typename ...ArgsT>
-void ktl::Logger::Log(ktl::LogLevel level, ArgsT&&... args)
+void keg::Logger::Log(keg::LogLevel level, ArgsT&&... args)
 {
 	if(level >= minLogLevel && level <= LogLevelFatal)
 	{
@@ -68,7 +68,7 @@ void ktl::Logger::Log(ktl::LogLevel level, ArgsT&&... args)
 }
 
 template<typename ...ArgsT>
-CHTHOLLY_INLINE void ktl::Logger::ConsoleLog(ArgsT&&... args)
+CHTHOLLY_INLINE void keg::Logger::ConsoleLog(ArgsT&&... args)
 {
 	(std::cout << ... << args) << "\n";
 	std::flush(std::cout);

@@ -1,19 +1,19 @@
 #include "Logger.h"
 
-const char* ktl::Logger::levelString[5] = {"Debug", "Info", "Warn", "Error", "Fatal"};
-const char* ktl::Logger::levelColor[3] = {"\033[33m", "\033[31m", "\033[41m"};
-ktl::LogLevel ktl::Logger::minLogLevel = ktl::LogLevelDebug;
-ktl::Logger::UTCTimer ktl::Logger::utimer;
+const char* keg::Logger::levelString[5] = {"Debug", "Info", "Warn", "Error", "Fatal"};
+const char* keg::Logger::levelColor[3] = {"\033[33m", "\033[31m", "\033[41m"};
+keg::LogLevel keg::Logger::minLogLevel = keg::LogLevelDebug;
+keg::Logger::UTCTimer keg::Logger::utimer;
 
-ktl::Logger::Logger()
+keg::Logger::Logger()
 {
 }
 
-ktl::Logger::~Logger()
+keg::Logger::~Logger()
 {
 }
 
-ktl::Logger::UTCTimer::UTCTimer()
+keg::Logger::UTCTimer::UTCTimer()
 {
     time_t t;
     time(&t);
@@ -21,7 +21,7 @@ ktl::Logger::UTCTimer::UTCTimer()
     timeStrLen = strlen(timeStr);
 }
 
-const char* ktl::Logger::UTCTimer::GetUTCTime()
+const char* keg::Logger::UTCTimer::GetUTCTime()
 {
     time_t t;
     time(&t);

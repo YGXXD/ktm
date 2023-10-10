@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-namespace ktl
+namespace keg
 {
 namespace Key
 {

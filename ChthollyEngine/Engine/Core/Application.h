@@ -3,7 +3,7 @@
 
 #include "Util/Config.h"
 
-namespace ktl
+namespace keg
 {
 class Event;
 class Window;

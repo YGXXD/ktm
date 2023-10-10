@@ -4,9 +4,9 @@
 #include "Event/AppEvent.h"
 #include <windowsx.h>
 
-std::string ktl::WindowsWindow::windowClassName = "ChthollyWindow";
+std::string keg::WindowsWindow::windowClassName = "ChthollyWindow";
 
-void ktl::WindowsWindow::WindowsWin32Init()
+void keg::WindowsWindow::WindowsWin32Init()
 {
     WNDCLASS wc;
     wc.style = CS_HREDRAW | CS_VREDRAW;
@@ -22,7 +22,7 @@ void ktl::WindowsWindow::WindowsWin32Init()
     RegisterClass(&wc);
 }
 
-void ktl::WindowsWindow::WindowsWin32PollEvent()
+void keg::WindowsWindow::WindowsWin32PollEvent()
 {
     MSG msg = { };
     while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -32,89 +32,89 @@ void ktl::WindowsWindow::WindowsWin32PollEvent()
     }
 }
 
-void ktl::WindowsWindow::WindowsWin32Quit()
+void keg::WindowsWindow::WindowsWin32Quit()
 {
     UnregisterClass(windowClassName.c_str(), GetModuleHandle(0));
 }
 
-ktl::WindowsWindow::WindowsWindow(const WindowProps &props)
+keg::WindowsWindow::WindowsWindow(const WindowProps &props)
 {
     InitProps(props);
 }
 
-ktl::WindowsWindow::~WindowsWindow()
+keg::WindowsWindow::~WindowsWindow()
 {
     EvtWin32Window::win32DelegateMap.erase(hWindow);
     DestroyWindow(hWindow);
 }
 
-LRESULT ktl::WindowsWindow::WindowMsgCallBack(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+LRESULT keg::WindowsWindow::WindowMsgCallBack(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
     switch (Msg)
     {
     case WM_DESTROY:
     {
-        ktl::WindowCloseEvent e;
+        keg::WindowCloseEvent e;
         eventCallback(e);
         return 0;
     }
     case WM_SIZE:
     {
-        ktl::WindowResizeEvent e(LOWORD(lParam), HIWORD(lParam));
+        keg::WindowResizeEvent e(LOWORD(lParam), HIWORD(lParam));
 	    eventCallback(e);
         return 0;
     }
     case WM_KEYDOWN:
     {
-        ktl::KeyPressedEvent e(wParam, (HIWORD(lParam) & 0x4000));
+        keg::KeyPressedEvent e(wParam, (HIWORD(lParam) & 0x4000));
         eventCallback(e);
         return 0;
     }
     case WM_KEYUP:
     {
-        ktl::KeyReleasedEvent e(wParam);
+        keg::KeyReleasedEvent e(wParam);
         eventCallback(e);
         return 0;
     }
     case WM_LBUTTONDOWN:
     {
-        ktl::MouseButtonPressedEvent e(0);
+        keg::MouseButtonPressedEvent e(0);
         eventCallback(e);
         return 0;
     }
     case WM_MBUTTONDOWN:
     {
-        ktl::MouseButtonPressedEvent e(2);
+        keg::MouseButtonPressedEvent e(2);
         eventCallback(e);
         return 0;
     }
     case WM_RBUTTONDOWN:
     {
-        ktl::MouseButtonPressedEvent e(1);
+        keg::MouseButtonPressedEvent e(1);
         eventCallback(e);
         return 0;
     }
     case WM_LBUTTONUP:
     {
-        ktl::MouseButtonPressedEvent e(0);
+        keg::MouseButtonPressedEvent e(0);
         eventCallback(e);
         return 0;
     }
     case WM_MBUTTONUP:
     {
-        ktl::MouseButtonPressedEvent e(2);
+        keg::MouseButtonPressedEvent e(2);
         eventCallback(e);
         return 0;
     }
     case WM_RBUTTONUP:
     {
-        ktl::MouseButtonPressedEvent e(1);
+        keg::MouseButtonPressedEvent e(1);
         eventCallback(e);
         return 0;
     }
     case WM_MOUSEMOVE:
     {
-        ktl::MouseMovedEvent e((float)(short)LOWORD(lParam), (float)(short)HIWORD(lParam));
+        keg::MouseMovedEvent e((float)(short)LOWORD(lParam), (float)(short)HIWORD(lParam));
         eventCallback(e);
         return 0;
     }
@@ -124,7 +124,7 @@ LRESULT ktl::WindowsWindow::WindowMsgCallBack(HWND hWnd, UINT Msg, WPARAM wParam
     return DefWindowProc(hWnd, Msg, wParam, lParam);
 }
 
-void ktl::WindowsWindow::InitProps(const WindowProps &props)
+void keg::WindowsWindow::InitProps(const WindowProps &props)
 {
     title = props.title;
     RECT R = { 0, 0, static_cast<LONG>(props.width), static_cast<LONG>(props.height) };
@@ -139,34 +139,34 @@ void ktl::WindowsWindow::InitProps(const WindowProps &props)
 	UpdateWindow(hWindow);
 }
 
-void ktl::WindowsWindow::OnUpdate()
+void keg::WindowsWindow::OnUpdate()
 {
 }
 
-uint32_t ktl::WindowsWindow::GetWidth() const
+uint32_t keg::WindowsWindow::GetWidth() const
 {
     RECT R;
     GetWindowRect(hWindow, &R);
     return R.right - R.left;
 }
 
-uint32_t ktl::WindowsWindow::GetHeight() const
+uint32_t keg::WindowsWindow::GetHeight() const
 {
     RECT R;
     GetWindowRect(hWindow, &R);
     return R.bottom - R.top;
 }
 
-void ktl::WindowsWindow::SetVSync(bool enabled)
+void keg::WindowsWindow::SetVSync(bool enabled)
 {
 }
 
-bool ktl::WindowsWindow::IsVSync() const
+bool keg::WindowsWindow::IsVSync() const
 {
     return false;
 }
 
-void *ktl::WindowsWindow::GetNativeWindow() const
+void *keg::WindowsWindow::GetNativeWindow() const
 {
     return (void*)hWindow;
 }

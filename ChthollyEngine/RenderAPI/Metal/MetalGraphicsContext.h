@@ -6,7 +6,7 @@
 #import <Metal/Metal.h>
 #import <QuartzCore/QuartzCore.h>
 
-namespace ktl
+namespace keg
 {
 class MetalGraphicsContext : public GraphicsContext
 {

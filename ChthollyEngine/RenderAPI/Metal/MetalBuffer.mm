@@ -1,41 +1,41 @@
 #include "MetalBuffer.h"
 
-ktl::MetalVertexBuffer::MetalVertexBuffer(float* vertices, uint32_t size)
+keg::MetalVertexBuffer::MetalVertexBuffer(float* vertices, uint32_t size)
 {
 
 }
 
-ktl::MetalVertexBuffer::~MetalVertexBuffer()
+keg::MetalVertexBuffer::~MetalVertexBuffer()
 {
 
 }
 
-void ktl::MetalVertexBuffer::Bind()
-{
-    
-}
-
-void ktl::MetalVertexBuffer::UnBind()
-{
-
-}
-
-ktl::MetalIndexBuffer::MetalIndexBuffer(uint32_t* indices, uint32_t size)
-{
-
-}
-
-ktl::MetalIndexBuffer::~MetalIndexBuffer()
+void keg::MetalVertexBuffer::Bind()
 {
     
 }
 
-void ktl::MetalIndexBuffer::Bind()
+void keg::MetalVertexBuffer::UnBind()
 {
 
 }
 
-void ktl::MetalIndexBuffer::UnBind()
+keg::MetalIndexBuffer::MetalIndexBuffer(uint32_t* indices, uint32_t size)
+{
+
+}
+
+keg::MetalIndexBuffer::~MetalIndexBuffer()
+{
+    
+}
+
+void keg::MetalIndexBuffer::Bind()
+{
+
+}
+
+void keg::MetalIndexBuffer::UnBind()
 {
 
 }

@@ -4,7 +4,7 @@
 #include "Core/Window.h"
 #include "EvtNSWindow.h"
 
-namespace ktl
+namespace keg
 {
 class MacWindow : public Window, public EvtNSDelegate
 {
@@ -16,7 +16,7 @@ public:
 	MacWindow(const WindowProps& props);
 	~MacWindow();
 
-	virtual SingleDelegate<void, Event&>& GetEventCallback() override;
+	virtual EventCallbackDelegate& GetEventCallback() override;
 
 	virtual void OnUpdate() override;
 

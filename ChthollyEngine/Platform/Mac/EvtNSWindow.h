@@ -2,14 +2,14 @@
 #define _MAC_SUPPORT_H_
 
 #include "Event/Event.h"
-#include "Util/Delegate.h"
+#include "Core/Window.h"
 
-namespace ktl
+namespace keg
 {
 class EvtNSDelegate
 {
 public:
-	virtual SingleDelegate<void, Event&>& GetEventCallback() = 0;
+	virtual EventCallbackDelegate& GetEventCallback() = 0;
 };
 }
 
@@ -17,7 +17,7 @@ public:
 
 @interface EvtNSWindow : NSWindow <NSWindowDelegate>
 
-@property (assign, readwrite) ktl::EvtNSDelegate* evtDelegate;
+@property (assign, readwrite) keg::EvtNSDelegate* evtDelegate;
 
 @end
 

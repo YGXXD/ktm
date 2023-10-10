@@ -3,7 +3,7 @@
 
 #include "Util/Config.h"
 
-namespace ktl
+namespace keg
 {
 enum class EventType : unsigned char
 {
@@ -25,12 +25,12 @@ enum EventCategory : unsigned char
 };
 
 #define EVENT_TYPE(type) \
-static CHTHOLLY_INLINE EventType GetStaticType() { return ktl::EventType::type; } \
-virtual EventType GetEventType() const override { return ktl::EventType::type; } \
+static CHTHOLLY_INLINE EventType GetStaticType() { return keg::EventType::type; } \
+virtual EventType GetEventType() const override { return keg::EventType::type; } \
 virtual const char* GetName() const override { return #type; }
 
 #define EVENT_CATEGORY(category) \
-virtual unsigned char GetCategoryFlags() const override { return ktl::category; }
+virtual unsigned char GetCategoryFlags() const override { return keg::category; }
 
 class Event
 {

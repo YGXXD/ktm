@@ -3,10 +3,10 @@
 
 #import <AppKit/AppKit.h>
 
-id<MTLDevice> ktl::MetalGraphicsContext::gpuDevice;
-id<MTLCommandQueue> ktl::MetalGraphicsContext::gpuCmdQueue;
+id<MTLDevice> keg::MetalGraphicsContext::gpuDevice;
+id<MTLCommandQueue> keg::MetalGraphicsContext::gpuCmdQueue;
 
-void ktl::MetalGraphicsContext::MetalInit()
+void keg::MetalGraphicsContext::MetalInit()
 {
 	@autoreleasepool
 	{
@@ -17,7 +17,7 @@ void ktl::MetalGraphicsContext::MetalInit()
 	}
 }
 
-void ktl::MetalGraphicsContext::MetalQuit()
+void keg::MetalGraphicsContext::MetalQuit()
 {
 	@autoreleasepool
 	{
@@ -26,7 +26,7 @@ void ktl::MetalGraphicsContext::MetalQuit()
 	}
 }
 
-ktl::MetalGraphicsContext::MetalGraphicsContext(void* window)
+keg::MetalGraphicsContext::MetalGraphicsContext(void* window)
 {
 	@autoreleasepool
 	{
@@ -43,12 +43,12 @@ ktl::MetalGraphicsContext::MetalGraphicsContext(void* window)
 	}
 }
 
-ktl::MetalGraphicsContext::~MetalGraphicsContext()
+keg::MetalGraphicsContext::~MetalGraphicsContext()
 {
 	[metalLayer release];
 }
 
-void ktl::MetalGraphicsContext::SwapBuffer()
+void keg::MetalGraphicsContext::SwapBuffer()
 {
 	@autoreleasepool
 	{

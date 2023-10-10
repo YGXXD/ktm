@@ -9,7 +9,7 @@
 - (void)dealloc 
 {
     [super dealloc];
-    KTL_DEBUG("CocoaApp dealloc")
+    KEG_DEBUG("CocoaApp dealloc")
 }
 
 @end
@@ -54,72 +54,72 @@
 - (void)dealloc 
 {
     [super dealloc];
-    KTL_DEBUG("EvtNSWindow dealloc")
+    KEG_DEBUG("EvtNSWindow dealloc")
 }
 
 - (void)windowWillClose:(NSNotification *)notification 
 {
-	ktl::WindowCloseEvent e;
+	keg::WindowCloseEvent e;
 	evtDelegate->GetEventCallback()(e);	
 }
 
 - (void)windowDidResize:(NSNotification *)notification 
 {
-	ktl::WindowResizeEvent e(self.frame.size.width, self.frame.size.height);
+	keg::WindowResizeEvent e(self.frame.size.width, self.frame.size.height);
 	evtDelegate->GetEventCallback()(e);
 }
 
 - (void)keyDown:(NSEvent *)event
 {
-    ktl::KeyPressedEvent e(event.keyCode, event.isARepeat);
+    keg::KeyPressedEvent e(event.keyCode, event.isARepeat);
     evtDelegate->GetEventCallback()(e);
 }
 
 - (void)keyUp:(NSEvent *)event 
 {
-	ktl::KeyReleasedEvent e(event.keyCode);
+	keg::KeyReleasedEvent e(event.keyCode);
     evtDelegate->GetEventCallback()(e); 
 }
 
 - (void)mouseDown:(NSEvent *)event 
 {
-	ktl::MouseButtonPressedEvent e(event.buttonNumber);
+	keg::MouseButtonPressedEvent e(event.buttonNumber);
     evtDelegate->GetEventCallback()(e);
 }
 
 - (void)rightMouseDown:(NSEvent *)event 
 {
-    ktl::MouseButtonPressedEvent e(event.buttonNumber);
+    keg::MouseButtonPressedEvent e(event.buttonNumber);
     evtDelegate->GetEventCallback()(e);
 }
 
 - (void)otherMouseDown:(NSEvent *)event 
 {
-    ktl::MouseButtonPressedEvent e(event.buttonNumber);
+    keg::MouseButtonPressedEvent e(event.buttonNumber);
     evtDelegate->GetEventCallback()(e);
 }
 
 - (void)mouseUp:(NSEvent *)event 
 {
-	ktl::MouseButtonReleasedEvent e(event.buttonNumber);
+	keg::MouseButtonReleasedEvent e(event.buttonNumber);
     evtDelegate->GetEventCallback()(e);
 }
 
 -(void)rightMouseUp:(NSEvent *)event 
 {
-    ktl::MouseButtonReleasedEvent e(event.buttonNumber);
+    keg::MouseButtonReleasedEvent e(event.buttonNumber);
     evtDelegate->GetEventCallback()(e);
 }
 
 - (void)otherMouseUp:(NSEvent *)event 
 {
-    ktl::MouseButtonReleasedEvent e(event.buttonNumber);
+    keg::MouseButtonReleasedEvent e(event.buttonNumber);
     evtDelegate->GetEventCallback()(e);
 }
 
 - (void)scrollWheel:(NSEvent *)event 
 {
-    ktl::MouseScrolledEvent e(event.deltaX, event.deltaY);
+    keg::MouseScrolledEvent e(event.deltaX, event.deltaY);
     evtDelegate->GetEventCallback()(e);
 }
 
@@ -128,7 +128,7 @@
 	NSPoint p = [event locationInWindow];
     if(NSPointInRect(p, self.contentView.bounds))
     {
-        ktl::MouseMovedEvent e(p.x, p.y);
+        keg::MouseMovedEvent e(p.x, p.y);
 	    evtDelegate->GetEventCallback()(e);
     }
 }

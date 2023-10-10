@@ -5,7 +5,7 @@
 #include "EvtWin32Window.h"
 #include <Windows.h>
 
-namespace ktl
+namespace keg
 {
 class WindowsWindow : public Window, public EvtWin32Delegate
 {

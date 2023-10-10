@@ -3,7 +3,7 @@
 
 #include "Util/Config.h"
 
-namespace ktl
+namespace keg
 {
 class CHTHOLLY_ENGINE_API VertexBuffer
 {

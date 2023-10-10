@@ -6,7 +6,7 @@
 
 #endif
 
-ktl::GraphicsContext* ktl::GraphicsContext::Create(void* window)
+keg::GraphicsContext* keg::GraphicsContext::Create(void* window)
 {
 #if defined(CHTHOLLY_RENDER_API_METAL)
     return new MetalGraphicsContext(window);
@@ -15,7 +15,7 @@ ktl::GraphicsContext* ktl::GraphicsContext::Create(void* window)
 #endif
 }
 
-void ktl::GraphicsContext::Init()
+void keg::GraphicsContext::Init()
 {
 #if defined(CHTHOLLY_RENDER_API_METAL)
 	MetalGraphicsContext::MetalInit();
@@ -24,7 +24,7 @@ void ktl::GraphicsContext::Init()
 #endif
 }
 
-void ktl::GraphicsContext::Quit()
+void keg::GraphicsContext::Quit()
 {
 #if defined(CHTHOLLY_RENDER_API_METAL)
 	MetalGraphicsContext::MetalQuit();

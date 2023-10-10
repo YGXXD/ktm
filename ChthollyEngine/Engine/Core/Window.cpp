@@ -6,9 +6,9 @@
     #include "Windows/WindowsWindow.h"
 #endif
 
-bool ktl::Window::bisInitialized = false;
+bool keg::Window::bisInitialized = false;
 
-ktl::Window* ktl::Window::Create(const WindowProps& props)
+keg::Window* keg::Window::Create(const WindowProps& props)
 {
 #if defined(CHTHOLLY_PLATFORM_APPLE)
     return new MacWindow(props);
@@ -17,7 +17,7 @@ ktl::Window* ktl::Window::Create(const WindowProps& props)
 #endif 
 }
 
-void ktl::Window::Init()
+void keg::Window::Init()
 {
     assert(!bisInitialized);
 #if defined(CHTHOLLY_PLATFORM_APPLE)
@@ -28,7 +28,7 @@ void ktl::Window::Init()
     bisInitialized = true;
 }
 
-void ktl::Window::PollEvent()
+void keg::Window::PollEvent()
 {
 #if defined(CHTHOLLY_PLATFORM_APPLE)
     MacWindow::MacCocoaPollEvent();
@@ -37,7 +37,7 @@ void ktl::Window::PollEvent()
 #endif 
 }
 
-void ktl::Window::Quit()
+void keg::Window::Quit()
 {
     assert(bisInitialized);
 #if defined(CHTHOLLY_PLATFORM_APPLE)

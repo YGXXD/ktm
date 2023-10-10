@@ -3,11 +3,11 @@
 
 #include "Config.h"
 
-#define DECLARE_FUNCTION_DELEGATE(DelegateName, ReturnValueType, ...) typedef ktl::SingleDelegate<ReturnValueType, __VA_ARGS__> (DelegateName);
-#define DECLARE_FUNCTION_DELEGATE_NO_PARAMETER(DelegateName, ReturnValueType) typedef ktl::SingleDelegate<ReturnValueType> (DelegateName);
+#define DECLARE_FUNCTION_DELEGATE(DelegateName, ReturnValueType, ...) typedef ::ktl::SingleDelegate<ReturnValueType, __VA_ARGS__> (DelegateName);
+#define DECLARE_FUNCTION_DELEGATE_NO_PARAMETER(DelegateName, ReturnValueType) typedef ::ktl::SingleDelegate<ReturnValueType> (DelegateName);
 
-#define DECLARE_FUNCTION_MULTICAST_DELEGATE(DelegateName, ...) typedef ktl::MultiDelegate<__VA_ARGS__> (DelegateName);
-#define DECLARE_FUNCTION_MULTICAST_DELEGATE_NO_PARAMETER(DelegateName) typedef ktl::MultiDelegate<> (DelegateName);
+#define DECLARE_FUNCTION_MULTICAST_DELEGATE(DelegateName, ...) typedef ::ktl::MultiDelegate<__VA_ARGS__> (DelegateName);
+#define DECLARE_FUNCTION_MULTICAST_DELEGATE_NO_PARAMETER(DelegateName) typedef ::ktl::MultiDelegate<> (DelegateName);
 
 namespace ktl
 {
