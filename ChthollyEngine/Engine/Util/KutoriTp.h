@@ -64,10 +64,10 @@ inline constexpr bool is_exist_same_vs<> = false;
 
 // 检测两个模版类型是否相同
 template<template<typename ...> class Tp, template<typename ...> class Up>
-struct is_template_same : std::false_type { };
+struct is_template_same : false_type { };
 
 template<template<typename ...> class Tp>
-struct is_template_same<Tp, Tp> : std::true_type { };
+struct is_template_same<Tp, Tp> : true_type { };
 
 template<template<typename ...> class Tp, template<typename ...> class Up>
 inline constexpr bool is_template_same_v = is_template_same<Tp, Up>::value;

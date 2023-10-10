@@ -39,8 +39,19 @@ ktl::MetalGraphicsContext::MetalGraphicsContext(void* window)
 		metalLayer.device = gpuDevice; 
 		metalLayer.pixelFormat = MTLPixelFormatBGRA8Unorm_sRGB; 
 		metalLayer.framebufferOnly = true;
-		metalLayer.frame = view.bounds;	
-	
+		metalLayer.frame = view.bounds;
+	}
+}
+
+ktl::MetalGraphicsContext::~MetalGraphicsContext()
+{
+	[metalLayer release];
+}
+
+void ktl::MetalGraphicsContext::SwapBuffer()
+{
+	@autoreleasepool
+	{
 		id<CAMetalDrawable> next = [metalLayer nextDrawable];
 		id<MTLCommandBuffer> pCmd = [gpuCmdQueue commandBuffer];
     	MTLRenderPassDescriptor* pRpd = [[[MTLRenderPassDescriptor alloc] init] autorelease];
@@ -54,18 +65,5 @@ ktl::MetalGraphicsContext::MetalGraphicsContext(void* window)
     	[pEnc endEncoding];
     	[pCmd presentDrawable:next];
     	[pCmd commit];
-	}
-}
-
-ktl::MetalGraphicsContext::~MetalGraphicsContext()
-{
-	[metalLayer release];
-}
-
-void ktl::MetalGraphicsContext::SwapBuffer()
-{
-	@autoreleasepool
-	{
-		
 	}	
 }
