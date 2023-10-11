@@ -2,6 +2,7 @@
 #define _METAL_BUFFER_H_
 
 #include "Renderer/Buffer.h"
+#import <Metal/Metal.h>
 
 namespace keg 
 {
@@ -13,16 +14,23 @@ public:
 
     virtual void Bind() override;
     virtual void UnBind() override;
+
+    CHTHOLLY_INLINE id<MTLBuffer> GetBuffer() const { return vBuffer; }
+private:
+    id<MTLBuffer> vBuffer;
 };
 
 class MetalIndexBuffer : public IndexBuffer
 {
 public:
-    MetalIndexBuffer(uint32_t* indices, uint32_t size);
+    MetalIndexBuffer(uint32_t* indices, uint32_t count);
     virtual ~MetalIndexBuffer();
 
     virtual void Bind() override;
     virtual void UnBind() override;
+    CHTHOLLY_INLINE id<MTLBuffer> GetBuffer() const { return iBuffer; }
+private:
+    id<MTLBuffer> iBuffer;
 };
 }
 
