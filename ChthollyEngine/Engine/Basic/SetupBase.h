@@ -12,6 +12,7 @@
 			#error "Chtholly Engine don't support ios!"
 		#elif TARGET_OS_MAC == 1
 			#define CHTHOLLY_RENDER_API_METAL
+			#define CHTHOLLY_RENDER_API_VULKAN
 		#else
 			#error "Chtholly Engine don't support unkown apple platform!"
 		#endif

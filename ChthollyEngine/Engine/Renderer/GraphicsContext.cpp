@@ -1,34 +1,63 @@
 #include "GraphicsContext.h"
+#include "Renderer.h"
 
-#if defined(CHTHOLLY_RENDER_API_METAL)
+#ifdef CHTHOLLY_RENDER_API_METAL
 	#include "Metal/MetalGraphicsContext.h"
-#elif defined(CHTHOLLY_RENDER_API_DX12)
+#endif
+#ifdef CHTHOLLY_RENDER_API_VULKAN
+	#include "Vulkan/VulkanGraphicsContext.h"
+#endif
+#ifdef CHTHOLLY_RENDER_API_DX12
 
 #endif
 
 keg::GraphicsContext* keg::GraphicsContext::Create(void* window)
 {
-#if defined(CHTHOLLY_RENDER_API_METAL)
-    return new MetalGraphicsContext(window);
-#elif defined(CHTHOLLY_RENDER_API_DX12)
-	return nullptr;
+	switch(Renderer::GetAPI()) 
+	{
+#ifdef	CHTHOLLY_RENDER_API_METAL
+		case RenderAPI::Metal: return new MetalGraphicsContext(window);
 #endif
+#ifdef	CHTHOLLY_RENDER_API_DX12 
+		case RenderAPI::DX12: return nullptr;
+#endif
+#ifdef	CHTHOLLY_RENDER_API_VULKAN
+		case RenderAPI::Vulkan: return new VulkanGraphicsContext(window);
+#endif
+		default: assert(false); return nullptr;
+	}
 }
 
 void keg::GraphicsContext::Init()
 {
-#if defined(CHTHOLLY_RENDER_API_METAL)
-	MetalGraphicsContext::MetalInit();
-#elif defined(CHTHOLLY_RENDER_API_DX12)
-
+	switch(Renderer::GetAPI()) 
+	{
+#ifdef	CHTHOLLY_RENDER_API_METAL
+		case RenderAPI::Metal: MetalGraphicsContext::MetalInit(); break;
 #endif
+#ifdef	CHTHOLLY_RENDER_API_DX12 
+		case RenderAPI::DX12: break;
+#endif
+#ifdef	CHTHOLLY_RENDER_API_VULKAN
+		case RenderAPI::Vulkan: VulkanGraphicsContext::VulkanInit(); break;
+#endif
+		default: assert(false); break;
+	}
 }
 
 void keg::GraphicsContext::Quit()
 {
-#if defined(CHTHOLLY_RENDER_API_METAL)
-	MetalGraphicsContext::MetalQuit();
-#elif defined(CHTHOLLY_RENDER_API_DX12)
-
+	switch(Renderer::GetAPI()) 
+	{
+#ifdef	CHTHOLLY_RENDER_API_METAL
+		case RenderAPI::Metal: MetalGraphicsContext::MetalQuit(); break;
 #endif
+#ifdef	CHTHOLLY_RENDER_API_DX12 
+		case RenderAPI::DX12: break;
+#endif
+#ifdef	CHTHOLLY_RENDER_API_VULKAN
+		case RenderAPI::Vulkan: VulkanGraphicsContext::VulkanQuit(); break;
+#endif
+		default: assert(false); break;
+	}
 }
