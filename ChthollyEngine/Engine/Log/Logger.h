@@ -1,14 +1,14 @@
 #ifndef _LOGGER_H_
 #define _LOGGER_H_
 
+#include "Util/Config.h"
+
 #define KEG_LOG(LogLevel, ...) keg::Logger::Log((LogLevel), __VA_ARGS__);
 #define KEG_DEBUG(...) KEG_LOG(keg::LogLevel::Debug, __VA_ARGS__)
 #define KEG_INFO(...) KEG_LOG(keg::LogLevel::Info, __VA_ARGS__)
 #define KEG_WARN(...) KEG_LOG(keg::LogLevel::Warn, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
 #define KEG_ERROR(...) KEG_LOG(keg::LogLevel::Error, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
 #define KEG_FATAL(...) KEG_LOG(keg::LogLevel::Fatal, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
-
-#include "Util/Config.h"
 
 namespace keg
 {

@@ -35,6 +35,11 @@
 	#error "Chtholly Engine don't support the unknown platform!"
 #endif
 
+// debug state
+#ifndef NDEBUG
+	#define CHTHOLLY_DEBUG_ENABLE
+#endif
+
 // c++ compiler config
 #if defined(__clang__)
 	#define CHTHOLLY_COMPILER_CLANG
