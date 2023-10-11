@@ -1,8 +1,6 @@
 #include "Logger.h"
 
-const char* keg::Logger::levelString[5] = {"Debug", "Info", "Warn", "Error", "Fatal"};
-const char* keg::Logger::levelColor[3] = {"\033[33m", "\033[31m", "\033[41m"};
-keg::LogLevel keg::Logger::minLogLevel = keg::LogLevelDebug;
+keg::LogLevel keg::Logger::minLogLevel = keg::LogLevel::Debug;
 keg::Logger::UTCTimer keg::Logger::utimer;
 
 keg::Logger::Logger()

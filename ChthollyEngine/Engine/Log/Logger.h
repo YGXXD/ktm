@@ -2,23 +2,23 @@
 #define _LOGGER_H_
 
 #define KEG_LOG(LogLevel, ...) keg::Logger::Log((LogLevel), __VA_ARGS__);
-#define KEG_DEBUG(...) KEG_LOG(keg::LogLevelDebug, __VA_ARGS__)
-#define KEG_INFO(...) KEG_LOG(keg::LogLevelInfo, __VA_ARGS__)
-#define KEG_WARN(...) KEG_LOG(keg::LogLevelWarn, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
-#define KEG_ERROR(...) KEG_LOG(keg::LogLevelError, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
-#define KEG_FATAL(...) KEG_LOG(keg::LogLevelFatal, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
+#define KEG_DEBUG(...) KEG_LOG(keg::LogLevel::Debug, __VA_ARGS__)
+#define KEG_INFO(...) KEG_LOG(keg::LogLevel::Info, __VA_ARGS__)
+#define KEG_WARN(...) KEG_LOG(keg::LogLevel::Warn, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
+#define KEG_ERROR(...) KEG_LOG(keg::LogLevel::Error, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
+#define KEG_FATAL(...) KEG_LOG(keg::LogLevel::Fatal, __VA_ARGS__, " (file:", __FILE__, " line:", __LINE__, ")")
 
 #include "Util/Config.h"
 
 namespace keg
 {
-enum LogLevel : unsigned char
+enum class LogLevel : unsigned char
 {
-    LogLevelDebug = 0,
-    LogLevelInfo,
-    LogLevelWarn,
-    LogLevelError,
-    LogLevelFatal
+    Debug = 0,
+    Info,
+    Warn,
+    Error,
+    Fatal
 };
 
 class CHTHOLLY_ENGINE_API Logger
@@ -30,6 +30,8 @@ public:
 	template<typename ...ArgsT>
 	static void Log(LogLevel level, ArgsT&&... args);
 
+	static CHTHOLLY_INLINE void SetMinLogLevel(LogLevel level) { minLogLevel = level; }
+	static CHTHOLLY_INLINE LogLevel GetMinLogLevel() { return minLogLevel; }
 private:
 	template<typename ...ArgsT>
 	static CHTHOLLY_INLINE void ConsoleLog(ArgsT&&... args);
@@ -48,9 +50,10 @@ private:
 	
 	// 变量
     static LogLevel minLogLevel;
-	static const char* levelString[];
-	static const char* levelColor[];
 	static UTCTimer utimer;
+
+	static constexpr const char* levelString[5] = {"Debug", "Info", "Warn", "Error", "Fatal"};;
+	static constexpr const char* levelColor[3] = {"\033[33m", "\033[31m", "\033[41m"};;
 };
 
 } 
@@ -58,12 +61,12 @@ private:
 template<typename ...ArgsT>
 void keg::Logger::Log(keg::LogLevel level, ArgsT&&... args)
 {
-	if(level >= minLogLevel && level <= LogLevelFatal)
+	if(level >= minLogLevel && level <= LogLevel::Fatal)
 	{
-		if(level >= LogLevelWarn)
-			ConsoleLog(levelColor[level - LogLevelWarn], utimer.GetUTCTime(), " ", levelString[level], ": ", std::forward<ArgsT>(args)..., "\033[0m");	
+		if(level >= LogLevel::Warn)
+			ConsoleLog(levelColor[static_cast<unsigned char>(level) - static_cast<unsigned char>(LogLevel::Warn)], utimer.GetUTCTime(), " ", levelString[static_cast<unsigned char>(level)], ": ", std::forward<ArgsT>(args)..., "\033[0m");	
 		else
-			ConsoleLog(utimer.GetUTCTime(), " ", levelString[level], ": ", std::forward<ArgsT>(args)...);
+			ConsoleLog(utimer.GetUTCTime(), " ", levelString[static_cast<unsigned char>(level)], ": ", std::forward<ArgsT>(args)...);
 	}
 }
 
