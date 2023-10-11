@@ -1,8 +1,8 @@
 #ifndef _BASE_TYPE_H_
 #define _BASE_TYPE_H_
 
-#include "Util/KSimd.h"
-#include "Util/KutoriTp.h"
+#include "Basic/SetupSimd.h"
+#include "Basic/SingleExtend.h"
 
 namespace ktm
 {

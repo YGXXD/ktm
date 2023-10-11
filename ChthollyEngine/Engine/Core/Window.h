@@ -1,8 +1,8 @@
 #ifndef _WINDOW_H_
 #define _WINDOW_H_
 
-#include "Util/Config.h"
-#include "Util/Delegate.h"
+#include "Basic/SetupBase.h"
+#include "Basic/Delegate.h"
 #include "Event/Event.h"
 
 namespace keg

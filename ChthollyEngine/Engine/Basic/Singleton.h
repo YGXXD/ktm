@@ -1,6 +1,8 @@
 #ifndef _SINGLETON_H_
 #define _SINGLETON_H_
 
+#define SINGLETON_REGISTER(className) friend class ::ktl::Singleton<className>;
+
 namespace ktl
 {
 template<class T>
@@ -34,9 +36,5 @@ inline T& ktl::Singleton<T>::Get()
 	}
 	return *SingletonInstance;
 }
-
-#define SINGLETON_REGISTER(className) \
-static inline className& Get() { return ktl::Singleton<className>::Get(); } \
-friend class Singleton<className>;
 
 #endif

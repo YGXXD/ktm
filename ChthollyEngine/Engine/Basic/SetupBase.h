@@ -1,5 +1,5 @@
-#ifndef _CONFIG_H_
-#define _CONFIG_H_
+#ifndef _SETUP_BASE_H_
+#define _SETUP_BASE_H_
 
 // os platform config, only support 64-bit os
 #if defined(__APPLE__)
@@ -102,6 +102,11 @@
 	#define CHTHOLLY_SIMD_SSE (CHTHOLLY_SIMD_SSE_FLAG)
 #endif
 
+#include <cstdint>
+#include <cassert>
+#include <cstring>
+#include <cmath>
+
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -111,10 +116,5 @@
 #include <algorithm>
 #include <thread>
 #include <memory>
-
-#include <cstdint>
-#include <cassert>
-#include <cstring>
-#include <cmath>
 
 #endif

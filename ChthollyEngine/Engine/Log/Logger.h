@@ -1,7 +1,7 @@
 #ifndef _LOGGER_H_
 #define _LOGGER_H_
 
-#include "Util/Config.h"
+#include "Basic/SetupBase.h"
 
 #define KEG_LOG(LogLevel, ...) keg::Logger::Log((LogLevel), __VA_ARGS__);
 #define KEG_DEBUG(...) KEG_LOG(keg::LogLevel::Debug, __VA_ARGS__)
