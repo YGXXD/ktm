@@ -6,8 +6,6 @@
     #include "Windows/WindowsWindow.h"
 #endif
 
-bool keg::Window::bisInitialized = false;
-
 keg::Window* keg::Window::Create(const WindowProps& props)
 {
 #if defined(CHTHOLLY_PLATFORM_APPLE)
@@ -19,13 +17,11 @@ keg::Window* keg::Window::Create(const WindowProps& props)
 
 void keg::Window::Init()
 {
-    assert(!bisInitialized);
 #if defined(CHTHOLLY_PLATFORM_APPLE)
     MacWindow::MacCocoaInit();
 #elif defined(CHTHOLLY_PLATFORM_WINDOWS)
 	WindowsWindow::WindowsWin32Init();
 #endif 
-    bisInitialized = true;
 }
 
 void keg::Window::PollEvent()
@@ -39,11 +35,9 @@ void keg::Window::PollEvent()
 
 void keg::Window::Quit()
 {
-    assert(bisInitialized);
 #if defined(CHTHOLLY_PLATFORM_APPLE)
 	MacWindow::MacCocoaQuit();
 #elif defined(CHTHOLLY_PLATFORM_WINDOWS)
 	WindowsWindow::WindowsWin32Quit();
 #endif 
-    bisInitialized = false;
 }

@@ -41,9 +41,6 @@ public:
  	virtual void* GetNativeWindow() const = 0;
 	
 	EventCallbackDelegate eventCallback;
-
-private:
-	static bool bisInitialized;
 };
 }
 
