@@ -1,4 +1,5 @@
 #include "MetalContext.h"
+#include "Log/Logger.h"
 
 #import <AppKit/AppKit.h>
 
@@ -10,9 +11,9 @@ void keg::MetalContext::MetalInit()
 	@autoreleasepool
 	{
 		gpuDevice = MTLCreateSystemDefaultDevice();
-		assert(gpuDevice != nil);
+		assert(gpuDevice);
 		gpuCmdQueue = [gpuDevice newCommandQueueWithMaxCommandBufferCount:1];
-		assert(gpuDevice != nil);
+		assert(gpuDevice);
 	}
 }
 
@@ -30,7 +31,6 @@ keg::MetalContext::MetalContext(void* window)
 	@autoreleasepool
 	{
 		metalLayer = [CAMetalLayer layer];
-
 		NSView* view = ((NSWindow*)window).contentView;
 		view.wantsLayer = true;
 		view.layer = [metalLayer retain];

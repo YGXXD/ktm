@@ -7,13 +7,14 @@ keg::MetalVertexBuffer::MetalVertexBuffer(float* vertices, uint32_t size)
     {
         id<MTLDevice> device = MetalContext::GetDevice();
         vBuffer = [device newBufferWithLength:size options:MTLResourceStorageModeShared];
+        assert(vBuffer);
         memcpy(vBuffer.contents, vertices, size);
     }
 }
 
 keg::MetalVertexBuffer::~MetalVertexBuffer()
 {
-     [vBuffer release];
+    [vBuffer release];
 }
 
 void keg::MetalVertexBuffer::Bind()
@@ -34,6 +35,7 @@ keg::MetalIndexBuffer::MetalIndexBuffer(uint32_t* indices, uint32_t count)
         const uint32_t size = indicesCount * sizeof(uint32_t);
         id<MTLDevice> device = MetalContext::GetDevice();
         iBuffer = [device newBufferWithLength:size options:MTLResourceStorageModeShared];
+        assert(iBuffer);
         memcpy(iBuffer.contents, indices, size);
     }
 }
