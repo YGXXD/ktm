@@ -43,6 +43,8 @@ private:
 
     static std::unordered_map<VkQueue, uint32_t> queueFamilyIndexMap;
     static std::unordered_map<VkQueue, VkCommandPool> queueCmdPoolMap;
+
+    VkSurfaceKHR surface;
 };
 }
 

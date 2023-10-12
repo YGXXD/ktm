@@ -33,7 +33,7 @@ keg::MetalContext::MetalContext(void* window)
 		metalLayer = [CAMetalLayer layer];
 		NSView* view = ((NSWindow*)window).contentView;
 		view.wantsLayer = true;
-		view.layer = [metalLayer retain];
+		view.layer = metalLayer;
 
 		metalLayer.device = device; 
 		metalLayer.pixelFormat = MTLPixelFormatBGRA8Unorm_sRGB; 

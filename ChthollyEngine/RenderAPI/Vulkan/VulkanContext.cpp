@@ -196,14 +196,41 @@ void keg::VulkanContext::CreateCommandPool()
 	}
 }
 
+#if defined(CHTHOLLY_PLATFORM_APPLE)
+	#import <QuartzCore/QuartzCore.h>
+	#import <Appkit/AppKit.h>
+	#include <vulkan/vulkan_macos.h>
+#elif defined(CHTHOLLY_PLATFORM_WINDOWS)
+
+#endif
+
 keg::VulkanContext::VulkanContext(void* window)
 {
-	
+#if defined(CHTHOLLY_PLATFORM_APPLE)
+	@autoreleasepool
+	{
+		CAMetalLayer* metalLayer = [[CAMetalLayer layer] autorelease];
+		NSView* view = ((NSWindow*)window).contentView;
+		view.wantsLayer = true;
+		view.layer = metalLayer;
+
+		VkMacOSSurfaceCreateInfoMVK surfaceCreateInfo = {};
+        surfaceCreateInfo.sType = VK_STRUCTURE_TYPE_MACOS_SURFACE_CREATE_INFO_MVK;
+        surfaceCreateInfo.pNext = NULL;
+        surfaceCreateInfo.flags = 0;
+        surfaceCreateInfo.pView = (const void *)view;
+        vkCreateMacOSSurfaceMVK(instance, &surfaceCreateInfo, NULL, &surface);
+	}
+#elif defined(CHTHOLLY_PLATFORM_WINDOWS)
+
+#endif
+	assert(surface);
 }
 
 keg::VulkanContext::~VulkanContext()
 {
-    
+	vkDestroySurfaceKHR(instance, surface, nullptr);
+	
 }
 
 void keg::VulkanContext::SwapBuffer()
