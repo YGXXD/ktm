@@ -6,6 +6,7 @@
 
 namespace keg
 {
+
 class VulkanContext : public GraphicsContext
 {
 public: 
@@ -17,15 +18,31 @@ public:
 
     virtual void SwapBuffer();
 
+    CHTHOLLY_INLINE VkDevice GetDevice() { return device; }
+    CHTHOLLY_INLINE VkQueue GetGrapicsQueue() { return graphicsQueue; }
+    CHTHOLLY_INLINE VkQueue GetTransferQueue() { return transferQueue; }
+    CHTHOLLY_INLINE VkQueue GetComputeQueue() { return computeQueue; }
+
+    CHTHOLLY_INLINE VkCommandPool GetGrapicsCmdPool() { return queueCmdPoolMap[graphicsQueue]; }
+    CHTHOLLY_INLINE VkCommandPool GetTransferCmdPool() { return queueCmdPoolMap[transferQueue]; }
+    CHTHOLLY_INLINE VkCommandPool GetComputeCmdPool() { return queueCmdPoolMap[computeQueue]; } 
+
 private:
-    VkInstance instance;
-    VkPhysicalDevice physicalDevice;
-    VkDevice logicDevice;
+    static void CreateVulkanInstance();
+    static void SelectPhysicalDevice();
+    static void CreateLogicDeviceAndQueue();
+    static void CreateCommandPool();
 
-    VkQueue graphicsQueue;
-    VkQueue transferQueue;
+    static VkInstance instance;
+    static VkPhysicalDevice physicalDevice;
+     
+    static VkDevice device;
+    static VkQueue graphicsQueue;
+    static VkQueue transferQueue;
+    static VkQueue computeQueue;
 
-    std::unordered_map<uint8_t, VkCommandPool> commandPoolMap;
+    static std::unordered_map<VkQueue, uint32_t> queueFamilyIndexMap;
+    static std::unordered_map<VkQueue, VkCommandPool> queueCmdPoolMap;
 };
 }
 

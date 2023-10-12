@@ -3,17 +3,17 @@
 
 #import <AppKit/AppKit.h>
 
-id<MTLDevice> keg::MetalContext::gpuDevice;
-id<MTLCommandQueue> keg::MetalContext::gpuCmdQueue;
+id<MTLDevice> keg::MetalContext::device;
+id<MTLCommandQueue> keg::MetalContext::cmdQueue;
 
 void keg::MetalContext::MetalInit()
 {
 	@autoreleasepool
 	{
-		gpuDevice = MTLCreateSystemDefaultDevice();
-		assert(gpuDevice);
-		gpuCmdQueue = [gpuDevice newCommandQueueWithMaxCommandBufferCount:1];
-		assert(gpuDevice);
+		device = MTLCreateSystemDefaultDevice();
+		assert(device);
+		cmdQueue = [device newCommandQueueWithMaxCommandBufferCount:1];
+		assert(device);
 	}
 }
 
@@ -21,8 +21,8 @@ void keg::MetalContext::MetalQuit()
 {
 	@autoreleasepool
 	{
-		[gpuCmdQueue autorelease];
-		[gpuDevice autorelease];
+		[cmdQueue autorelease];
+		[device autorelease];
 	}
 }
 
@@ -35,7 +35,7 @@ keg::MetalContext::MetalContext(void* window)
 		view.wantsLayer = true;
 		view.layer = [metalLayer retain];
 
-		metalLayer.device = gpuDevice; 
+		metalLayer.device = device; 
 		metalLayer.pixelFormat = MTLPixelFormatBGRA8Unorm_sRGB; 
 		metalLayer.framebufferOnly = true;
 		metalLayer.frame = view.bounds;
@@ -52,7 +52,7 @@ void keg::MetalContext::SwapBuffer()
 	@autoreleasepool
 	{
 		id<CAMetalDrawable> next = [metalLayer nextDrawable];
-		id<MTLCommandBuffer> pCmd = [gpuCmdQueue commandBuffer];
+		id<MTLCommandBuffer> pCmd = [cmdQueue commandBuffer];
     	MTLRenderPassDescriptor* pRpd = [[[MTLRenderPassDescriptor alloc] init] autorelease];
 		pRpd.colorAttachments[0].clearColor = MTLClearColorMake(0.5, 1.0, 0.3, 1.0); 
 		pRpd.colorAttachments[0].texture = next.texture;

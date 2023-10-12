@@ -14,12 +14,12 @@ public:
 	static void MetalInit();
 	static void MetalQuit();
 
-	inline static id<MTLDevice> GetDevice() { return gpuDevice; }
-	inline static id<MTLCommandQueue> GetCmdQueue() { return gpuCmdQueue; }
+	inline static id<MTLDevice> GetDevice() { return device; }
+	inline static id<MTLCommandQueue> GetCmdQueue() { return cmdQueue; }
 
 private:
-	static id<MTLDevice> gpuDevice;
-	static id<MTLCommandQueue> gpuCmdQueue;
+	static id<MTLDevice> device;
+	static id<MTLCommandQueue> cmdQueue;
 
 public:
 	MetalContext(void* window);
