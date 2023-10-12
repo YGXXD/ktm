@@ -1,12 +1,11 @@
-#include "MetalGraphicsContext.h"
-#include "Log/Logger.h"
+#include "MetalContext.h"
 
 #import <AppKit/AppKit.h>
 
-id<MTLDevice> keg::MetalGraphicsContext::gpuDevice;
-id<MTLCommandQueue> keg::MetalGraphicsContext::gpuCmdQueue;
+id<MTLDevice> keg::MetalContext::gpuDevice;
+id<MTLCommandQueue> keg::MetalContext::gpuCmdQueue;
 
-void keg::MetalGraphicsContext::MetalInit()
+void keg::MetalContext::MetalInit()
 {
 	@autoreleasepool
 	{
@@ -17,7 +16,7 @@ void keg::MetalGraphicsContext::MetalInit()
 	}
 }
 
-void keg::MetalGraphicsContext::MetalQuit()
+void keg::MetalContext::MetalQuit()
 {
 	@autoreleasepool
 	{
@@ -26,7 +25,7 @@ void keg::MetalGraphicsContext::MetalQuit()
 	}
 }
 
-keg::MetalGraphicsContext::MetalGraphicsContext(void* window)
+keg::MetalContext::MetalContext(void* window)
 {
 	@autoreleasepool
 	{
@@ -43,12 +42,12 @@ keg::MetalGraphicsContext::MetalGraphicsContext(void* window)
 	}
 }
 
-keg::MetalGraphicsContext::~MetalGraphicsContext()
+keg::MetalContext::~MetalContext()
 {
 	[metalLayer release];
 }
 
-void keg::MetalGraphicsContext::SwapBuffer()
+void keg::MetalContext::SwapBuffer()
 {
 	@autoreleasepool
 	{

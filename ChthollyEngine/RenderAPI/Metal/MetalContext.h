@@ -8,7 +8,7 @@
 
 namespace keg
 {
-class MetalGraphicsContext : public GraphicsContext
+class MetalContext : public GraphicsContext
 {
 public: 
 	static void MetalInit();
@@ -22,8 +22,8 @@ private:
 	static id<MTLCommandQueue> gpuCmdQueue;
 
 public:
-	MetalGraphicsContext(void* window);
-	virtual ~MetalGraphicsContext();
+	MetalContext(void* window);
+	virtual ~MetalContext();
 	virtual void SwapBuffer() override;
  
 private:
