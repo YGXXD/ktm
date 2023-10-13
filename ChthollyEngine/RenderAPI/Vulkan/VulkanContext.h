@@ -13,19 +13,14 @@ public:
 	static void VulkanInit();
 	static void VulkanQuit();
 
-    VulkanContext(void* window);
-    virtual ~VulkanContext();
+    static CHTHOLLY_INLINE VkDevice GetDevice() { return device; }
+    static CHTHOLLY_INLINE VkQueue GetGrapicsQueue() { return graphicsQueue; }
+    static CHTHOLLY_INLINE VkQueue GetTransferQueue() { return transferQueue; }
+    static CHTHOLLY_INLINE VkQueue GetComputeQueue() { return computeQueue; }
 
-    virtual void SwapBuffer();
-
-    CHTHOLLY_INLINE VkDevice GetDevice() { return device; }
-    CHTHOLLY_INLINE VkQueue GetGrapicsQueue() { return graphicsQueue; }
-    CHTHOLLY_INLINE VkQueue GetTransferQueue() { return transferQueue; }
-    CHTHOLLY_INLINE VkQueue GetComputeQueue() { return computeQueue; }
-
-    CHTHOLLY_INLINE VkCommandPool GetGrapicsCmdPool() { return queueCmdPoolMap[graphicsQueue]; }
-    CHTHOLLY_INLINE VkCommandPool GetTransferCmdPool() { return queueCmdPoolMap[transferQueue]; }
-    CHTHOLLY_INLINE VkCommandPool GetComputeCmdPool() { return queueCmdPoolMap[computeQueue]; } 
+    static CHTHOLLY_INLINE VkCommandPool GetGrapicsCmdPool() { return queueCmdPoolMap[graphicsQueue]; }
+    static CHTHOLLY_INLINE VkCommandPool GetTransferCmdPool() { return queueCmdPoolMap[transferQueue]; }
+    static CHTHOLLY_INLINE VkCommandPool GetComputeCmdPool() { return queueCmdPoolMap[computeQueue]; } 
 
 private:
     static void CreateVulkanInstance();
@@ -44,7 +39,24 @@ private:
     static std::unordered_map<VkQueue, uint32_t> queueFamilyIndexMap;
     static std::unordered_map<VkQueue, VkCommandPool> queueCmdPoolMap;
 
+public:
+    VulkanContext(void* window);
+    virtual ~VulkanContext();
+
+    virtual void SwapBuffer();
+private:
     VkSurfaceKHR surface;
+
+    uint32_t swapChainWidth;
+	uint32_t swapChainHeight;
+    VkFormat renderTargetFormat;
+    VkFormat depthStencilFormat;
+    VkSwapchainKHR swapChain;
+    
+    std::vector<VkImage> renderTargetImages;
+	std::vector<VkImageView> renderTargetViews;
+
+    VkFence renderFence;
 };
 }
 

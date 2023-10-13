@@ -34,11 +34,10 @@ keg::MetalContext::MetalContext(void* window)
 		NSView* view = ((NSWindow*)window).contentView;
 		view.wantsLayer = true;
 		view.layer = metalLayer;
-
 		metalLayer.device = device; 
 		metalLayer.pixelFormat = MTLPixelFormatBGRA8Unorm_sRGB; 
 		metalLayer.framebufferOnly = true;
-		metalLayer.frame = view.bounds;
+		metalLayer.drawableSize = [view convertSizeToBacking:view.layer.bounds.size];
 	}
 }
 
@@ -54,7 +53,7 @@ void keg::MetalContext::SwapBuffer()
 		id<CAMetalDrawable> next = [metalLayer nextDrawable];
 		id<MTLCommandBuffer> pCmd = [cmdQueue commandBuffer];
     	MTLRenderPassDescriptor* pRpd = [[[MTLRenderPassDescriptor alloc] init] autorelease];
-		pRpd.colorAttachments[0].clearColor = MTLClearColorMake(0.5, 1.0, 0.3, 1.0); 
+		pRpd.colorAttachments[0].clearColor = MTLClearColorMake(0.5f, 1.f, 0.3f, 1.f); 
 		pRpd.colorAttachments[0].texture = next.texture;
 		pRpd.colorAttachments[0].loadAction = MTLLoadActionClear;    	
 		pRpd.colorAttachments[0].storeAction = MTLStoreActionStore;

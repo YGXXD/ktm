@@ -14,8 +14,8 @@ public:
 	static void MetalInit();
 	static void MetalQuit();
 
-	inline static id<MTLDevice> GetDevice() { return device; }
-	inline static id<MTLCommandQueue> GetCmdQueue() { return cmdQueue; }
+	static CHTHOLLY_INLINE id<MTLDevice> GetDevice() { return device; }
+	static CHTHOLLY_INLINE id<MTLCommandQueue> GetCmdQueue() { return cmdQueue; }
 
 private:
 	static id<MTLDevice> device;
