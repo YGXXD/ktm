@@ -111,17 +111,35 @@ void keg::VulkanRenderer::CreateSurface(void* window)
 
 		swapChainWidth = view.bounds.size.width;
 		swapChainHeight = view.bounds.size.height;
-		renderTargetFormat = VK_FORMAT_B8G8R8A8_SRGB;
 	}
 #elif defined(CHTHOLLY_PLATFORM_WINDOWS)
 
 #endif
 	assert(surface);
+
+	// 获取Surface支持的格式
+	VkSurfaceCapabilitiesKHR surfaceCapabilities;
+	vkGetPhysicalDeviceSurfaceCapabilitiesKHR(VulkanContext::GetPhysicalDevice(), surface , &surfaceCapabilities);	
+	swapChainCount = 2 > surfaceCapabilities.minImageCount ? 2 : surfaceCapabilities.minImageCount;
+	
+	uint32_t surfaceFormatCount;
+	vkGetPhysicalDeviceSurfaceFormatsKHR(VulkanContext::GetPhysicalDevice(), surface, &surfaceFormatCount, nullptr);
+	std::vector<VkSurfaceFormatKHR> surfaceFormats(surfaceFormatCount);
+	vkGetPhysicalDeviceSurfaceFormatsKHR(VulkanContext::GetPhysicalDevice(), surface, &surfaceFormatCount, surfaceFormats.data());
+
+	const std::set<VkFormat> selectSRGBFormats = { VK_FORMAT_B8G8R8A8_SRGB, VK_FORMAT_R8G8B8A8_SRGB };
+	for(const auto& formatKHR : surfaceFormats)
+	{
+		if(formatKHR.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR && selectSRGBFormats.count(formatKHR.format))
+		{
+			renderTargetFormat = formatKHR.format;
+			break; 
+		}
+	}
 }
 
 void keg::VulkanRenderer::CreateSwapChain()
 {
-	swapChainCount = 2;
 	// 创建交换链
 	VkSwapchainCreateInfoKHR swapChainInfo = { };
 	swapChainInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
