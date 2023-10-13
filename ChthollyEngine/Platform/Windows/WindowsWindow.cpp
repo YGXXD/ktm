@@ -98,7 +98,7 @@ void keg::WindowsWindow::InitProps(const WindowProps &props)
     AdjustWindowRect(&R, WS_OVERLAPPEDWINDOW, false);
     int width = R.right - R.left;
     int height = R.bottom - R.top;
-    hWindow = CreateWindow(EvtNSWindow::windowClassName.c_str(), title.c_str(),
+    hWindow = CreateWindow(EvtWin32Window::windowClassName.c_str(), title.c_str(),
         WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, width, height, 0, 0, GetModuleHandle(0), 0);
 
     EvtWin32Window::win32DelegateMap[hWindow] = this;

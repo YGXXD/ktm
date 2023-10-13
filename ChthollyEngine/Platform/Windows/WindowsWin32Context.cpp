@@ -1,7 +1,7 @@
 #include "WindowsWin32Context.h"
 #include "EvtWin32Window.h"
 
-void keg::WindowsWindow::WindowsWin32Init()
+void keg::WindowsWin32Context::WindowsWin32Init()
 {
     WNDCLASS wc;
     wc.style = CS_HREDRAW | CS_VREDRAW;
@@ -17,7 +17,7 @@ void keg::WindowsWindow::WindowsWin32Init()
     RegisterClass(&wc);
 }
 
-void keg::WindowsWindow::WindowsWin32PollEvent()
+void keg::WindowsWin32Context::WindowsWin32PollEvent()
 {
     MSG msg = { };
     while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -27,7 +27,7 @@ void keg::WindowsWindow::WindowsWin32PollEvent()
     }
 }
 
-void keg::WindowsWindow::WindowsWin32Quit()
+void keg::WindowsWin32Context::WindowsWin32Quit()
 {
-    UnregisterClass(windowClassName.c_str(), GetModuleHandle(0));
+    UnregisterClass(EvtWin32Window::windowClassName.c_str(), GetModuleHandle(0));
 }

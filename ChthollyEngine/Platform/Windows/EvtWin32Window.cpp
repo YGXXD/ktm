@@ -1,6 +1,6 @@
 #include "EvtWin32Window.h"
 
-std::string keg::WindowsWindow::windowClassName = "ChthollyWindow";
+std::string keg::EvtWin32Window::windowClassName = "ChthollyWindow";
 std::unordered_map<HWND, keg::EvtWin32Delegate*> keg::EvtWin32Window::win32DelegateMap;
 
 LRESULT keg::EvtWin32Window::WindowMsgProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)

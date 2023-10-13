@@ -2,7 +2,8 @@
 #define _EVT_WIN32_WINDOW_H_
 
 #include <windows.h>
-#include <unordered_map.h>
+#include <unordered_map>
+#include <string>
 
 namespace keg
 {
