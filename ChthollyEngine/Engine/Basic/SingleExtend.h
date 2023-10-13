@@ -39,7 +39,7 @@ struct TemplateList
 
 // 单继承化模版
 template<class Child>
-struct Nil { };
+struct EmptyChild { };
 
 template<typename TpList, class Child, typename = std::enable_if_t<!TpList::IsExistSameTemplate>>
 struct SingleExtends;
@@ -47,7 +47,7 @@ struct SingleExtends;
 template<class Child>
 struct SingleExtends<TemplateList<>, Child> 
 {
-    using FatherType = Nil<Child>;
+    using FatherType = EmptyChild<Child>;
 };
 
 template <template<class F, class C> class Father, 
