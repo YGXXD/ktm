@@ -23,6 +23,7 @@
 	#if defined(_WIN64)
 		#define CHTHOLLY_PLATFORM_WINDOWS
 		#define CHTHOLLY_RENDER_API_DX12
+		#define CHTHOLLY_RENDER_API_VULKAN
 	#else
 		#error "Chtholly Engine don't support windows 32-bit platform!"
 	#endif

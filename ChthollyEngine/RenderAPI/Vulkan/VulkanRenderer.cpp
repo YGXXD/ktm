@@ -89,7 +89,8 @@ void keg::VulkanRenderer::SwapBuffer()
 	#import <Appkit/AppKit.h>
 	#include <vulkan/vulkan_macos.h>
 #elif defined(CHTHOLLY_PLATFORM_WINDOWS)
-
+	#include <windows.h>
+	#include <vulkan/vulkan_win32.h>
 #endif
 
 void keg::VulkanRenderer::CreateSurface(void* window)
@@ -104,7 +105,7 @@ void keg::VulkanRenderer::CreateSurface(void* window)
 		
 		VkMacOSSurfaceCreateInfoMVK surfaceCreateInfo = {};
         surfaceCreateInfo.sType = VK_STRUCTURE_TYPE_MACOS_SURFACE_CREATE_INFO_MVK;
-        surfaceCreateInfo.pNext = NULL;
+        surfaceCreateInfo.pNext = nullptr;
         surfaceCreateInfo.flags = 0;
         surfaceCreateInfo.pView = (const void *)view;
         vkCreateMacOSSurfaceMVK(VulkanContext::GetInstance(), &surfaceCreateInfo, NULL, &surface);
@@ -113,7 +114,19 @@ void keg::VulkanRenderer::CreateSurface(void* window)
 		swapChainHeight = view.bounds.size.height;
 	}
 #elif defined(CHTHOLLY_PLATFORM_WINDOWS)
+	HWND hWnd = (HWND)window;
+	VkWin32SurfaceCreateInfoKHR surfaceCreateInfo = {};
+	surfaceCreateInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
+	surfaceCreateInfo.pNext = nullptr;
+	surfaceCreateInfo.flags = 0;
+	surfaceCreateInfo.hinstance = GetModuleHandle(0);
+	surfaceCreateInfo.hwnd = hWnd;
+	vkCreateWin32SurfaceKHR(VulkanContext::GetInstance(), &surfaceCreateInfo, NULL, &surface);
 
+	RECT windowRect;
+	GetClientRect(hWnd, &windowRect);
+	swapChainWidth = windowRect.right - windowRect.left;
+	swapChainHeight = windowRect.bottom - windowRect.top;
 #endif
 	assert(surface);
 
@@ -156,7 +169,7 @@ void keg::VulkanRenderer::CreateSwapChain()
 	swapChainInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
 	swapChainInfo.presentMode = VK_PRESENT_MODE_FIFO_KHR;
 	swapChainInfo.clipped = VK_TRUE;
-	swapChainInfo.oldSwapchain = swapChain;
+	swapChainInfo.oldSwapchain = nullptr;
 
 	vkCreateSwapchainKHR(VulkanContext::GetDevice(), &swapChainInfo, nullptr, &swapChain);
 	assert(swapChain);

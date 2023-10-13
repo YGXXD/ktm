@@ -63,19 +63,19 @@ LRESULT keg::WindowsWindow::WindowMsgCallBack(HWND hWnd, UINT Msg, WPARAM wParam
     }
     case WM_LBUTTONUP:
     {
-        keg::MouseButtonPressedEvent e(0);
+        keg::MouseButtonReleasedEvent e(0);
         eventCallback(e);
         return 0;
     }
     case WM_MBUTTONUP:
     {
-        keg::MouseButtonPressedEvent e(2);
+        keg::MouseButtonReleasedEvent e(2);
         eventCallback(e);
         return 0;
     }
     case WM_RBUTTONUP:
     {
-        keg::MouseButtonPressedEvent e(1);
+        keg::MouseButtonReleasedEvent e(1);
         eventCallback(e);
         return 0;
     }

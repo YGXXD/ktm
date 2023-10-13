@@ -47,12 +47,14 @@ void keg::VulkanContext::CreateVulkanInstance()
 	instanceExtensionNames.push_back("VK_KHR_get_physical_device_properties2");
 	instanceExtensionNames.push_back("VK_KHR_surface");
 #if defined(CHTHOLLY_PLATFORM_APPLE)
-	// Apple官方不支持Vulkan, 通过MoltenVK在Apple平台运行Vulkan
+	// Apple官方不支持Vulkan, 通过MoltenVK在Apple平台运行Vulkan, 此扩展允许物理设备开启"VK_KHR_portability_subset"扩展
 	instanceExtensionNames.push_back("VK_KHR_portability_enumeration"); 
 	instanceCreateFlags |= VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
 	// 开启MacOS扩展和Metal扩展
 	instanceExtensionNames.push_back("VK_MVK_macos_surface");
     instanceExtensionNames.push_back("VK_EXT_metal_surface");
+#elif defined(CHTHOLLY_PLATFORM_WINDOWS)
+	instanceExtensionNames.push_back("VK_KHR_win32_surface");
 #endif
 	instanceLayerNames.push_back("VK_LAYER_KHRONOS_validation");
 	
@@ -143,10 +145,13 @@ void keg::VulkanContext::CreateLogicDeviceAndQueue()
 			++i;
 		}
 	} 
-	
-	std::vector<const char*> deviceExtensionNames;
+
 	// 创建逻辑设备
+	std::vector<const char*> deviceExtensionNames;
+#if defined(CHTHOLLY_PLATFORM_APPLE)
+	// 此扩展允许Vulkan构建在其他图形API之上
 	deviceExtensionNames.push_back("VK_KHR_portability_subset");
+#endif
 	deviceExtensionNames.push_back("VK_KHR_swapchain");
 
 	VkPhysicalDeviceFeatures pdFeatures;
