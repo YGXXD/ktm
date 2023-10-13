@@ -12,6 +12,4 @@
 #include "Log/Logger.h"
 #include "Math/KutoriMath.h"
 
-#include "Renderer/GraphicsContext.h"
-
 #endif

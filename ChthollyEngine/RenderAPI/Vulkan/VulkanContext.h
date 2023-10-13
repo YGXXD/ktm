@@ -1,18 +1,20 @@
 #ifndef _VULKAN_GRAPHICS_CONTEXT_H_
 #define _VULKAN_GRAPHICS_CONTEXT_H_
 
-#include "Renderer/GraphicsContext.h"
+#include "Basic/SetupBase.h"
 #include <vulkan/vulkan.h>
 
 namespace keg
 {
 
-class VulkanContext : public GraphicsContext
+class VulkanContext final
 {
 public: 
 	static void VulkanInit();
 	static void VulkanQuit();
 
+    static CHTHOLLY_INLINE VkInstance GetInstance() { return instance; }
+    static CHTHOLLY_INLINE VkPhysicalDevice GetPhysicalDevice() { return physicalDevice; }
     static CHTHOLLY_INLINE VkDevice GetDevice() { return device; }
     static CHTHOLLY_INLINE VkQueue GetGrapicsQueue() { return graphicsQueue; }
     static CHTHOLLY_INLINE VkQueue GetTransferQueue() { return transferQueue; }
@@ -39,24 +41,6 @@ private:
     static std::unordered_map<VkQueue, uint32_t> queueFamilyIndexMap;
     static std::unordered_map<VkQueue, VkCommandPool> queueCmdPoolMap;
 
-public:
-    VulkanContext(void* window);
-    virtual ~VulkanContext();
-
-    virtual void SwapBuffer();
-private:
-    VkSurfaceKHR surface;
-
-    uint32_t swapChainWidth;
-	uint32_t swapChainHeight;
-    VkFormat renderTargetFormat;
-    VkFormat depthStencilFormat;
-    VkSwapchainKHR swapChain;
-    
-    std::vector<VkImage> renderTargetImages;
-	std::vector<VkImageView> renderTargetViews;
-
-    VkFence renderFence;
 };
 }
 

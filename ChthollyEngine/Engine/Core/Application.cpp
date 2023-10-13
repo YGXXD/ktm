@@ -1,6 +1,8 @@
 #include "Application.h"
+#include "WindowContext.h"
 #include "Window.h"
-#include "Renderer/GraphicsContext.h"
+#include "Render/GraphicsContext.h"
+#include "Render/Renderer.h"
 #include "Log/Logger.h"
 #include "Event/AppEvent.h"
 #include "Event/MouseEvent.h"
@@ -8,34 +10,34 @@
 
 bool keg::Application::bIsQuit = false;
 std::unique_ptr<keg::Window> keg::Application::mainWindow;
-std::unique_ptr<keg::GraphicsContext> keg::Application::mainGraphics;
+std::unique_ptr<keg::Renderer> keg::Application::mainRenderer;
 
 void keg::Application::Initialize()
 {
-	Window::Init();
+	WindowContext::Init();
 	GraphicsContext::Init();
 }
 
 void keg::Application::Destroy()
 {
 	GraphicsContext::Quit();
-	Window::Quit();
+	WindowContext::Quit();
 }
 
 void keg::Application::Run()
 {
     mainWindow = std::unique_ptr<Window>(Window::Create(WindowProps()));
  	mainWindow->eventCallback.BindAnyFunc(&Application::OnEvent);	
-	mainGraphics = std::unique_ptr<GraphicsContext>(GraphicsContext::Create(mainWindow->GetNativeWindow()));	
+	mainRenderer = std::unique_ptr<Renderer>(Renderer::Create(mainWindow->GetNativeWindow()));	
 
  	while(!bIsQuit)
     {
-		Window::PollEvent();
+		WindowContext::PollEvent();
         mainWindow->OnUpdate();
-		mainGraphics->SwapBuffer();
+		mainRenderer->SwapBuffer();
     }
 	
-	mainGraphics.reset();
+	mainRenderer.reset();
 	mainWindow.reset();
 }
 

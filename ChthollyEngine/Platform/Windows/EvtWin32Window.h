@@ -1,8 +1,8 @@
 #ifndef _EVT_WIN32_WINDOW_H_
 #define _EVT_WIN32_WINDOW_H_
 
+#include "Core/Window.h"
 #include <windows.h>
-#include <unordered_map>
 
 namespace keg
 {

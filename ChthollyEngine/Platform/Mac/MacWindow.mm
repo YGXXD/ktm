@@ -1,42 +1,4 @@
 #include "MacWindow.h"
-#include "Log/Logger.h"
-
-void keg::MacWindow::MacCocoaInit()
-{
-	assert(NSApp == nil);
-    @autoreleasepool
-    {
-        auto cocoaApp = [[NSApplication sharedApplication] autorelease];
-        [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
-        [NSApp finishLaunching];
-        [NSApp activateIgnoringOtherApps:true];
-    }
-}
-
-void keg::MacWindow::MacCocoaPollEvent()
-{
-    @autoreleasepool
-    {
-        while(true)
-        {   
-            // nil 会指定 [NSDate distantPast]
-            NSEvent* event = [NSApp nextEventMatchingMask:NSEventMaskAny untilDate:nil inMode:NSDefaultRunLoopMode dequeue:true];
-            if(event == nil)
-                break;
-            [NSApp sendEvent:event];
-        }
-    }
-}
-
-void keg::MacWindow::MacCocoaQuit()
-{
-    assert(NSApp != nil);
-    @autoreleasepool
-    {
-        [NSApp release];
-        NSApp = nil;
-    }
-}
 
 keg::MacWindow::MacWindow(const WindowProps& props)
 {

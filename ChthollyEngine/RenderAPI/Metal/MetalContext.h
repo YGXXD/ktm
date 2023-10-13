@@ -1,14 +1,14 @@
 #ifndef _METAL_GRAPHICS_CONTEXT_H_
 #define _METAL_GRAPHICS_CONTEXT_H_
 
-#include "Renderer/GraphicsContext.h"
+#include "Basic/SetupBase.h"
 
 #import <Metal/Metal.h>
 #import <QuartzCore/QuartzCore.h>
 
 namespace keg
 {
-class MetalContext : public GraphicsContext
+class MetalContext final
 {
 public: 
 	static void MetalInit();
@@ -20,14 +20,6 @@ public:
 private:
 	static id<MTLDevice> device;
 	static id<MTLCommandQueue> cmdQueue;
-
-public:
-	MetalContext(void* window);
-	virtual ~MetalContext();
-	virtual void SwapBuffer() override;
- 
-private:
-	CAMetalLayer* metalLayer;		
 };
 }
 

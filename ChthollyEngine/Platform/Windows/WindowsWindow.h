@@ -3,17 +3,12 @@
 
 #include "Core/Window.h"
 #include "EvtWin32Window.h"
-#include <Windows.h>
 
 namespace keg
 {
 class WindowsWindow : public Window, public EvtWin32Delegate
 {
 public:
-	static void WindowsWin32Init();
-	static void WindowsWin32PollEvent();
-	static void WindowsWin32Quit();
-
 	WindowsWindow(const WindowProps& props);
 	~WindowsWindow();
 
@@ -33,8 +28,6 @@ private:
 	
 	std::string title;
 	HWND hWindow;
-
-	static std::string windowClassName;
 };
 }
 

@@ -13,7 +13,7 @@ struct WindowProps
     uint32_t width;
     uint32_t height;
 
-    WindowProps(const std::string& title = "XXd Engine", uint32_t width = 1280, uint32_t height = 720)
+    WindowProps(const std::string& title = "Chtholly Engine", uint32_t width = 1280, uint32_t height = 720)
         : title(title), width(width), height(height)
     {
     }
@@ -25,12 +25,8 @@ class CHTHOLLY_ENGINE_API Window
 {
 public: 	
 	static Window* Create(const WindowProps &props = WindowProps());
-	static void Init();
-	static void PollEvent();
-	static void Quit();
 
   	virtual ~Window() { };
-
   	virtual void OnUpdate() = 0;
 
   	virtual uint32_t GetWidth() const = 0;

@@ -7,7 +7,7 @@ namespace keg
 {
 class Event;
 class Window;
-class GraphicsContext;
+class Renderer;
 class CHTHOLLY_ENGINE_API Application final
 {
 public:
@@ -19,7 +19,7 @@ public:
 private:
 	static bool bIsQuit;
 	static std::unique_ptr<Window> mainWindow;
-	static std::unique_ptr<GraphicsContext> mainGraphics;
+	static std::unique_ptr<Renderer> mainRenderer;
 };
 
 }

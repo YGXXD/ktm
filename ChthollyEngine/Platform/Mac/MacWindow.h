@@ -9,10 +9,6 @@ namespace keg
 class MacWindow : public Window, public EvtNSDelegate
 {
 public:
-	static void MacCocoaInit();
-	static void MacCocoaPollEvent();
-	static void MacCocoaQuit();
-
 	MacWindow(const WindowProps& props);
 	~MacWindow();
 

@@ -1,18 +1,7 @@
 #include "EvtNSWindow.h"
-#include "Log/Logger.h"
 #include "Event/KeyEvent.h"
 #include "Event/MouseEvent.h"
 #include "Event/AppEvent.h"
-
-@implementation NSApplication(Debug)
-
-- (void)dealloc 
-{
-    [super dealloc];
-    KEG_DEBUG("CocoaApp dealloc")
-}
-
-@end
 
 @implementation EvtNSWindow
 
@@ -54,7 +43,6 @@
 - (void)dealloc 
 {
     [super dealloc];
-    KEG_DEBUG("EvtNSWindow dealloc")
 }
 
 - (void)windowWillClose:(NSNotification *)notification 

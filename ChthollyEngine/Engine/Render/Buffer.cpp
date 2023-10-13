@@ -1,5 +1,5 @@
 #include "Buffer.h"
-#include "Renderer.h"
+#include "GraphicsContext.h"
 
 #ifdef CHTHOLLY_RENDER_API_METAL
 	#include "Metal/MetalBuffer.h"
@@ -13,16 +13,16 @@
 
 keg::VertexBuffer* keg::VertexBuffer::Create(float* vertices, uint32_t size)
 {
-    switch(Renderer::GetAPI()) 
+    switch(GraphicsContext::GetAPI()) 
 	{
 #ifdef	CHTHOLLY_RENDER_API_METAL
-		case RenderAPI::Metal: return new MetalVertexBuffer(vertices, size);
+		case GraphicsAPI::Metal: return new MetalVertexBuffer(vertices, size);
 #endif
 #ifdef	CHTHOLLY_RENDER_API_DX12 
-		case RenderAPI::DX12: return nullptr;
+		case GraphicsAPI::DX12: return nullptr;
 #endif
 #ifdef	CHTHOLLY_RENDER_API_VULKAN
-		case RenderAPI::Vulkan: return new VulkanVertexBuffer(vertices, size);
+		case GraphicsAPI::Vulkan: return new VulkanVertexBuffer(vertices, size);
 #endif
 		default: assert(false); return nullptr;
 	}
@@ -30,16 +30,16 @@ keg::VertexBuffer* keg::VertexBuffer::Create(float* vertices, uint32_t size)
 
 keg::IndexBuffer* keg::IndexBuffer::Create(uint32_t* indices, uint32_t count)
 {
-    switch(Renderer::GetAPI()) 
+    switch(GraphicsContext::GetAPI()) 
 	{
 #ifdef	CHTHOLLY_RENDER_API_METAL
-		case RenderAPI::Metal: return new MetalIndexBuffer(indices, count);
+		case GraphicsAPI::Metal: return new MetalIndexBuffer(indices, count);
 #endif
 #ifdef	CHTHOLLY_RENDER_API_DX12 
-		case RenderAPI::DX12: return nullptr;
+		case GraphicsAPI::DX12: return nullptr;
 #endif
 #ifdef	CHTHOLLY_RENDER_API_VULKAN
-		case RenderAPI::Vulkan: return new VulkanIndexBuffer(indices, count);
+		case GraphicsAPI::Vulkan: return new VulkanIndexBuffer(indices, count);
 #endif
 		default: assert(false); return nullptr;
 	}

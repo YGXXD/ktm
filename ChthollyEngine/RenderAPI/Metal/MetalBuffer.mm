@@ -14,7 +14,10 @@ keg::MetalVertexBuffer::MetalVertexBuffer(float* vertices, uint32_t size)
 
 keg::MetalVertexBuffer::~MetalVertexBuffer()
 {
-    [vBuffer release];
+    @autoreleasepool
+    {
+        [vBuffer autorelease];
+    }
 }
 
 void keg::MetalVertexBuffer::Bind()
@@ -42,7 +45,10 @@ keg::MetalIndexBuffer::MetalIndexBuffer(uint32_t* indices, uint32_t count)
 
 keg::MetalIndexBuffer::~MetalIndexBuffer()
 {
-    [iBuffer release];
+    @autoreleasepool
+    {
+        [iBuffer autorelease];
+    }
 }
 
 void keg::MetalIndexBuffer::Bind()

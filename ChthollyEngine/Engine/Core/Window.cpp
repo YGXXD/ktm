@@ -15,29 +15,4 @@ keg::Window* keg::Window::Create(const WindowProps& props)
 #endif 
 }
 
-void keg::Window::Init()
-{
-#if defined(CHTHOLLY_PLATFORM_APPLE)
-    MacWindow::MacCocoaInit();
-#elif defined(CHTHOLLY_PLATFORM_WINDOWS)
-	WindowsWindow::WindowsWin32Init();
-#endif 
-}
 
-void keg::Window::PollEvent()
-{
-#if defined(CHTHOLLY_PLATFORM_APPLE)
-    MacWindow::MacCocoaPollEvent();
-#elif defined(CHTHOLLY_PLATFORM_WINDOWS)
-	WindowsWindow::WindowsWin32PollEvent();
-#endif 
-}
-
-void keg::Window::Quit()
-{
-#if defined(CHTHOLLY_PLATFORM_APPLE)
-	MacWindow::MacCocoaQuit();
-#elif defined(CHTHOLLY_PLATFORM_WINDOWS)
-	WindowsWindow::WindowsWin32Quit();
-#endif 
-}

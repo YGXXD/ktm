@@ -1,7 +1,7 @@
 #ifndef _METAL_BUFFER_H_
 #define _METAL_BUFFER_H_
 
-#include "Renderer/Buffer.h"
+#include "Render/Buffer.h"
 #import <Metal/Metal.h>
 
 namespace keg 

@@ -1,7 +1,7 @@
 #ifndef _VULKAN_BUFFER_H_
 #define _VULKAN_BUFFER_H_
 
-#include "Renderer/Buffer.h"
+#include "Render/Buffer.h"
 #include <vulkan/vulkan.h>
 
 namespace keg
