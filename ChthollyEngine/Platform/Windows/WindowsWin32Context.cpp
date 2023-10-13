@@ -1,6 +1,5 @@
 #include "WindowsWin32Context.h"
-
-std::string keg::WindowsWindow::windowClassName = "ChthollyWindow";
+#include "EvtWin32Window.h"
 
 void keg::WindowsWindow::WindowsWin32Init()
 {
@@ -14,7 +13,7 @@ void keg::WindowsWindow::WindowsWin32Init()
     wc.hCursor = LoadCursor(0, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)GetStockObject(NULL_BRUSH);
     wc.lpszMenuName = 0;
-    wc.lpszClassName = windowClassName.c_str();
+    wc.lpszClassName = EvtWin32Window::windowClassName.c_str();
     RegisterClass(&wc);
 }
 

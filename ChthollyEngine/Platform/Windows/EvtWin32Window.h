@@ -1,8 +1,8 @@
 #ifndef _EVT_WIN32_WINDOW_H_
 #define _EVT_WIN32_WINDOW_H_
 
-#include "Core/Window.h"
 #include <windows.h>
+#include <unordered_map.h>
 
 namespace keg
 {
@@ -16,6 +16,8 @@ class EvtWin32Window
 {
 public:
     static LRESULT WindowMsgProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+
+    static std::string windowClassName;
     static std::unordered_map<HWND, EvtWin32Delegate*> win32DelegateMap;
 };
 

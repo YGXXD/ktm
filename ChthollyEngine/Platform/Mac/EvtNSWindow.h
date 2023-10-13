@@ -1,7 +1,6 @@
 #ifndef _MAC_SUPPORT_H_
 #define _MAC_SUPPORT_H_
 
-#include "Event/Event.h"
 #include "Core/Window.h"
 
 namespace keg
