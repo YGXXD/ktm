@@ -14,6 +14,13 @@ public:
 
     virtual void SwapBuffer();
 private:
+    void CreateSurface(void* window);
+    void CreateSwapChain();
+    void CreateRenderTargetView();
+    void CreateRenderPass();
+    void CreateFrameBuffers();
+    void CreateFence();
+
     VkSurfaceKHR surface;
 
     uint32_t swapChainWidth;
@@ -25,6 +32,8 @@ private:
     
     std::vector<VkImage> renderTargetImages;
 	std::vector<VkImageView> renderTargetViews;
+    VkRenderPass renderPass;
+    std::vector<VkFramebuffer> frameBuffers;
 
     VkFence renderFence;
 };
