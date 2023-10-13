@@ -62,6 +62,7 @@ elseif(WIN32)
 	find_package(Vulkan REQUIRED)
 	target_include_directories(${ENGINE_DLL_NAME} PUBLIC ${Vulkan_INCLUDE_DIRS})
 	target_link_libraries(${ENGINE_DLL_NAME} PUBLIC ${Vulkan_LIBRARIES})
+	
 elseif(LINUX)
 	add_library(${ENGINE_DLL_NAME} SHARED ${CHTHOLLY_ENGINE_SOURCE_FILES})
 
