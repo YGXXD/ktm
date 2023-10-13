@@ -23,7 +23,7 @@ private:
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
         SimdT ret;
-        ret = ((core(m[Ns], v[Ns]))+ ...);;
+        ret = ((core(m[Ns], v[Ns]))+ ...);
         return *reinterpret_cast<ColV*>(&ret); 
     }
 
@@ -84,7 +84,7 @@ struct ktm::detail::mat_opt_implement::add<Row, Col, std::enable_if_t<Col >= 2 &
     using ColV = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_row_n<M>>());
+        return call(m1, m2, std::make_index_sequence<mat_traits_row_n<M>>());
     }
 private:
     template<size_t ...Ns>
@@ -115,7 +115,7 @@ struct ktm::detail::mat_opt_implement::minus<Row, Col, std::enable_if_t<Col >= 2
     using ColV = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_row_n<M>>());
+        return call(m1, m2, std::make_index_sequence<mat_traits_row_n<M>>());
     }
 private:
    template<size_t ...Ns>
@@ -156,7 +156,7 @@ private:
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
         SimdT ret;
-        ret = ((core(m[Ns], v[Ns]))+ ...);;
+        ret = ((core(m[Ns], v[Ns]))+ ...);
         return *reinterpret_cast<ColV*>(&ret); 
     }
 
@@ -217,7 +217,7 @@ struct ktm::detail::mat_opt_implement::add<Row, Col, std::enable_if_t<Col >= 2 &
     using ColV = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_row_n<M>>());
+        return call(m1, m2, std::make_index_sequence<mat_traits_row_n<M>>());
     }
 private:
     template<size_t ...Ns>
@@ -248,7 +248,7 @@ struct ktm::detail::mat_opt_implement::minus<Row, Col, std::enable_if_t<Col >= 2
     using ColV = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_row_n<M>>());
+        return call(m1, m2, std::make_index_sequence<mat_traits_row_n<M>>());
     }
 private:
    template<size_t ...Ns>
@@ -292,7 +292,7 @@ private:
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
         __m128 ret;
-        ret = ((core(m[Ns], v[Ns]))+ ...);;
+        ret = ((core(m[Ns], v[Ns]))+ ...);
         return *reinterpret_cast<ColV*>(&ret); 
     }
 
@@ -346,7 +346,7 @@ struct ktm::detail::mat_opt_implement::add<Row, Col, std::enable_if_t<Col == 3 |
     using ColV = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_row_n<M>>());
+        return call(m1, m2, std::make_index_sequence<mat_traits_row_n<M>>());
     }
 private:
     template<size_t ...Ns>
@@ -370,7 +370,7 @@ struct ktm::detail::mat_opt_implement::minus<Row, Col, std::enable_if_t<Col == 3
     using ColV = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_row_n<M>>());
+        return call(m1, m2, std::make_index_sequence<mat_traits_row_n<M>>());
     }
 private:
    template<size_t ...Ns>
@@ -396,7 +396,7 @@ struct ktm::detail::mat_opt_implement::add<Row, Col, std::enable_if_t<Col == 3 |
     using ColV = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_row_n<M>>());
+        return call(m1, m2, std::make_index_sequence<mat_traits_row_n<M>>());
     }
 private:
     template<size_t ...Ns>
@@ -420,7 +420,7 @@ struct ktm::detail::mat_opt_implement::minus<Row, Col, std::enable_if_t<Col == 3
     using ColV = mat_traits_col_t<M>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_row_n<M>>());
+        return call(m1, m2, std::make_index_sequence<mat_traits_row_n<M>>());
     }
 private:
    template<size_t ...Ns>
@@ -457,7 +457,7 @@ private:
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
         __m128i ret;
-        ret = ((core(m[Ns], v[Ns]))+ ...);;
+        ret = ((core(m[Ns], v[Ns]))+ ...);
         return *reinterpret_cast<ColV*>(&ret); 
     }
 

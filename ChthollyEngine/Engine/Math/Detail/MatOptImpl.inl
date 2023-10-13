@@ -75,7 +75,7 @@ struct ktm::detail::mat_opt_implement::add
 	using M = mat<Row, Col, T>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_row_n<M>>());
+        return call(m1, m2, std::make_index_sequence<mat_traits_row_n<M>>());
     }
 private:
     template<size_t ...Ns>
@@ -93,7 +93,7 @@ struct ktm::detail::mat_opt_implement::minus
 	using M = mat<Row, Col, T>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_row_n<M>>());
+        return call(m1, m2, std::make_index_sequence<mat_traits_row_n<M>>());
     }
 private:
     template<size_t ...Ns>
@@ -111,7 +111,7 @@ struct ktm::detail::mat_opt_implement::equal
 	using M = mat<Row, Col, T>;
     static CHTHOLLY_INLINE bool call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<ktm::mat_traits_row_n<M>>());
+        return call(m1, m2, std::make_index_sequence<mat_traits_row_n<M>>());
     }
 private:
     template<size_t ...Ns>

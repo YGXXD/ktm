@@ -26,7 +26,7 @@
 		#include <pmmintrin.h>
 	#elif  CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE2_FLAG 
 		#include <emmintrin.h>
-	else
+	#else
 		#include <xmmintrin.h>
 	#endif
 #endif
