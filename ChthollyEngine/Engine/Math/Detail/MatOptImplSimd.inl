@@ -17,17 +17,22 @@ struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, std::enable_if_t<Co
         return call(m, v, std::make_index_sequence<mat_traits_row_n<M>>());
     }
 private:
-    using SimdT = std::select_if_t<Col == 2, float32x2_t, float32x4_t>;
-
     template<size_t ...Ns>
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
-        SimdT ret;
-        ret = ((core(m[Ns], v[Ns]))+ ...);
-        return *reinterpret_cast<ColV*>(&ret); 
+        if constexpr(Col == 2)
+        {
+            float32x2_t ret = vadd_f32_all(core(m[Ns], v[Ns])...);
+            return *reinterpret_cast<ColV*>(&ret); 
+        }
+        else
+        {
+            float32x4_t ret = vaddq_f32_all(core(m[Ns], v[Ns])...);
+            return *reinterpret_cast<ColV*>(&ret); 
+        }
     }
 
-    static CHTHOLLY_INLINE SimdT core(const ColV& matrix_v, float v_elem) noexcept
+    static CHTHOLLY_INLINE std::select_if_t<Col == 2, float32x2_t, float32x4_t> core(const ColV& matrix_v, float v_elem) noexcept
     {
         if constexpr(Col == 2)
         {
@@ -150,17 +155,22 @@ struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, std::enable_if_t<Co
         return call(m, v, std::make_index_sequence<mat_traits_row_n<M>>());
     }
 private:
-    using SimdT = std::select_if_t<Col == 2, int32x2_t, int32x4_t>;
-
     template<size_t ...Ns>
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
-        SimdT ret;
-        ret = ((core(m[Ns], v[Ns]))+ ...);
-        return *reinterpret_cast<ColV*>(&ret); 
+        if constexpr(Col == 2)
+        {
+            int32x2_t ret = vadd_s32_all(core(m[Ns], v[Ns])...);
+            return *reinterpret_cast<ColV*>(&ret); 
+        }
+        else
+        {
+            int32x4_t ret = vaddq_s32_all(core(m[Ns], v[Ns])...);
+            return *reinterpret_cast<ColV*>(&ret); 
+        }
     }
 
-    static CHTHOLLY_INLINE SimdT core(const ColV& matrix_v, int v_elem) noexcept
+    static CHTHOLLY_INLINE std::select_if_t<Col == 2, int32x2_t, int32x4_t> core(const ColV& matrix_v, int v_elem) noexcept
     {
         if constexpr(Col == 2)
         {
@@ -291,8 +301,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
-        __m128 ret;
-        ret = ((core(m[Ns], v[Ns]))+ ...);
+        __m128 ret = _mm_add_ps_all(core(m[Ns], v[Ns])...);
         return *reinterpret_cast<ColV*>(&ret); 
     }
 
@@ -456,8 +465,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
-        __m128i ret;
-        ret = ((core(m[Ns], v[Ns]))+ ...);
+        __m128i ret = _mm_add_epi32_all(core(m[Ns], v[Ns])...);
         return *reinterpret_cast<ColV*>(&ret); 
     }
 
