@@ -29,7 +29,7 @@ struct ktm::detail::mat_common_implement::transpose
     using RowV = mat_traits_row_t<M>;
     static CHTHOLLY_INLINE RetM call(const M& m) noexcept
     {
-        return call(m, std::make_index_sequence<mat_traits_col_n<M>>(), std::make_index_sequence<mat_traits_row_n<M>>());
+        return call(m, std::make_index_sequence<Col>(), std::make_index_sequence<Row>());
     }
 private:
     template<size_t ...Rs, size_t ...Cs>

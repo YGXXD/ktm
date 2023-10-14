@@ -13,7 +13,7 @@ struct ktm::detail::mat_opt_implement::mat_mul_vec
     using RowV = mat_traits_row_t<M>;
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v) noexcept
     {
-        return call(m, v, std::make_index_sequence<mat_traits_row_n<M>>());
+        return call(m, v, std::make_index_sequence<Row>());
     }
 private:
     template<size_t ...Ns>
@@ -33,7 +33,7 @@ struct ktm::detail::mat_opt_implement::vec_mul_mat
     using RowV = mat_traits_row_t<M>;
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m) noexcept
     {
-        return call(v, m, std::make_index_sequence<mat_traits_row_n<M>>());
+        return call(v, m, std::make_index_sequence<Row>());
     }
 private:
     template<size_t ...Ns>
@@ -50,9 +50,9 @@ struct ktm::detail::mat_opt_implement::mat_mul_mat
 {
     using M = mat<Row, Col, T>;
     template<size_t U>
-    using M2 = mat<U, mat_traits_row_n<M>, T>;
+    using M2 = mat<U, Row, T>;
     template<size_t U>
-    using RetM = mat<U, mat_traits_col_n<M>, T>;
+    using RetM = mat<U, Col, T>;
 
     template<size_t U>
     static CHTHOLLY_INLINE RetM<U> call(const M& m1 , const M2<U>& m2) noexcept
@@ -75,7 +75,7 @@ struct ktm::detail::mat_opt_implement::add
 	using M = mat<Row, Col, T>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<mat_traits_row_n<M>>());
+        return call(m1, m2, std::make_index_sequence<Row>());
     }
 private:
     template<size_t ...Ns>
@@ -93,7 +93,7 @@ struct ktm::detail::mat_opt_implement::minus
 	using M = mat<Row, Col, T>;
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<mat_traits_row_n<M>>());
+        return call(m1, m2, std::make_index_sequence<Row>());
     }
 private:
     template<size_t ...Ns>
@@ -111,7 +111,7 @@ struct ktm::detail::mat_opt_implement::equal
 	using M = mat<Row, Col, T>;
     static CHTHOLLY_INLINE bool call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<mat_traits_row_n<M>>());
+        return call(m1, m2, std::make_index_sequence<Row>());
     }
 private:
     template<size_t ...Ns>
