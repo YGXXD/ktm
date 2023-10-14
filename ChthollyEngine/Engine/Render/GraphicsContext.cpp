@@ -15,7 +15,7 @@ keg::GraphicsAPI keg::GraphicsContext::sAPI = keg::GraphicsAPI::DX12;
 	#include "Vulkan/VulkanContext.h"
 #endif
 #ifdef CHTHOLLY_RENDER_API_DX12
-
+	#include "DirectX12/DirectX12Context.h"
 #endif
 
 void keg::GraphicsContext::Init()
@@ -26,7 +26,7 @@ void keg::GraphicsContext::Init()
 		case GraphicsAPI::Metal: MetalContext::MetalInit(); break;
 #endif
 #ifdef	CHTHOLLY_RENDER_API_DX12 
-		case GraphicsAPI::DX12: break;
+		case GraphicsAPI::DX12: DirectX12Context::DirectX12Init(); break;
 #endif
 #ifdef	CHTHOLLY_RENDER_API_VULKAN
 		case GraphicsAPI::Vulkan: VulkanContext::VulkanInit(); break;
@@ -43,7 +43,7 @@ void keg::GraphicsContext::Quit()
 		case GraphicsAPI::Metal: MetalContext::MetalQuit(); break;
 #endif
 #ifdef	CHTHOLLY_RENDER_API_DX12 
-		case GraphicsAPI::DX12: break;
+		case GraphicsAPI::DX12: DirectX12Context::DirectX12Quit(); break;
 #endif
 #ifdef	CHTHOLLY_RENDER_API_VULKAN
 		case GraphicsAPI::Vulkan: VulkanContext::VulkanQuit(); break;

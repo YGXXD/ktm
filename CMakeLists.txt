@@ -56,8 +56,19 @@ elseif(WIN32)
 	
 	# target engine
 	file(GLOB_RECURSE CHTHOLLY_PLATFORM_SOURCE_FILES ${CHTHOLLY_ENGINE_SOURCE_DIR}/Platform/Windows/*.cpp)
-	file(GLOB_RECURSE CHTHOLLY_RENDER_API_SOURCE_FILES ${CHTHOLLY_ENGINE_SOURCE_DIR}/RenderAPI/Vulkan/*.cpp)
+	file(GLOB_RECURSE CHTHOLLY_RENDER_API_SOURCE_FILES 
+		${CHTHOLLY_ENGINE_SOURCE_DIR}/RenderAPI/DirectX12/*.cpp 
+		${CHTHOLLY_ENGINE_SOURCE_DIR}/RenderAPI/Vulkan/*.cpp
+	)
     add_library(${ENGINE_DLL_NAME} SHARED ${CHTHOLLY_ENGINE_SOURCE_FILES} ${CHTHOLLY_PLATFORM_SOURCE_FILES} ${CHTHOLLY_RENDER_API_SOURCE_FILES})
+	target_link_libraries(${ENGINE_DLL_NAME} PUBLIC 
+		"kernel32" 
+		"user32" 
+		"gdi32"
+		"d3d12"
+		"dxgi"
+		"d3dcompiler"
+	)
 
 	find_package(Vulkan REQUIRED)
 	target_include_directories(${ENGINE_DLL_NAME} PUBLIC ${Vulkan_INCLUDE_DIRS})
