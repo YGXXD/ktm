@@ -15,6 +15,8 @@ keg::MetalRenderer::MetalRenderer(void* window)
 		metalLayer.pixelFormat = MTLPixelFormatBGRA8Unorm_sRGB; 
 		metalLayer.framebufferOnly = true;
 		metalLayer.drawableSize = [view convertSizeToBacking:view.layer.bounds.size];
+
+		renderFence = [MetalContext::GetDevice() newFence];
 	}
 }
 
@@ -23,6 +25,7 @@ keg::MetalRenderer::~MetalRenderer()
 	@autoreleasepool
 	{
 		[metalLayer autorelease];
+		[renderFence autorelease];
 	}
 }
 
@@ -39,7 +42,7 @@ void keg::MetalRenderer::SwapBuffer()
 		pRpd.colorAttachments[0].storeAction = MTLStoreActionStore;
 
     	id<MTLRenderCommandEncoder> pEnc = [pCmd renderCommandEncoderWithDescriptor:pRpd];
-	    
+	    [pEnc updateFence:renderFence afterStages:MTLRenderStageFragment];
     	[pEnc endEncoding];
     	[pCmd presentDrawable:next];
     	[pCmd commit];

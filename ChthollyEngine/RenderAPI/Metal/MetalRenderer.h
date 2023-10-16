@@ -16,7 +16,8 @@ public:
 	virtual void SwapBuffer() override;
  
 private:
-	CAMetalLayer* metalLayer;		
+	CAMetalLayer* metalLayer;
+	id<MTLFence> renderFence;
 };
 }
 
