@@ -32,6 +32,10 @@ private:
     
     std::vector<VkImage> renderTargetImages;
 	std::vector<VkImageView> renderTargetViews;
+
+    VkImage depthStencilImage;
+    VkImageView depthStencilView;
+
     VkRenderPass renderPass;
     std::vector<VkFramebuffer> frameBuffers;
 

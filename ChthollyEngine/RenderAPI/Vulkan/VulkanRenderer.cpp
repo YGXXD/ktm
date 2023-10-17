@@ -173,13 +173,13 @@ void keg::VulkanRenderer::CreateSwapChain()
 
 	vkCreateSwapchainKHR(VulkanContext::GetDevice(), &swapChainInfo, nullptr, &swapChain);
 	assert(swapChain);
+
+	renderTargetImages.resize(swapChainCount);
+	vkGetSwapchainImagesKHR(VulkanContext::GetDevice(), swapChain, &swapChainCount, renderTargetImages.data());
 }
 
 void keg::VulkanRenderer::CreateRenderTargetView()
 {
-	renderTargetImages.resize(swapChainCount);
-	vkGetSwapchainImagesKHR(VulkanContext::GetDevice(), swapChain, &swapChainCount, renderTargetImages.data());
-
 	renderTargetViews.resize(swapChainCount);
 
 	for(int i = 0; i < renderTargetViews.size(); i++)
