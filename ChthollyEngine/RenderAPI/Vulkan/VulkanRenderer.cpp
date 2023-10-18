@@ -48,7 +48,7 @@ void keg::VulkanRenderer::SwapBuffer()
 	vkResetFences(device, 1, &renderFence);
 	
 	VkClearValue ClearValue[1];
-	ClearValue[0].color = {0.5f, 1.f, 0.3f, 1.f};
+	ClearValue[0].color = { 0.5f, 1.f, 0.3f, 1.f };
 
 	VkRenderPassBeginInfo renderPassBeginInfo = { };
 	renderPassBeginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;

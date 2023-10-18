@@ -8,7 +8,7 @@
 	#include "Vulkan/VulkanRenderer.h"
 #endif
 #ifdef CHTHOLLY_RENDER_API_DX12
-
+	#include "DirectX12/DirectX12Renderer.h"
 #endif
 
 keg::Renderer* keg::Renderer::Create(void* window)
@@ -19,7 +19,7 @@ keg::Renderer* keg::Renderer::Create(void* window)
 		case GraphicsAPI::Metal: return new MetalRenderer(window);
 #endif
 #ifdef	CHTHOLLY_RENDER_API_DX12 
-		case GraphicsAPI::DX12: return nullptr;
+		case GraphicsAPI::DX12: return new DirectX12Renderer(window);
 #endif
 #ifdef	CHTHOLLY_RENDER_API_VULKAN
 		case GraphicsAPI::Vulkan: return new VulkanRenderer(window);

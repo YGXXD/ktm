@@ -2,10 +2,10 @@
 
 #if defined(CHTHOLLY_RENDER_API_METAL)
 keg::GraphicsAPI keg::GraphicsContext::sAPI = keg::GraphicsAPI::Metal;
-#elif defined(CHTHOLLY_RENDER_API_VULKAN)
-keg::GraphicsAPI keg::GraphicsContext::sAPI = keg::GraphicsAPI::Vulkan;
 #elif defined(CHTHOLLY_RENDER_API_DX12)
 keg::GraphicsAPI keg::GraphicsContext::sAPI = keg::GraphicsAPI::DX12;
+#elif defined(CHTHOLLY_RENDER_API_VULKAN)
+keg::GraphicsAPI keg::GraphicsContext::sAPI = keg::GraphicsAPI::Vulkan;
 #endif
 
 #ifdef CHTHOLLY_RENDER_API_METAL
