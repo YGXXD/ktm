@@ -43,7 +43,7 @@
 #endif
 
 // c++ compiler config
-#if defined(__clang__)
+#if defined(__clang__) && defined(__GNUC__)
 	#define CHTHOLLY_COMPILER_CLANG
 #elif defined(__GNUC__) || defined(__MINGW32__)
 	#define CHTHOLLY_COMPILER_GCC

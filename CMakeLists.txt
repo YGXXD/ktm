@@ -52,6 +52,11 @@ elseif(WIN32)
 		add_compile_options(-std=gnu++17)
 		add_compile_options(-fvisibility=hidden)
 		add_compile_options(-march=native)
+	elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+		add_compile_options(-std=gnu++17)
+		add_compile_options(-Wc++17-extensions)
+		add_compile_options(-fvisibility=hidden)
+		add_compile_options(-march=native)
 	endif()
 	
 	# target engine
