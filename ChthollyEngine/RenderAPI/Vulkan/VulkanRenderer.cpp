@@ -71,9 +71,6 @@ void keg::VulkanRenderer::SwapBuffer()
 	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 	submitInfo.commandBufferCount = 1;
 	submitInfo.pCommandBuffers = &cmdBuffer;
-	vkQueueSubmit(graphicsQueue, 1, &submitInfo, renderFence);
-	vkWaitForFences(device, 1, &renderFence, VK_TRUE, 0xffffffff);
-	vkResetFences(device, 1, &renderFence);
 
 	VkPresentInfoKHR presentInfo = { };
 	presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
@@ -82,6 +79,9 @@ void keg::VulkanRenderer::SwapBuffer()
 	presentInfo.pImageIndices = &currIndex;
 	vkQueuePresentKHR(graphicsQueue, &presentInfo);
 	
+	vkQueueSubmit(graphicsQueue, 1, &submitInfo, renderFence);
+	vkWaitForFences(device, 1, &renderFence, VK_TRUE, 0xffffffff);
+	vkResetFences(device, 1, &renderFence);
 }
 
 #if defined(CHTHOLLY_PLATFORM_APPLE)

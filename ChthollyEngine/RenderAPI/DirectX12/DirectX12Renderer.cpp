@@ -45,18 +45,36 @@ void keg::DirectX12Renderer::SwapBuffer()
     renderTargetPassDesc.BeginningAccess.Clear.ClearValue.DepthStencil.Stencil = 0.f;
     renderTargetPassDesc.cpuDescriptor = renderTargetHandle;
     renderTargetPassDesc.EndingAccess.Type = D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_PRESERVE;
+
+    D3D12_RESOURCE_BARRIER renderBarrier = { };
+    renderBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+    renderBarrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+    renderBarrier.Transition.pResource = renderTargetImages[currIndex].Get();
+    renderBarrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
+    renderBarrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+    renderBarrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+
+    cmdList->ResourceBarrier(1, &renderBarrier);
     cmdList->BeginRenderPass(1, &renderTargetPassDesc, nullptr, D3D12_RENDER_PASS_FLAG_NONE);
 
     cmdList->EndRenderPass();
 
+    D3D12_RESOURCE_BARRIER presentBarrier = { };
+    presentBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+    presentBarrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+    presentBarrier.Transition.pResource = renderTargetImages[currIndex].Get();
+    presentBarrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
+    presentBarrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
+    presentBarrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+
+    cmdList->ResourceBarrier(1, &presentBarrier);
     cmdList->Close();
     ID3D12CommandList* lists[1] = { cmdList.Get() };
     cmdQueue->ExecuteCommandLists(1, lists);
+    swapChain->Present(0, 0);
     
     static uint64_t fenceCount = 0;
     cmdQueue->Signal(renderFence.Get(), ++fenceCount);
-
-    swapChain->Present(0, 0);
 }
 
 void keg::DirectX12Renderer::CreateSwapChain(void *window)
