@@ -273,7 +273,7 @@ struct ktm::detail::mat_common_implement::factor_qr
 };
 
 template<size_t N, typename T>
-struct ktm::detail::mat_common_implement::eigen
+struct ktm::detail::mat_common_implement::eigen_qr_it
 {
     using M = mat<N, N, T>;
     using E = vec<N, T>;
@@ -307,6 +307,112 @@ struct ktm::detail::mat_common_implement::eigen
 };
 
 template<size_t N, typename T>
+struct ktm::detail::mat_common_implement::eigen_jacobi_it
+{
+    using M = mat<N, N, T>;
+    using E = vec<N, T>;
+    static CHTHOLLY_NOINLINE std::tuple<E, M> call(const M& m) noexcept
+    {
+        // jacobi iterator calc eigen vector and value (matrix must be symmetric matrix)
+        M a { m }, eigen_vec = M::from_eye();
+        E eigen_value;
+
+        for(int it = 0; it < 100; ++it)
+        {
+            // find max non-diagonal element
+            int col = 0, row = 1;
+            T nd_max = abs(a[0][1]);
+            for(int i = 0; i < N; ++i)
+            {
+                for(int j = i + 1; j < N; ++j)
+                {
+                    T nd_elem = abs(a[i][j]);
+                    if(nd_elem > nd_max)
+                    {
+                        col = i;
+                        row = j;
+                        nd_max = nd_elem;
+                    }
+                }
+            }
+            
+            if(equal_zero(nd_max))
+                break;
+            
+            T acc = a[col][col];
+            T arr = a[row][row];
+            T acr = a[col][row];
+            
+            // calc rotate angle
+            T sin_theta, cos_theta, sin_2theta, cos_2theta;
+
+            if(equal_zero(arr - acc))
+            {
+                if(acr < 0)
+                {
+                    sin_theta = -rsqrt(static_cast<T>(2));
+                    cos_theta = rsqrt(static_cast<T>(2));
+                    sin_2theta = -one<T>;
+                    cos_2theta = zero<T>;
+                }
+                else 
+                {
+                    sin_theta = rsqrt(static_cast<T>(2));
+                    cos_theta = rsqrt(static_cast<T>(2));
+                    sin_2theta = one<T>;
+                    cos_2theta = zero<T>; 
+                }
+            }
+            else
+            {
+                T theta = static_cast<T>(0.5) * atan2(static_cast<T>(2) * acr, arr - acc);
+                sin_theta = sin(theta);
+                cos_theta = cos(theta);
+                sin_2theta = sin(static_cast<T>(2) * theta);
+                cos_2theta = cos(static_cast<T>(2) * theta);
+            }
+
+            // calc matrix all elements
+            a[col][col] = arr * sin_theta * sin_theta + acc * cos_theta * cos_theta + acr * sin_2theta; 
+            a[row][row] = arr * cos_theta * cos_theta + acc * sin_theta * sin_theta + acr * sin_2theta;
+            a[col][row] = static_cast<T>(0.5) * (acc - arr) * sin_2theta + acr * cos_2theta;
+            a[row][col] = a[col][row];
+
+            for(int i = 0; i < N; ++i)
+            {
+                if((i != col) && (i != row))
+                {
+                    T aci = a[col][i];
+                    T ari = a[row][i];
+
+                    a[col][i] = cos_theta * aci - sin_theta * ari;
+                    a[row][i] = cos_theta * ari + sin_theta * aci;
+                    a[i][col] = a[col][i];
+                    a[i][row] = a[row][i];
+                }
+            }
+
+            // calc eigen vector
+            for(int i = 0; i < N; ++i)
+            {
+                T eci = eigen_vec[col][i];
+                T eri = eigen_vec[row][i];
+
+                eigen_vec[col][i] = cos_theta * eci - sin_theta * eri;
+                eigen_vec[row][i] = cos_theta * eri + sin_theta * eci;
+            }
+        }
+
+        for(int i = 0; i < N; ++i)
+        {
+            eigen_value[i] = a[i][i];
+        }
+
+        return { eigen_value, eigen_vec };
+    }
+};
+
+template<size_t N, typename T>
 struct ktm::detail::mat_common_implement::factor_svd
 {
     static_assert(std::is_floating_point_v<T>);
@@ -314,57 +420,56 @@ struct ktm::detail::mat_common_implement::factor_svd
 
     static CHTHOLLY_NOINLINE std::tuple<M, M, M> call(const M& m)
     {
-        if constexpr(N == 2)
+        std::tuple<vec<N, T>, M> ata_eigen = eigen_jacobi_it<N, T>::call(transpose<N, N, T>::call(m) * m);
+        vec<N, T>& ata_eigen_value_ref = std::get<0>(ata_eigen);
+        for(int i = 0; i < N; ++i)
         {
-            T a = m[0][0], c = m[0][1], b = m[1][0], d = m[1][1];
-            T a2 = pow2(a), b2 = pow2(b), c2 = pow2(c), d2 = pow2(d);
-            T a2_p_b2 = a2 + b2;
-            T c2_p_d2 = c2 + d2;
-            T ac_p_bd = a * c + b * d;
-            T two_ac_p_bd = 2 * ac_p_bd;
-            T a2_p_b2_m_c2_m_d2 = a2_p_b2 - c2_p_d2;
-
-            T theta = static_cast<T>(0.5) * atan2(two_ac_p_bd, a2_p_b2_m_c2_m_d2);
-            T cos_theta = cos(theta);
-            T sin_theta = sin(theta);
-
-            M u = { { cos_theta, sin_theta }, { -sin_theta, cos_theta } };
-            
-            T sg1 = a2_p_b2 + c2_p_d2;
-            T sg2 = sqrt(pow2(a2_p_b2_m_c2_m_d2) + pow2(two_ac_p_bd));
-            T sigma1 = sqrt(static_cast<T>(0.5) * (sg1 + sg2));
-            T sigma2 = sqrt(static_cast<T>(0.5) * (sg1 - sg2));
-            M s = { { sigma1, 0 }, { 0, sigma2 } };
-
-            T phi   = static_cast<T>(0.5) * atan2(static_cast<T>(2) * (a * b + c * d), a2 - b2 + c2 - d2);
-            T cos_phi   = cos(phi);
-            T sin_phi   = sin(phi);
-
-            T s11 = (a * cos_theta + c * sin_theta) * cos_theta + ( b * cos_theta + d * sin_theta) * sin_phi;
-            T s22 = (a * sin_theta - c * cos_theta) * sin_phi   + (-b * sin_theta + d * cos_theta) * cos_phi;
-            T sign_s11 = static_cast<T>(s11 > 0 ? 1 : (s11 < 0 ? -1 : 0));
-            T sign_s22 = static_cast<T>(s22 > 0 ? 1 : (s22 < 0 ? -1 : 0));
-
-            M v = { { sign_s11 * cos_phi, sign_s11 * sin_phi }, { -sign_s22 * sin_phi, sign_s22 * cos_phi } };
-            return { u, s, v };
+            ata_eigen_value_ref[i] = sqrt(abs(ata_eigen_value_ref[i])); 
         }
-        else
+        M v = transpose<N, N, T>::call(std::get<1>(ata_eigen));
+        M s = M::from_diag(ata_eigen_value_ref);
+        for(int i = 0; i < N; ++i)
         {
-            std::tuple<vec<N, T>, M> ata_eigen = eigen<N, T>::call(transpose<N, N, T>::call(m) * m);
-            vec<N, T>& ata_eigen_value_ref = std::get<0>(ata_eigen);
-            for(int i = 0; i < N; ++i)
-            {
-                ata_eigen_value_ref[i] = sqrt(abs(ata_eigen_value_ref[i])); 
-            }
-            M v = transpose<N, N, T>::call(std::get<1>(ata_eigen));
-            M s = M::from_diag(ata_eigen_value_ref);
-            for(int i = 0; i < N; ++i)
-            {
-                ata_eigen_value_ref[i] = one<T> / ata_eigen_value_ref[i];  
-            }
-            M u = m * std::get<1>(ata_eigen) * M::from_diag(ata_eigen_value_ref);
-            return { u, s, v };
+            ata_eigen_value_ref[i] = one<T> / ata_eigen_value_ref[i];  
         }
+        M u = m * std::get<1>(ata_eigen) * M::from_diag(ata_eigen_value_ref);
+        return { u, s, v };
     }
+
+    // ref: https://lucidar.me/en/mathematics/singular-value-decomposition-of-a-2x2-matrix/
+    // if constexpr(N == 2)
+    // {
+    //     T a = m[0][0], c = m[0][1], b = m[1][0], d = m[1][1];
+    //     T a2 = pow2(a), b2 = pow2(b), c2 = pow2(c), d2 = pow2(d);
+    //     T a2_p_b2 = a2 + b2;
+    //     T c2_p_d2 = c2 + d2;
+    //     T ac_p_bd = a * c + b * d;
+    //     T two_ac_p_bd = 2 * ac_p_bd;
+    //     T a2_p_b2_m_c2_m_d2 = a2_p_b2 - c2_p_d2;
+
+    //     T theta = static_cast<T>(0.5) * atan2(two_ac_p_bd, a2_p_b2_m_c2_m_d2);
+    //     T cos_theta = cos(theta);
+    //     T sin_theta = sin(theta);
+
+    //     M u = { { cos_theta, sin_theta }, { -sin_theta, cos_theta } };
+
+    //     T sg1 = a2_p_b2 + c2_p_d2;
+    //     T sg2 = sqrt(pow2(a2_p_b2_m_c2_m_d2) + pow2(two_ac_p_bd));
+    //     T sigma1 = sqrt(static_cast<T>(0.5) * (sg1 + sg2));
+    //     T sigma2 = sqrt(static_cast<T>(0.5) * (sg1 - sg2));
+    //     M s = { { sigma1, 0 }, { 0, sigma2 } };
+
+    //     T phi   = static_cast<T>(0.5) * atan2(static_cast<T>(2) * (a * b + c * d), a2 - b2 + c2 - d2);
+    //     T cos_phi   = cos(phi);
+    //     T sin_phi   = sin(phi);
+
+    //     T s11 = (a * cos_theta + c * sin_theta) * cos_theta + ( b * cos_theta + d * sin_theta) * sin_phi;
+    //     T s22 = (a * sin_theta - c * cos_theta) * sin_phi   + (-b * sin_theta + d * cos_theta) * cos_phi;
+    //     T sign_s11 = static_cast<T>(s11 > 0 ? 1 : (s11 < 0 ? -1 : 0));
+    //     T sign_s22 = static_cast<T>(s22 > 0 ? 1 : (s22 < 0 ? -1 : 0));
+
+    //     M v = { { sign_s11 * cos_phi, sign_s11 * sin_phi }, { -sign_s22 * sin_phi, sign_s22 * cos_phi } };
+    //     return { u, s, v };
+    // }
 };
 #endif
