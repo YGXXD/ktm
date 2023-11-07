@@ -10,6 +10,6 @@
 
 #include "Core/Application.h"
 #include "Log/Logger.h"
-#include "Math/KutoriMath.h"
+#include "Math/KTMath.h"
 
 #endif
