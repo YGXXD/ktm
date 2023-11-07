@@ -164,45 +164,6 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> pow5(T x) noexcept
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> mix(T x, T y, T t) noexcept
-{
-    return x + t * (y - x);
-}
-
-template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> rsqrt(T x) noexcept
-{
-    if constexpr(std::is_same_v<T, long double>)
-    {
-        return one<long double> / ::sqrtl(x);
-    }
-    else
-    {
-        using integral_type = std::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
-        integral_type i = *reinterpret_cast<const integral_type*>(&x);
-
-        // 雷神三算法u的值为0.0450465
-        if constexpr(std::is_same_v<integral_type, unsigned int>)
-        {
-            i = 0x5f3759df - (i >> 1);
-        }
-        else // std::is_same_v<integral_type, unsigned long long> 
-        {
-            i = 0x5fe6eb3bfb58d152 - (i >> 1);
-        }
-        // 求出平方根倒数近似解
-        T ret = *reinterpret_cast<T*>(&i); 
-        
-        // 用牛顿迭代法进行迭代增加精度
-        ret = ret * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * ret * ret));
-        ret = ret * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * ret * ret));
-        ret = ret * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * ret * ret)); 
-
-        return ret;
-    }
-}
-
-template<typename T>
 CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, bool> near_zero(T x) noexcept
 {
     if constexpr(std::is_same_v<T, float>)
@@ -219,6 +180,67 @@ template<typename T>
 CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, bool> equal_zero(T x) noexcept
 {
     return abs(x) < std::numeric_limits<T>::epsilon();
+}
+
+template<typename T>
+CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> mix(T x, T y, T t) noexcept
+{
+    return x + t * (y - x);
+}
+
+template<typename T>
+CHTHOLLY_INLINE std::enable_if_t<std::is_exist_same_vs<float, double, T>, T> fast_rsqrt(T x) noexcept
+{
+    using integral_type = std::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
+    integral_type i = *reinterpret_cast<const integral_type*>(&x);
+
+    // 雷神三算法u的值为0.0450465
+    if constexpr(std::is_same_v<integral_type, unsigned int>)
+    {
+        i = 0x5f3759df - (i >> 1);
+    }
+    else // std::is_same_v<integral_type, unsigned long long> 
+    {
+        i = 0x5fe6eb3bfb58d152 - (i >> 1);
+    }
+    // 求出平方根倒数近似解
+    T ret = *reinterpret_cast<T*>(&i); 
+    // 用牛顿迭代法进行迭代增加精度
+    ret = ret * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * ret * ret)); 
+
+    return ret;
+}
+
+template<typename T>
+CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> rsqrt(T x) noexcept
+{
+    if constexpr(std::is_same_v<T, long double>)
+    {
+        return one<long double> / ::sqrtl(x);
+    }
+    else
+    {
+        using integral_type = std::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
+        integral_type i = *reinterpret_cast<const integral_type*>(&x);
+
+        if constexpr(std::is_same_v<integral_type, unsigned int>)
+        {
+            i = 0x5f3759df - (i >> 1);
+        }
+        else // std::is_same_v<integral_type, unsigned long long> 
+        {
+            i = 0x5fe6eb3bfb58d152 - (i >> 1);
+        }
+        T tmp = *reinterpret_cast<T*>(&i); 
+        T ret = tmp * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * tmp * tmp)); 
+        while(!equal_zero(ret - tmp))
+        {
+            tmp = ret;
+            ret = tmp * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * tmp * tmp)); 
+        }
+        
+        return ret;
+    }
 }
 
 template<typename T>
