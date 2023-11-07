@@ -163,6 +163,19 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> pow5(T x) noexcept
     return pow2(x) * pow2(x) * x;
 }
 
+template<size_t N, typename T>
+CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> pow(T x) noexcept
+{
+    if constexpr(N == 0)
+    {
+        return one<T>;
+    }
+    else
+    {
+        return x * pow<N - 1>(x);
+    }
+}
+
 template<typename T>
 CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, bool> near_zero(T x) noexcept
 {
