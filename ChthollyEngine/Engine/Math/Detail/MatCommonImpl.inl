@@ -183,6 +183,7 @@ struct ktm::detail::mat_common_implement::factor_lu
     static CHTHOLLY_NOINLINE std::tuple<M, M> call(const M& m) noexcept
     {
         M l = M::from_eye(), u { };
+        // 求矩阵lu分解
         // u[i][0] = m[i][0]
         // l[0][j] = m[0][j] / u[0][0]
         for(int i = 0; i < N; ++i)
@@ -229,8 +230,9 @@ struct ktm::detail::mat_common_implement::factor_qr
     using M = mat<N, N, T>;
     static CHTHOLLY_NOINLINE std::tuple<M, M> call(const M& m) noexcept
     {
+        // householder变换求矩阵qr分解
         M q = M::from_eye(), r { m };
-        // householder
+        
         for(int i = 0; i < N; ++i)
         {
             T alpha = zero<T>;
@@ -279,7 +281,7 @@ struct ktm::detail::mat_common_implement::eigen_qr_it
     using E = vec<N, T>;
     static CHTHOLLY_NOINLINE std::tuple<E, M> call(const M& m) noexcept
     {
-        // qr iterator calc eigen vector and value
+        // qr迭代法求矩阵特征向量和特征值
         M a { m }, eigen_vec = M::from_eye();
         E eigen_value, last_eigen_value;
 
@@ -313,13 +315,13 @@ struct ktm::detail::mat_common_implement::eigen_jacobi_it
     using E = vec<N, T>;
     static CHTHOLLY_NOINLINE std::tuple<E, M> call(const M& m) noexcept
     {
-        // jacobi iterator calc eigen vector and value (matrix must be symmetric matrix)
+        // jacobi迭代求矩阵特征向量和特征值(矩阵必须为对称矩阵)
         M a { m }, eigen_vec = M::from_eye();
         E eigen_value;
 
         for(int it = 0; it < 100; ++it)
         {
-            // find max non-diagonal element
+            // 找到非对角线的最大元素
             int col = 0, row = 1;
             T nd_max = abs(a[0][1]);
             for(int i = 0; i < N; ++i)
@@ -343,7 +345,7 @@ struct ktm::detail::mat_common_implement::eigen_jacobi_it
             T arr = a[row][row];
             T acr = a[col][row];
             
-            // calc rotate angle
+            // 计算旋转角度
             T sin_theta, cos_theta, sin_2theta, cos_2theta;
 
             if(equal_zero(arr - acc))
@@ -372,7 +374,7 @@ struct ktm::detail::mat_common_implement::eigen_jacobi_it
                 cos_2theta = cos(static_cast<T>(2) * theta);
             }
 
-            // calc matrix all elements
+            // 计算迭代后的的矩阵元素
             a[col][col] = arr * sin_theta * sin_theta + acc * cos_theta * cos_theta + acr * sin_2theta; 
             a[row][row] = arr * cos_theta * cos_theta + acc * sin_theta * sin_theta + acr * sin_2theta;
             a[col][row] = static_cast<T>(0.5) * (acc - arr) * sin_2theta + acr * cos_2theta;
@@ -392,7 +394,7 @@ struct ktm::detail::mat_common_implement::eigen_jacobi_it
                 }
             }
 
-            // calc eigen vector
+            // 计算特征向量
             for(int i = 0; i < N; ++i)
             {
                 T eci = eigen_vec[col][i];
@@ -420,6 +422,7 @@ struct ktm::detail::mat_common_implement::factor_svd
 
     static CHTHOLLY_NOINLINE std::tuple<M, M, M> call(const M& m)
     {
+        // 求矩阵svd分解(通过jacobi迭代法找矩阵特征向量和特征值)
         std::tuple<vec<N, T>, M> ata_eigen = eigen_jacobi_it<N, T>::call(transpose<N, N, T>::call(m) * m);
         vec<N, T>& ata_eigen_value_ref = std::get<0>(ata_eigen);
         for(int i = 0; i < N; ++i)
