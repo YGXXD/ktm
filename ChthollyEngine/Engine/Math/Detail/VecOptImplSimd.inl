@@ -29,7 +29,7 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::add_to_self<N, std::enable_if_t<N >= 2 && N <= 4, float>>
 {
     using V = vec<N, float>;
-    static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
+    static CHTHOLLY_INLINE void call(V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
         {
@@ -41,7 +41,6 @@ struct ktm::detail::vec_opt_implement::add_to_self<N, std::enable_if_t<N >= 2 &&
             float32x4_t ret = vaddq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]));
             vst1q_f32(&x[0], ret);
         }
-        return x;
     }
 };
 
@@ -68,7 +67,7 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::minus_to_self<N, std::enable_if_t<N >= 2 && N <= 4, float>>
 {
     using V = vec<N, float>;
-    static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
+    static CHTHOLLY_INLINE void call(V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
         {
@@ -80,7 +79,6 @@ struct ktm::detail::vec_opt_implement::minus_to_self<N, std::enable_if_t<N >= 2 
             float32x4_t ret = vsubq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]));
             vst1q_f32(&x[0], ret);
         }
-        return x;
     }
 };
 
@@ -107,7 +105,7 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::mul_to_self<N, std::enable_if_t<N >= 2 && N <= 4, float>>
 {
     using V = vec<N, float>;
-    static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
+    static CHTHOLLY_INLINE void call(V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
         {
@@ -119,7 +117,6 @@ struct ktm::detail::vec_opt_implement::mul_to_self<N, std::enable_if_t<N >= 2 &&
             float32x4_t ret = vmulq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]));
             vst1q_f32(&x[0], ret);
         }
-        return x;
     }
 };
 
@@ -146,7 +143,7 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::div_to_self<N, std::enable_if_t<N >= 2 && N <= 4, float>>
 {
     using V = vec<N, float>;
-    static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
+    static CHTHOLLY_INLINE void call(V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
         {
@@ -158,7 +155,6 @@ struct ktm::detail::vec_opt_implement::div_to_self<N, std::enable_if_t<N >= 2 &&
             float32x4_t ret = vdivq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]));
             vst1q_f32(&x[0], ret);
         }
-        return x;
     }
 };
 
@@ -205,7 +201,7 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::add_scalar_to_self<N, std::enable_if_t<N >= 2 && N <= 4, float>>
 {
     using V = vec<N, float>;
-    static CHTHOLLY_INLINE V& call(V& x, float scalar) noexcept
+    static CHTHOLLY_INLINE void call(V& x, float scalar) noexcept
     {
         if constexpr(N == 2)
         {
@@ -217,7 +213,6 @@ struct ktm::detail::vec_opt_implement::add_scalar_to_self<N, std::enable_if_t<N 
             float32x4_t ret = vaddq_f32(vld1q_f32(&x[0]), vdupq_n_f32(scalar));
             vst1q_f32(&x[0], ret);
         }
-        return x;
     }
 };
 
@@ -244,7 +239,7 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::minus_scalar_to_self<N, std::enable_if_t<N >= 2 && N <= 4, float>>
 {
     using V = vec<N, float>;
-    static CHTHOLLY_INLINE V& call(V& x, float scalar) noexcept
+    static CHTHOLLY_INLINE void call(V& x, float scalar) noexcept
     {
         if constexpr(N == 2)
         {
@@ -256,7 +251,6 @@ struct ktm::detail::vec_opt_implement::minus_scalar_to_self<N, std::enable_if_t<
             float32x4_t ret = vsubq_f32(vld1q_f32(&x[0]), vdupq_n_f32(scalar));
             vst1q_f32(&x[0], ret);
         }
-        return x;
     }
 };
 
@@ -283,7 +277,7 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::mul_scalar_to_self<N, std::enable_if_t<N >= 2 && N <= 4, float>>
 {
     using V = vec<N, float>;
-    static CHTHOLLY_INLINE V& call(V& x, float scalar) noexcept
+    static CHTHOLLY_INLINE void call(V& x, float scalar) noexcept
     {
         if constexpr(N == 2)
         {
@@ -295,7 +289,6 @@ struct ktm::detail::vec_opt_implement::mul_scalar_to_self<N, std::enable_if_t<N 
             float32x4_t ret = vmulq_f32(vld1q_f32(&x[0]), vdupq_n_f32(scalar));
             vst1q_f32(&x[0], ret);
         }
-        return x;
     }
 };
 
@@ -322,7 +315,7 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::div_scalar_to_self<N, std::enable_if_t<N >= 2 && N <= 4, float>>
 {
     using V = vec<N, float>;
-    static CHTHOLLY_INLINE V& call(V& x, float scalar) noexcept
+    static CHTHOLLY_INLINE void call(V& x, float scalar) noexcept
     {
         if constexpr(N == 2)
         {
@@ -334,7 +327,6 @@ struct ktm::detail::vec_opt_implement::div_scalar_to_self<N, std::enable_if_t<N 
             float32x4_t ret = vdivq_f32(vld1q_f32(&x[0]), vdupq_n_f32(scalar));
             vst1q_f32(&x[0], ret);
         }
-        return x;
     }
 };
 
@@ -387,7 +379,7 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::add_to_self<N, std::enable_if_t<N >= 2 && N <= 4, int>>
 {
     using V = vec<N, int>;
-    static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
+    static CHTHOLLY_INLINE void call(V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
         {
@@ -399,7 +391,6 @@ struct ktm::detail::vec_opt_implement::add_to_self<N, std::enable_if_t<N >= 2 &&
             int32x4_t ret = vaddq_s32(vld1q_s32(&x[0]), vld1q_s32(&y[0]));
             vst1q_s32(&x[0], ret);
         }
-        return x;
     }
 };
 
@@ -426,7 +417,7 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::minus_to_self<N, std::enable_if_t<N >= 2 && N <= 4, int>>
 {
     using V = vec<N, int>;
-    static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
+    static CHTHOLLY_INLINE void call(V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
         {
@@ -438,7 +429,6 @@ struct ktm::detail::vec_opt_implement::minus_to_self<N, std::enable_if_t<N >= 2 
             int32x4_t ret = vsubq_s32(vld1q_s32(&x[0]), vld1q_s32(&y[0]));
             vst1q_s32(&x[0], ret);
         }
-        return x;
     }
 };
 
@@ -465,7 +455,7 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::mul_to_self<N, std::enable_if_t<N >= 2 && N <= 4, int>>
 {
     using V = vec<N, int>;
-    static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
+    static CHTHOLLY_INLINE void call(V& x, const V& y) noexcept
     {
         if constexpr(N == 2)
         {
@@ -477,7 +467,6 @@ struct ktm::detail::vec_opt_implement::mul_to_self<N, std::enable_if_t<N >= 2 &&
             int32x4_t ret = vmulq_s32(vld1q_s32(&x[0]), vld1q_s32(&y[0]));
             vst1q_s32(&x[0], ret);
         }
-        return x;
     }
 };
 
@@ -524,7 +513,7 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::add_scalar_to_self<N, std::enable_if_t<N >= 2 && N <= 4, int>>
 {
     using V = vec<N, int>;
-    static CHTHOLLY_INLINE V& call(V& x, int scalar) noexcept
+    static CHTHOLLY_INLINE void call(V& x, int scalar) noexcept
     {
         if constexpr(N == 2)
         {
@@ -536,7 +525,6 @@ struct ktm::detail::vec_opt_implement::add_scalar_to_self<N, std::enable_if_t<N 
             int32x4_t ret = vaddq_s32(vld1q_s32(&x[0]), vdupq_n_s32(scalar));
             vst1q_s32(&x[0], ret);
         }
-        return x;
     }
 };
 
@@ -563,7 +551,7 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::minus_scalar_to_self<N, std::enable_if_t<N >= 2 && N <= 4, int>>
 {
     using V = vec<N, int>;
-    static CHTHOLLY_INLINE V& call(V& x, int scalar) noexcept
+    static CHTHOLLY_INLINE void call(V& x, int scalar) noexcept
     {
         if constexpr(N == 2)
         {
@@ -575,7 +563,6 @@ struct ktm::detail::vec_opt_implement::minus_scalar_to_self<N, std::enable_if_t<
             int32x4_t ret = vsubq_s32(vld1q_s32(&x[0]), vdupq_n_s32(scalar));
             vst1q_s32(&x[0], ret);
         }
-        return x;
     }
 };
 
@@ -602,7 +589,7 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::mul_scalar_to_self<N, std::enable_if_t<N >= 2 && N <= 4, int>>
 {
     using V = vec<N, int>;
-    static CHTHOLLY_INLINE V& call(V& x, int scalar) noexcept
+    static CHTHOLLY_INLINE void call(V& x, int scalar) noexcept
     {
         if constexpr(N == 2)
         {
@@ -614,7 +601,6 @@ struct ktm::detail::vec_opt_implement::mul_scalar_to_self<N, std::enable_if_t<N 
             int32x4_t ret = vmulq_s32(vld1q_s32(&x[0]), vdupq_n_s32(scalar));
             vst1q_s32(&x[0], ret);
         }
-        return x;
     }
 };
 
@@ -660,11 +646,10 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::add_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
-    static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
+    static CHTHOLLY_INLINE void call(V& x, const V& y) noexcept
     {
         __m128 ret = _mm_add_ps(_mm_load_ps(&x[0]), _mm_load_ps(&y[0]));
         _mm_store_ps(&x[0], ret);
-        return x;
     }
 };
 
@@ -683,11 +668,10 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::minus_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
-    static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
+    static CHTHOLLY_INLINE void call(V& x, const V& y) noexcept
     {
         __m128 ret = _mm_sub_ps(_mm_load_ps(&x[0]), _mm_load_ps(&y[0]));
         _mm_store_ps(&x[0], ret);
-        return x;
     }
 };
 
@@ -706,11 +690,10 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::mul_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
-    static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
+    static CHTHOLLY_INLINE void call(V& x, const V& y) noexcept
     {
         __m128 ret = _mm_mul_ps(_mm_load_ps(&x[0]), _mm_load_ps(&y[0]));
         _mm_store_ps(&x[0], ret);
-        return x;
     }
 };
 
@@ -729,11 +712,10 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::div_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
-    static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
+    static CHTHOLLY_INLINE void call(V& x, const V& y) noexcept
     {
         __m128 ret = _mm_div_ps(_mm_load_ps(&x[0]), _mm_load_ps(&y[0]));
         _mm_store_ps(&x[0], ret);
-        return x;
     }
 };
 
@@ -765,11 +747,10 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::add_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
-    static CHTHOLLY_INLINE V& call(V& x, float scalar) noexcept
+    static CHTHOLLY_INLINE void call(V& x, float scalar) noexcept
     {
         __m128 ret = _mm_add_ps(_mm_load_ps(&x[0]), _mm_set1_ps(scalar));
         _mm_store_ps(&x[0], ret);
-        return x;
     }
 };
 
@@ -788,11 +769,10 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::minus_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
-    static CHTHOLLY_INLINE V& call(V& x, float scalar) noexcept
+    static CHTHOLLY_INLINE void call(V& x, float scalar) noexcept
     {
         __m128 ret = _mm_sub_ps(_mm_load_ps(&x[0]), _mm_set1_ps(scalar));
         _mm_store_ps(&x[0], ret);
-        return x;
     }
 };
 
@@ -811,11 +791,10 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::mul_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
-    static CHTHOLLY_INLINE V& call(V& x, float scalar) noexcept
+    static CHTHOLLY_INLINE void call(V& x, float scalar) noexcept
     {
         __m128 ret = _mm_mul_ps(_mm_load_ps(&x[0]), _mm_set1_ps(scalar));
         _mm_store_ps(&x[0], ret);
-        return x;
     }
 };
 
@@ -834,11 +813,10 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::div_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
-    static CHTHOLLY_INLINE V& call(V& x, float scalar) noexcept
+    static CHTHOLLY_INLINE void call(V& x, float scalar) noexcept
     {
         __m128 ret = _mm_div_ps(_mm_load_ps(&x[0]), _mm_set1_ps(scalar));
         _mm_store_ps(&x[0], ret);
-        return x;
     }
 };
 
@@ -889,13 +867,12 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::add_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
 {
     using V = vec<N, int>;
-    static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
+    static CHTHOLLY_INLINE void call(V& x, const V& y) noexcept
     {
         __m128i t_x = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
         __m128i t_y = _mm_load_si128(reinterpret_cast<const __m128i*>(&y[0]));
         __m128i ret = _mm_add_epi32(t_x, t_y);
         _mm_store_si128(reinterpret_cast<__m128i*>(&x[0]), ret);
-        return x;
     }
 };
 
@@ -916,13 +893,12 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::minus_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
 {
     using V = vec<N, int>;
-    static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
+    static CHTHOLLY_INLINE void call(V& x, const V& y) noexcept
     {
         __m128i t_x = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
         __m128i t_y = _mm_load_si128(reinterpret_cast<const __m128i*>(&y[0]));
         __m128i ret = _mm_sub_epi32(t_x, t_y);
         _mm_store_si128(reinterpret_cast<__m128i*>(&x[0]), ret);
-        return x;
     }
 };
 
@@ -954,12 +930,11 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::add_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
 {
     using V = vec<N, int>;
-    static CHTHOLLY_INLINE V& call(V& x, int scalar) noexcept
+    static CHTHOLLY_INLINE void call(V& x, int scalar) noexcept
     {
         __m128i t_x = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
         __m128i ret = _mm_add_epi32(t_x, _mm_set1_epi32(scalar));
         _mm_store_si128(reinterpret_cast<__m128i*>(&x[0]), ret);
-        return x;
     }
 };
 
@@ -979,12 +954,11 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::minus_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
 {
     using V = vec<N, int>;
-    static CHTHOLLY_INLINE V& call(V& x, int scalar) noexcept
+    static CHTHOLLY_INLINE void call(V& x, int scalar) noexcept
     {
         __m128i t_x = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
         __m128i ret = _mm_sub_epi32(t_x, _mm_set1_epi32(scalar));
         _mm_store_si128(reinterpret_cast<__m128i*>(&x[0]), ret);
-        return x;
     }
 };
 
@@ -1035,13 +1009,12 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::mul_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
 {
     using V = vec<N, int>;
-    static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
+    static CHTHOLLY_INLINE void call(V& x, const V& y) noexcept
     {
         __m128i t_x = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
         __m128i t_y = _mm_load_si128(reinterpret_cast<const __m128i*>(&y[0]));
         __m128i ret = _mm_mullo_epi32(t_x, t_y);
         _mm_store_si128(reinterpret_cast<__m128i*>(&x[0]), ret);
-        return x;
     }
 };
 
@@ -1061,12 +1034,11 @@ template<size_t N>
 struct ktm::detail::vec_opt_implement::mul_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
 {
     using V = vec<N, int>;
-    static CHTHOLLY_INLINE V& call(V& x, int scalar) noexcept
+    static CHTHOLLY_INLINE void call(V& x, int scalar) noexcept
     {
         __m128i t_x = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
         __m128i ret = _mm_mullo_epi32(t_x, _mm_set1_epi32(scalar));
         _mm_store_si128(reinterpret_cast<__m128i*>(&x[0]), ret);
-        return x;
     }
 };
 

@@ -27,16 +27,15 @@ template<size_t N, typename T>
 struct ktm::detail::vec_opt_implement::add_to_self
 {
     using V = vec<N, T>;
-    static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
+    static CHTHOLLY_INLINE void call(V& x, const V& y) noexcept
     {
-        return call(x, y, std::make_index_sequence<N>());
+        call(x, y, std::make_index_sequence<N>());
     }
 private:
     template<size_t ...Ns>
-    static CHTHOLLY_INLINE V& call(V& x, const V& y, std::index_sequence<Ns...>) noexcept
+    static CHTHOLLY_INLINE void call(V& x, const V& y, std::index_sequence<Ns...>) noexcept
     {
         ((x[Ns] += y[Ns]), ...);
-        return x; 
     }
 };
 
@@ -62,16 +61,15 @@ template<size_t N, typename T>
 struct ktm::detail::vec_opt_implement::minus_to_self
 {
     using V = vec<N, T>;
-    static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
+    static CHTHOLLY_INLINE void call(V& x, const V& y) noexcept
     {
-        return call(x, y, std::make_index_sequence<N>());
+        call(x, y, std::make_index_sequence<N>());
     }
 private:
     template<size_t ...Ns>
-    static CHTHOLLY_INLINE V& call(V& x, const V& y, std::index_sequence<Ns...>) noexcept
+    static CHTHOLLY_INLINE void call(V& x, const V& y, std::index_sequence<Ns...>) noexcept
     {
         ((x[Ns] -= y[Ns]), ...);
-        return x; 
     }
 };
 
@@ -97,16 +95,15 @@ template<size_t N, typename T>
 struct ktm::detail::vec_opt_implement::mul_to_self
 {
     using V = vec<N, T>;
-    static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
+    static CHTHOLLY_INLINE void call(V& x, const V& y) noexcept
     {
-        return call(x, y, std::make_index_sequence<N>());
+        call(x, y, std::make_index_sequence<N>());
     }
 private:
     template<size_t ...Ns>
-    static CHTHOLLY_INLINE V& call(V& x, const V& y, std::index_sequence<Ns...>) noexcept
+    static CHTHOLLY_INLINE void call(V& x, const V& y, std::index_sequence<Ns...>) noexcept
     {
         ((x[Ns] *= y[Ns]), ...);
-        return x; 
     }
 };
 
@@ -132,16 +129,15 @@ template<size_t N, typename T>
 struct ktm::detail::vec_opt_implement::div_to_self
 {
     using V = vec<N, T>;
-    static CHTHOLLY_INLINE V& call(V& x, const V& y) noexcept
+    static CHTHOLLY_INLINE void call(V& x, const V& y) noexcept
     {
-        return call(x, y, std::make_index_sequence<N>());
+        call(x, y, std::make_index_sequence<N>());
     }
 private:
     template<size_t ...Ns>
-    static CHTHOLLY_INLINE V& call(V& x, const V& y, std::index_sequence<Ns...>) noexcept
+    static CHTHOLLY_INLINE void call(V& x, const V& y, std::index_sequence<Ns...>) noexcept
     {
         ((x[Ns] /= y[Ns]), ...);
-        return x; 
     }
 };
 
@@ -185,16 +181,15 @@ template<size_t N, typename T>
 struct ktm::detail::vec_opt_implement::add_scalar_to_self
 {
     using V = vec<N, T>;
-    static CHTHOLLY_INLINE V& call(V& x, T scalar) noexcept
+    static CHTHOLLY_INLINE void call(V& x, T scalar) noexcept
     {
-        return call(x, scalar, std::make_index_sequence<N>());
+        call(x, scalar, std::make_index_sequence<N>());
     }
 private:
     template<size_t ...Ns>
-    static CHTHOLLY_INLINE V& call(V& x, T scalar, std::index_sequence<Ns...>) noexcept
+    static CHTHOLLY_INLINE void call(V& x, T scalar, std::index_sequence<Ns...>) noexcept
     {
         ((x[Ns] += scalar), ...);
-        return x; 
     }
 };
 
@@ -220,16 +215,15 @@ template<size_t N, typename T>
 struct ktm::detail::vec_opt_implement::minus_scalar_to_self
 {
     using V = vec<N, T>;
-    static CHTHOLLY_INLINE V& call(V& x, T scalar) noexcept
+    static CHTHOLLY_INLINE void call(V& x, T scalar) noexcept
     {
-        return call(x, scalar, std::make_index_sequence<N>());
+        call(x, scalar, std::make_index_sequence<N>());
     }
 private:
     template<size_t ...Ns>
-    static CHTHOLLY_INLINE V& call(V& x, T scalar, std::index_sequence<Ns...>) noexcept
+    static CHTHOLLY_INLINE void call(V& x, T scalar, std::index_sequence<Ns...>) noexcept
     {
         ((x[Ns] -= scalar), ...);
-        return x; 
     }
 };
 
@@ -255,16 +249,15 @@ template<size_t N, typename T>
 struct ktm::detail::vec_opt_implement::mul_scalar_to_self
 {
     using V = vec<N, T>;
-    static CHTHOLLY_INLINE V& call(V& x, T scalar) noexcept
+    static CHTHOLLY_INLINE void call(V& x, T scalar) noexcept
     {
-        return call(x, scalar, std::make_index_sequence<N>());
+        call(x, scalar, std::make_index_sequence<N>());
     }
 private:
     template<size_t ...Ns>
-    static CHTHOLLY_INLINE V& call(V& x, T scalar, std::index_sequence<Ns...>) noexcept
+    static CHTHOLLY_INLINE void call(V& x, T scalar, std::index_sequence<Ns...>) noexcept
     {
         ((x[Ns] *= scalar), ...);
-        return x; 
     }
 };
 
@@ -293,19 +286,18 @@ template<size_t N, typename T>
 struct ktm::detail::vec_opt_implement::div_scalar_to_self
 {
     using V = vec<N, T>;
-    static CHTHOLLY_INLINE V& call(V& x, T scalar) noexcept
+    static CHTHOLLY_INLINE void call(V& x, T scalar) noexcept
     {
         if constexpr(std::is_floating_point_v<T>)
-            return mul_scalar_to_self<N, T>::call(x, one<T> / scalar);
+            mul_scalar_to_self<N, T>::call(x, one<T> / scalar);
         else 
-            return call(x, scalar, std::make_index_sequence<N>());
+            call(x, scalar, std::make_index_sequence<N>());
     }
 private:
     template<size_t ...Ns>
-    static CHTHOLLY_INLINE V& call(V& x, T scalar, std::index_sequence<Ns...>) noexcept
+    static CHTHOLLY_INLINE void call(V& x, T scalar, std::index_sequence<Ns...>) noexcept
     {
         ((x[Ns] /= scalar), ...);
-        return x; 
     }
 };
 
