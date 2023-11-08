@@ -282,9 +282,7 @@ private:
     }
 };
 
-#endif
-
-#if defined(CHTHOLLY_SIMD_SSE)
+#elif defined(CHTHOLLY_SIMD_SSE)
 
 template<size_t Row, size_t Col>
 struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, std::enable_if_t<Col == 3 || Col == 4, float>>

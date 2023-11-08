@@ -512,9 +512,7 @@ struct ktm::detail::vec_common_implement::fract<N, std::enable_if_t<N >= 2 && N 
     }
 };
 
-#endif
-
-#if defined(CHTHOLLY_SIMD_SSE)
+#elif defined(CHTHOLLY_SIMD_SSE)
 
 template<size_t L, size_t N>
 struct ktm::detail::vec_common_implement::elem_move<L, N, std::enable_if_t<N == 3 || N == 4, float>>
