@@ -78,6 +78,29 @@ inline constexpr size_t mat_traits_col_n = mat_traits<T>::col;
 template<typename T>
 inline constexpr size_t mat_traits_row_n = mat_traits<T>::row;
 
+// 定义quaternion
+template<typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>> struct quat;
+
+template<typename T>
+struct quat_traits;
+
+template<typename T>
+struct quat_traits<quat<T>>
+{
+    using type = T;
+    using self_type = quat<T>;
+    using storage_type = vec<4, T>;
+};
+
+template<typename T>
+using quat_traits_t = typename quat_traits<T>::type;
+
+template<typename T>
+using quat_traits_selt_t = typename quat_traits<T>::self_type;
+
+template<typename T>
+using quat_traits_storage_t = typename quat_traits<T>::storage_type;
+
 }
 
 #endif

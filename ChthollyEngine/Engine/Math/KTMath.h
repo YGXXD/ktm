@@ -8,6 +8,9 @@
 
 #include "MathType/MatType.h"
 #include "MathLib/MatCommon.h"
+
+#include "MathType/QuatType.h"
+
 #include "MathLib/Transform3D.h"
 
 #endif
