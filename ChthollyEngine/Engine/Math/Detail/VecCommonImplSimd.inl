@@ -514,99 +514,112 @@ struct ktm::detail::vec_common_implement::fract<N, std::enable_if_t<N >= 2 && N 
 
 #elif defined(CHTHOLLY_SIMD_SSE)
 
-template<size_t L, size_t N>
-struct ktm::detail::vec_common_implement::elem_move<L, N, std::enable_if_t<N == 3 || N == 4, float>>
+template<size_t L>
+struct ktm::detail::vec_common_implement::elem_move<L, 3, float>
 {
-    static_assert(L > 0 && L < N);
-    using V = vec<N, float>;
+    static_assert(L > 0 && L < 3);
+    using V = vec<3, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
-        if constexpr(N == 3)
-        {
-            constexpr size_t i1 = 1 + L < N ? 1 + L : 1 + L - N;
-            constexpr size_t i2 = 2 + L < N ? 2 + L : 2 + L - N; 
-            __m128 ret = _mm_load_ps(&x[0]);
-            ret = _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(3, i2, i1, L));
-            return *reinterpret_cast<V*>(&ret);
-        }
-        else
-        {
-            constexpr size_t i1 = 1 + L < N ? 1 + L : 1 + L - N;
-            constexpr size_t i2 = 2 + L < N ? 2 + L : 2 + L - N; 
-            constexpr size_t i3 = 3 + L < N ? 3 + L : 3 + L - N;  
-            __m128 ret = _mm_load_ps(&x[0]);
-            ret = _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(i3, i2, i1, L));
-            return *reinterpret_cast<V*>(&ret);
-        }
+        constexpr size_t i1 = 1 + L < 3 ? 1 + L : L - 2;
+        constexpr size_t i2 = 2 + L < 3 ? 2 + L : L - 1; 
+        __m128 ret = _mm_load_ps(&x[0]);
+        ret = _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(3, i2, i1, L));
+        return *reinterpret_cast<V*>(&ret);
     }
 };
 
-template<size_t N>
-struct ktm::detail::vec_common_implement::reduce_add<N, std::enable_if_t<N == 3 || N == 4, float>>
+template<size_t L>
+struct ktm::detail::vec_common_implement::elem_move<L, 4, float>
 {
-    using V = vec<N, float>;
-    static CHTHOLLY_INLINE float call(const V& x) noexcept
+    static_assert(L > 0 && L < 4);
+    using V = vec<4, float>;
+    static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
-        if constexpr(N == 3)
-        {
-            __m128 tmp = _mm_load_ps(&x[0]);
-            __m128 sum_0 = _mm_add_ss(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(0, 3, 2, 1)));
-            __m128 sum_1 = _mm_add_ss(sum_0, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            return *reinterpret_cast<float*>(&sum_1); 
-        }
-        else
-        {
-            __m128 tmp = _mm_load_ps(&x[0]);
-            __m128 sum_0 = _mm_add_ps(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            __m128 sum_1 = _mm_add_ss(sum_0, _mm_shuffle_ps(sum_0, sum_0, _MM_SHUFFLE(0, 3, 2, 1)));
-            return *reinterpret_cast<float*>(&sum_1); 
-        }
+        constexpr size_t i1 = 1 + L < 4 ? 1 + L : L - 3;
+        constexpr size_t i2 = 2 + L < 4 ? 2 + L : L - 2; 
+        constexpr size_t i3 = 3 + L < 4 ? 3 + L : L - 1; 
+        __m128 ret = _mm_load_ps(&x[0]);
+        ret = _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(i3, i2, i1, L));
+        return *reinterpret_cast<V*>(&ret);
     }
 };
 
-template<size_t N>
-struct ktm::detail::vec_common_implement::reduce_min<N, std::enable_if_t<N == 3 || N == 4, float>>
+template<>
+struct ktm::detail::vec_common_implement::reduce_add<3, float>
 {
-    using V = vec<N, float>;
+    using V = vec<3, float>;
     static CHTHOLLY_INLINE float call(const V& x) noexcept
     {
-        if constexpr(N == 3)
-        {
-            __m128 tmp = _mm_load_ps(&x[0]);
-            __m128 min_0 = _mm_min_ss(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(0, 3, 2, 1)));
-            __m128 min_1 = _mm_min_ss(min_0, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            return *reinterpret_cast<float*>(&min_1); 
-        }
-        else
-        {
-            __m128 tmp = _mm_load_ps(&x[0]);
-            __m128 min_0 = _mm_min_ps(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            __m128 min_1 = _mm_min_ss(min_0, _mm_shuffle_ps(min_0, min_0, _MM_SHUFFLE(0, 3, 2, 1)));
-            return *reinterpret_cast<float*>(&min_1); 
-        }
+        __m128 tmp = _mm_load_ps(&x[0]);
+        __m128 sum_0 = _mm_add_ss(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(0, 3, 2, 1)));
+        __m128 sum_1 = _mm_add_ss(sum_0, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+        return *reinterpret_cast<float*>(&sum_1); 
     }
 };
 
-template<size_t N>
-struct ktm::detail::vec_common_implement::reduce_max<N, std::enable_if_t<N == 3 || N == 4, float>>
+template<>
+struct ktm::detail::vec_common_implement::reduce_add<4, float>
 {
-    using V = vec<N, float>;
+    using V = vec<4, float>;
     static CHTHOLLY_INLINE float call(const V& x) noexcept
     {
-        if constexpr(N == 3)
-        {
-            __m128 tmp = _mm_load_ps(&x[0]);
-            __m128 max_0 = _mm_max_ss(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(0, 3, 2, 1)));
-            __m128 max_1 = _mm_max_ss(max_0, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            return *reinterpret_cast<float*>(&max_1); 
-        }
-        else
-        {
-            __m128 tmp = _mm_load_ps(&x[0]);
-            __m128 max_0 = _mm_max_ps(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            __m128 max_1 = _mm_max_ss(max_0, _mm_shuffle_ps(max_0, max_0, _MM_SHUFFLE(0, 3, 2, 1)));
-            return *reinterpret_cast<float*>(&max_1); 
-        }
+        __m128 tmp = _mm_load_ps(&x[0]);
+        __m128 sum_0 = _mm_add_ps(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+        __m128 sum_1 = _mm_add_ss(sum_0, _mm_shuffle_ps(sum_0, sum_0, _MM_SHUFFLE(0, 3, 2, 1)));
+        return *reinterpret_cast<float*>(&sum_1); 
+    }
+};
+
+template<>
+struct ktm::detail::vec_common_implement::reduce_min<3, float>
+{
+    using V = vec<3, float>;
+    static CHTHOLLY_INLINE float call(const V& x) noexcept
+    {
+        __m128 tmp = _mm_load_ps(&x[0]);
+        __m128 min_0 = _mm_min_ss(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(0, 3, 2, 1)));
+        __m128 min_1 = _mm_min_ss(min_0, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+        return *reinterpret_cast<float*>(&min_1); 
+    }
+};
+
+template<>
+struct ktm::detail::vec_common_implement::reduce_min<4, float>
+{
+    using V = vec<4, float>;
+    static CHTHOLLY_INLINE float call(const V& x) noexcept
+    {
+        __m128 tmp = _mm_load_ps(&x[0]);
+        __m128 min_0 = _mm_min_ps(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+        __m128 min_1 = _mm_min_ss(min_0, _mm_shuffle_ps(min_0, min_0, _MM_SHUFFLE(0, 3, 2, 1)));
+        return *reinterpret_cast<float*>(&min_1); 
+    }
+};
+
+template<>
+struct ktm::detail::vec_common_implement::reduce_max<3, float>
+{
+    using V = vec<3, float>;
+    static CHTHOLLY_INLINE float call(const V& x) noexcept
+    {
+        __m128 tmp = _mm_load_ps(&x[0]);
+        __m128 max_0 = _mm_max_ss(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(0, 3, 2, 1)));
+        __m128 max_1 = _mm_max_ss(max_0, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+        return *reinterpret_cast<float*>(&max_1); 
+    }
+};
+
+template<>
+struct ktm::detail::vec_common_implement::reduce_max<4, float>
+{
+    using V = vec<4, float>;
+    static CHTHOLLY_INLINE float call(const V& x) noexcept
+    {
+        __m128 tmp = _mm_load_ps(&x[0]);
+        __m128 max_0 = _mm_max_ps(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+        __m128 max_1 = _mm_max_ss(max_0, _mm_shuffle_ps(max_0, max_0, _MM_SHUFFLE(0, 3, 2, 1)));
+        return *reinterpret_cast<float*>(&max_1); 
     }
 };
 
@@ -727,53 +740,60 @@ struct ktm::detail::vec_common_implement::smoothstep<N, std::enable_if_t<N == 3 
 
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE2_FLAG
 
-template<size_t L, size_t N>
-struct ktm::detail::vec_common_implement::elem_move<L, N, std::enable_if_t<N == 3 || N == 4, int>>
+template<size_t L>
+struct ktm::detail::vec_common_implement::elem_move<L, 3, int>
 {
-    static_assert(L > 0 && L < N);
-    using V = vec<N, int>;
+    static_assert(L > 0 && L < 3);
+    using V = vec<3, int>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
-        if constexpr(N == 3)
-        {
-            constexpr size_t i1 = 1 + L < N ? 1 + L : 1 + L - N;
-            constexpr size_t i2 = 2 + L < N ? 2 + L : 2 + L - N; 
-            __m128i ret = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
-            ret = _mm_shuffle_epi32(ret, _MM_SHUFFLE(3, i2, i1, L));
-            return *reinterpret_cast<V*>(&ret);
-        }
-        else
-        {
-            constexpr size_t i1 = 1 + L < N ? 1 + L : 1 + L - N;
-            constexpr size_t i2 = 2 + L < N ? 2 + L : 2 + L - N; 
-            constexpr size_t i3 = 3 + L < N ? 3 + L : 3 + L - N;  
-            __m128i ret = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
-            ret = _mm_shuffle_epi32(ret, _MM_SHUFFLE(i3, i2, i1, L));
-            return *reinterpret_cast<V*>(&ret);
-        }
+        constexpr size_t i1 = 1 + L < 3 ? 1 + L : L - 2;
+        constexpr size_t i2 = 2 + L < 3 ? 2 + L : L - 1; 
+        __m128i ret = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
+        ret = _mm_shuffle_epi32(ret, _MM_SHUFFLE(3, i2, i1, L));
+        return *reinterpret_cast<V*>(&ret);
     }
 };
 
-template<size_t N>
-struct ktm::detail::vec_common_implement::reduce_add<N, std::enable_if_t<N == 3 || N == 4, int>>
+template<size_t L>
+struct ktm::detail::vec_common_implement::elem_move<L, 4, int>
 {
-    using V = vec<N, int>;
+    static_assert(L > 0 && L < 4);
+    using V = vec<4, int>;
+    static CHTHOLLY_INLINE V call(const V& x) noexcept
+    {
+        constexpr size_t i1 = 1 + L < 4 ? 1 + L : L - 3;
+        constexpr size_t i2 = 2 + L < 4 ? 2 + L : L - 2; 
+        constexpr size_t i3 = 3 + L < 4 ? 3 + L : L - 1;  
+        __m128i ret = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
+        ret = _mm_shuffle_epi32(ret, _MM_SHUFFLE(i3, i2, i1, L));
+        return *reinterpret_cast<V*>(&ret);
+    }
+};
+
+template<>
+struct ktm::detail::vec_common_implement::reduce_add<3, int>
+{
+    using V = vec<3, int>;
     static CHTHOLLY_INLINE int call(const V& x) noexcept
     {
-        if constexpr(N == 3)
-        {
-            __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
-            __m128i sum_0 = _mm_add_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(0, 3, 2, 1)));
-            __m128i sum_1 = _mm_add_epi32(sum_0, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            return *reinterpret_cast<int*>(&sum_1); 
-        }
-        else
-        {
-            __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
-            __m128i sum_0 = _mm_add_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            __m128i sum_1 = _mm_add_epi32(sum_0, _mm_shuffle_epi32(sum_0, _MM_SHUFFLE(0, 3, 2, 1)));
-            return *reinterpret_cast<int*>(&sum_1); 
-        }
+        __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
+        __m128i sum_0 = _mm_add_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(0, 3, 2, 1)));
+        __m128i sum_1 = _mm_add_epi32(sum_0, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+        return *reinterpret_cast<int*>(&sum_1); 
+    }
+};
+
+template<>
+struct ktm::detail::vec_common_implement::reduce_add<4, int>
+{
+    using V = vec<4, int>;
+    static CHTHOLLY_INLINE int call(const V& x) noexcept
+    {
+        __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
+        __m128i sum_0 = _mm_add_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+        __m128i sum_1 = _mm_add_epi32(sum_0, _mm_shuffle_epi32(sum_0, _MM_SHUFFLE(0, 3, 2, 1)));
+        return *reinterpret_cast<int*>(&sum_1); 
     }
 };
 
@@ -796,49 +816,55 @@ struct ktm::detail::vec_common_implement::abs<N, std::enable_if_t<N == 3 || N ==
 
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE4_1_FLAG
 
-template<size_t N>
-struct ktm::detail::vec_common_implement::reduce_min<N, std::enable_if_t<N == 3 || N == 4, int>>
+template<>
+struct ktm::detail::vec_common_implement::reduce_min<3, int>
 {
-    using V = vec<N, int>;
+    using V = vec<3, int>;
     static CHTHOLLY_INLINE int call(const V& x) noexcept
     {
-        if constexpr(N == 3)
-        {
-            __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
-            __m128i min_0 = _mm_min_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(0, 3, 2, 1)));
-            __m128i min_1 = _mm_min_epi32(min_0, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            return *reinterpret_cast<int*>(&min_1); 
-        }
-        else
-        {
-            __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
-            __m128i min_0 = _mm_min_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            __m128i min_1 = _mm_min_epi32(min_0, _mm_shuffle_epi32(min_0, _MM_SHUFFLE(0, 3, 2, 1)));
-            return *reinterpret_cast<int*>(&min_1); 
-        }
+        __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
+        __m128i min_0 = _mm_min_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(0, 3, 2, 1)));
+        __m128i min_1 = _mm_min_epi32(min_0, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+        return *reinterpret_cast<int*>(&min_1); 
     }
 };
 
-template<size_t N>
-struct ktm::detail::vec_common_implement::reduce_max<N, std::enable_if_t<N == 3 || N == 4, int>>
+template<>
+struct ktm::detail::vec_common_implement::reduce_min<4, int>
 {
-    using V = vec<N, int>;
+    using V = vec<4, int>;
     static CHTHOLLY_INLINE int call(const V& x) noexcept
     {
-        if constexpr(N == 3)
-        {
-            __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
-            __m128i max_0 = _mm_max_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(0, 3, 2, 1)));
-            __m128i max_1 = _mm_max_epi32(max_0, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            return *reinterpret_cast<int*>(&max_1); 
-        }
-        else
-        {
-            __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
-            __m128i max_0 = _mm_max_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-            __m128i max_1 = _mm_max_epi32(max_0, _mm_shuffle_epi32(max_0, _MM_SHUFFLE(0, 3, 2, 1)));
-            return *reinterpret_cast<int*>(&max_1); 
-        }
+        __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
+        __m128i min_0 = _mm_min_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+        __m128i min_1 = _mm_min_epi32(min_0, _mm_shuffle_epi32(min_0, _MM_SHUFFLE(0, 3, 2, 1)));
+        return *reinterpret_cast<int*>(&min_1); 
+    }
+};
+
+template<>
+struct ktm::detail::vec_common_implement::reduce_max<3, int>
+{
+    using V = vec<3, int>;
+    static CHTHOLLY_INLINE int call(const V& x) noexcept
+    {
+        __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
+        __m128i max_0 = _mm_max_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(0, 3, 2, 1)));
+        __m128i max_1 = _mm_max_epi32(max_0, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+        return *reinterpret_cast<int*>(&max_1); 
+    }
+};
+
+template<>
+struct ktm::detail::vec_common_implement::reduce_max<4, int>
+{
+    using V = vec<4, int>;
+    static CHTHOLLY_INLINE int call(const V& x) noexcept
+    {
+        __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
+        __m128i max_0 = _mm_max_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
+        __m128i max_1 = _mm_max_epi32(max_0, _mm_shuffle_epi32(max_0, _MM_SHUFFLE(0, 3, 2, 1)));
+        return *reinterpret_cast<int*>(&max_1); 
     }
 };
 

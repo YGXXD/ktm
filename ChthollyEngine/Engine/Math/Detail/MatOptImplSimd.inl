@@ -309,10 +309,10 @@ private:
     } 
 };
 
-template<size_t Row, size_t Col>
-struct ktm::detail::mat_opt_implement::vec_mul_mat<Row, Col, std::enable_if_t<Col == 3 || Col == 4, float>>
+template<size_t Row>
+struct ktm::detail::mat_opt_implement::vec_mul_mat<Row, 3, float>
 {
-    using M = mat<Row, Col, float>;
+    using M = mat<Row, 3, float>;
     using ColV = mat_traits_col_t<M>;
     using RowV = mat_traits_row_t<M>;
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m) noexcept
@@ -330,19 +330,38 @@ private:
 
     static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v)
     {
-         __m128 t_mul = _mm_mul_ps(_mm_load_ps(&v[0]), _mm_load_ps(&matrix_v[0]));
-        if constexpr(Col == 3)
-        {
-            __m128 sum1 = _mm_add_ss(t_mul, _mm_shuffle_ps(t_mul, t_mul, _MM_SHUFFLE(2, 1, 0, 3)));
-            __m128 sum2 = _mm_add_ss(sum1, _mm_shuffle_ps(t_mul, t_mul, _MM_SHUFFLE(1, 0, 3, 2)));
-            return *reinterpret_cast<float*>(&sum2); 
-        }
-        else
-        {
-            __m128 sum1 = _mm_add_ps(t_mul, _mm_shuffle_ps(t_mul, t_mul, _MM_SHUFFLE(1, 0, 3, 2)));
-            __m128 sum2 = _mm_add_ss(sum1, _mm_shuffle_ps(sum1, sum1, _MM_SHUFFLE(2, 1, 0, 3)));
-            return *reinterpret_cast<float*>(&sum2); 
-        }
+        __m128 t_mul = _mm_mul_ps(_mm_load_ps(&v[0]), _mm_load_ps(&matrix_v[0]));
+        __m128 sum1 = _mm_add_ss(t_mul, _mm_shuffle_ps(t_mul, t_mul, _MM_SHUFFLE(2, 1, 0, 3)));
+        __m128 sum2 = _mm_add_ss(sum1, _mm_shuffle_ps(t_mul, t_mul, _MM_SHUFFLE(1, 0, 3, 2)));
+        return *reinterpret_cast<float*>(&sum2); 
+    }
+};
+
+template<size_t Row>
+struct ktm::detail::mat_opt_implement::vec_mul_mat<Row, 4, float>
+{
+    using M = mat<Row, 4, float>;
+    using ColV = mat_traits_col_t<M>;
+    using RowV = mat_traits_row_t<M>;
+    static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m) noexcept
+    {
+        return call(v, m, std::make_index_sequence<Row>());
+    }
+private:
+    template<size_t ...Ns>
+    static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
+    {
+        RowV ret;
+        ((ret[Ns] = core(v, m[Ns])), ...);
+        return ret;
+    }
+
+    static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v)
+    {
+        __m128 t_mul = _mm_mul_ps(_mm_load_ps(&v[0]), _mm_load_ps(&matrix_v[0]));
+        __m128 sum1 = _mm_add_ps(t_mul, _mm_shuffle_ps(t_mul, t_mul, _MM_SHUFFLE(1, 0, 3, 2)));
+        __m128 sum2 = _mm_add_ss(sum1, _mm_shuffle_ps(sum1, sum1, _MM_SHUFFLE(2, 1, 0, 3)));
+        return *reinterpret_cast<float*>(&sum2); 
     }
 };
 
@@ -473,10 +492,10 @@ private:
     } 
 };
 
-template<size_t Row, size_t Col>
-struct ktm::detail::mat_opt_implement::vec_mul_mat<Row, Col, std::enable_if_t<Col == 3 || Col == 4, int>>
+template<size_t Row>
+struct ktm::detail::mat_opt_implement::vec_mul_mat<Row, 3, int>
 {
-    using M = mat<Row, Col, int>;
+    using M = mat<Row, 3, int>;
     using ColV = mat_traits_col_t<M>;
     using RowV = mat_traits_row_t<M>;
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m) noexcept
@@ -495,18 +514,37 @@ private:
     static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v)
     {
         __m128i t_mul = _mm_mul_epi32(_mm_load_si128(reinterpret_cast<const __m128i*>(&v[0])), _mm_load_si128(reinterpret_cast<const __m128i*>(&matrix_v[0])));
-        if constexpr(Col == 3)
-        {
-            __m128i sum1 = _mm_add_epi32(t_mul, _mm_shuffle_epi32(t_mul, _MM_SHUFFLE(2, 1, 0, 3)));
-            __m128i sum2 = _mm_add_epi32(sum1, _mm_shuffle_epi32(t_mul, _MM_SHUFFLE(1, 0, 3, 2)));
-            return *reinterpret_cast<float*>(&sum2); 
-        }
-        else
-        {
-            __m128i sum1 = _mm_add_epi32(t_mul, _mm_shuffle_epi32(t_mul, _MM_SHUFFLE(1, 0, 3, 2)));
-            __m128i sum2 = _mm_add_epi32(sum1, _mm_shuffle_epi32(sum1, _MM_SHUFFLE(2, 1, 0, 3)));
-            return *reinterpret_cast<float*>(&sum2); 
-        }
+        __m128i sum1 = _mm_add_epi32(t_mul, _mm_shuffle_epi32(t_mul, _MM_SHUFFLE(2, 1, 0, 3)));
+        __m128i sum2 = _mm_add_epi32(sum1, _mm_shuffle_epi32(t_mul, _MM_SHUFFLE(1, 0, 3, 2)));
+        return *reinterpret_cast<float*>(&sum2); 
+    }
+};
+
+template<size_t Row>
+struct ktm::detail::mat_opt_implement::vec_mul_mat<Row, 4, int>
+{
+    using M = mat<Row, 4, int>;
+    using ColV = mat_traits_col_t<M>;
+    using RowV = mat_traits_row_t<M>;
+    static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m) noexcept
+    {
+        return call(v, m, std::make_index_sequence<Row>());
+    }
+private:
+    template<size_t ...Ns>
+    static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
+    {
+        RowV ret;
+        ((ret[Ns] = core(v, m[Ns])), ...);
+        return ret;
+    }
+
+    static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v)
+    {
+        __m128i t_mul = _mm_mul_epi32(_mm_load_si128(reinterpret_cast<const __m128i*>(&v[0])), _mm_load_si128(reinterpret_cast<const __m128i*>(&matrix_v[0])));
+        __m128i sum1 = _mm_add_epi32(t_mul, _mm_shuffle_epi32(t_mul, _MM_SHUFFLE(1, 0, 3, 2)));
+        __m128i sum2 = _mm_add_epi32(sum1, _mm_shuffle_epi32(sum1, _MM_SHUFFLE(2, 1, 0, 3)));
+        return *reinterpret_cast<float*>(&sum2); 
     }
 };
 

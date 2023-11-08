@@ -1,7 +1,7 @@
 #ifndef _MAT_COMMON_H_
 #define _MAT_COMMON_H_
 
-#include "Math/MathType/BaseType.h"
+#include "Math/MathType/MatType.h"
 #include "Math/Detail/MatCommonImpl.h"
 
 namespace ktm

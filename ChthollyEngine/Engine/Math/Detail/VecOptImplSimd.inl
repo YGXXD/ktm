@@ -820,31 +820,35 @@ struct ktm::detail::vec_opt_implement::div_scalar_to_self<N, std::enable_if_t<N 
     }
 };
 
-template<size_t N>
-struct ktm::detail::vec_opt_implement::equal<N, std::enable_if_t<N == 3 || N == 4, float>>
+template<>
+struct ktm::detail::vec_opt_implement::equal<3, float>
 {
-    using V = vec<N, float>;
+    using V = vec<3, float>;
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
         const int mask_bit = 0x7fffffff;
-        if constexpr(N == 3)
-        {
-            __m128 delta = _mm_sub_ps(_mm_load_ps(&x[0]), _mm_load_ps(&y[0]));
-            __m128 mask = _mm_set1_ps(*reinterpret_cast<const float*>(&mask_bit));
-            __m128 ret = _mm_cmplt_ps(_mm_and_ps(delta, mask), _mm_set1_ps(std::numeric_limits<float>::epsilon()));     
-            __m128 and_0 = _mm_and_ps(ret, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(0, 3, 2, 1)));
-            __m128 and_1 = _mm_and_ps(and_0, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(1, 0, 3, 2)));
-            return *reinterpret_cast<unsigned int*>(&and_1);
-        }
-        else 
-        {
-            __m128 delta = _mm_sub_ps(_mm_load_ps(&x[0]), _mm_load_ps(&y[0]));
-            __m128 mask = _mm_set1_ps(*reinterpret_cast<const float*>(&mask_bit));
-            __m128 ret = _mm_cmplt_ps(_mm_and_ps(delta, mask), _mm_set1_ps(std::numeric_limits<float>::epsilon()));     
-            __m128 and_0 = _mm_and_ps(ret, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(1, 0, 3, 2)));
-            __m128 and_1 = _mm_and_ps(and_0, _mm_shuffle_ps(and_0, and_0, _MM_SHUFFLE(0, 3, 2, 1)));
-            return *reinterpret_cast<unsigned int*>(&and_1);
-        }
+        __m128 delta = _mm_sub_ps(_mm_load_ps(&x[0]), _mm_load_ps(&y[0]));
+        __m128 mask = _mm_set1_ps(*reinterpret_cast<const float*>(&mask_bit));
+        __m128 ret = _mm_cmplt_ps(_mm_and_ps(delta, mask), _mm_set1_ps(std::numeric_limits<float>::epsilon()));     
+        __m128 and_0 = _mm_and_ps(ret, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(0, 3, 2, 1)));
+        __m128 and_1 = _mm_and_ps(and_0, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(1, 0, 3, 2)));
+        return *reinterpret_cast<unsigned int*>(&and_1);
+    }
+};
+
+template<>
+struct ktm::detail::vec_opt_implement::equal<4, float>
+{
+    using V = vec<4, float>;
+    static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
+    {
+        const int mask_bit = 0x7fffffff;
+        __m128 delta = _mm_sub_ps(_mm_load_ps(&x[0]), _mm_load_ps(&y[0]));
+        __m128 mask = _mm_set1_ps(*reinterpret_cast<const float*>(&mask_bit));
+        __m128 ret = _mm_cmplt_ps(_mm_and_ps(delta, mask), _mm_set1_ps(std::numeric_limits<float>::epsilon()));     
+        __m128 and_0 = _mm_and_ps(ret, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(1, 0, 3, 2)));
+        __m128 and_1 = _mm_and_ps(and_0, _mm_shuffle_ps(and_0, and_0, _MM_SHUFFLE(0, 3, 2, 1)));
+        return *reinterpret_cast<unsigned int*>(&and_1);
     }
 };
 
@@ -962,30 +966,33 @@ struct ktm::detail::vec_opt_implement::minus_scalar_to_self<N, std::enable_if_t<
     }
 };
 
-template<size_t N>
-struct ktm::detail::vec_opt_implement::equal<N, std::enable_if_t<N == 3 || N == 4, int>>
+template<>
+struct ktm::detail::vec_opt_implement::equal<3, int>
 {
-    using V = vec<N, int>;
+    using V = vec<3, int>;
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
-        if constexpr(N == 3)
-        {
-            __m128i t_x = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
-            __m128i t_y = _mm_load_si128(reinterpret_cast<const __m128i*>(&y[0]));
-            __m128i ret = _mm_cmpeq_epi32(t_x, t_y);   
-            __m128i and_0 = _mm_and_si128(ret, _mm_shuffle_epi32(ret, _MM_SHUFFLE(0, 3, 2, 1)));
-            __m128i and_1 = _mm_and_si128(and_0, _mm_shuffle_epi32(ret, _MM_SHUFFLE(1, 0, 3, 2)));
-            return *reinterpret_cast<unsigned int*>(&and_1);
-        }
-        else 
-        {
-            __m128i t_x = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
-            __m128i t_y = _mm_load_si128(reinterpret_cast<const __m128i*>(&y[0]));
-            __m128i ret = _mm_cmpeq_epi32(t_x, t_y);
-            __m128i and_0 = _mm_and_si128(ret, _mm_shuffle_epi32(ret, _MM_SHUFFLE(1, 0, 3, 2)));
-            __m128i and_1 = _mm_and_si128(and_0, _mm_shuffle_epi32(and_0, _MM_SHUFFLE(0, 3, 2, 1)));
-            return *reinterpret_cast<unsigned int*>(&and_1);
-        }
+        __m128i t_x = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
+        __m128i t_y = _mm_load_si128(reinterpret_cast<const __m128i*>(&y[0]));
+        __m128i ret = _mm_cmpeq_epi32(t_x, t_y);   
+        __m128i and_0 = _mm_and_si128(ret, _mm_shuffle_epi32(ret, _MM_SHUFFLE(0, 3, 2, 1)));
+        __m128i and_1 = _mm_and_si128(and_0, _mm_shuffle_epi32(ret, _MM_SHUFFLE(1, 0, 3, 2)));
+        return *reinterpret_cast<unsigned int*>(&and_1);
+    }
+};
+
+template<>
+struct ktm::detail::vec_opt_implement::equal<4, int>
+{
+    using V = vec<4, int>;
+    static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
+    {
+        __m128i t_x = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
+        __m128i t_y = _mm_load_si128(reinterpret_cast<const __m128i*>(&y[0]));
+        __m128i ret = _mm_cmpeq_epi32(t_x, t_y);
+        __m128i and_0 = _mm_and_si128(ret, _mm_shuffle_epi32(ret, _MM_SHUFFLE(1, 0, 3, 2)));
+        __m128i and_1 = _mm_and_si128(and_0, _mm_shuffle_epi32(and_0, _MM_SHUFFLE(0, 3, 2, 1)));
+        return *reinterpret_cast<unsigned int*>(&and_1);
     }
 };
 
