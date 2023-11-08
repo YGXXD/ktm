@@ -55,6 +55,12 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<vec_traits_t<V>>, V> n
 }
 
 template<class V>
+CHTHOLLY_INLINE std::enable_if_t<std::is_exist_same_vs<float, double, vec_traits_t<V>>, V> fast_nomorlize(const V& x) noexcept
+{
+    return fast_rsqrt(length_squared(x)) * x;
+}
+
+template<class V>
 CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<vec_traits_t<V>>, V> reflect(const V& x, const V& n) noexcept
 {
     return x - 2 * dot(x, n) * n;
