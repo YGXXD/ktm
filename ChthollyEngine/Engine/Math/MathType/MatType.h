@@ -1,7 +1,7 @@
 #ifndef _MAT_TYPE_H_
 #define _MAT_TYPE_H_
 
-#include "BaseType.h"
+#include "VecType.h"
 #include "Math/Interface/ICommon/IArray.h"
 #include "Math/Interface/IMatrix/IMatData.h"
 #include "Math/Interface/IMatrix/IMatMake.h"
