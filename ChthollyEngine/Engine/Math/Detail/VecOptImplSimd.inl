@@ -2,7 +2,7 @@
 #define _VEC_OPT_IMPL_SIMD_INL_
 
 #include "VecOptImpl.h"
-#include <Math/MathType/BaseType.h>
+#include "Math/MathType/BaseType.h"
 
 #if defined(CHTHOLLY_SIMD_NEON)
 

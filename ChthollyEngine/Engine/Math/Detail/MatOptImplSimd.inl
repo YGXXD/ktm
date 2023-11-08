@@ -1,8 +1,8 @@
 #ifndef _MAT_OPT_IMPL_SIMD_H_
 #define _MAT_OPT_IMPL_SIMD_H_
 
-#include "Math/MathType/BaseType.h"
 #include "MatOptImpl.h"
+#include "Math/MathType/BaseType.h"
 
 #if defined(CHTHOLLY_SIMD_NEON)
 

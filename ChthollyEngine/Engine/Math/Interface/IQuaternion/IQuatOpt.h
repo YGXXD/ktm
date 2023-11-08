@@ -43,13 +43,13 @@ struct IQuatOpt<Father, quat<T>> : Father
 
     CHTHOLLY_INLINE quat<T> operator*(const quat<T>& y) const noexcept
     {
-        return detail::quat_opt_implement::mul<T>::call(reinterpret_cast<const quat<T>>(*this), y);
+        return detail::quat_opt_implement::mul<T>::call(reinterpret_cast<const quat<T>&>(*this), y);
     }
 
     CHTHOLLY_INLINE quat<T>& operator*=(const quat<T>& y) noexcept
     {
-        quat<T>& this_ref = reinterpret_cast<quat<T>>(*this);
-        detail::quat_opt_implement::mul<T>::call(this_ref, y); 
+        quat<T>& this_ref = reinterpret_cast<quat<T>&>(*this);
+        detail::quat_opt_implement::mul_to_self<T>::call(this_ref, y); 
         return this_ref;
     }
 

@@ -1,8 +1,8 @@
 #ifndef _QUAT_OPT_IMPL_INL_
 #define _QUAT_OPT_IMPL_INL_
 
-#include "Math/MathType/BaseType.h"
 #include "QuatOptImpl.h"
+#include "Math/MathType/BaseType.h"
 
 template<typename T>
 struct ktm::detail::quat_opt_implement::mul

@@ -1,9 +1,9 @@
 #ifndef _MAT_COMMON_IMPL_INL_
 #define _MAT_COMMON_IMPL_INL_
 
+#include "MatCommonImpl.h"
 #include "Math/MathType/BaseType.h"
 #include "Math/MathLib/Common.h"
-#include "MatCommonImpl.h"
 
 template<size_t N, typename T>
 struct ktm::detail::mat_common_implement::trace

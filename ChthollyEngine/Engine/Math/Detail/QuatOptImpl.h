@@ -18,4 +18,6 @@ struct mul_to_self;
 }
 }
 
+#include "QuatOptImpl.inl"
+
 #endif
