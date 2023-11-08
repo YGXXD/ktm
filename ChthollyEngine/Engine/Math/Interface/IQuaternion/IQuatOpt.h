@@ -65,6 +65,16 @@ struct IQuatOpt<Father, quat<T>> : Father
         detail::vec_opt_implement::mul_scalar_to_self<4, T>::call(reinterpret_cast<vec<4, T>&>(*this), scalar);
         return reinterpret_cast<quat<T>&>(*this);
     }
+
+    CHTHOLLY_INLINE bool operator==(const quat<T>& y) const noexcept
+    {
+        return detail::vec_opt_implement::equal<4, T>::call(reinterpret_cast<vec<4, T>&>(*this), y.vector); 
+    }
+
+    CHTHOLLY_INLINE bool operator!=(const quat<T>& y) const noexcept
+    {
+        return !detail::vec_opt_implement::equal<4, T>::call(reinterpret_cast<vec<4, T>&>(*this), y.vector); 
+    }
 };
 
 }
