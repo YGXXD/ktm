@@ -6,226 +6,240 @@
 
 #if defined(CHTHOLLY_SIMD_NEON)
 
-template<size_t N>
-struct ktm::detail::mat_common_implement::transpose<N, N, std::enable_if_t<N == 3 || N == 4, float>>
+template<>
+struct ktm::detail::mat_common_implement::transpose<3, 3, float>
 {
-    using M = mat<N, N, float>;
+    using M = mat<3, 3, float>;
     using RetM = mat_traits_tp_t<M>;
     static CHTHOLLY_INLINE RetM call(const M& m) noexcept
     {
-        if constexpr(N == 3)
-        {
-            float32x4_t c_0 = vld1q_f32(&m[0][0]);
-            float32x4_t c_1 = vld1q_f32(&m[1][0]);
-            float32x4_t c_2 = vld1q_f32(&m[2][0]);
+        float32x4_t c_0 = vld1q_f32(&m[0][0]);
+        float32x4_t c_1 = vld1q_f32(&m[1][0]);
+        float32x4_t c_2 = vld1q_f32(&m[2][0]);
 
-            float32x4_t tmp_0 = _neon_shuffleq_f32(c_0, c_1, 1, 0, 1, 0);
-            float32x4_t tmp_1 = _neon_shuffleq_f32(c_0, c_1, 3, 2, 3, 2);
+        float32x4_t tmp_0 = _neon_shuffleq_f32(c_0, c_1, 1, 0, 1, 0);
+        float32x4_t tmp_1 = _neon_shuffleq_f32(c_0, c_1, 3, 2, 3, 2);
 
-            float32x4_t ret_0 = _neon_shuffleq_f32(tmp_0, c_2, 3, 0, 2, 0);
-            float32x4_t ret_1 = _neon_shuffleq_f32(tmp_0, c_2, 3, 1, 3, 1);
-            float32x4_t ret_2 = _neon_shuffleq_f32(tmp_1, c_2, 3, 2, 2, 0);
+        float32x4_t ret_0 = _neon_shuffleq_f32(tmp_0, c_2, 3, 0, 2, 0);
+        float32x4_t ret_1 = _neon_shuffleq_f32(tmp_0, c_2, 3, 1, 3, 1);
+        float32x4_t ret_2 = _neon_shuffleq_f32(tmp_1, c_2, 3, 2, 2, 0);
 
-            RetM ret;
-            vst1q_f32(&ret[0][0], ret_0);
-            vst1q_f32(&ret[1][0], ret_1);
-            vst1q_f32(&ret[2][0], ret_2);
-            return ret; 
-        }
-        else
-        {
-            float32x4_t c_0 = vld1q_f32(&m[0][0]);
-            float32x4_t c_1 = vld1q_f32(&m[1][0]);
-            float32x4_t c_2 = vld1q_f32(&m[2][0]);
-            float32x4_t c_3 = vld1q_f32(&m[3][0]);
-
-            float32x4_t tmp_0 = _neon_shuffleq_f32(c_0, c_1, 1, 0, 1, 0);
-            float32x4_t tmp_2 = _neon_shuffleq_f32(c_0, c_1, 3, 2, 3, 2);
-            float32x4_t tmp_1 = _neon_shuffleq_f32(c_2, c_3, 1, 0, 1, 0);
-            float32x4_t tmp_3 = _neon_shuffleq_f32(c_2, c_3, 3, 2, 3, 2);
-
-            float32x4_t ret_0 = _neon_shuffleq_f32(tmp_0, tmp_1, 2, 0, 2, 0);
-            float32x4_t ret_1 = _neon_shuffleq_f32(tmp_0, tmp_1, 3, 1, 3, 1);
-            float32x4_t ret_2 = _neon_shuffleq_f32(tmp_2, tmp_3, 2, 0, 2, 0);
-            float32x4_t ret_3 = _neon_shuffleq_f32(tmp_2, tmp_3, 3, 1, 3, 1);
-
-            RetM ret;
-            vst1q_f32(&ret[0][0], ret_0);
-            vst1q_f32(&ret[1][0], ret_1);
-            vst1q_f32(&ret[2][0], ret_2);
-            vst1q_f32(&ret[3][0], ret_3);
-            return ret;
-        }
+        RetM ret;
+        vst1q_f32(&ret[0][0], ret_0);
+        vst1q_f32(&ret[1][0], ret_1);
+        vst1q_f32(&ret[2][0], ret_2);
+        return ret; 
     }
 };
 
-template<size_t N>
-struct ktm::detail::mat_common_implement::transpose<N, N, std::enable_if_t<N == 3 || N == 4, int>>
+template<>
+struct ktm::detail::mat_common_implement::transpose<4, 4, float>
 {
-    using M = mat<N, N, int>;
+    using M = mat<4, 4, float>;
     using RetM = mat_traits_tp_t<M>;
     static CHTHOLLY_INLINE RetM call(const M& m) noexcept
     {
-        if constexpr(N == 3)
-        {
-            int32x4_t c_0 = vld1q_s32(&m[0][0]);
-            int32x4_t c_1 = vld1q_s32(&m[1][0]);
-            int32x4_t c_2 = vld1q_s32(&m[2][0]);
+        float32x4_t c_0 = vld1q_f32(&m[0][0]);
+        float32x4_t c_1 = vld1q_f32(&m[1][0]);
+        float32x4_t c_2 = vld1q_f32(&m[2][0]);
+        float32x4_t c_3 = vld1q_f32(&m[3][0]);
 
-            int32x4_t tmp_0 = _neon_shuffleq_s32(c_0, c_1, 1, 0, 1, 0);
-            int32x4_t tmp_1 = _neon_shuffleq_s32(c_0, c_1, 3, 2, 3, 2);
+        float32x4_t tmp_0 = _neon_shuffleq_f32(c_0, c_1, 1, 0, 1, 0);
+        float32x4_t tmp_2 = _neon_shuffleq_f32(c_0, c_1, 3, 2, 3, 2);
+        float32x4_t tmp_1 = _neon_shuffleq_f32(c_2, c_3, 1, 0, 1, 0);
+        float32x4_t tmp_3 = _neon_shuffleq_f32(c_2, c_3, 3, 2, 3, 2);
 
-            int32x4_t ret_0 = _neon_shuffleq_s32(tmp_0, c_2, 3, 0, 2, 0);
-            int32x4_t ret_1 = _neon_shuffleq_s32(tmp_0, c_2, 3, 1, 3, 1);
-            int32x4_t ret_2 = _neon_shuffleq_s32(tmp_1, c_2, 3, 2, 2, 0);
+        float32x4_t ret_0 = _neon_shuffleq_f32(tmp_0, tmp_1, 2, 0, 2, 0);
+        float32x4_t ret_1 = _neon_shuffleq_f32(tmp_0, tmp_1, 3, 1, 3, 1);
+        float32x4_t ret_2 = _neon_shuffleq_f32(tmp_2, tmp_3, 2, 0, 2, 0);
+        float32x4_t ret_3 = _neon_shuffleq_f32(tmp_2, tmp_3, 3, 1, 3, 1);
 
-            RetM ret;
-            vst1q_s32(&ret[0][0], ret_0);
-            vst1q_s32(&ret[1][0], ret_1);
-            vst1q_s32(&ret[2][0], ret_2);
-            return ret; 
-        }
-        else
-        {
-            int32x4_t c_0 = vld1q_s32(&m[0][0]);
-            int32x4_t c_1 = vld1q_s32(&m[1][0]);
-            int32x4_t c_2 = vld1q_s32(&m[2][0]);
-            int32x4_t c_3 = vld1q_s32(&m[3][0]);
-
-            int32x4_t tmp_0 = _neon_shuffleq_s32(c_0, c_1, 1, 0, 1, 0);
-            int32x4_t tmp_2 = _neon_shuffleq_s32(c_0, c_1, 3, 2, 3, 2);
-            int32x4_t tmp_1 = _neon_shuffleq_s32(c_2, c_3, 1, 0, 1, 0);
-            int32x4_t tmp_3 = _neon_shuffleq_s32(c_2, c_3, 3, 2, 3, 2);
-
-            int32x4_t ret_0 = _neon_shuffleq_s32(tmp_0, tmp_1, 2, 0, 2, 0);
-            int32x4_t ret_1 = _neon_shuffleq_s32(tmp_0, tmp_1, 3, 1, 3, 1);
-            int32x4_t ret_2 = _neon_shuffleq_s32(tmp_2, tmp_3, 2, 0, 2, 0);
-            int32x4_t ret_3 = _neon_shuffleq_s32(tmp_2, tmp_3, 3, 1, 3, 1);
-
-            RetM ret;
-            vst1q_s32(&ret[0][0], ret_0);
-            vst1q_s32(&ret[1][0], ret_1);
-            vst1q_s32(&ret[2][0], ret_2);
-            vst1q_s32(&ret[3][0], ret_3);
-            return ret;
-        }
+        RetM ret;
+        vst1q_f32(&ret[0][0], ret_0);
+        vst1q_f32(&ret[1][0], ret_1);
+        vst1q_f32(&ret[2][0], ret_2);
+        vst1q_f32(&ret[3][0], ret_3);
+        return ret;
     }
 };
 
-template<size_t N>
-struct ktm::detail::mat_common_implement::determinant<N, std::enable_if_t<N == 3 || N == 4, float>>
+template<>
+struct ktm::detail::mat_common_implement::transpose<3, 3, int>
 {
-    using M = mat<N, N, float>;
+    using M = mat<3, 3, int>;
+    using RetM = mat_traits_tp_t<M>;
+    static CHTHOLLY_INLINE RetM call(const M& m) noexcept
+    {
+        int32x4_t c_0 = vld1q_s32(&m[0][0]);
+        int32x4_t c_1 = vld1q_s32(&m[1][0]);
+        int32x4_t c_2 = vld1q_s32(&m[2][0]);
+
+        int32x4_t tmp_0 = _neon_shuffleq_s32(c_0, c_1, 1, 0, 1, 0);
+        int32x4_t tmp_1 = _neon_shuffleq_s32(c_0, c_1, 3, 2, 3, 2);
+
+        int32x4_t ret_0 = _neon_shuffleq_s32(tmp_0, c_2, 3, 0, 2, 0);
+        int32x4_t ret_1 = _neon_shuffleq_s32(tmp_0, c_2, 3, 1, 3, 1);
+        int32x4_t ret_2 = _neon_shuffleq_s32(tmp_1, c_2, 3, 2, 2, 0);
+
+        RetM ret;
+        vst1q_s32(&ret[0][0], ret_0);
+        vst1q_s32(&ret[1][0], ret_1);
+        vst1q_s32(&ret[2][0], ret_2);
+        return ret; 
+    }
+};
+
+template<>
+struct ktm::detail::mat_common_implement::transpose<4, 4, int>
+{
+    using M = mat<4, 4, int>;
+    using RetM = mat_traits_tp_t<M>;
+    static CHTHOLLY_INLINE RetM call(const M& m) noexcept
+    {
+        int32x4_t c_0 = vld1q_s32(&m[0][0]);
+        int32x4_t c_1 = vld1q_s32(&m[1][0]);
+        int32x4_t c_2 = vld1q_s32(&m[2][0]);
+        int32x4_t c_3 = vld1q_s32(&m[3][0]);
+
+        int32x4_t tmp_0 = _neon_shuffleq_s32(c_0, c_1, 1, 0, 1, 0);
+        int32x4_t tmp_2 = _neon_shuffleq_s32(c_0, c_1, 3, 2, 3, 2);
+        int32x4_t tmp_1 = _neon_shuffleq_s32(c_2, c_3, 1, 0, 1, 0);
+        int32x4_t tmp_3 = _neon_shuffleq_s32(c_2, c_3, 3, 2, 3, 2);
+
+        int32x4_t ret_0 = _neon_shuffleq_s32(tmp_0, tmp_1, 2, 0, 2, 0);
+        int32x4_t ret_1 = _neon_shuffleq_s32(tmp_0, tmp_1, 3, 1, 3, 1);
+        int32x4_t ret_2 = _neon_shuffleq_s32(tmp_2, tmp_3, 2, 0, 2, 0);
+        int32x4_t ret_3 = _neon_shuffleq_s32(tmp_2, tmp_3, 3, 1, 3, 1);
+
+        RetM ret;
+        vst1q_s32(&ret[0][0], ret_0);
+        vst1q_s32(&ret[1][0], ret_1);
+        vst1q_s32(&ret[2][0], ret_2);
+        vst1q_s32(&ret[3][0], ret_3);
+        return ret;
+    }
+};
+
+template<>
+struct ktm::detail::mat_common_implement::determinant<3, float>
+{
+    using M = mat<3, 3, float>;
     static CHTHOLLY_INLINE float call(const M& m) noexcept
     {
-        if constexpr(N == 3)
-        {
-            float32x4_t c_0 = vld1q_f32(&m[0][0]);
-            float32x4_t c_1 = vld1q_f32(&m[1][0]);
-            float32x4_t c_2 = vld1q_f32(&m[2][0]);
-            float32x4_t mul_00 = vmulq_f32(_neon_shuffleq_f32(c_1, c_1, 3, 0, 2, 1), _neon_shuffleq_f32(c_2, c_2, 3, 1, 0, 2));
-            float32x4_t mul_01 = vmulq_f32(_neon_shuffleq_f32(c_1, c_1, 3, 1, 0, 2), _neon_shuffleq_f32(c_2, c_2, 3, 0, 2, 1));
-            float32x4_t sub_0 = vsubq_f32(mul_00, mul_01);  
-            float32x4_t mul_0 = vmulq_f32(c_0, sub_0);
-            return vaddvq_f32(vsetq_lane_f32(zero<float>, mul_0, 3));
-        }
-        else 
-        {
-            float32x4_t c_0 = vld1q_f32(&m[0][0]);
-            float32x4_t c_1 = vld1q_f32(&m[1][0]);
-            float32x4_t c_2 = vld1q_f32(&m[2][0]);
-            float32x4_t c_3 = vld1q_f32(&m[3][0]);
-
-            float32x4_t mul_0;
-            {
-                float32x4_t mul_00 = vmulq_f32(_neon_shuffleq_f32(c_2, c_2, 1, 0, 3, 2), _neon_shuffleq_f32(c_3, c_3, 2, 1, 0, 3));
-                float32x4_t mul_01 = vmulq_f32(_neon_shuffleq_f32(c_2, c_2, 2, 1, 0, 3), _neon_shuffleq_f32(c_3, c_3, 1, 0, 3, 2));
-                float32x4_t sub_0 = vsubq_f32(mul_00, mul_01);
-                mul_0 = vmulq_f32(_neon_shuffleq_f32(c_1, c_1, 0, 3, 2, 1), sub_0);
-            }
-
-            float32x4_t mul_1;
-            {
-                float32x4_t mul_00 = vmulq_f32(_neon_shuffleq_f32(c_2, c_2, 2, 1, 0, 3), _neon_shuffleq_f32(c_3, c_3, 0, 3, 2, 1));
-                float32x4_t mul_01 = vmulq_f32(_neon_shuffleq_f32(c_2, c_2, 0, 3, 2, 1), _neon_shuffleq_f32(c_3, c_3, 2, 1, 0, 3));
-                float32x4_t sub_0 = vsubq_f32(mul_00, mul_01);
-                mul_1 = vmulq_f32(_neon_shuffleq_f32(c_1, c_1, 1, 0, 3, 2), sub_0);
-            }
-
-            float32x4_t mul_2;
-            {
-                float32x4_t mul_00 = vmulq_f32(_neon_shuffleq_f32(c_2, c_2, 0, 3, 2, 1), _neon_shuffleq_f32(c_3, c_3, 1, 0, 3, 2));
-                float32x4_t mul_01 = vmulq_f32(_neon_shuffleq_f32(c_2, c_2, 1, 0, 3, 2), _neon_shuffleq_f32(c_3, c_3, 0, 3, 2, 1));
-                float32x4_t sub_0 = vsubq_f32(mul_00, mul_01);
-                mul_2 = vmulq_f32(_neon_shuffleq_f32(c_1, c_1, 2, 1, 0, 3), sub_0);
-            }
-
-            float32x4_t mul_3 = vmulq_f32(c_0, vaddq_f32(vaddq_f32(mul_0, mul_1), mul_2)); 
-            mul_3 = _neon_shuffleq_f32(mul_3, mul_3, 3, 1, 2, 0);
-            return vaddv_f32(vget_low_f32(mul_3) - vget_high_f32(mul_3));
-        }
+        float32x4_t c_0 = vld1q_f32(&m[0][0]);
+        float32x4_t c_1 = vld1q_f32(&m[1][0]);
+        float32x4_t c_2 = vld1q_f32(&m[2][0]);
+        float32x4_t mul_00 = vmulq_f32(_neon_shuffleq_f32(c_1, c_1, 3, 0, 2, 1), _neon_shuffleq_f32(c_2, c_2, 3, 1, 0, 2));
+        float32x4_t mul_01 = vmulq_f32(_neon_shuffleq_f32(c_1, c_1, 3, 1, 0, 2), _neon_shuffleq_f32(c_2, c_2, 3, 0, 2, 1));
+        float32x4_t sub_0 = vsubq_f32(mul_00, mul_01);  
+        float32x4_t mul_0 = vmulq_f32(c_0, sub_0);
+        return vaddvq_f32(vsetq_lane_f32(zero<float>, mul_0, 3));
     }
 };
 
-template<size_t N>
-struct ktm::detail::mat_common_implement::determinant<N, std::enable_if_t<N == 3 || N == 4, int>>
+template<>
+struct ktm::detail::mat_common_implement::determinant<4, float>
 {
-    using M = mat<N, N, int>;
+    using M = mat<4, 4, float>;
     static CHTHOLLY_INLINE float call(const M& m) noexcept
     {
-        if constexpr(N == 3)
+        float32x4_t c_0 = vld1q_f32(&m[0][0]);
+        float32x4_t c_1 = vld1q_f32(&m[1][0]);
+        float32x4_t c_2 = vld1q_f32(&m[2][0]);
+        float32x4_t c_3 = vld1q_f32(&m[3][0]);
+
+        float32x4_t mul_0;
         {
-            int32x4_t c_0 = vld1q_s32(&m[0][0]);
-            int32x4_t c_1 = vld1q_s32(&m[1][0]);
-            int32x4_t c_2 = vld1q_s32(&m[2][0]);
-            int32x4_t mul_00 = vmulq_s32(_neon_shuffleq_s32(c_1, c_1, 3, 0, 2, 1), _neon_shuffleq_s32(c_2, c_2, 3, 1, 0, 2));
-            int32x4_t mul_01 = vmulq_s32(_neon_shuffleq_s32(c_1, c_1, 3, 1, 0, 2), _neon_shuffleq_s32(c_2, c_2, 3, 0, 2, 1));
-            int32x4_t sub_0 = vsubq_s32(mul_00, mul_01);  
-            int32x4_t mul_0 = vmulq_s32(c_0, sub_0);
-            return vaddvq_s32(vsetq_lane_s32(zero<int>, mul_0, 3));
+            float32x4_t mul_00 = vmulq_f32(_neon_shuffleq_f32(c_2, c_2, 1, 0, 3, 2), _neon_shuffleq_f32(c_3, c_3, 2, 1, 0, 3));
+            float32x4_t mul_01 = vmulq_f32(_neon_shuffleq_f32(c_2, c_2, 2, 1, 0, 3), _neon_shuffleq_f32(c_3, c_3, 1, 0, 3, 2));
+            float32x4_t sub_0 = vsubq_f32(mul_00, mul_01);
+            mul_0 = vmulq_f32(_neon_shuffleq_f32(c_1, c_1, 0, 3, 2, 1), sub_0);
         }
-        else 
+
+        float32x4_t mul_1;
         {
-            int32x4_t c_0 = vld1q_s32(&m[0][0]);
-            int32x4_t c_1 = vld1q_s32(&m[1][0]);
-            int32x4_t c_2 = vld1q_s32(&m[2][0]);
-            int32x4_t c_3 = vld1q_s32(&m[3][0]);  
-
-            int32x4_t mul_0;
-            {
-                int32x4_t mul_00 = vmulq_s32(_neon_shuffleq_s32(c_2, c_2, 1, 0, 3, 2), _neon_shuffleq_s32(c_3, c_3, 2, 1, 0, 3));
-                int32x4_t mul_01 = vmulq_s32(_neon_shuffleq_s32(c_2, c_2, 2, 1, 0, 3), _neon_shuffleq_s32(c_3, c_3, 1, 0, 3, 2));
-                int32x4_t sub_0 = vsubq_s32(mul_00, mul_01);
-                mul_0 = vmulq_s32(_neon_shuffleq_s32(c_1, c_1, 0, 3, 2, 1), sub_0);
-            }
-
-            int32x4_t mul_1;
-            {
-                int32x4_t mul_00 = vmulq_s32(_neon_shuffleq_s32(c_2, c_2, 2, 1, 0, 3), _neon_shuffleq_s32(c_3, c_3, 0, 3, 2, 1));
-                int32x4_t mul_01 = vmulq_s32(_neon_shuffleq_s32(c_2, c_2, 0, 3, 2, 1), _neon_shuffleq_s32(c_3, c_3, 2, 1, 0, 3));
-                int32x4_t sub_0 = vsubq_s32(mul_00, mul_01);
-                mul_1 = vmulq_s32(_neon_shuffleq_s32(c_1, c_1, 1, 0, 3, 2), sub_0);
-            }
-
-            int32x4_t mul_2;
-            {
-                int32x4_t mul_00 = vmulq_s32(_neon_shuffleq_s32(c_2, c_2, 0, 3, 2, 1), _neon_shuffleq_s32(c_3, c_3, 1, 0, 3, 2));
-                int32x4_t mul_01 = vmulq_s32(_neon_shuffleq_s32(c_2, c_2, 1, 0, 3, 2), _neon_shuffleq_s32(c_3, c_3, 0, 3, 2, 1));
-                int32x4_t sub_0 = vsubq_s32(mul_00, mul_01);
-                mul_2 = vmulq_s32(_neon_shuffleq_s32(c_1, c_1, 2, 1, 0, 3), sub_0);
-            }
-
-            int32x4_t mul_3 = vmulq_s32(c_0, vaddq_s32(vaddq_s32(mul_0, mul_1), mul_2)); 
-            mul_3 = _neon_shuffleq_s32(mul_3, mul_3, 3, 1, 2, 0);
-            return vaddv_s32(vget_low_s32(mul_3) - vget_high_s32(mul_3));
+            float32x4_t mul_00 = vmulq_f32(_neon_shuffleq_f32(c_2, c_2, 2, 1, 0, 3), _neon_shuffleq_f32(c_3, c_3, 0, 3, 2, 1));
+            float32x4_t mul_01 = vmulq_f32(_neon_shuffleq_f32(c_2, c_2, 0, 3, 2, 1), _neon_shuffleq_f32(c_3, c_3, 2, 1, 0, 3));
+            float32x4_t sub_0 = vsubq_f32(mul_00, mul_01);
+            mul_1 = vmulq_f32(_neon_shuffleq_f32(c_1, c_1, 1, 0, 3, 2), sub_0);
         }
+
+        float32x4_t mul_2;
+        {
+            float32x4_t mul_00 = vmulq_f32(_neon_shuffleq_f32(c_2, c_2, 0, 3, 2, 1), _neon_shuffleq_f32(c_3, c_3, 1, 0, 3, 2));
+            float32x4_t mul_01 = vmulq_f32(_neon_shuffleq_f32(c_2, c_2, 1, 0, 3, 2), _neon_shuffleq_f32(c_3, c_3, 0, 3, 2, 1));
+            float32x4_t sub_0 = vsubq_f32(mul_00, mul_01);
+            mul_2 = vmulq_f32(_neon_shuffleq_f32(c_1, c_1, 2, 1, 0, 3), sub_0);
+        }
+
+        float32x4_t mul_3 = vmulq_f32(c_0, vaddq_f32(vaddq_f32(mul_0, mul_1), mul_2)); 
+        mul_3 = _neon_shuffleq_f32(mul_3, mul_3, 3, 1, 2, 0);
+        return vaddv_f32(vget_low_f32(mul_3) - vget_high_f32(mul_3));
     }
 };
 
-template<size_t N>
-struct ktm::detail::mat_common_implement::inverse<N, std::enable_if_t<N == 4, float>>
+template<>
+struct ktm::detail::mat_common_implement::determinant<3, int>
 {
-    using M = mat<N, N, float>;
+    using M = mat<3, 3, int>;
+    static CHTHOLLY_INLINE float call(const M& m) noexcept
+    {
+        int32x4_t c_0 = vld1q_s32(&m[0][0]);
+        int32x4_t c_1 = vld1q_s32(&m[1][0]);
+        int32x4_t c_2 = vld1q_s32(&m[2][0]);
+        int32x4_t mul_00 = vmulq_s32(_neon_shuffleq_s32(c_1, c_1, 3, 0, 2, 1), _neon_shuffleq_s32(c_2, c_2, 3, 1, 0, 2));
+        int32x4_t mul_01 = vmulq_s32(_neon_shuffleq_s32(c_1, c_1, 3, 1, 0, 2), _neon_shuffleq_s32(c_2, c_2, 3, 0, 2, 1));
+        int32x4_t sub_0 = vsubq_s32(mul_00, mul_01);  
+        int32x4_t mul_0 = vmulq_s32(c_0, sub_0);
+        return vaddvq_s32(vsetq_lane_s32(zero<int>, mul_0, 3));
+    }
+};
+
+template<>
+struct ktm::detail::mat_common_implement::determinant<4, int>
+{
+    using M = mat<4, 4, int>;
+    static CHTHOLLY_INLINE float call(const M& m) noexcept
+    {
+        int32x4_t c_0 = vld1q_s32(&m[0][0]);
+        int32x4_t c_1 = vld1q_s32(&m[1][0]);
+        int32x4_t c_2 = vld1q_s32(&m[2][0]);
+        int32x4_t c_3 = vld1q_s32(&m[3][0]);  
+
+        int32x4_t mul_0;
+        {
+            int32x4_t mul_00 = vmulq_s32(_neon_shuffleq_s32(c_2, c_2, 1, 0, 3, 2), _neon_shuffleq_s32(c_3, c_3, 2, 1, 0, 3));
+            int32x4_t mul_01 = vmulq_s32(_neon_shuffleq_s32(c_2, c_2, 2, 1, 0, 3), _neon_shuffleq_s32(c_3, c_3, 1, 0, 3, 2));
+            int32x4_t sub_0 = vsubq_s32(mul_00, mul_01);
+            mul_0 = vmulq_s32(_neon_shuffleq_s32(c_1, c_1, 0, 3, 2, 1), sub_0);
+        }
+
+        int32x4_t mul_1;
+        {
+            int32x4_t mul_00 = vmulq_s32(_neon_shuffleq_s32(c_2, c_2, 2, 1, 0, 3), _neon_shuffleq_s32(c_3, c_3, 0, 3, 2, 1));
+            int32x4_t mul_01 = vmulq_s32(_neon_shuffleq_s32(c_2, c_2, 0, 3, 2, 1), _neon_shuffleq_s32(c_3, c_3, 2, 1, 0, 3));
+            int32x4_t sub_0 = vsubq_s32(mul_00, mul_01);
+            mul_1 = vmulq_s32(_neon_shuffleq_s32(c_1, c_1, 1, 0, 3, 2), sub_0);
+        }
+
+        int32x4_t mul_2;
+        {
+            int32x4_t mul_00 = vmulq_s32(_neon_shuffleq_s32(c_2, c_2, 0, 3, 2, 1), _neon_shuffleq_s32(c_3, c_3, 1, 0, 3, 2));
+            int32x4_t mul_01 = vmulq_s32(_neon_shuffleq_s32(c_2, c_2, 1, 0, 3, 2), _neon_shuffleq_s32(c_3, c_3, 0, 3, 2, 1));
+            int32x4_t sub_0 = vsubq_s32(mul_00, mul_01);
+            mul_2 = vmulq_s32(_neon_shuffleq_s32(c_1, c_1, 2, 1, 0, 3), sub_0);
+        }
+
+        int32x4_t mul_3 = vmulq_s32(c_0, vaddq_s32(vaddq_s32(mul_0, mul_1), mul_2)); 
+        mul_3 = _neon_shuffleq_s32(mul_3, mul_3, 3, 1, 2, 0);
+        return vaddv_s32(vget_low_s32(mul_3) - vget_high_s32(mul_3));
+    }
+};
+
+template<>
+struct ktm::detail::mat_common_implement::inverse<4, float>
+{
+    using M = mat<4, 4, float>;
     static CHTHOLLY_INLINE M call(const M& m) noexcept
     {
         float32x4_t c_0 = vld1q_f32(&m[0][0]);
