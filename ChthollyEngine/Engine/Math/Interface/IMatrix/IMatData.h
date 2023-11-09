@@ -1,3 +1,6 @@
+#ifndef _I_MAT_DATA_H_
+#define _I_MAT_DATA_H_ 
+
 #include "Math/Library/Definition.h"
 
 namespace ktm
@@ -33,3 +36,5 @@ private:
 };
 
 }
+
+#endif
