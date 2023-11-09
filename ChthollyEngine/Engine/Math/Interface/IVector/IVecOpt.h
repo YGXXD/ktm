@@ -2,7 +2,7 @@
 #define _I_VEC_OPT_H_
 
 #include "Math/Library/Definition.h"
-#include "Math/Detail/VecOptImpl.h"
+#include "Math/Detail/VecOptFwd.h"
 
 namespace ktm
 {

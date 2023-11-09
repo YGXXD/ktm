@@ -1,7 +1,7 @@
-#ifndef _VEC_OPT_IMPL_INL_
-#define _VEC_OPT_IMPL_INL_
+#ifndef _VECTOR_INL_
+#define _VECTOR_INL_
 
-#include "VecOptImpl.h"
+#include "VecOptFwd.h"
 #include "Math/Library/Definition.h"
 #include "Math/Library/Common.h"
 

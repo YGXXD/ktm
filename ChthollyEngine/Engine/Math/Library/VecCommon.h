@@ -1,7 +1,7 @@
 #ifndef _VEC_COMMON_H_
 #define _VEC_COMMON_H_
 
-#include "Math/MathType/VecType.h"
+#include "Vector.h"
 #include "Math/Detail/VecCommonImpl.h"
 
 namespace ktm

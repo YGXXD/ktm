@@ -1,7 +1,7 @@
 #ifndef _GEOMETRY_H_
 #define _GEOMETRY_H_
 
-#include "Math/MathType/VecType.h"
+#include "Vector.h"
 #include "VecCommon.h"
 
 namespace ktm

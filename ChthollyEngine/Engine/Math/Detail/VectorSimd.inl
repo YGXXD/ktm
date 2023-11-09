@@ -1,7 +1,7 @@
-#ifndef _VEC_OPT_IMPL_SIMD_INL_
-#define _VEC_OPT_IMPL_SIMD_INL_
+#ifndef _VECTOR_SIMD_H_
+#define _VECTOR_SIMD_H_
 
-#include "VecOptImpl.h"
+#include "VecOptFwd.h"
 #include "Math/Library/Definition.h"
 
 #if defined(CHTHOLLY_SIMD_NEON)

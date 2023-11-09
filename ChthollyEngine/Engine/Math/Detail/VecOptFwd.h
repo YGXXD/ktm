@@ -1,5 +1,5 @@
-#ifndef _VEC_OPT_IMPL_H_
-#define _VEC_OPT_IMPL_H_
+#ifndef _VEC_OPT_FWD_H_ 
+#define _VEC_OPT_FWD_H_
 
 #include <cstddef>
 

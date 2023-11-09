@@ -1,7 +1,7 @@
 #ifndef _MAT_OPT_IMPL_SIMD_H_
 #define _MAT_OPT_IMPL_SIMD_H_
 
-#include "MatOptImpl.h"
+#include "MatOptFwd.h"
 #include "Math/Library/Definition.h"
 
 #if defined(CHTHOLLY_SIMD_NEON)

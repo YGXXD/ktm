@@ -2,7 +2,7 @@
 #define _I_MAT_OPT_H_
 
 #include "Math/Library/Definition.h"
-#include "Math/Detail/MatOptImpl.h"
+#include "Math/Detail/MatOptFwd.h"
 
 namespace ktm
 {

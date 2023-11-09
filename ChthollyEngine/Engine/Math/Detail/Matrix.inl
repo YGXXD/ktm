@@ -1,7 +1,7 @@
-#ifndef _MAT_OPT_IMPL_INL_
-#define _MAT_OPT_IMPL_INL_
+#ifndef _MATRIX_INL_
+#define _MATRIX_INL_
 
-#include "MatOptImpl.h"
+#include "MatOptFwd.h"
 #include "Math/Library/Definition.h"
 #include "Math/Library/VecCommon.h"
 

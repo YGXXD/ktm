@@ -1,22 +1,11 @@
 #ifndef _MAT_TYPE_H_
 #define _MAT_TYPE_H_
 
-#include "VecType.h"
-#include "Math/Interface/ICommon/IArray.h"
-#include "Math/Interface/IMatrix/IMatData.h"
-#include "Math/Interface/IMatrix/IMatMake.h"
-#include "Math/Interface/IMatrix/IMatArray.h"
-#include "Math/Interface/IMatrix/IMatOpt.h"
+#include "Math/Library/Matrix.h"
 
 namespace ktm
 {
-template<size_t Row, size_t Col, typename T>
-struct mat<Row, Col, T> : ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, ktm::IMatData, ktm::IMatMake, ktm::IMatArray, ktm::IMatOpt>, mat<Row, Col, T>>
-{
-    using Father = ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, ktm::IMatData, ktm::IMatMake, ktm::IMatArray, ktm::IMatOpt>, mat<Row, Col, T>>;
-    using Father::Father;
-};
-
+    
 template<size_t Row, size_t Col>
 using fmat = mat<Row, Col, float>;
 using fmat2x2 = fmat<2, 2>;

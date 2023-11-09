@@ -1,5 +1,5 @@
-#ifndef _MAT_OPT_IMPL_H_
-#define _MAT_OPT_IMPL_H_
+#ifndef _MAT_OPT_FWD_H_ 
+#define _MAT_OPT_FWD_H_
 
 #include <cstddef>
 
@@ -31,6 +31,4 @@ struct equal;
 }
 }
 
-#include "MatOptImpl.inl"
-#include "MatOptImplSimd.inl"
 #endif
