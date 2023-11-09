@@ -1,7 +1,7 @@
-#ifndef _QUAT_OPT_IMPL_INL_
-#define _QUAT_OPT_IMPL_INL_
+#ifndef _QUATERNION_INL_
+#define _QUATERNION_INL_
 
-#include "QuatOptImpl.h"
+#include "QuatOptFwd.h"
 #include "Math/Library/Definition.h"
 
 template<typename T>

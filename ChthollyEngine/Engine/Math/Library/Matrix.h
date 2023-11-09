@@ -20,4 +20,5 @@ struct mat<Row, Col, T> : ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, kt
 
 #include "Math/Detail/Matrix.inl"
 #include "Math/Detail/MatrixSimd.inl"
+
 #endif

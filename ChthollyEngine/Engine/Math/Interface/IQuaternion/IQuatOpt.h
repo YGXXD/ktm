@@ -1,9 +1,9 @@
 #ifndef _I_QUAT_OPT_H_
 #define _I_QUAT_OPT_H_
 
-#include "Math/MathType/BaseType.h"
-#include "Math/Detail/VecOptImpl.h"
-#include "Math/Detail/QuatOptImpl.h"
+#include "Math/Library/Definition.h"
+#include "Math/Detail/VecOptFwd.h"
+#include "Math/Detail/QuatOptFwd.h"
 
 namespace ktm
 {

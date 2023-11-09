@@ -1,5 +1,5 @@
-#ifndef _QUAT_OPT_IMPL_H_
-#define _QUAT_OPT_IMPL_H_
+#ifndef _QUAT_OPT_FWD_H_
+#define _QUAT_OPT_FWD_H_
 
 namespace ktm
 {
@@ -17,7 +17,5 @@ struct mul_to_self;
 }
 }
 }
-
-#include "QuatOptImpl.inl"
 
 #endif
