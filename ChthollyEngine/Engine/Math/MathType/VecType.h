@@ -1,21 +1,10 @@
 #ifndef _VEC_TYPE_H_
 #define _VEC_TYPE_H_
 
-#include "BaseType.h"
-#include "Math/Interface/ICommon/IArray.h"
-#include "Math/Interface/IVector/IVecOpt.h"
-#include "Math/Interface/IVector/IVecData.h"
-#include "Math/Interface/IVector/IVecArray.h"
+#include "Math/Library/Vector.h"
 
 namespace ktm
 {
-
-template<size_t N, typename T>
-struct vec<N, T> : ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, ktm::IVecData, ktm::IVecArray, ktm::IVecOpt>, vec<N, T>> 
-{
-    using Father = ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, ktm::IVecData, ktm::IVecArray, ktm::IVecOpt>, vec<N, T>>; 
-    using Father::Father;
-};
 
 template<size_t N>
 using fvec = vec<N, float>;

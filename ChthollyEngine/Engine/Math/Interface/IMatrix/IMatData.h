@@ -1,4 +1,4 @@
-#include "Math/MathType/BaseType.h"
+#include "Math/Library/Definition.h"
 
 namespace ktm
 {

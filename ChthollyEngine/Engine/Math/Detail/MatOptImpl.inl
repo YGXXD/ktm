@@ -2,8 +2,8 @@
 #define _MAT_OPT_IMPL_INL_
 
 #include "MatOptImpl.h"
-#include "Math/MathType/BaseType.h"
-#include "Math/MathLib/VecCommon.h"
+#include "Math/Library/Definition.h"
+#include "Math/Library/VecCommon.h"
 
 template<size_t Row, size_t Col, typename T>
 struct ktm::detail::mat_opt_implement::mat_mul_vec

@@ -2,7 +2,6 @@
 #define _VEC_COMMON_IMPL_SIMD_INL_
 
 #include "VecCommonImpl.h"
-#include "Math/MathLib/Common.h"
 
 #if defined(CHTHOLLY_SIMD_NEON)
 

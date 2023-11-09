@@ -2,7 +2,7 @@
 #define _QUAT_OPT_IMPL_INL_
 
 #include "QuatOptImpl.h"
-#include "Math/MathType/BaseType.h"
+#include "Math/Library/Definition.h"
 
 template<typename T>
 struct ktm::detail::quat_opt_implement::mul

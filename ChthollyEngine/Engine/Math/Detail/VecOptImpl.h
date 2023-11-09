@@ -67,6 +67,4 @@ struct equal;
 }
 }
 
-#include "VecOptImpl.inl"
-#include "VecOptImplSimd.inl"
 #endif

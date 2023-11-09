@@ -1,7 +1,7 @@
 #ifndef _I_MAT_OPT_H_
 #define _I_MAT_OPT_H_
 
-#include "Math/MathType/BaseType.h"
+#include "Math/Library/Definition.h"
 #include "Math/Detail/MatOptImpl.h"
 
 namespace ktm

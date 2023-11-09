@@ -2,8 +2,8 @@
 #define _TRANSFORM_3D_H_
 
 #include "Math/MathType/VecType.h"
-#include "Math/MathLib/Geometry.h"
 #include "Math/MathType/MatType.h"
+#include "Geometry.h"
 
 namespace ktm
 {

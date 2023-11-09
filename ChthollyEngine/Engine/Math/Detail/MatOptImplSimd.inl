@@ -2,7 +2,7 @@
 #define _MAT_OPT_IMPL_SIMD_H_
 
 #include "MatOptImpl.h"
-#include "Math/MathType/BaseType.h"
+#include "Math/Library/Definition.h"
 
 #if defined(CHTHOLLY_SIMD_NEON)
 

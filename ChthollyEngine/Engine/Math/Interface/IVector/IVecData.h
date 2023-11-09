@@ -1,7 +1,7 @@
 #ifndef _I_VECTOR_H_
 #define _I_VECTOR_H_
 
-#include "Math/MathType/BaseType.h"
+#include "Math/Library/Definition.h"
 
 namespace ktm
 {
