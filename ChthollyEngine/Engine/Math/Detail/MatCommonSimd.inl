@@ -1,7 +1,7 @@
-#ifndef _MAT_COMMON_IMPL_SIMD_INL_
-#define _MAT_COMMON_IMPL_SIMD_INL_
+#ifndef _MAT_COMMON_SIMD_INL_
+#define _MAT_COMMON_SIMD_INL_
 
-#include "MatCommonImpl.h"
+#include "MatCommonFwd.h"
 #include "Math/Library/Definition.h"
 
 #if defined(CHTHOLLY_SIMD_NEON)

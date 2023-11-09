@@ -2,7 +2,7 @@
 #define _MAT_COMMON_H_
 
 #include "Matrix.h"
-#include "Math/Detail/MatCommonImpl.h"
+#include "Math/Detail/MatCommonFwd.h"
 
 namespace ktm
 {
@@ -48,5 +48,8 @@ CHTHOLLY_INLINE std::enable_if_t<mat_traits_row_n<M> == mat_traits_col_n<M> && s
     return detail::mat_common_implement::factor_svd<mat_traits_col_n<M>, mat_traits_t<M>>::call(m);
 }
 }
+
+#include "Math/Detail/MatCommon.inl"
+#include "Math/Detail/MatCommonSimd.inl"
 
 #endif

@@ -1,5 +1,5 @@
-#ifndef _MAT_COMMON_IMPL_H_
-#define _MAT_COMMON_IMPL_H_
+#ifndef _MAT_COMMON_FWD_H_
+#define _MAT_COMMON_FWD_H_
 
 #include <cstddef>
 
@@ -39,6 +39,4 @@ struct factor_svd;
 }
 }
 
-#include "MatCommonImpl.inl"
-#include "MatCommonImplSimd.inl"
 #endif

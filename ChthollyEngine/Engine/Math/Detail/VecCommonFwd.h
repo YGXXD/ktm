@@ -1,5 +1,5 @@
-#ifndef _VEC_COMMON_IMPL_H_
-#define _VEC_COMMON_IMPL_H_
+#ifndef _VEC_COMMON_FWD_H_
+#define _VEC_COMMON_FWD_H_
 
 #include <cstddef>
 
@@ -56,6 +56,4 @@ struct fract;
 }
 }
 
-#include "VecCommonImpl.inl"
-#include "VecCommonImplSimd.inl"
 #endif

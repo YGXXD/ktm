@@ -1,7 +1,7 @@
-#ifndef _MAT_COMMON_IMPL_INL_
-#define _MAT_COMMON_IMPL_INL_
+#ifndef _MAT_COMMON_INL_
+#define _MAT_COMMON_INL_
 
-#include "MatCommonImpl.h"
+#include "MatCommonFwd.h"
 #include "Math/Library/Definition.h"
 #include "Math/Library/Common.h"
 

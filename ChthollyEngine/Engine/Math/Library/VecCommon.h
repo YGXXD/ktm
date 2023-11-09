@@ -2,7 +2,7 @@
 #define _VEC_COMMON_H_
 
 #include "Vector.h"
-#include "Math/Detail/VecCommonImpl.h"
+#include "Math/Detail/VecCommonFwd.h"
 
 namespace ktm
 {
@@ -92,5 +92,8 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<vec_traits_t<V>>, V> f
 }
 
 }   
+
+#include "Math/Detail/VecCommon.inl"
+#include "Math/Detail/VecCommonSimd.inl"
 
 #endif

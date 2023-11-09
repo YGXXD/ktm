@@ -1,7 +1,7 @@
-#ifndef _VEC_COMMON_IMPL_INL_
-#define _VEC_COMMON_IMPL_INL_
+#ifndef _VEC_COMMON_INL_
+#define _VEC_COMMON_INL_
 
-#include "VecCommonImpl.h"
+#include "VecCommonFwd.h"
 #include "Math/Library/Common.h"
 
 template<size_t StepN, size_t N, typename T>
