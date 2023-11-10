@@ -422,8 +422,7 @@ struct ktm::detail::vec_common_implement::clamp<2, float>
     using V = vec<2, float>;
     static CHTHOLLY_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
-        float32x2_t tmp = vmax_f32(vld1_f32(&v[0]), vld1_f32(&min[0]));
-        float32x2_t ret = vmin_f32(tmp, vld1_f32(&max[0]));
+        float32x2_t ret = vclamp_f32(vld1_f32(&v[0]), vld1_f32(&min[0]), vld1_f32(&max[0]));
         return *reinterpret_cast<V*>(&ret); 
     }
 };
@@ -434,9 +433,8 @@ struct ktm::detail::vec_common_implement::clamp<N, std::enable_if_t<N == 3 || N 
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
-        float32x4_t tmp = vmaxq_f32(vld1q_f32(&v[0]), vld1q_f32(&min[0]));
-        float32x4_t ret = vminq_f32(tmp, vld1q_f32(&max[0]));
-        return *reinterpret_cast<V*>(&ret);
+        float32x4_t ret = vclampq_f32(vld1q_f32(&v[0]), vld1q_f32(&min[0]), vld1q_f32(&max[0]));
+        return *reinterpret_cast<V*>(&ret); 
     }
 };
 
@@ -446,8 +444,7 @@ struct ktm::detail::vec_common_implement::clamp<2, int>
     using V = vec<2, int>;
     static CHTHOLLY_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
-        int32x2_t tmp = vmax_s32(vld1_s32(&v[0]), vld1_s32(&min[0]));
-        int32x2_t ret = vmin_s32(tmp, vld1_s32(&max[0]));
+        int32x2_t ret = vclamp_s32(vld1_s32(&v[0]), vld1_s32(&min[0]), vld1_s32(&max[0]));
         return *reinterpret_cast<V*>(&ret); 
     }
 };
@@ -458,8 +455,7 @@ struct ktm::detail::vec_common_implement::clamp<N, std::enable_if_t<N == 3 || N 
     using V = vec<N, int>;
     static CHTHOLLY_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
-        int32x4_t tmp = vmaxq_s32(vld1q_s32(&v[0]), vld1q_s32(&min[0]));
-        int32x4_t ret = vminq_s32(tmp, vld1q_s32(&max[0]));
+        int32x4_t ret = vclampq_s32(vld1q_s32(&v[0]), vld1q_s32(&min[0]), vld1q_s32(&max[0]));
         return *reinterpret_cast<V*>(&ret);
     }
 };
@@ -596,8 +592,7 @@ struct ktm::detail::vec_common_implement::smoothstep<N, std::enable_if_t<N == 3 
         float32x4_t t_edge1 = vld1q_f32(&edge1[0]); 
         float32x4_t t_x = vld1q_f32(&x[0]);
         float32x4_t tmp = vdivq_f32(vsubq_f32(t_x, t_edge0), vsubq_f32(t_edge1, t_edge0));
-        tmp = vmaxq_f32(tmp, vdupq_n_f32(zero<float>));
-        tmp = vminq_f32(tmp, vdupq_n_f32(one<float>));
+        tmp = vclampq_f32(tmp, vdupq_n_f32(zero<float>), vdupq_n_f32(one<float>));
         float32x4_t ret = vmulq_f32(vmulq_f32(tmp, tmp), vsubq_f32(vdupq_n_f32(3.f), vmulq_f32(vdupq_n_f32(2.f), tmp)));
         return *reinterpret_cast<V*>(&ret);
     }
@@ -781,8 +776,7 @@ struct ktm::detail::vec_common_implement::clamp<N, std::enable_if_t<N == 3 || N 
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
-        __m128 tmp = _mm_max_ps(_mm_load_ps(&v[0]), _mm_load_ps(&min[0]));
-        __m128 ret = _mm_min_ps(tmp, _mm_load_ps(&max[0]));
+        __m128 ret = _mm_clamp_ps(_mm_load_ps(&v[0]), _mm_load_ps(&min[0]), _mm_load_ps(&max[0]));
         return *reinterpret_cast<V*>(&ret); 
     }
 };
@@ -1020,8 +1014,7 @@ struct ktm::detail::vec_common_implement::clamp<N, std::enable_if_t<N == 3 || N 
         __m128i t_v = _mm_load_si128(reinterpret_cast<const __m128i*>(&v[0]));
         __m128i t_min = _mm_load_si128(reinterpret_cast<const __m128i*>(&min[0]));
         __m128i t_max = _mm_load_si128(reinterpret_cast<const __m128i*>(&max[0]));
-        __m128i tmp = _mm_max_epi32(t_v, t_min);
-        __m128i ret = _mm_min_epi32(tmp, t_max);
+        __m128i ret = _mm_clamp_epi32(t_v, t_min, t_max);
         return *reinterpret_cast<V*>(&ret); 
     }
 };

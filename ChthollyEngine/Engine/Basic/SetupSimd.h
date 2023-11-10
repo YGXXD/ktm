@@ -56,6 +56,11 @@
 		#define _neon_shuffleq_s32(a, b, s4, s3, s2, s1) vsetq_lane_s32(vgetq_lane_s32(b, s4), vsetq_lane_s32(vgetq_lane_s32(b, s3), vsetq_lane_s32(vgetq_lane_s32(a, s2), vmovq_n_s32(vgetq_lane_s32(a, s1)), 1), 2), 3)
 	#endif
 
+	#define vclamp_f32(x, min, max) vmin_f32(vmax_f32(x, min), max)
+	#define vclamp_s32(x, min, max) vmin_s32(vmax_s32(x, min), max)
+	#define vclampq_f32(x, min, max) vminq_f32(vmaxq_f32(x, min), max)
+	#define vclampq_s32(x, min, max) vminq_s32(vmaxq_s32(x, min), max)
+
 CHTHOLLY_INLINE float32x2_t vadd_f32_all(const float32x2_t& arg)
 {
 	return arg;
@@ -145,7 +150,8 @@ CHTHOLLY_INLINE int32x4_t vmulq_s32_all(const SimdT& arg, const SimdTs&... args)
 }
 
 #elif defined(CHTHOLLY_SIMD_SSE)
-
+	#define _mm_clamp_ps(x, min, max) _mm_min_ps(_mm_max_ps(x, min), max)
+	
 CHTHOLLY_INLINE __m128 _mm_add_ps_all(const __m128& arg)
 {
 	return arg;
@@ -184,6 +190,7 @@ CHTHOLLY_INLINE __m128i _mm_add_epi32_all(const SimdT& arg, const SimdTs&... arg
 #endif
 
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE4_1_FLAG
+	#define _mm_clamp_epi32(x, min, max) _mm_min_epi32(_mm_max_epi32(x, min), max)
 
 CHTHOLLY_INLINE __m128i _mm_mul_epi32_all(const __m128i& arg)
 {
