@@ -41,8 +41,6 @@
 	#endif
 #endif
 
-#include "TraitsEx.h"
-
 #if defined(CHTHOLLY_SIMD_NEON)
 
 #if defined(CHTHOLLY_COMPILER_CLANG)
