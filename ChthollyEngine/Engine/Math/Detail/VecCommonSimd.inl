@@ -842,8 +842,7 @@ struct ktm::detail::vec_common_implement::smoothstep<N, std::enable_if_t<N == 3 
         __m128 t_edge1 = _mm_load_ps(&edge1[0]);
         __m128 t_x = _mm_load_ps(&x[0]);
         __m128 tmp = _mm_div_ps(_mm_sub_ps(t_x, t_edge0), _mm_sub_ps(t_edge1, t_edge0));
-        tmp = _mm_max_ps(tmp, _mm_set1_ps(zero<float>));
-        tmp = _mm_min_ps(tmp, _mm_set1_ps(one<float>));
+        tmp = _mm_clamp_ps(tmp, _mm_set1_ps(zero<float>), _mm_set1_ps(one<float>));
         __m128 ret = _mm_mul_ps(_mm_mul_ps(tmp, tmp), _mm_sub_ps(_mm_set1_ps(3.f), _mm_mul_ps(_mm_set1_ps(2.f), tmp)));
         return *reinterpret_cast<V*>(&ret);
     }
