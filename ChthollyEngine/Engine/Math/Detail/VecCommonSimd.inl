@@ -741,9 +741,7 @@ struct ktm::detail::vec_common_implement::abs<N, std::enable_if_t<N == 3 || N ==
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
-        const int mask_bit = 0x7fffffff;
-        __m128 mask = _mm_set1_ps(*reinterpret_cast<const float*>(&mask_bit));
-        __m128 ret = _mm_and_ps(_mm_load_ps(&x[0]), mask);
+        __m128 ret = _mm_abs_ps(_mm_load_ps(&x[0]));
         return *reinterpret_cast<V*>(&ret);
     }
 };

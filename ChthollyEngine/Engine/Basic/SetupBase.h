@@ -53,14 +53,20 @@
 	#error "Chtholly Engine don't support unkown c++ compiler, it's only support clang++, g++ and visual c++"
 #endif
 
-// function inline config
+// function Function config
 #if defined(CHTHOLLY_COMPILER_CLANG) || defined(CHTHOLLY_COMPILER_GCC)
 	#define CHTHOLLY_INLINE __inline__ __attribute__((always_inline))
 	#define CHTHOLLY_NOINLINE __attribute__((noinline))
+	#define CHTHOLLY_NOTHROW __attribute__((nothrow))
+	#define CHTHOLLY_NODEBUG __attribute__((nodebug))
 #elif defined(CHTHOLLY_COMPILER_MSVC)
 	#define CHTHOLLY_INLINE __forceinline
 	#define CHTHOLLY_NOINLINE __declspec(noinline)
+	#define CHTHOLLY_NOTHROW __declspec(nothrow)
+	#define CHTHOLLY_NODEBUG 
 #endif
+
+#define CHTHOLLY_FUNC CHTHOLLY_INLINE CHTHOLLY_NODEBUG CHTHOLLY_NOTHROW
 
 // build engine config
 #if defined(CHTHOLLY_COMPILER_CLANG)

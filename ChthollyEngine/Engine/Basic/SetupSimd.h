@@ -59,130 +59,156 @@
 
 #endif
 
-#define vclamp_f32(x, min, max) vmin_f32(vmax_f32(x, min), max)
-#define vclamp_s32(x, min, max) vmin_s32(vmax_s32(x, min), max)
-#define vclampq_f32(x, min, max) vminq_f32(vmaxq_f32(x, min), max)
-#define vclampq_s32(x, min, max) vminq_s32(vmaxq_s32(x, min), max)
+CHTHOLLY_FUNC float32x2_t vclamp_f32(const float32x2_t& x, const float32x2_t& min, const float32x2_t& max) noexcept
+{
+	return vmin_f32(vmax_f32(x, min), max);
+}
+
+CHTHOLLY_FUNC float32x4_t vclampq_f32(const float32x4_t& x, const float32x4_t& min, const float32x4_t& max) noexcept
+{
+	return vminq_f32(vmaxq_f32(x, min), max);
+}
+
+CHTHOLLY_FUNC int32x2_t vclamp_s32(const int32x2_t& x, const int32x2_t& min, const int32x2_t& max) noexcept
+{
+	return vmin_s32(vmax_s32(x, min), max);
+}
+
+CHTHOLLY_FUNC int32x4_t vclampq_s32(const int32x4_t& x, const int32x4_t& min, const int32x4_t& max) noexcept
+{
+	return vminq_s32(vmaxq_s32(x, min), max);
+}
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_INLINE float32x2_t vadd_f32_all(const SimdT& arg, const SimdTs&... args)
+CHTHOLLY_FUNC float32x2_t vadd_f32_all(const SimdT& arg, const SimdTs&... args) noexcept
 {
 	return vadd_f32(arg, vadd_f32_all(args...));
 }
 
 template<>
-CHTHOLLY_INLINE float32x2_t vadd_f32_all<float32x2_t>(const float32x2_t& arg)
+CHTHOLLY_FUNC float32x2_t vadd_f32_all<float32x2_t>(const float32x2_t& arg) noexcept
 {
 	return arg;
 }
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_INLINE float32x2_t vmul_f32_all(const SimdT& arg, const SimdTs&... args)
+CHTHOLLY_FUNC float32x2_t vmul_f32_all(const SimdT& arg, const SimdTs&... args) noexcept
 {
 	return vmul_f32(arg, vmul_f32_all(args...));
 }
 
 template<>
-CHTHOLLY_INLINE float32x2_t vmul_f32_all<float32x2_t>(const float32x2_t& arg)
+CHTHOLLY_FUNC float32x2_t vmul_f32_all<float32x2_t>(const float32x2_t& arg) noexcept
 {
 	return arg;
 }
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_INLINE float32x4_t vaddq_f32_all(const SimdT& arg, const SimdTs&... args)
+CHTHOLLY_FUNC float32x4_t vaddq_f32_all(const SimdT& arg, const SimdTs&... args) noexcept
 {
 	return vaddq_f32(arg, vaddq_f32_all(args...));
 }
 
 template<>
-CHTHOLLY_INLINE float32x4_t vaddq_f32_all<float32x4_t>(const float32x4_t& arg)
+CHTHOLLY_FUNC float32x4_t vaddq_f32_all<float32x4_t>(const float32x4_t& arg) noexcept
 {
 	return arg;
 }
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_INLINE float32x4_t vmulq_f32_all(const SimdT& arg, const SimdTs&... args)
+CHTHOLLY_FUNC float32x4_t vmulq_f32_all(const SimdT& arg, const SimdTs&... args) noexcept
 {
 	return vmulq_f32(arg, vmulq_f32_all(args...));
 }
 
 template<>
-CHTHOLLY_INLINE float32x4_t vmulq_f32_all<float32x4_t>(const float32x4_t& arg)
+CHTHOLLY_FUNC float32x4_t vmulq_f32_all<float32x4_t>(const float32x4_t& arg) noexcept
 {
 	return arg;
 }
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_INLINE int32x2_t vadd_s32_all(const SimdT& arg, const SimdTs&... args)
+CHTHOLLY_FUNC int32x2_t vadd_s32_all(const SimdT& arg, const SimdTs&... args) noexcept
 {
 	return vadd_s32(arg, vadd_s32_all(args...));
 }
 
 template<>
-CHTHOLLY_INLINE int32x2_t vadd_s32_all<int32x2_t>(const int32x2_t& arg)
+CHTHOLLY_FUNC int32x2_t vadd_s32_all<int32x2_t>(const int32x2_t& arg) noexcept
 {
 	return arg;
 }
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_INLINE int32x2_t vmul_s32_all(const SimdT& arg, const SimdTs&... args)
+CHTHOLLY_FUNC int32x2_t vmul_s32_all(const SimdT& arg, const SimdTs&... args) noexcept
 {
 	return vmul_s32(arg, vmul_s32_all(args...));
 }
 
 template<>
-CHTHOLLY_INLINE int32x2_t vmul_s32_all<int32x2_t>(const int32x2_t& arg)
+CHTHOLLY_FUNC int32x2_t vmul_s32_all<int32x2_t>(const int32x2_t& arg) noexcept
 {
 	return arg;
 }
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_INLINE int32x4_t vaddq_s32_all(const SimdT& arg, const SimdTs&... args)
+CHTHOLLY_FUNC int32x4_t vaddq_s32_all(const SimdT& arg, const SimdTs&... args) noexcept
 {
 	return vaddq_s32(arg, vaddq_s32_all(args...));
 }
 
 template<>
-CHTHOLLY_INLINE int32x4_t vaddq_s32_all<int32x4_t>(const int32x4_t& arg)
+CHTHOLLY_FUNC int32x4_t vaddq_s32_all<int32x4_t>(const int32x4_t& arg) noexcept
 {
 	return arg;
 }
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_INLINE int32x4_t vmulq_s32_all(const SimdT& arg, const SimdTs&... args)
+CHTHOLLY_FUNC int32x4_t vmulq_s32_all(const SimdT& arg, const SimdTs&... args) noexcept
 {
 	return vmulq_s32(arg, vmulq_s32_all(args...));
 }
 
 template<>
-CHTHOLLY_INLINE int32x4_t vmulq_s32_all<int32x4_t>(const int32x4_t& arg)
+CHTHOLLY_FUNC int32x4_t vmulq_s32_all<int32x4_t>(const int32x4_t& arg) noexcept
 {
 	return arg;
 }
 
 #elif defined(CHTHOLLY_SIMD_SSE)
-	#define _mm_clamp_ps(x, min, max) _mm_min_ps(_mm_max_ps(x, min), max)
+
+CHTHOLLY_FUNC __m128 _mm_clamp_ps(const __m128& x, const __m128& min, const __m128& max) noexcept
+{
+	return _mm_min_ps(_mm_max_ps(x, min), max);
+}
+
+CHTHOLLY_FUNC __m128 _mm_abs_ps(const __m128& x) noexcept
+{
+	const union { unsigned int i; float f; } mask = { 0x7fffffff };
+	__m128 ret = _mm_and_ps(x, _mm_set1_ps(mask.f));
+	return ret;
+}
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_INLINE __m128 _mm_add_ps_all(const SimdT& arg, const SimdTs&... args)
+CHTHOLLY_FUNC __m128 _mm_add_ps_all(const SimdT& arg, const SimdTs&... args) noexcept
 {
 	return _mm_add_ps(arg, _mm_add_ps_all(args...));
 }
 
 template<>
-CHTHOLLY_INLINE __m128 _mm_add_ps_all<__m128>(const __m128& arg)
+CHTHOLLY_FUNC __m128 _mm_add_ps_all<__m128>(const __m128& arg) noexcept
 {
 	return arg;
 }
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_INLINE __m128 _mm_mul_ps_all(const SimdT& arg, const SimdTs&... args)
+CHTHOLLY_FUNC __m128 _mm_mul_ps_all(const SimdT& arg, const SimdTs&... args) noexcept
 {
 	return _mm_mul_ps(arg, _mm_mul_ps_all(args...));
 }
 
 template<>
-CHTHOLLY_INLINE __m128 _mm_mul_ps_all<__m128>(const __m128& arg)
+CHTHOLLY_FUNC __m128 _mm_mul_ps_all<__m128>(const __m128& arg) noexcept
 {
 	return arg;
 }
@@ -190,13 +216,13 @@ CHTHOLLY_INLINE __m128 _mm_mul_ps_all<__m128>(const __m128& arg)
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE2_FLAG
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_INLINE __m128i _mm_add_epi32_all(const SimdT& arg, const SimdTs&... args)
+CHTHOLLY_FUNC __m128i _mm_add_epi32_all(const SimdT& arg, const SimdTs&... args) noexcept
 {
 	return _mm_add_epi32(arg, _mm_add_epi32_all(args...));
 }
 
 template<>
-CHTHOLLY_INLINE __m128i _mm_add_epi32_all<__m128i>(const __m128i& arg)
+CHTHOLLY_FUNC __m128i _mm_add_epi32_all<__m128i>(const __m128i& arg) noexcept
 {
 	return arg;
 }
@@ -205,16 +231,19 @@ CHTHOLLY_INLINE __m128i _mm_add_epi32_all<__m128i>(const __m128i& arg)
 
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE4_1_FLAG
 
-#define _mm_clamp_epi32(x, min, max) _mm_min_epi32(_mm_max_epi32(x, min), max)
+CHTHOLLY_FUNC __m128 _mm_clamp_epi32(const __m128i& x, const __m128i& min, const __m128i& max) noexcept
+{
+	return _mm_min_epi32(_mm_max_epi32(x, min), max);
+}
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_INLINE __m128i _mm_mul_epi32_all(const SimdT& arg, const SimdTs&... args)
+CHTHOLLY_FUNC __m128i _mm_mul_epi32_all(const SimdT& arg, const SimdTs&... args) noexcept
 {
 	return _mm_mul_epi32(arg, _mm_mul_epi32_all(args...));
 }
 
 template<>
-CHTHOLLY_INLINE __m128i _mm_mul_epi32_all<__m128i>(const __m128i& arg)
+CHTHOLLY_FUNC __m128i _mm_mul_epi32_all<__m128i>(const __m128i& arg) noexcept
 {
 	return arg;
 }
