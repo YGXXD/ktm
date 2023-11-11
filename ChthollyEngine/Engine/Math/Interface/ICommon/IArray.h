@@ -1,7 +1,7 @@
 #ifndef _I_ARRAY_H_
 #define _I_ARRAY_H_
 
-#include "Basic/SetupBase.h"
+#include "Basic/Basic.h"
 
 namespace ktm
 {

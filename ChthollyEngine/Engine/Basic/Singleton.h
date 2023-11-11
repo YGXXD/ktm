@@ -1,6 +1,8 @@
 #ifndef _SINGLETON_H_
 #define _SINGLETON_H_
 
+#include "SetupBasic.h"
+
 #define SINGLETON_REGISTER(className) friend class ::ktl::Singleton<className>;
 
 namespace ktl
@@ -27,7 +29,7 @@ template<class T>
 T* ktl::Singleton<T>::SingletonInstance = nullptr;
 
 template<class T>
-inline T& ktl::Singleton<T>::Get()
+CHTHOLLY_INLINE T& ktl::Singleton<T>::Get()
 {
 	if(!SingletonInstance)
 	{

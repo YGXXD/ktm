@@ -1,7 +1,7 @@
 #ifndef _DELEGATE_H_
 #define _DELEGATE_H_
 
-#include "SetupBase.h"
+#include "SetupBasic.h"
 #include <memory>
 #include <sstream>
 #include <unordered_map>

@@ -1,7 +1,7 @@
 #ifndef _BASIC_H_
 #define _BASIC_H_
 
-#include "SetupBase.h"
+#include "SetupBasic.h"
 #include "Delegate.h"
 #include "Singleton.h"
 #include "TraitsEx.h"
