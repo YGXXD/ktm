@@ -2,7 +2,7 @@
 #define _BASE_TYPE_H_
 
 #include "Basic/Basic.h"
-#include "Simd/SetupSimd.h"
+#include "Simd/Simd.h"
 
 namespace ktm
 {
