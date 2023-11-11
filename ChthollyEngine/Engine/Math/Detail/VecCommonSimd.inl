@@ -853,17 +853,7 @@ struct ktm::detail::vec_common_implement::fract<N, std::enable_if_t<N == 3 || N 
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
         __m128 t_x = _mm_load_ps(&x[0]);
-#if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE4_1_FLAG
         __m128 t_floor = _mm_floor_ps(t_x);
-#else 
-        const union { unsigned int i; float f; } mask = { 0x80000000 };
-		__m128 tmp = _mm_and_ps(t_x, _mm_set1_ps(mask.f));
-		tmp = _mm_or_ps(tmp, _mm_set_ps1(8388608.f));
-        __m128 rnd = _mm_sub_ps(_mm_add_ps(t_x, tmp), tmp);
-		tmp = _mm_cmplt_ps(t_x, rnd);
-		tmp = _mm_and_ps(tmp, _mm_set1_ps(1.f));
-		__m128 t_floor = _mm_sub_ps(rnd, tmp);
-#endif
         __m128 ret = _mm_min_ps(_mm_sub_ps(t_x, t_floor), _mm_set1_ps(one<float>));
         return *reinterpret_cast<V*>(&ret);
     }
@@ -935,12 +925,7 @@ struct ktm::detail::vec_common_implement::abs<N, std::enable_if_t<N == 3 || N ==
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
         __m128i t_x = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
-#if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE3_FLAG
         __m128i ret = _mm_abs_epi32(t_x);
-#else
-        __m128i tmp = _mm_srai_epi32(t_x, 31);
-		__m128i ret = _mm_sub_epi32(_mm_xor_si128(t_x, tmp), tmp);
-#endif
         return *reinterpret_cast<V*>(&ret);
     }
 };
