@@ -1,7 +1,7 @@
 #ifndef _SETUP_SIMD_H_
 #define _SETUP_SIMD_H_
 
-#include "SetupBase.h"
+#include "Basic/SetupBase.h"
 
 // simd config 
 #define CHTHOLLY_SIMD_SSE_FLAG 1

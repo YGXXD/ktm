@@ -1,7 +1,7 @@
 #ifndef _VULKAN_GRAPHICS_CONTEXT_H_
 #define _VULKAN_GRAPHICS_CONTEXT_H_
 
-#include "Basic/SetupBase.h"
+#include "Basic/Basic.h"
 #include <vulkan/vulkan.h>
 
 namespace keg

@@ -1,7 +1,7 @@
 #ifndef _RENDERER_H_
 #define _RENDERER_H_
 
-#include "Basic/SetupBase.h"
+#include "Basic/Basic.h"
 
 namespace keg
 {

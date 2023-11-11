@@ -1,7 +1,7 @@
 #ifndef _METAL_GRAPHICS_CONTEXT_H_
 #define _METAL_GRAPHICS_CONTEXT_H_
 
-#include "Basic/SetupBase.h"
+#include "Basic/Basic.h"
 
 #import <Metal/Metal.h>
 #import <QuartzCore/QuartzCore.h>

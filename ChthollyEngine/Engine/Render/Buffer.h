@@ -1,7 +1,7 @@
 #ifndef _BUFFER_H_
 #define _BUFFER_H_
 
-#include "Basic/SetupBase.h"
+#include "Basic/Basic.h"
 
 namespace keg
 {

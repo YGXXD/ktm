@@ -1,7 +1,7 @@
 #ifndef _GRAPHICS_CONTEXT_H_
 #define _GRAPHICS_CONTEXT_H_
 
-#include "Basic/SetupBase.h"
+#include "Basic/Basic.h"
 
 namespace keg
 {
