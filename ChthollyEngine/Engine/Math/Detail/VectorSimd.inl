@@ -833,9 +833,8 @@ struct ktm::detail::vec_opt_implement::opposite<N, std::enable_if_t<N == 3 || N 
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
-        union { unsigned int i; float f; } mask = { 0x80000000 };
         __m128 t_x = _mm_load_ps(&x[0]);
-	    __m128 ret = _mm_or_ps(_mm_andnot_ps(t_x, _mm_set1_ps(mask.f)), _mm_andnot_ps(_mm_set1_ps(mask.f), t_x));
+	    __m128 ret = _mm_neg_ps(t_x);
         return *reinterpret_cast<V*>(&ret);
     }
 };
@@ -1018,7 +1017,7 @@ struct ktm::detail::vec_opt_implement::opposite<N, std::enable_if_t<N == 3 || N 
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
         __m128i t_x = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
-        __m128i ret = _mm_sub_epi32(_mm_set1_epi32(zero<int>), t_x);
+        __m128i ret = _mm_neg_epi32(t_x);
         return *reinterpret_cast<V*>(&ret);
     }
 };

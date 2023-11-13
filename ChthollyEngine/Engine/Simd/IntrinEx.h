@@ -17,6 +17,15 @@ CHTHOLLY_FUNC __m128 _mm_abs_ps(const __m128& x) noexcept
 	return ret;
 }
 
+CHTHOLLY_FUNC __m128 _mm_neg_ps(const __m128& x) noexcept
+{
+	union { unsigned int i; float f; } mask = { 0x80000000 };
+	__m128 t_x = _mm_load_ps(&x[0]);
+	__m128 t_mask = _mm_set1_ps(mask.f);
+	__m128 ret = _mm_or_ps(_mm_andnot_ps(t_x, t_mask), _mm_andnot_ps(t_mask, t_x));
+	return ret;
+}
+
 template<typename SimdT, typename ...SimdTs>
 CHTHOLLY_FUNC __m128 _mm_add_ps_all(const SimdT& arg, const SimdTs&... args) noexcept
 {
@@ -75,16 +84,10 @@ CHTHOLLY_FUNC __m128 _mm_ceil_ps(const __m128& x) noexcept
 
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE2_FLAG
 
-#if !(CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE3_FLAG)
-
-CHTHOLLY_FUNC __m128i _mm_abs_epi32(const __m128i& x) noexcept
+CHTHOLLY_FUNC __m128i _mm_neg_epi32(const __m128i& x) noexcept
 {
-	__m128i tmp = _mm_srai_epi32(x, 31);
-	__m128i ret = _mm_sub_epi32(_mm_xor_si128(x, tmp), tmp);
-	return ret;
+	return _mm_sub_epi32(_mm_set1_epi32(0), x);
 }
-
-#endif
 
 template<typename SimdT, typename ...SimdTs>
 CHTHOLLY_FUNC __m128i _mm_add_epi32_all(const SimdT& arg, const SimdTs&... args) noexcept
@@ -97,6 +100,17 @@ CHTHOLLY_FUNC __m128i _mm_add_epi32_all<__m128i>(const __m128i& arg) noexcept
 {
 	return arg;
 }
+
+#if !(CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE3_FLAG)
+
+CHTHOLLY_FUNC __m128i _mm_abs_epi32(const __m128i& x) noexcept
+{
+	__m128i tmp = _mm_srai_epi32(x, 31);
+	__m128i ret = _mm_sub_epi32(_mm_xor_si128(x, tmp), tmp);
+	return ret;
+}
+
+#endif
 
 #endif
 
