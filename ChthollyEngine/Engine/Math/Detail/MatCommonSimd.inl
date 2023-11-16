@@ -174,7 +174,7 @@ struct ktm::detail::mat_common_implement::determinant<4, float>
 
         float32x4_t mul_3 = vmulq_f32(c_0, vaddq_f32(vaddq_f32(mul_0, mul_1), mul_2)); 
         mul_3 = _neon_shuffleq_f32(mul_3, mul_3, 3, 1, 2, 0);
-        return vaddv_f32(vget_low_f32(mul_3) - vget_high_f32(mul_3));
+        return vaddv_f32(vsub_f32(vget_low_f32(mul_3), vget_high_f32(mul_3)));
     }
 };
 
@@ -232,7 +232,7 @@ struct ktm::detail::mat_common_implement::determinant<4, int>
 
         int32x4_t mul_3 = vmulq_s32(c_0, vaddq_s32(vaddq_s32(mul_0, mul_1), mul_2)); 
         mul_3 = _neon_shuffleq_s32(mul_3, mul_3, 3, 1, 2, 0);
-        return vaddv_s32(vget_low_s32(mul_3) - vget_high_s32(mul_3));
+        return vaddv_s32(vsub_s32(vget_low_s32(mul_3), vget_high_s32(mul_3)));
     }
 };
 
@@ -572,7 +572,7 @@ struct ktm::detail::mat_common_implement::determinant<3, float>
 
         __m128 sum_0 = _mm_add_ss(mul_0, _mm_shuffle_ps(mul_0, mul_0, _MM_SHUFFLE(0, 3, 2, 1)));
         __m128 sum_1 = _mm_add_ss(sum_0, _mm_shuffle_ps(mul_0, mul_0, _MM_SHUFFLE(1, 0, 3, 2)));
-        return *reinterpret_cast<float*>(&sum_1); 
+        return _mm_cvtss_f32(sum_1); 
     }
 };
 
@@ -615,7 +615,7 @@ struct ktm::detail::mat_common_implement::determinant<4, float>
         mul_3 = _mm_shuffle_ps(mul_3, mul_3, _MM_SHUFFLE(3, 1, 2, 0));
         __m128 sub_0 = _mm_sub_ps(mul_3, _mm_shuffle_ps(mul_3, mul_3, _MM_SHUFFLE(1, 0, 3, 2)));
         __m128 sum_0 = _mm_add_ss(sub_0, _mm_shuffle_ps(sub_0, sub_0, _MM_SHUFFLE(0, 3, 2, 1)));
-        return *reinterpret_cast<float*>(&sum_0);
+        return _mm_cvtss_f32(sum_0);
     }
 };
 
@@ -847,7 +847,7 @@ struct ktm::detail::mat_common_implement::determinant<3, int>
 
         __m128i sum_0 = _mm_add_epi32(mul_0, _mm_shuffle_epi32(mul_0, _MM_SHUFFLE(0, 3, 2, 1)));
         __m128i sum_1 = _mm_add_epi32(sum_0, _mm_shuffle_epi32(mul_0, _MM_SHUFFLE(1, 0, 3, 2)));
-        return *reinterpret_cast<int*>(&sum_1); 
+        return _mm_cvtsi128_si32(sum_1); 
     }
 };
 
@@ -890,7 +890,7 @@ struct ktm::detail::mat_common_implement::determinant<4, int>
         mul_3 = _mm_shuffle_epi32(mul_3, _MM_SHUFFLE(3, 1, 2, 0));
         __m128i sub_0 = _mm_sub_epi32(mul_3, _mm_shuffle_epi32(mul_3, _MM_SHUFFLE(1, 0, 3, 2)));
         __m128i sum_0 = _mm_add_epi32(sub_0, _mm_shuffle_epi32(sub_0, _MM_SHUFFLE(0, 3, 2, 1)));
-        return *reinterpret_cast<int*>(&sum_0);
+        return _mm_cvtsi128_si32(sum_0);
     }
 };
 

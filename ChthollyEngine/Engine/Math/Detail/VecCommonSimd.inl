@@ -666,7 +666,7 @@ struct ktm::detail::vec_common_implement::reduce_add<3, float>
         __m128 tmp = _mm_load_ps(&x[0]);
         __m128 sum_0 = _mm_add_ss(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(0, 3, 2, 1)));
         __m128 sum_1 = _mm_add_ss(sum_0, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-        return *reinterpret_cast<float*>(&sum_1); 
+        return _mm_cvtss_f32(sum_1); 
     }
 };
 
@@ -679,7 +679,7 @@ struct ktm::detail::vec_common_implement::reduce_add<4, float>
         __m128 tmp = _mm_load_ps(&x[0]);
         __m128 sum_0 = _mm_add_ps(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
         __m128 sum_1 = _mm_add_ss(sum_0, _mm_shuffle_ps(sum_0, sum_0, _MM_SHUFFLE(0, 3, 2, 1)));
-        return *reinterpret_cast<float*>(&sum_1); 
+        return _mm_cvtss_f32(sum_1); 
     }
 };
 
@@ -692,7 +692,7 @@ struct ktm::detail::vec_common_implement::reduce_min<3, float>
         __m128 tmp = _mm_load_ps(&x[0]);
         __m128 min_0 = _mm_min_ss(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(0, 3, 2, 1)));
         __m128 min_1 = _mm_min_ss(min_0, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-        return *reinterpret_cast<float*>(&min_1); 
+        return _mm_cvtss_f32(min_1); 
     }
 };
 
@@ -705,7 +705,7 @@ struct ktm::detail::vec_common_implement::reduce_min<4, float>
         __m128 tmp = _mm_load_ps(&x[0]);
         __m128 min_0 = _mm_min_ps(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
         __m128 min_1 = _mm_min_ss(min_0, _mm_shuffle_ps(min_0, min_0, _MM_SHUFFLE(0, 3, 2, 1)));
-        return *reinterpret_cast<float*>(&min_1); 
+        return _mm_cvtss_f32(min_1); 
     }
 };
 
@@ -718,7 +718,7 @@ struct ktm::detail::vec_common_implement::reduce_max<3, float>
         __m128 tmp = _mm_load_ps(&x[0]);
         __m128 max_0 = _mm_max_ss(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(0, 3, 2, 1)));
         __m128 max_1 = _mm_max_ss(max_0, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-        return *reinterpret_cast<float*>(&max_1); 
+        return _mm_cvtss_f32(max_1); 
     }
 };
 
@@ -731,7 +731,7 @@ struct ktm::detail::vec_common_implement::reduce_max<4, float>
         __m128 tmp = _mm_load_ps(&x[0]);
         __m128 max_0 = _mm_max_ps(tmp, _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(1, 0, 3, 2)));
         __m128 max_1 = _mm_max_ss(max_0, _mm_shuffle_ps(max_0, max_0, _MM_SHUFFLE(0, 3, 2, 1)));
-        return *reinterpret_cast<float*>(&max_1); 
+        return _mm_cvtss_f32(max_1); 
     }
 };
 
@@ -901,7 +901,7 @@ struct ktm::detail::vec_common_implement::reduce_add<3, int>
         __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
         __m128i sum_0 = _mm_add_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(0, 3, 2, 1)));
         __m128i sum_1 = _mm_add_epi32(sum_0, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-        return *reinterpret_cast<int*>(&sum_1); 
+        return _mm_cvtsi128_si32(sum_1); 
     }
 };
 
@@ -914,7 +914,7 @@ struct ktm::detail::vec_common_implement::reduce_add<4, int>
         __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
         __m128i sum_0 = _mm_add_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
         __m128i sum_1 = _mm_add_epi32(sum_0, _mm_shuffle_epi32(sum_0, _MM_SHUFFLE(0, 3, 2, 1)));
-        return *reinterpret_cast<int*>(&sum_1); 
+        return _mm_cvtsi128_si32(sum_1); 
     }
 };
 
@@ -943,7 +943,7 @@ struct ktm::detail::vec_common_implement::reduce_min<3, int>
         __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
         __m128i min_0 = _mm_min_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(0, 3, 2, 1)));
         __m128i min_1 = _mm_min_epi32(min_0, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-        return *reinterpret_cast<int*>(&min_1); 
+        return _mm_cvtsi128_si32(min_1); 
     }
 };
 
@@ -956,7 +956,7 @@ struct ktm::detail::vec_common_implement::reduce_min<4, int>
         __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
         __m128i min_0 = _mm_min_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
         __m128i min_1 = _mm_min_epi32(min_0, _mm_shuffle_epi32(min_0, _MM_SHUFFLE(0, 3, 2, 1)));
-        return *reinterpret_cast<int*>(&min_1); 
+        return _mm_cvtsi128_si32(min_1); 
     }
 };
 
@@ -969,7 +969,7 @@ struct ktm::detail::vec_common_implement::reduce_max<3, int>
         __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
         __m128i max_0 = _mm_max_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(0, 3, 2, 1)));
         __m128i max_1 = _mm_max_epi32(max_0, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
-        return *reinterpret_cast<int*>(&max_1); 
+        return _mm_cvtsi128_si32(max_1); 
     }
 };
 
@@ -982,7 +982,7 @@ struct ktm::detail::vec_common_implement::reduce_max<4, int>
         __m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
         __m128i max_0 = _mm_max_epi32(tmp, _mm_shuffle_epi32(tmp, _MM_SHUFFLE(1, 0, 3, 2)));
         __m128i max_1 = _mm_max_epi32(max_0, _mm_shuffle_epi32(max_0, _MM_SHUFFLE(0, 3, 2, 1)));
-        return *reinterpret_cast<int*>(&max_1); 
+        return _mm_cvtsi128_si32(max_1); 
     }
 };
 
