@@ -1,5 +1,5 @@
-#ifndef _SETUP_SIMD_H_
-#define _SETUP_SIMD_H_
+#ifndef _SETUP_ACSI_H_
+#define _SETUP_ACSI_H_
 
 #include "Basic/SetupBasic.h"
 

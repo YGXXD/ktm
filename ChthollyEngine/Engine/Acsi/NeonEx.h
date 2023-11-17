@@ -1,7 +1,7 @@
 #ifndef _NEON_EX_H_
 #define _NEON_EX_H_
 
-#include "SetupSimd.h"
+#include "SetupAcsi.h"
 
 #if defined(CHTHOLLY_SIMD_NEON)
 
