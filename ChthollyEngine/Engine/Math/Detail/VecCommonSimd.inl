@@ -14,7 +14,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, 2, float>
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
         float32x2_t ret = vld1_f32(&x[0]);
-        ret = _neon_shuffle_f32(ret, ret, 0, L);
+        ret = vshuffle_f32(ret, ret, 0, L);
         return *reinterpret_cast<V*>(&ret);
     }
 };
@@ -29,7 +29,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, 3, float>
         constexpr size_t i1 = 1 + L < 3 ? 1 + L : L - 2;
         constexpr size_t i2 = 2 + L < 3 ? 2 + L : L - 1; 
         float32x4_t ret = vld1q_f32(&x[0]);
-        ret = _neon_shuffleq_f32(ret, ret, 3, i2, i1, L);
+        ret = vshuffleq_f32(ret, ret, 3, i2, i1, L);
         return *reinterpret_cast<V*>(&ret);
     }
 };
@@ -45,7 +45,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, 4, float>
         constexpr size_t i2 = 2 + L < 4 ? 2 + L : L - 2; 
         constexpr size_t i3 = 3 + L < 4 ? 3 + L : L - 1;  
         float32x4_t ret = vld1q_f32(&x[0]);
-        ret = _neon_shuffleq_f32(ret, ret, i3, i2, i1, L);
+        ret = vshuffleq_f32(ret, ret, i3, i2, i1, L);
         return *reinterpret_cast<V*>(&ret);
     }
 };
@@ -58,7 +58,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, 2, int>
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
         int32x2_t ret = vld1_s32(&x[0]);
-        ret = _neon_shuffle_s32(ret, ret, 0, L);
+        ret = vshuffle_s32(ret, ret, 0, L);
         return *reinterpret_cast<V*>(&ret);
     }
 };
@@ -73,7 +73,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, 3, int>
         constexpr size_t i1 = 1 + L < 3 ? 1 + L : L - 2;
         constexpr size_t i2 = 2 + L < 3 ? 2 + L : L - 1; 
         int32x4_t ret = vld1q_s32(&x[0]);
-        ret = _neon_shuffleq_s32(ret, ret, 3, i2, i1, L);
+        ret = vshuffleq_s32(ret, ret, 3, i2, i1, L);
         return *reinterpret_cast<V*>(&ret);
     }
 };
@@ -89,7 +89,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, 4, int>
         constexpr size_t i2 = 2 + L < 4 ? 2 + L : L - 2; 
         constexpr size_t i3 = 3 + L < 4 ? 3 + L : L - 1;  
         int32x4_t ret = vld1q_s32(&x[0]);
-        ret = _neon_shuffleq_s32(ret, ret, i3, i2, i1, L);
+        ret = vshuffleq_s32(ret, ret, i3, i2, i1, L);
         return *reinterpret_cast<V*>(&ret);
     }
 };
