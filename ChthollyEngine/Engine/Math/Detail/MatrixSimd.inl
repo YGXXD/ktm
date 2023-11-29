@@ -463,7 +463,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
-        __m128 ret = _mm_add_ps_all(core(m[Ns], v[Ns])...);
+        __m128 ret = acsi_mm_add_ps_all(core(m[Ns], v[Ns])...);
         return *reinterpret_cast<ColV*>(&ret); 
     }
 
@@ -646,7 +646,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
-        __m128i ret = _mm_add_epi32_all(core(m[Ns], v[Ns])...);
+        __m128i ret = asci_mm_add_epi32_all(core(m[Ns], v[Ns])...);
         return *reinterpret_cast<ColV*>(&ret); 
     }
 

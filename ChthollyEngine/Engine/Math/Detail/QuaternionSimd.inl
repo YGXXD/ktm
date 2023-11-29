@@ -69,21 +69,21 @@ struct ktm::detail::quat_opt_implement::mul<float>
     static CHTHOLLY_INLINE Q call(const Q& x, const Q& y) noexcept
     {
         __m128 t_y = _mm_load_ps(&y[0]);
-        __m128 t_y_opp = _mm_neg_ps(t_y);
+        __m128 t_y_opp = acsi_mm_neg_ps(t_y);
 
-        __m128 tmp_0 = _mm_shuffle_ps(t_y, t_y_opp, 3, 2, 3, 2);
-        __m128 tmp_1 = _mm_shuffle_ps(t_y, t_y_opp, 1, 1, 0, 0); 
+        __m128 tmp_0 = _mm_shuffle_ps(t_y, t_y_opp, _MM_SHUFFLE(2, 2, 3, 2));
+        __m128 tmp_1 = _mm_shuffle_ps(t_y, t_y_opp, _MM_SHUFFLE(1, 1, 0, 0)); 
 
-        __m128 mul_x = _mm_shuffle_ps(tmp_1, tmp_0, 0, 3, 0, 2); 
-        __m128 mul_y = _mm_shuffle_ps(tmp_0, tmp_1, 2, 0, 1, 2); 
-        __m128 mul_z = _mm_shuffle_ps(t_y_opp, t_y, 0, 1, 2, 3);
+        __m128 mul_x = _mm_shuffle_ps(tmp_1, tmp_0, _MM_SHUFFLE(0, 3, 0, 2)); 
+        __m128 mul_y = _mm_shuffle_ps(tmp_0, tmp_1, _MM_SHUFFLE(2, 0, 1, 2)); 
+        __m128 mul_z = _mm_shuffle_ps(t_y_opp, t_y, _MM_SHUFFLE(0, 1, 2, 3));
 
         __m128 add_0 = _mm_mul_ps(_mm_set1_ps(x[0]), t_y); 
         __m128 add_1 = _mm_mul_ps(_mm_set1_ps(x[1]), mul_x); 
         __m128 add_2 = _mm_mul_ps(_mm_set1_ps(x[2]), mul_y); 
         __m128 add_3 = _mm_mul_ps(_mm_set1_ps(x[3]), mul_z); 
 
-        __m128 ret = _mm_add_ps_all(add_0, add_1, add_2, add_3);
+        __m128 ret = acsi_mm_add_ps_all(add_0, add_1, add_2, add_3);
 
         return *reinterpret_cast<Q*>(&ret);
     }
@@ -96,21 +96,21 @@ struct ktm::detail::quat_opt_implement::mul_to_self<float>
     static CHTHOLLY_INLINE void call(Q& x, const Q& y) noexcept
     {
         __m128 t_y = _mm_load_ps(&y[0]);
-        __m128 t_y_opp = _mm_neg_ps(t_y);
+        __m128 t_y_opp = acsi_mm_neg_ps(t_y);
 
-        __m128 tmp_0 = _mm_shuffle_ps(t_y, t_y_opp, 3, 2, 3, 2);
-        __m128 tmp_1 = _mm_shuffle_ps(t_y, t_y_opp, 1, 1, 0, 0); 
+        __m128 tmp_0 = _mm_shuffle_ps(t_y, t_y_opp, _MM_SHUFFLE(3, 2, 3, 2));
+        __m128 tmp_1 = _mm_shuffle_ps(t_y, t_y_opp, _MM_SHUFFLE(1, 1, 0, 0)); 
 
-        __m128 mul_x = _mm_shuffle_ps(tmp_1, tmp_0, 0, 3, 0, 2); 
-        __m128 mul_y = _mm_shuffle_ps(tmp_0, tmp_1, 2, 0, 1, 2); 
-        __m128 mul_z = _mm_shuffle_ps(t_y_opp, t_y, 0, 1, 2, 3);
+        __m128 mul_x = _mm_shuffle_ps(tmp_1, tmp_0, _MM_SHUFFLE(0, 3, 0, 2)); 
+        __m128 mul_y = _mm_shuffle_ps(tmp_0, tmp_1, _MM_SHUFFLE(2, 0, 1, 2)); 
+        __m128 mul_z = _mm_shuffle_ps(t_y_opp, t_y, _MM_SHUFFLE(0, 1, 2, 3));
 
         __m128 add_0 = _mm_mul_ps(_mm_set1_ps(x[0]), t_y); 
         __m128 add_1 = _mm_mul_ps(_mm_set1_ps(x[1]), mul_x); 
         __m128 add_2 = _mm_mul_ps(_mm_set1_ps(x[2]), mul_y); 
         __m128 add_3 = _mm_mul_ps(_mm_set1_ps(x[3]), mul_z); 
 
-        __m128 ret = _mm_add_ps_all(add_0, add_1, add_2, add_3);
+        __m128 ret = acsi_mm_add_ps_all(add_0, add_1, add_2, add_3);
 
         _mm_store_ps(&x[0], ret);
     }

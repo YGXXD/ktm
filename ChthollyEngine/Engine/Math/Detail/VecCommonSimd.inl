@@ -741,7 +741,7 @@ struct ktm::detail::vec_common_implement::abs<N, std::enable_if_t<N == 3 || N ==
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
-        __m128 ret = _mm_abs_ps(_mm_load_ps(&x[0]));
+        __m128 ret = acsi_mm_abs_ps(_mm_load_ps(&x[0]));
         return *reinterpret_cast<V*>(&ret);
     }
 };
@@ -774,7 +774,7 @@ struct ktm::detail::vec_common_implement::clamp<N, std::enable_if_t<N == 3 || N 
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
-        __m128 ret = _mm_clamp_ps(_mm_load_ps(&v[0]), _mm_load_ps(&min[0]), _mm_load_ps(&max[0]));
+        __m128 ret = acsi_mm_clamp_ps(_mm_load_ps(&v[0]), _mm_load_ps(&min[0]), _mm_load_ps(&max[0]));
         return *reinterpret_cast<V*>(&ret); 
     }
 };
@@ -840,7 +840,7 @@ struct ktm::detail::vec_common_implement::smoothstep<N, std::enable_if_t<N == 3 
         __m128 t_edge1 = _mm_load_ps(&edge1[0]);
         __m128 t_x = _mm_load_ps(&x[0]);
         __m128 tmp = _mm_div_ps(_mm_sub_ps(t_x, t_edge0), _mm_sub_ps(t_edge1, t_edge0));
-        tmp = _mm_clamp_ps(tmp, _mm_set1_ps(zero<float>), _mm_set1_ps(one<float>));
+        tmp = acsi_mm_clamp_ps(tmp, _mm_set1_ps(zero<float>), _mm_set1_ps(one<float>));
         __m128 ret = _mm_mul_ps(_mm_mul_ps(tmp, tmp), _mm_sub_ps(_mm_set1_ps(3.f), _mm_mul_ps(_mm_set1_ps(2.f), tmp)));
         return *reinterpret_cast<V*>(&ret);
     }
@@ -853,7 +853,7 @@ struct ktm::detail::vec_common_implement::fract<N, std::enable_if_t<N == 3 || N 
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
         __m128 t_x = _mm_load_ps(&x[0]);
-        __m128 t_floor = _mm_floor_ps(t_x);
+        __m128 t_floor = acsi_mm_floor_ps(t_x);
         __m128 ret = _mm_min_ps(_mm_sub_ps(t_x, t_floor), _mm_set1_ps(one<float>));
         return *reinterpret_cast<V*>(&ret);
     }
@@ -925,7 +925,7 @@ struct ktm::detail::vec_common_implement::abs<N, std::enable_if_t<N == 3 || N ==
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
         __m128i t_x = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
-        __m128i ret = _mm_abs_epi32(t_x);
+        __m128i ret = acsi_mm_abs_epi32(t_x);
         return *reinterpret_cast<V*>(&ret);
     }
 };
@@ -1021,7 +1021,7 @@ struct ktm::detail::vec_common_implement::clamp<N, std::enable_if_t<N == 3 || N 
         __m128i t_v = _mm_load_si128(reinterpret_cast<const __m128i*>(&v[0]));
         __m128i t_min = _mm_load_si128(reinterpret_cast<const __m128i*>(&min[0]));
         __m128i t_max = _mm_load_si128(reinterpret_cast<const __m128i*>(&max[0]));
-        __m128i ret = _mm_clamp_epi32(t_v, t_min, t_max);
+        __m128i ret = acsi_mm_clamp_epi32(t_v, t_min, t_max);
         return *reinterpret_cast<V*>(&ret); 
     }
 };
