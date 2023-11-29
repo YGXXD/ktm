@@ -14,7 +14,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, 2, float>
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
         float32x2_t ret = vld1_f32(&x[0]);
-        ret = vshuffle_f32(ret, ret, 0, L);
+        ret = acsi_vshuffle_f32(ret, ret, 0, L);
         return *reinterpret_cast<V*>(&ret);
     }
 };
@@ -29,7 +29,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, 3, float>
         constexpr size_t i1 = 1 + L < 3 ? 1 + L : L - 2;
         constexpr size_t i2 = 2 + L < 3 ? 2 + L : L - 1; 
         float32x4_t ret = vld1q_f32(&x[0]);
-        ret = vshuffleq_f32(ret, ret, 3, i2, i1, L);
+        ret = acsi_vshuffleq_f32(ret, ret, 3, i2, i1, L);
         return *reinterpret_cast<V*>(&ret);
     }
 };
@@ -45,7 +45,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, 4, float>
         constexpr size_t i2 = 2 + L < 4 ? 2 + L : L - 2; 
         constexpr size_t i3 = 3 + L < 4 ? 3 + L : L - 1;  
         float32x4_t ret = vld1q_f32(&x[0]);
-        ret = vshuffleq_f32(ret, ret, i3, i2, i1, L);
+        ret = acsi_vshuffleq_f32(ret, ret, i3, i2, i1, L);
         return *reinterpret_cast<V*>(&ret);
     }
 };
@@ -58,7 +58,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, 2, int>
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
         int32x2_t ret = vld1_s32(&x[0]);
-        ret = vshuffle_s32(ret, ret, 0, L);
+        ret = acsi_vshuffle_s32(ret, ret, 0, L);
         return *reinterpret_cast<V*>(&ret);
     }
 };
@@ -73,7 +73,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, 3, int>
         constexpr size_t i1 = 1 + L < 3 ? 1 + L : L - 2;
         constexpr size_t i2 = 2 + L < 3 ? 2 + L : L - 1; 
         int32x4_t ret = vld1q_s32(&x[0]);
-        ret = vshuffleq_s32(ret, ret, 3, i2, i1, L);
+        ret = acsi_vshuffleq_s32(ret, ret, 3, i2, i1, L);
         return *reinterpret_cast<V*>(&ret);
     }
 };
@@ -89,7 +89,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, 4, int>
         constexpr size_t i2 = 2 + L < 4 ? 2 + L : L - 2; 
         constexpr size_t i3 = 3 + L < 4 ? 3 + L : L - 1;  
         int32x4_t ret = vld1q_s32(&x[0]);
-        ret = vshuffleq_s32(ret, ret, i3, i2, i1, L);
+        ret = acsi_vshuffleq_s32(ret, ret, i3, i2, i1, L);
         return *reinterpret_cast<V*>(&ret);
     }
 };
@@ -422,7 +422,7 @@ struct ktm::detail::vec_common_implement::clamp<2, float>
     using V = vec<2, float>;
     static CHTHOLLY_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
-        float32x2_t ret = vclamp_f32(vld1_f32(&v[0]), vld1_f32(&min[0]), vld1_f32(&max[0]));
+        float32x2_t ret = acsi_vclamp_f32(vld1_f32(&v[0]), vld1_f32(&min[0]), vld1_f32(&max[0]));
         return *reinterpret_cast<V*>(&ret); 
     }
 };
@@ -433,7 +433,7 @@ struct ktm::detail::vec_common_implement::clamp<N, std::enable_if_t<N == 3 || N 
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
-        float32x4_t ret = vclampq_f32(vld1q_f32(&v[0]), vld1q_f32(&min[0]), vld1q_f32(&max[0]));
+        float32x4_t ret = acsi_vclampq_f32(vld1q_f32(&v[0]), vld1q_f32(&min[0]), vld1q_f32(&max[0]));
         return *reinterpret_cast<V*>(&ret); 
     }
 };
@@ -444,7 +444,7 @@ struct ktm::detail::vec_common_implement::clamp<2, int>
     using V = vec<2, int>;
     static CHTHOLLY_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
-        int32x2_t ret = vclamp_s32(vld1_s32(&v[0]), vld1_s32(&min[0]), vld1_s32(&max[0]));
+        int32x2_t ret = acsi_vclamp_s32(vld1_s32(&v[0]), vld1_s32(&min[0]), vld1_s32(&max[0]));
         return *reinterpret_cast<V*>(&ret); 
     }
 };
@@ -455,7 +455,7 @@ struct ktm::detail::vec_common_implement::clamp<N, std::enable_if_t<N == 3 || N 
     using V = vec<N, int>;
     static CHTHOLLY_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
-        int32x4_t ret = vclampq_s32(vld1q_s32(&v[0]), vld1q_s32(&min[0]), vld1q_s32(&max[0]));
+        int32x4_t ret = acsi_vclampq_s32(vld1q_s32(&v[0]), vld1q_s32(&min[0]), vld1q_s32(&max[0]));
         return *reinterpret_cast<V*>(&ret);
     }
 };
@@ -592,7 +592,7 @@ struct ktm::detail::vec_common_implement::smoothstep<N, std::enable_if_t<N == 3 
         float32x4_t t_edge1 = vld1q_f32(&edge1[0]); 
         float32x4_t t_x = vld1q_f32(&x[0]);
         float32x4_t tmp = vdivq_f32(vsubq_f32(t_x, t_edge0), vsubq_f32(t_edge1, t_edge0));
-        tmp = vclampq_f32(tmp, vdupq_n_f32(zero<float>), vdupq_n_f32(one<float>));
+        tmp = acsi_vclampq_f32(tmp, vdupq_n_f32(zero<float>), vdupq_n_f32(one<float>));
         float32x4_t ret = vmulq_f32(vmulq_f32(tmp, tmp), vsubq_f32(vdupq_n_f32(3.f), vmulq_f32(vdupq_n_f32(2.f), tmp)));
         return *reinterpret_cast<V*>(&ret);
     }

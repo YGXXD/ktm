@@ -20,7 +20,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
-        float32x2_t ret = vadd_f32_all(core(m[Ns], v[Ns])...);
+        float32x2_t ret = acsi_vadd_f32_all(core(m[Ns], v[Ns])...);
         return *reinterpret_cast<ColV*>(&ret); 
     }
 
@@ -44,7 +44,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
-        float32x4_t ret = vaddq_f32_all(core(m[Ns], v[Ns])...);
+        float32x4_t ret = acsi_vaddq_f32_all(core(m[Ns], v[Ns])...);
         return *reinterpret_cast<ColV*>(&ret); 
     }
 
@@ -240,7 +240,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
-        int32x2_t ret = vadd_s32_all(core(m[Ns], v[Ns])...);
+        int32x2_t ret = acsi_vadd_s32_all(core(m[Ns], v[Ns])...);
         return *reinterpret_cast<ColV*>(&ret); 
     }
 
@@ -264,7 +264,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
-        int32x4_t ret = vaddq_s32_all(core(m[Ns], v[Ns])...);
+        int32x4_t ret = acsi_vaddq_s32_all(core(m[Ns], v[Ns])...);
         return *reinterpret_cast<ColV*>(&ret); 
     }
 

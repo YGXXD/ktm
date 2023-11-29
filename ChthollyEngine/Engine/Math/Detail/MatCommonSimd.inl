@@ -17,12 +17,12 @@ struct ktm::detail::mat_common_implement::transpose<3, 3, float>
         float32x4_t c_1 = vld1q_f32(&m[1][0]);
         float32x4_t c_2 = vld1q_f32(&m[2][0]);
 
-        float32x4_t tmp_0 = vshuffleq_f32(c_0, c_1, 1, 0, 1, 0);
-        float32x4_t tmp_1 = vshuffleq_f32(c_0, c_1, 3, 2, 3, 2);
+        float32x4_t tmp_0 = acsi_vshuffleq_f32(c_0, c_1, 1, 0, 1, 0);
+        float32x4_t tmp_1 = acsi_vshuffleq_f32(c_0, c_1, 3, 2, 3, 2);
 
-        float32x4_t ret_0 = vshuffleq_f32(tmp_0, c_2, 3, 0, 2, 0);
-        float32x4_t ret_1 = vshuffleq_f32(tmp_0, c_2, 3, 1, 3, 1);
-        float32x4_t ret_2 = vshuffleq_f32(tmp_1, c_2, 3, 2, 2, 0);
+        float32x4_t ret_0 = acsi_vshuffleq_f32(tmp_0, c_2, 3, 0, 2, 0);
+        float32x4_t ret_1 = acsi_vshuffleq_f32(tmp_0, c_2, 3, 1, 3, 1);
+        float32x4_t ret_2 = acsi_vshuffleq_f32(tmp_1, c_2, 3, 2, 2, 0);
 
         RetM ret;
         vst1q_f32(&ret[0][0], ret_0);
@@ -44,15 +44,15 @@ struct ktm::detail::mat_common_implement::transpose<4, 4, float>
         float32x4_t c_2 = vld1q_f32(&m[2][0]);
         float32x4_t c_3 = vld1q_f32(&m[3][0]);
 
-        float32x4_t tmp_0 = vshuffleq_f32(c_0, c_1, 1, 0, 1, 0);
-        float32x4_t tmp_2 = vshuffleq_f32(c_0, c_1, 3, 2, 3, 2);
-        float32x4_t tmp_1 = vshuffleq_f32(c_2, c_3, 1, 0, 1, 0);
-        float32x4_t tmp_3 = vshuffleq_f32(c_2, c_3, 3, 2, 3, 2);
+        float32x4_t tmp_0 = acsi_vshuffleq_f32(c_0, c_1, 1, 0, 1, 0);
+        float32x4_t tmp_2 = acsi_vshuffleq_f32(c_0, c_1, 3, 2, 3, 2);
+        float32x4_t tmp_1 = acsi_vshuffleq_f32(c_2, c_3, 1, 0, 1, 0);
+        float32x4_t tmp_3 = acsi_vshuffleq_f32(c_2, c_3, 3, 2, 3, 2);
 
-        float32x4_t ret_0 = vshuffleq_f32(tmp_0, tmp_1, 2, 0, 2, 0);
-        float32x4_t ret_1 = vshuffleq_f32(tmp_0, tmp_1, 3, 1, 3, 1);
-        float32x4_t ret_2 = vshuffleq_f32(tmp_2, tmp_3, 2, 0, 2, 0);
-        float32x4_t ret_3 = vshuffleq_f32(tmp_2, tmp_3, 3, 1, 3, 1);
+        float32x4_t ret_0 = acsi_vshuffleq_f32(tmp_0, tmp_1, 2, 0, 2, 0);
+        float32x4_t ret_1 = acsi_vshuffleq_f32(tmp_0, tmp_1, 3, 1, 3, 1);
+        float32x4_t ret_2 = acsi_vshuffleq_f32(tmp_2, tmp_3, 2, 0, 2, 0);
+        float32x4_t ret_3 = acsi_vshuffleq_f32(tmp_2, tmp_3, 3, 1, 3, 1);
 
         RetM ret;
         vst1q_f32(&ret[0][0], ret_0);
@@ -74,12 +74,12 @@ struct ktm::detail::mat_common_implement::transpose<3, 3, int>
         int32x4_t c_1 = vld1q_s32(&m[1][0]);
         int32x4_t c_2 = vld1q_s32(&m[2][0]);
 
-        int32x4_t tmp_0 = vshuffleq_s32(c_0, c_1, 1, 0, 1, 0);
-        int32x4_t tmp_1 = vshuffleq_s32(c_0, c_1, 3, 2, 3, 2);
+        int32x4_t tmp_0 = acsi_vshuffleq_s32(c_0, c_1, 1, 0, 1, 0);
+        int32x4_t tmp_1 = acsi_vshuffleq_s32(c_0, c_1, 3, 2, 3, 2);
 
-        int32x4_t ret_0 = vshuffleq_s32(tmp_0, c_2, 3, 0, 2, 0);
-        int32x4_t ret_1 = vshuffleq_s32(tmp_0, c_2, 3, 1, 3, 1);
-        int32x4_t ret_2 = vshuffleq_s32(tmp_1, c_2, 3, 2, 2, 0);
+        int32x4_t ret_0 = acsi_vshuffleq_s32(tmp_0, c_2, 3, 0, 2, 0);
+        int32x4_t ret_1 = acsi_vshuffleq_s32(tmp_0, c_2, 3, 1, 3, 1);
+        int32x4_t ret_2 = acsi_vshuffleq_s32(tmp_1, c_2, 3, 2, 2, 0);
 
         RetM ret;
         vst1q_s32(&ret[0][0], ret_0);
@@ -101,15 +101,15 @@ struct ktm::detail::mat_common_implement::transpose<4, 4, int>
         int32x4_t c_2 = vld1q_s32(&m[2][0]);
         int32x4_t c_3 = vld1q_s32(&m[3][0]);
 
-        int32x4_t tmp_0 = vshuffleq_s32(c_0, c_1, 1, 0, 1, 0);
-        int32x4_t tmp_2 = vshuffleq_s32(c_0, c_1, 3, 2, 3, 2);
-        int32x4_t tmp_1 = vshuffleq_s32(c_2, c_3, 1, 0, 1, 0);
-        int32x4_t tmp_3 = vshuffleq_s32(c_2, c_3, 3, 2, 3, 2);
+        int32x4_t tmp_0 = acsi_vshuffleq_s32(c_0, c_1, 1, 0, 1, 0);
+        int32x4_t tmp_2 = acsi_vshuffleq_s32(c_0, c_1, 3, 2, 3, 2);
+        int32x4_t tmp_1 = acsi_vshuffleq_s32(c_2, c_3, 1, 0, 1, 0);
+        int32x4_t tmp_3 = acsi_vshuffleq_s32(c_2, c_3, 3, 2, 3, 2);
 
-        int32x4_t ret_0 = vshuffleq_s32(tmp_0, tmp_1, 2, 0, 2, 0);
-        int32x4_t ret_1 = vshuffleq_s32(tmp_0, tmp_1, 3, 1, 3, 1);
-        int32x4_t ret_2 = vshuffleq_s32(tmp_2, tmp_3, 2, 0, 2, 0);
-        int32x4_t ret_3 = vshuffleq_s32(tmp_2, tmp_3, 3, 1, 3, 1);
+        int32x4_t ret_0 = acsi_vshuffleq_s32(tmp_0, tmp_1, 2, 0, 2, 0);
+        int32x4_t ret_1 = acsi_vshuffleq_s32(tmp_0, tmp_1, 3, 1, 3, 1);
+        int32x4_t ret_2 = acsi_vshuffleq_s32(tmp_2, tmp_3, 2, 0, 2, 0);
+        int32x4_t ret_3 = acsi_vshuffleq_s32(tmp_2, tmp_3, 3, 1, 3, 1);
 
         RetM ret;
         vst1q_s32(&ret[0][0], ret_0);
@@ -129,8 +129,8 @@ struct ktm::detail::mat_common_implement::determinant<3, float>
         float32x4_t c_0 = vld1q_f32(&m[0][0]);
         float32x4_t c_1 = vld1q_f32(&m[1][0]);
         float32x4_t c_2 = vld1q_f32(&m[2][0]);
-        float32x4_t mul_00 = vmulq_f32(vshuffleq_f32(c_1, c_1, 3, 0, 2, 1), vshuffleq_f32(c_2, c_2, 3, 1, 0, 2));
-        float32x4_t mul_01 = vmulq_f32(vshuffleq_f32(c_1, c_1, 3, 1, 0, 2), vshuffleq_f32(c_2, c_2, 3, 0, 2, 1));
+        float32x4_t mul_00 = vmulq_f32(acsi_vshuffleq_f32(c_1, c_1, 3, 0, 2, 1), acsi_vshuffleq_f32(c_2, c_2, 3, 1, 0, 2));
+        float32x4_t mul_01 = vmulq_f32(acsi_vshuffleq_f32(c_1, c_1, 3, 1, 0, 2), acsi_vshuffleq_f32(c_2, c_2, 3, 0, 2, 1));
         float32x4_t sub_0 = vsubq_f32(mul_00, mul_01);  
         float32x4_t mul_0 = vmulq_f32(c_0, sub_0);
         return vaddvq_f32(vsetq_lane_f32(zero<float>, mul_0, 3));
@@ -150,30 +150,30 @@ struct ktm::detail::mat_common_implement::determinant<4, float>
 
         float32x4_t mul_0;
         {
-            float32x4_t mul_00 = vmulq_f32(vshuffleq_f32(c_2, c_2, 1, 0, 3, 2), vshuffleq_f32(c_3, c_3, 2, 1, 0, 3));
-            float32x4_t mul_01 = vmulq_f32(vshuffleq_f32(c_2, c_2, 2, 1, 0, 3), vshuffleq_f32(c_3, c_3, 1, 0, 3, 2));
+            float32x4_t mul_00 = vmulq_f32(acsi_vshuffleq_f32(c_2, c_2, 1, 0, 3, 2), acsi_vshuffleq_f32(c_3, c_3, 2, 1, 0, 3));
+            float32x4_t mul_01 = vmulq_f32(acsi_vshuffleq_f32(c_2, c_2, 2, 1, 0, 3), acsi_vshuffleq_f32(c_3, c_3, 1, 0, 3, 2));
             float32x4_t sub_0 = vsubq_f32(mul_00, mul_01);
-            mul_0 = vmulq_f32(vshuffleq_f32(c_1, c_1, 0, 3, 2, 1), sub_0);
+            mul_0 = vmulq_f32(acsi_vshuffleq_f32(c_1, c_1, 0, 3, 2, 1), sub_0);
         }
 
         float32x4_t mul_1;
         {
-            float32x4_t mul_00 = vmulq_f32(vshuffleq_f32(c_2, c_2, 2, 1, 0, 3), vshuffleq_f32(c_3, c_3, 0, 3, 2, 1));
-            float32x4_t mul_01 = vmulq_f32(vshuffleq_f32(c_2, c_2, 0, 3, 2, 1), vshuffleq_f32(c_3, c_3, 2, 1, 0, 3));
+            float32x4_t mul_00 = vmulq_f32(acsi_vshuffleq_f32(c_2, c_2, 2, 1, 0, 3), acsi_vshuffleq_f32(c_3, c_3, 0, 3, 2, 1));
+            float32x4_t mul_01 = vmulq_f32(acsi_vshuffleq_f32(c_2, c_2, 0, 3, 2, 1), acsi_vshuffleq_f32(c_3, c_3, 2, 1, 0, 3));
             float32x4_t sub_0 = vsubq_f32(mul_00, mul_01);
-            mul_1 = vmulq_f32(vshuffleq_f32(c_1, c_1, 1, 0, 3, 2), sub_0);
+            mul_1 = vmulq_f32(acsi_vshuffleq_f32(c_1, c_1, 1, 0, 3, 2), sub_0);
         }
 
         float32x4_t mul_2;
         {
-            float32x4_t mul_00 = vmulq_f32(vshuffleq_f32(c_2, c_2, 0, 3, 2, 1), vshuffleq_f32(c_3, c_3, 1, 0, 3, 2));
-            float32x4_t mul_01 = vmulq_f32(vshuffleq_f32(c_2, c_2, 1, 0, 3, 2), vshuffleq_f32(c_3, c_3, 0, 3, 2, 1));
+            float32x4_t mul_00 = vmulq_f32(acsi_vshuffleq_f32(c_2, c_2, 0, 3, 2, 1), acsi_vshuffleq_f32(c_3, c_3, 1, 0, 3, 2));
+            float32x4_t mul_01 = vmulq_f32(acsi_vshuffleq_f32(c_2, c_2, 1, 0, 3, 2), acsi_vshuffleq_f32(c_3, c_3, 0, 3, 2, 1));
             float32x4_t sub_0 = vsubq_f32(mul_00, mul_01);
-            mul_2 = vmulq_f32(vshuffleq_f32(c_1, c_1, 2, 1, 0, 3), sub_0);
+            mul_2 = vmulq_f32(acsi_vshuffleq_f32(c_1, c_1, 2, 1, 0, 3), sub_0);
         }
 
         float32x4_t mul_3 = vmulq_f32(c_0, vaddq_f32(vaddq_f32(mul_0, mul_1), mul_2)); 
-        mul_3 = vshuffleq_f32(mul_3, mul_3, 3, 1, 2, 0);
+        mul_3 = acsi_vshuffleq_f32(mul_3, mul_3, 3, 1, 2, 0);
         return vaddv_f32(vsub_f32(vget_low_f32(mul_3), vget_high_f32(mul_3)));
     }
 };
@@ -187,8 +187,8 @@ struct ktm::detail::mat_common_implement::determinant<3, int>
         int32x4_t c_0 = vld1q_s32(&m[0][0]);
         int32x4_t c_1 = vld1q_s32(&m[1][0]);
         int32x4_t c_2 = vld1q_s32(&m[2][0]);
-        int32x4_t mul_00 = vmulq_s32(vshuffleq_s32(c_1, c_1, 3, 0, 2, 1), vshuffleq_s32(c_2, c_2, 3, 1, 0, 2));
-        int32x4_t mul_01 = vmulq_s32(vshuffleq_s32(c_1, c_1, 3, 1, 0, 2), vshuffleq_s32(c_2, c_2, 3, 0, 2, 1));
+        int32x4_t mul_00 = vmulq_s32(acsi_vshuffleq_s32(c_1, c_1, 3, 0, 2, 1), acsi_vshuffleq_s32(c_2, c_2, 3, 1, 0, 2));
+        int32x4_t mul_01 = vmulq_s32(acsi_vshuffleq_s32(c_1, c_1, 3, 1, 0, 2), acsi_vshuffleq_s32(c_2, c_2, 3, 0, 2, 1));
         int32x4_t sub_0 = vsubq_s32(mul_00, mul_01);  
         int32x4_t mul_0 = vmulq_s32(c_0, sub_0);
         return vaddvq_s32(vsetq_lane_s32(zero<int>, mul_0, 3));
@@ -208,30 +208,30 @@ struct ktm::detail::mat_common_implement::determinant<4, int>
 
         int32x4_t mul_0;
         {
-            int32x4_t mul_00 = vmulq_s32(vshuffleq_s32(c_2, c_2, 1, 0, 3, 2), vshuffleq_s32(c_3, c_3, 2, 1, 0, 3));
-            int32x4_t mul_01 = vmulq_s32(vshuffleq_s32(c_2, c_2, 2, 1, 0, 3), vshuffleq_s32(c_3, c_3, 1, 0, 3, 2));
+            int32x4_t mul_00 = vmulq_s32(acsi_vshuffleq_s32(c_2, c_2, 1, 0, 3, 2), acsi_vshuffleq_s32(c_3, c_3, 2, 1, 0, 3));
+            int32x4_t mul_01 = vmulq_s32(acsi_vshuffleq_s32(c_2, c_2, 2, 1, 0, 3), acsi_vshuffleq_s32(c_3, c_3, 1, 0, 3, 2));
             int32x4_t sub_0 = vsubq_s32(mul_00, mul_01);
-            mul_0 = vmulq_s32(vshuffleq_s32(c_1, c_1, 0, 3, 2, 1), sub_0);
+            mul_0 = vmulq_s32(acsi_vshuffleq_s32(c_1, c_1, 0, 3, 2, 1), sub_0);
         }
 
         int32x4_t mul_1;
         {
-            int32x4_t mul_00 = vmulq_s32(vshuffleq_s32(c_2, c_2, 2, 1, 0, 3), vshuffleq_s32(c_3, c_3, 0, 3, 2, 1));
-            int32x4_t mul_01 = vmulq_s32(vshuffleq_s32(c_2, c_2, 0, 3, 2, 1), vshuffleq_s32(c_3, c_3, 2, 1, 0, 3));
+            int32x4_t mul_00 = vmulq_s32(acsi_vshuffleq_s32(c_2, c_2, 2, 1, 0, 3), acsi_vshuffleq_s32(c_3, c_3, 0, 3, 2, 1));
+            int32x4_t mul_01 = vmulq_s32(acsi_vshuffleq_s32(c_2, c_2, 0, 3, 2, 1), acsi_vshuffleq_s32(c_3, c_3, 2, 1, 0, 3));
             int32x4_t sub_0 = vsubq_s32(mul_00, mul_01);
-            mul_1 = vmulq_s32(vshuffleq_s32(c_1, c_1, 1, 0, 3, 2), sub_0);
+            mul_1 = vmulq_s32(acsi_vshuffleq_s32(c_1, c_1, 1, 0, 3, 2), sub_0);
         }
 
         int32x4_t mul_2;
         {
-            int32x4_t mul_00 = vmulq_s32(vshuffleq_s32(c_2, c_2, 0, 3, 2, 1), vshuffleq_s32(c_3, c_3, 1, 0, 3, 2));
-            int32x4_t mul_01 = vmulq_s32(vshuffleq_s32(c_2, c_2, 1, 0, 3, 2), vshuffleq_s32(c_3, c_3, 0, 3, 2, 1));
+            int32x4_t mul_00 = vmulq_s32(acsi_vshuffleq_s32(c_2, c_2, 0, 3, 2, 1), acsi_vshuffleq_s32(c_3, c_3, 1, 0, 3, 2));
+            int32x4_t mul_01 = vmulq_s32(acsi_vshuffleq_s32(c_2, c_2, 1, 0, 3, 2), acsi_vshuffleq_s32(c_3, c_3, 0, 3, 2, 1));
             int32x4_t sub_0 = vsubq_s32(mul_00, mul_01);
-            mul_2 = vmulq_s32(vshuffleq_s32(c_1, c_1, 2, 1, 0, 3), sub_0);
+            mul_2 = vmulq_s32(acsi_vshuffleq_s32(c_1, c_1, 2, 1, 0, 3), sub_0);
         }
 
         int32x4_t mul_3 = vmulq_s32(c_0, vaddq_s32(vaddq_s32(mul_0, mul_1), mul_2)); 
-        mul_3 = vshuffleq_s32(mul_3, mul_3, 3, 1, 2, 0);
+        mul_3 = acsi_vshuffleq_s32(mul_3, mul_3, 3, 1, 2, 0);
         return vaddv_s32(vsub_s32(vget_low_s32(mul_3), vget_high_s32(mul_3)));
     }
 };
@@ -249,13 +249,13 @@ struct ktm::detail::mat_common_implement::inverse<4, float>
 
         float32x4_t fac_0;
         {
-            float32x4_t swp_0a = vshuffleq_f32(c_3, c_2, 3, 3, 3, 3);
-            float32x4_t swp_0b = vshuffleq_f32(c_3, c_2, 2, 2, 2, 2);
+            float32x4_t swp_0a = acsi_vshuffleq_f32(c_3, c_2, 3, 3, 3, 3);
+            float32x4_t swp_0b = acsi_vshuffleq_f32(c_3, c_2, 2, 2, 2, 2);
 
-            float32x4_t swp_00 = vshuffleq_f32(c_2, c_1, 2, 2, 2, 2);
-            float32x4_t swp_01 = vshuffleq_f32(swp_0a, swp_0a, 2, 0, 0, 0);
-            float32x4_t swp_02 = vshuffleq_f32(swp_0b, swp_0b, 2, 0, 0, 0);
-            float32x4_t swp_03 = vshuffleq_f32(c_2, c_1, 3, 3, 3, 3);
+            float32x4_t swp_00 = acsi_vshuffleq_f32(c_2, c_1, 2, 2, 2, 2);
+            float32x4_t swp_01 = acsi_vshuffleq_f32(swp_0a, swp_0a, 2, 0, 0, 0);
+            float32x4_t swp_02 = acsi_vshuffleq_f32(swp_0b, swp_0b, 2, 0, 0, 0);
+            float32x4_t swp_03 = acsi_vshuffleq_f32(c_2, c_1, 3, 3, 3, 3);
 
             float32x4_t mul_00 = vmulq_f32(swp_00, swp_01);
             float32x4_t mul_01 = vmulq_f32(swp_02, swp_03);
@@ -264,13 +264,13 @@ struct ktm::detail::mat_common_implement::inverse<4, float>
 
         float32x4_t fac_1;
         {
-            float32x4_t swp_0a = vshuffleq_f32(c_3, c_2, 3, 3, 3, 3);
-            float32x4_t swp_0b = vshuffleq_f32(c_3, c_2, 1, 1, 1, 1);
+            float32x4_t swp_0a = acsi_vshuffleq_f32(c_3, c_2, 3, 3, 3, 3);
+            float32x4_t swp_0b = acsi_vshuffleq_f32(c_3, c_2, 1, 1, 1, 1);
 
-            float32x4_t swp_00 = vshuffleq_f32(c_2, c_1, 1, 1, 1, 1);
-            float32x4_t swp_01 = vshuffleq_f32(swp_0a, swp_0a, 2, 0, 0, 0);
-            float32x4_t swp_02 = vshuffleq_f32(swp_0b, swp_0b, 2, 0, 0, 0);
-            float32x4_t swp_03 = vshuffleq_f32(c_2, c_1, 3, 3, 3, 3);
+            float32x4_t swp_00 = acsi_vshuffleq_f32(c_2, c_1, 1, 1, 1, 1);
+            float32x4_t swp_01 = acsi_vshuffleq_f32(swp_0a, swp_0a, 2, 0, 0, 0);
+            float32x4_t swp_02 = acsi_vshuffleq_f32(swp_0b, swp_0b, 2, 0, 0, 0);
+            float32x4_t swp_03 = acsi_vshuffleq_f32(c_2, c_1, 3, 3, 3, 3);
 
             float32x4_t mul_00 = vmulq_f32(swp_00, swp_01);
             float32x4_t mul_01 = vmulq_f32(swp_02, swp_03);
@@ -279,13 +279,13 @@ struct ktm::detail::mat_common_implement::inverse<4, float>
 
         float32x4_t fac_2;
         {
-            float32x4_t swp_0a = vshuffleq_f32(c_3, c_2, 2, 2, 2, 2);
-            float32x4_t swp_0b = vshuffleq_f32(c_3, c_2, 1, 1, 1, 1);
+            float32x4_t swp_0a = acsi_vshuffleq_f32(c_3, c_2, 2, 2, 2, 2);
+            float32x4_t swp_0b = acsi_vshuffleq_f32(c_3, c_2, 1, 1, 1, 1);
 
-            float32x4_t swp_00 = vshuffleq_f32(c_2, c_1, 1, 1, 1, 1);
-            float32x4_t swp_01 = vshuffleq_f32(swp_0a, swp_0a, 2, 0, 0, 0);
-            float32x4_t swp_02 = vshuffleq_f32(swp_0b, swp_0b, 2, 0, 0, 0);
-            float32x4_t swp_03 = vshuffleq_f32(c_2, c_1, 2, 2, 2, 2);
+            float32x4_t swp_00 = acsi_vshuffleq_f32(c_2, c_1, 1, 1, 1, 1);
+            float32x4_t swp_01 = acsi_vshuffleq_f32(swp_0a, swp_0a, 2, 0, 0, 0);
+            float32x4_t swp_02 = acsi_vshuffleq_f32(swp_0b, swp_0b, 2, 0, 0, 0);
+            float32x4_t swp_03 = acsi_vshuffleq_f32(c_2, c_1, 2, 2, 2, 2);
 
             float32x4_t mul_00 = vmulq_f32(swp_00, swp_01);
             float32x4_t mul_01 = vmulq_f32(swp_02, swp_03);
@@ -294,13 +294,13 @@ struct ktm::detail::mat_common_implement::inverse<4, float>
 
         float32x4_t fac_3;
         {
-            float32x4_t swp_0a = vshuffleq_f32(c_3, c_2, 3, 3, 3, 3);
-            float32x4_t swp_0b = vshuffleq_f32(c_3, c_2, 0, 0, 0, 0);
+            float32x4_t swp_0a = acsi_vshuffleq_f32(c_3, c_2, 3, 3, 3, 3);
+            float32x4_t swp_0b = acsi_vshuffleq_f32(c_3, c_2, 0, 0, 0, 0);
 
-            float32x4_t swp_00 = vshuffleq_f32(c_2, c_1, 0, 0, 0, 0);
-            float32x4_t swp_01 = vshuffleq_f32(swp_0a, swp_0a, 2, 0, 0, 0);
-            float32x4_t swp_02 = vshuffleq_f32(swp_0b, swp_0b, 2, 0, 0, 0);
-            float32x4_t swp_03 = vshuffleq_f32(c_2, c_1, 3, 3, 3, 3);
+            float32x4_t swp_00 = acsi_vshuffleq_f32(c_2, c_1, 0, 0, 0, 0);
+            float32x4_t swp_01 = acsi_vshuffleq_f32(swp_0a, swp_0a, 2, 0, 0, 0);
+            float32x4_t swp_02 = acsi_vshuffleq_f32(swp_0b, swp_0b, 2, 0, 0, 0);
+            float32x4_t swp_03 = acsi_vshuffleq_f32(c_2, c_1, 3, 3, 3, 3);
 
             float32x4_t mul_00 = vmulq_f32(swp_00, swp_01);
             float32x4_t mul_01 = vmulq_f32(swp_02, swp_03);
@@ -309,13 +309,13 @@ struct ktm::detail::mat_common_implement::inverse<4, float>
 
         float32x4_t fac_4;
         {
-            float32x4_t swp_0a = vshuffleq_f32(c_3, c_2, 2, 2, 2, 2);
-            float32x4_t swp_0b = vshuffleq_f32(c_3, c_2, 0, 0, 0, 0);
+            float32x4_t swp_0a = acsi_vshuffleq_f32(c_3, c_2, 2, 2, 2, 2);
+            float32x4_t swp_0b = acsi_vshuffleq_f32(c_3, c_2, 0, 0, 0, 0);
 
-            float32x4_t swp_00 = vshuffleq_f32(c_2, c_1, 0, 0, 0, 0);
-            float32x4_t swp_01 = vshuffleq_f32(swp_0a, swp_0a, 2, 0, 0, 0);
-            float32x4_t swp_02 = vshuffleq_f32(swp_0b, swp_0b, 2, 0, 0, 0);
-            float32x4_t swp_03 = vshuffleq_f32(c_2, c_1, 2, 2, 2, 2);
+            float32x4_t swp_00 = acsi_vshuffleq_f32(c_2, c_1, 0, 0, 0, 0);
+            float32x4_t swp_01 = acsi_vshuffleq_f32(swp_0a, swp_0a, 2, 0, 0, 0);
+            float32x4_t swp_02 = acsi_vshuffleq_f32(swp_0b, swp_0b, 2, 0, 0, 0);
+            float32x4_t swp_03 = acsi_vshuffleq_f32(c_2, c_1, 2, 2, 2, 2);
 
             float32x4_t mul_00 = vmulq_f32(swp_00, swp_01);
             float32x4_t mul_01 = vmulq_f32(swp_02, swp_03);
@@ -324,13 +324,13 @@ struct ktm::detail::mat_common_implement::inverse<4, float>
 
         float32x4_t fac_5;
         {
-            float32x4_t swp_0a = vshuffleq_f32(c_3, c_2, 1, 1, 1, 1);
-            float32x4_t swp_0b = vshuffleq_f32(c_3, c_2, 0, 0, 0, 0);
+            float32x4_t swp_0a = acsi_vshuffleq_f32(c_3, c_2, 1, 1, 1, 1);
+            float32x4_t swp_0b = acsi_vshuffleq_f32(c_3, c_2, 0, 0, 0, 0);
 
-            float32x4_t swp_00 = vshuffleq_f32(c_2, c_1, 0, 0, 0, 0);
-            float32x4_t swp_01 = vshuffleq_f32(swp_0a, swp_0a, 2, 0, 0, 0);
-            float32x4_t swp_02 = vshuffleq_f32(swp_0b, swp_0b, 2, 0, 0, 0);
-            float32x4_t swp_03 = vshuffleq_f32(c_2, c_1, 1, 1, 1, 1);
+            float32x4_t swp_00 = acsi_vshuffleq_f32(c_2, c_1, 0, 0, 0, 0);
+            float32x4_t swp_01 = acsi_vshuffleq_f32(swp_0a, swp_0a, 2, 0, 0, 0);
+            float32x4_t swp_02 = acsi_vshuffleq_f32(swp_0b, swp_0b, 2, 0, 0, 0);
+            float32x4_t swp_03 = acsi_vshuffleq_f32(c_2, c_1, 1, 1, 1, 1);
 
             float32x4_t mul_00 = vmulq_f32(swp_00, swp_01);
             float32x4_t mul_01 = vmulq_f32(swp_02, swp_03);
@@ -341,20 +341,20 @@ struct ktm::detail::mat_common_implement::inverse<4, float>
         float32x4_t sign_b = vsetq_lane_f32(-one<float>, vsetq_lane_f32(-one<float>, vdupq_n_f32(one<float>), 1), 3);
 
         // v_0 = { m[1][0], m[0][0], m[0][0], m[0][0] }
-        float32x4_t tmp_0 = vshuffleq_f32(c_1, c_0, 0, 0, 0, 0);
-        float32x4_t v_0 = vshuffleq_f32(tmp_0, tmp_0, 2, 2, 2, 0);
+        float32x4_t tmp_0 = acsi_vshuffleq_f32(c_1, c_0, 0, 0, 0, 0);
+        float32x4_t v_0 = acsi_vshuffleq_f32(tmp_0, tmp_0, 2, 2, 2, 0);
 
         // v_0 = { m[1][1], m[0][1], m[0][1], m[0][1] }
-        float32x4_t tmp_1 = vshuffleq_f32(c_1, c_0, 1, 1, 1, 1);
-        float32x4_t v_1 = vshuffleq_f32(tmp_1, tmp_1, 2, 2, 2, 0);
+        float32x4_t tmp_1 = acsi_vshuffleq_f32(c_1, c_0, 1, 1, 1, 1);
+        float32x4_t v_1 = acsi_vshuffleq_f32(tmp_1, tmp_1, 2, 2, 2, 0);
 
         // v_0 = { m[1][2], m[0][2], m[0][2], m[0][2] }
-        float32x4_t tmp_2 = vshuffleq_f32(c_1, c_0, 2, 2, 2, 2);
-        float32x4_t v_2 = vshuffleq_f32(tmp_2, tmp_2, 2, 2, 2, 0);
+        float32x4_t tmp_2 = acsi_vshuffleq_f32(c_1, c_0, 2, 2, 2, 2);
+        float32x4_t v_2 = acsi_vshuffleq_f32(tmp_2, tmp_2, 2, 2, 2, 0);
 
         // v_0 = { m[1][3], m[0][3], m[0][3], m[0][3] }
-        float32x4_t tmp_3 = vshuffleq_f32(c_1, c_0, 3, 3, 3, 3);
-        float32x4_t v_3 = vshuffleq_f32(tmp_3, tmp_3, 2, 2, 2, 0);
+        float32x4_t tmp_3 = acsi_vshuffleq_f32(c_1, c_0, 3, 3, 3, 3);
+        float32x4_t v_3 = acsi_vshuffleq_f32(tmp_3, tmp_3, 2, 2, 2, 0);
 
         // inv_0
         // + (v_1[0] * fac_0[0] - v_2[0] * fac_1[0] + v_3[0] * fac_2[0])
@@ -421,9 +421,9 @@ struct ktm::detail::mat_common_implement::inverse<4, float>
         // + m[0][1] * Inverse[1][0]
         // + m[0][2] * Inverse[2][0]
         // + m[0][3] * Inverse[3][0];
-        float32x4_t i_tmp_0 = vshuffleq_f32(inv_0, inv_1, 0, 0, 0, 0);
-        float32x4_t i_tmp_1 = vshuffleq_f32(inv_2, inv_3, 0, 0, 0, 0);
-        float32x4_t i_row_0 = vshuffleq_f32(i_tmp_0, i_tmp_1, 3, 1, 3, 1);
+        float32x4_t i_tmp_0 = acsi_vshuffleq_f32(inv_0, inv_1, 0, 0, 0, 0);
+        float32x4_t i_tmp_1 = acsi_vshuffleq_f32(inv_2, inv_3, 0, 0, 0, 0);
+        float32x4_t i_row_0 = acsi_vshuffleq_f32(i_tmp_0, i_tmp_1, 3, 1, 3, 1);
         float32x4_t i_mul_0 = vmulq_f32(c_0, i_row_0);
         float32x4_t i_add_0 = vpaddq_f32(i_mul_0, i_mul_0);
         float32x4_t i_add_1 = vpaddq_f32(i_add_0, i_add_0);
