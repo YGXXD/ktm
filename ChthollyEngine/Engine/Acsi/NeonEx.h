@@ -21,118 +21,118 @@
 
 #endif
 
-CHTHOLLY_FUNC float32x2_t acsi_vclamp_f32(const float32x2_t& x, const float32x2_t& min, const float32x2_t& max) noexcept
+CHTHOLLY_FUNC float32x2_t acsi_vclamp_f32(float32x2_t x, float32x2_t min, float32x2_t max) noexcept
 {
 	return vmin_f32(vmax_f32(x, min), max);
 }
 
-CHTHOLLY_FUNC float32x4_t acsi_vclampq_f32(const float32x4_t& x, const float32x4_t& min, const float32x4_t& max) noexcept
+CHTHOLLY_FUNC float32x4_t acsi_vclampq_f32(float32x4_t x, float32x4_t min, float32x4_t max) noexcept
 {
 	return vminq_f32(vmaxq_f32(x, min), max);
 }
 
-CHTHOLLY_FUNC int32x2_t acsi_vclamp_s32(const int32x2_t& x, const int32x2_t& min, const int32x2_t& max) noexcept
+CHTHOLLY_FUNC int32x2_t acsi_vclamp_s32(int32x2_t x, int32x2_t min, int32x2_t max) noexcept
 {
 	return vmin_s32(vmax_s32(x, min), max);
 }
 
-CHTHOLLY_FUNC int32x4_t acsi_vclampq_s32(const int32x4_t& x, const int32x4_t& min, const int32x4_t& max) noexcept
+CHTHOLLY_FUNC int32x4_t acsi_vclampq_s32(int32x4_t x, int32x4_t min, int32x4_t max) noexcept
 {
 	return vminq_s32(vmaxq_s32(x, min), max);
 }
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_FUNC float32x2_t acsi_vadd_f32_all(const SimdT& arg, const SimdTs&... args) noexcept
+CHTHOLLY_FUNC float32x2_t acsi_vadd_f32_all(SimdT arg, SimdTs... args) noexcept
 {
 	return vadd_f32(arg, acsi_vadd_f32_all(args...));
 }
 
 template<>
-CHTHOLLY_FUNC float32x2_t acsi_vadd_f32_all<float32x2_t>(const float32x2_t& arg) noexcept
+CHTHOLLY_FUNC float32x2_t acsi_vadd_f32_all<float32x2_t>(float32x2_t arg) noexcept
 {
 	return arg;
 }
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_FUNC float32x2_t acsi_vmul_f32_all(const SimdT& arg, const SimdTs&... args) noexcept
+CHTHOLLY_FUNC float32x2_t acsi_vmul_f32_all(SimdT arg, SimdTs... args) noexcept
 {
 	return vmul_f32(arg, acsi_vmul_f32_all(args...));
 }
 
 template<>
-CHTHOLLY_FUNC float32x2_t acsi_vmul_f32_all<float32x2_t>(const float32x2_t& arg) noexcept
+CHTHOLLY_FUNC float32x2_t acsi_vmul_f32_all<float32x2_t>(float32x2_t arg) noexcept
 {
 	return arg;
 }
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_FUNC float32x4_t acsi_vaddq_f32_all(const SimdT& arg, const SimdTs&... args) noexcept
+CHTHOLLY_FUNC float32x4_t acsi_vaddq_f32_all(SimdT arg, SimdTs... args) noexcept
 {
 	return vaddq_f32(arg, acsi_vaddq_f32_all(args...));
 }
 
 template<>
-CHTHOLLY_FUNC float32x4_t acsi_vaddq_f32_all<float32x4_t>(const float32x4_t& arg) noexcept
+CHTHOLLY_FUNC float32x4_t acsi_vaddq_f32_all<float32x4_t>(float32x4_t arg) noexcept
 {
 	return arg;
 }
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_FUNC float32x4_t acsi_vmulq_f32_all(const SimdT& arg, const SimdTs&... args) noexcept
+CHTHOLLY_FUNC float32x4_t acsi_vmulq_f32_all(SimdT arg, SimdTs... args) noexcept
 {
 	return vmulq_f32(arg, acsi_vmulq_f32_all(args...));
 }
 
 template<>
-CHTHOLLY_FUNC float32x4_t acsi_vmulq_f32_all<float32x4_t>(const float32x4_t& arg) noexcept
+CHTHOLLY_FUNC float32x4_t acsi_vmulq_f32_all<float32x4_t>(float32x4_t arg) noexcept
 {
 	return arg;
 }
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_FUNC int32x2_t acsi_vadd_s32_all(const SimdT& arg, const SimdTs&... args) noexcept
+CHTHOLLY_FUNC int32x2_t acsi_vadd_s32_all(SimdT arg, SimdTs... args) noexcept
 {
 	return vadd_s32(arg, acsi_vadd_s32_all(args...));
 }
 
 template<>
-CHTHOLLY_FUNC int32x2_t acsi_vadd_s32_all<int32x2_t>(const int32x2_t& arg) noexcept
+CHTHOLLY_FUNC int32x2_t acsi_vadd_s32_all<int32x2_t>(int32x2_t arg) noexcept
 {
 	return arg;
 }
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_FUNC int32x2_t acsi_vmul_s32_all(const SimdT& arg, const SimdTs&... args) noexcept
+CHTHOLLY_FUNC int32x2_t acsi_vmul_s32_all(SimdT arg, SimdTs... args) noexcept
 {
 	return vmul_s32(arg, acsi_vmul_s32_all(args...));
 }
 
 template<>
-CHTHOLLY_FUNC int32x2_t acsi_vmul_s32_all<int32x2_t>(const int32x2_t& arg) noexcept
+CHTHOLLY_FUNC int32x2_t acsi_vmul_s32_all<int32x2_t>(int32x2_t arg) noexcept
 {
 	return arg;
 }
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_FUNC int32x4_t acsi_vaddq_s32_all(const SimdT& arg, const SimdTs&... args) noexcept
+CHTHOLLY_FUNC int32x4_t acsi_vaddq_s32_all(SimdT arg, SimdTs... args) noexcept
 {
 	return vaddq_s32(arg, acsi_vaddq_s32_all(args...));
 }
 
 template<>
-CHTHOLLY_FUNC int32x4_t acsi_vaddq_s32_all<int32x4_t>(const int32x4_t& arg) noexcept
+CHTHOLLY_FUNC int32x4_t acsi_vaddq_s32_all<int32x4_t>(int32x4_t arg) noexcept
 {
 	return arg;
 }
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_FUNC int32x4_t acsi_vmulq_s32_all(const SimdT& arg, const SimdTs&... args) noexcept
+CHTHOLLY_FUNC int32x4_t acsi_vmulq_s32_all(SimdT arg, SimdTs... args) noexcept
 {
 	return vmulq_s32(arg, acsi_vmulq_s32_all(args...));
 }
 
 template<>
-CHTHOLLY_FUNC int32x4_t acsi_vmulq_s32_all<int32x4_t>(const int32x4_t& arg) noexcept
+CHTHOLLY_FUNC int32x4_t acsi_vmulq_s32_all<int32x4_t>(int32x4_t arg) noexcept
 {
 	return arg;
 }
