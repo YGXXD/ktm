@@ -22,12 +22,12 @@
 
 #endif
 
-CHTHOLLY_FUNC bool acsi_vandv_s32(int32x2_t x) noexcept
+CHTHOLLY_FUNC int acsi_vandv_s32(int32x2_t x) noexcept
 {
-	return static_cast<bool>(vget_lane_s32(x, 0) & vget_lane_s32(x, 1));
+	return vget_lane_s32(x, 0) & vget_lane_s32(x, 1);
 }
 
-CHTHOLLY_FUNC bool acsi_vandvq_s32(int32x4_t x) noexcept
+CHTHOLLY_FUNC int acsi_vandvq_s32(int32x4_t x) noexcept
 {
 	return acsi_vandv_s32(vand_s32(vget_low_s32(x), vget_high_s32(x)));
 }
@@ -90,14 +90,16 @@ CHTHOLLY_FUNC int32x4_t acsi_vmulq_s32_all<int32x4_t>(int32x4_t arg) noexcept
 	return arg;
 }
 
-CHTHOLLY_FUNC bool acsi_vandv_f32(float32x2_t x) noexcept
+CHTHOLLY_FUNC float acsi_vandv_f32(float32x2_t x) noexcept
 {
-	return acsi_vandv_s32(vreinterpret_s32_f32(x));
+	const union { int i; float f; } ret = { acsi_vandv_s32(vreinterpret_s32_f32(x)) };
+	return ret.f;
 }
 
-CHTHOLLY_FUNC bool acsi_vandvq_f32(float32x4_t x) noexcept
+CHTHOLLY_FUNC float acsi_vandvq_f32(float32x4_t x) noexcept
 {
-	return acsi_vandvq_s32(vreinterpretq_s32_f32(x));
+	const union { int i; float f; } ret = { acsi_vandvq_s32(vreinterpretq_s32_f32(x)) };
+	return ret.f;
 }
 
 CHTHOLLY_FUNC float32x2_t acsi_vclamp_f32(float32x2_t x, float32x2_t min, float32x2_t max) noexcept
