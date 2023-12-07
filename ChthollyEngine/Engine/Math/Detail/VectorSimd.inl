@@ -389,7 +389,7 @@ struct ktm::detail::vec_opt_implement::equal<2, float>
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
         float32x2_t ret = vclt_f32(vabs_f32(vsub_f32(vld1_f32(&x[0]), vld1_f32(&y[0]))), vdup_n_f32(std::numeric_limits<float>::epsilon()));
-        return static_cast<bool>(vminv_u32(ret)); 
+        return acsi_vandv_f32(ret); 
     }
 };
 
@@ -401,7 +401,7 @@ struct ktm::detail::vec_opt_implement::equal<3, float>
     {
         float32x4_t ret = vcltq_f32(vabsq_f32(vsubq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]))), vdupq_n_f32(std::numeric_limits<float>::epsilon()));
         ret = vsetq_lane_f32(ret[2], ret, 3);
-        return static_cast<bool>(vminvq_u32(ret)); 
+        return acsi_vandvq_f32(ret);
     }
 };
 
@@ -412,8 +412,7 @@ struct ktm::detail::vec_opt_implement::equal<4, float>
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
         float32x4_t ret = vcltq_f32(vabsq_f32(vsubq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]))), vdupq_n_f32(std::numeric_limits<float>::epsilon()));
-        uint32x4_t tmp = vreinterpretq_u32_f32(ret);
-        return static_cast<bool>(vminvq_u32(ret)); 
+        return acsi_vandvq_f32(ret);
     }
 };
 
@@ -710,7 +709,7 @@ struct ktm::detail::vec_opt_implement::equal<2, int>
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
         int32x2_t ret = vceq_s32(vld1_s32(&x[0]), vld1_s32(&y[0]));
-        return static_cast<bool>(vmaxv_s32(ret));
+        return acsi_vandv_s32(ret); 
     }
 };
 
@@ -722,7 +721,7 @@ struct ktm::detail::vec_opt_implement::equal<3, int>
     {
         int32x4_t ret = vceqq_s32(vld1q_s32(&x[0]), vld1q_s32(&y[0]));
         ret = vsetq_lane_s32(ret[2], ret, 3);
-        return static_cast<bool>(vmaxvq_s32(ret)); 
+        return acsi_vandvq_s32(ret); 
     }
 };
 
@@ -733,7 +732,7 @@ struct ktm::detail::vec_opt_implement::equal<4, int>
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
         int32x4_t ret = vceqq_s32(vld1q_s32(&x[0]), vld1q_s32(&y[0]));
-        return static_cast<bool>(vmaxvq_s32(ret));  
+        return acsi_vandvq_s32(ret);  
     }
 };
 

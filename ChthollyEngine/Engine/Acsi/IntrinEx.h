@@ -123,7 +123,7 @@ CHTHOLLY_FUNC __m128i acsi_mm_abs_epi32(__m128i x) noexcept
 
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE4_1_FLAG
 
-CHTHOLLY_FUNC __m128 acsi_mm_clamp_epi32(__m128i x, __m128i min, __m128i max) noexcept
+CHTHOLLY_FUNC __m128i acsi_mm_clamp_epi32(__m128i x, __m128i min, __m128i max) noexcept
 {
 	return _mm_min_epi32(_mm_max_epi32(x, min), max);
 }
