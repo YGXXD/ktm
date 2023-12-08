@@ -522,7 +522,10 @@ struct ktm::detail::vec_common_implement::recip<2, float>
     using V = vec<2, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
-        float32x2_t ret = vdiv_f32(vdup_n_f32(one<float>), vld1_f32(&x[0]));
+        float32x2_t t_x = vld1_f32(&x[0]);
+        float32x2_t ret = vrecpe_f32(t_x);
+        ret = vmul_f32(ret, vrecps_f32(t_x, ret));
+        ret = vmul_f32(ret, vrecps_f32(t_x, ret));
         return *reinterpret_cast<V*>(&ret);
     }
 };
@@ -533,7 +536,10 @@ struct ktm::detail::vec_common_implement::recip<N, std::enable_if_t<N == 3 || N 
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
-        float32x4_t ret = vdivq_f32(vdupq_n_f32(one<float>), vld1q_f32(&x[0]));
+        float32x4_t t_x = vld1q_f32(&x[0]);
+        float32x4_t ret = vrecpeq_f32(t_x);
+        ret = vmulq_f32(ret, vrecpsq_f32(t_x, ret));
+        ret = vmulq_f32(ret, vrecpsq_f32(t_x, ret));
         return *reinterpret_cast<V*>(&ret);
     }
 };
@@ -813,7 +819,7 @@ struct ktm::detail::vec_common_implement::recip<N, std::enable_if_t<N == 3 || N 
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
-        __m128 ret = _mm_div_ps(_mm_set1_ps(one<float>), _mm_load_ps(&x[0]));
+        __m128 ret = _mm_rcp_ps(_mm_load_ps(&x[0]));
         return *reinterpret_cast<V*>(&ret);
     }
 };
