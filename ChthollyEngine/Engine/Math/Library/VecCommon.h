@@ -32,25 +32,25 @@ CHTHOLLY_INLINE vec_traits_t<V> reduce_max(const V& x) noexcept
 }
 
 template<class V>
-CHTHOLLY_INLINE vec_traits_self_t<V> abs(const V& x) noexcept
+CHTHOLLY_INLINE std::enable_if_t<is_vector_v<V>, V> abs(const V& x) noexcept
 {
     return detail::vec_common_implement::abs<vec_traits_len<V>, vec_traits_t<V>>::call(x);
 }
 
 template<class V>
-CHTHOLLY_INLINE vec_traits_self_t<V> min(const V& x, const V& y) noexcept
+CHTHOLLY_INLINE std::enable_if_t<is_vector_v<V>, V> min(const V& x, const V& y) noexcept
 {
     return detail::vec_common_implement::min<vec_traits_len<V>, vec_traits_t<V>>::call(x, y);
 }
 
 template<class V>
-CHTHOLLY_INLINE vec_traits_self_t<V> max(const V& x, const V& y) noexcept
+CHTHOLLY_INLINE std::enable_if_t<is_vector_v<V>, V> max(const V& x, const V& y) noexcept
 {
     return detail::vec_common_implement::max<vec_traits_len<V>, vec_traits_t<V>>::call(x, y);
 }
 
 template<class V>
-CHTHOLLY_INLINE vec_traits_self_t<V> clamp(const V& v, const V& min, const V& max) noexcept
+CHTHOLLY_INLINE std::enable_if_t<is_vector_v<V>, V> clamp(const V& v, const V& min, const V& max) noexcept
 {
     return detail::vec_common_implement::clamp<vec_traits_len<V>, vec_traits_t<V>>::call(v, min, max);
 }
