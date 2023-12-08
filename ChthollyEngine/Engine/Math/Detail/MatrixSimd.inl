@@ -492,10 +492,7 @@ private:
 
     static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v)
     {
-        __m128 t_mul = _mm_mul_ps(_mm_load_ps(&v[0]), _mm_load_ps(&matrix_v[0]));
-        __m128 sum1 = _mm_add_ss(t_mul, _mm_shuffle_ps(t_mul, t_mul, _MM_SHUFFLE(2, 1, 0, 3)));
-        __m128 sum2 = _mm_add_ss(sum1, _mm_shuffle_ps(t_mul, t_mul, _MM_SHUFFLE(1, 0, 3, 2)));
-        return *reinterpret_cast<float*>(&sum2); 
+        return acsi_mm_dot_cvt_f32<3>(_mm_load_ps(&v[0]), _mm_load_ps(&matrix_v[0])); 
     }
 };
 
@@ -520,10 +517,7 @@ private:
 
     static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v)
     {
-        __m128 t_mul = _mm_mul_ps(_mm_load_ps(&v[0]), _mm_load_ps(&matrix_v[0]));
-        __m128 sum1 = _mm_add_ps(t_mul, _mm_shuffle_ps(t_mul, t_mul, _MM_SHUFFLE(1, 0, 3, 2)));
-        __m128 sum2 = _mm_add_ss(sum1, _mm_shuffle_ps(sum1, sum1, _MM_SHUFFLE(2, 1, 0, 3)));
-        return *reinterpret_cast<float*>(&sum2); 
+        return acsi_mm_dot_cvt_f32<4>(_mm_load_ps(&v[0]), _mm_load_ps(&matrix_v[0])); 
     }
 };
 
@@ -650,7 +644,7 @@ private:
 
     static CHTHOLLY_INLINE __m128i core(const ColV& matrix_v, int v_elem) noexcept
     {
-        return _mm_mul_epi32(_mm_load_si128(reinterpret_cast<const __m128i*>(&matrix_v[0])), _mm_set1_epi32(v_elem));
+        return _mm_mullo_epi32(_mm_load_si128(reinterpret_cast<const __m128i*>(&matrix_v[0])), _mm_set1_epi32(v_elem));
     } 
 };
 
@@ -675,10 +669,7 @@ private:
 
     static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v)
     {
-        __m128i t_mul = _mm_mul_epi32(_mm_load_si128(reinterpret_cast<const __m128i*>(&v[0])), _mm_load_si128(reinterpret_cast<const __m128i*>(&matrix_v[0])));
-        __m128i sum1 = _mm_add_epi32(t_mul, _mm_shuffle_epi32(t_mul, _MM_SHUFFLE(2, 1, 0, 3)));
-        __m128i sum2 = _mm_add_epi32(sum1, _mm_shuffle_epi32(t_mul, _MM_SHUFFLE(1, 0, 3, 2)));
-        return *reinterpret_cast<float*>(&sum2); 
+        return acsi_mm_dot_cvt_si32<3>(_mm_load_si128(reinterpret_cast<const __m128i*>(&v[0])), _mm_load_si128(reinterpret_cast<const __m128i*>(&matrix_v[0])));
     }
 };
 
@@ -703,10 +694,7 @@ private:
 
     static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v)
     {
-        __m128i t_mul = _mm_mul_epi32(_mm_load_si128(reinterpret_cast<const __m128i*>(&v[0])), _mm_load_si128(reinterpret_cast<const __m128i*>(&matrix_v[0])));
-        __m128i sum1 = _mm_add_epi32(t_mul, _mm_shuffle_epi32(t_mul, _MM_SHUFFLE(1, 0, 3, 2)));
-        __m128i sum2 = _mm_add_epi32(sum1, _mm_shuffle_epi32(sum1, _MM_SHUFFLE(2, 1, 0, 3)));
-        return *reinterpret_cast<float*>(&sum2); 
+        return acsi_mm_dot_cvt_si32<4>(_mm_load_si128(reinterpret_cast<const __m128i*>(&v[0])), _mm_load_si128(reinterpret_cast<const __m128i*>(&matrix_v[0])));
     }
 };
 

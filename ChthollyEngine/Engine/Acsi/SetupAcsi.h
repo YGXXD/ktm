@@ -33,6 +33,7 @@
 	#elif CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE4_1_FLAG 
 		#include <smmintrin.h>
 	#elif  CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE3_FLAG 
+		#include <tmmintrin.h>
 		#include <pmmintrin.h>
 	#elif  CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE2_FLAG 
 		#include <emmintrin.h>

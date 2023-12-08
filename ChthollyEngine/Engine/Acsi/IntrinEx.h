@@ -2,6 +2,7 @@
 #define _INTRIN_EX_H_
 
 #include "SetupAcsi.h"
+#include <cstddef>
 
 #if defined(CHTHOLLY_SIMD_SSE)
 
@@ -89,6 +90,40 @@ CHTHOLLY_FUNC __m128 acsi_mm_ceil_ps(__m128 x) noexcept
 #endif
 }
 
+CHTHOLLY_FUNC __m128 acsi_mm_dot_ps(__m128 x, __m128 y) noexcept
+{
+	__m128 mul = _mm_mul_ps(x, y);
+#if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE3_FLAG
+	__m128 add_0 = _mm_hadd_ps(mul, mul);;
+	__m128 add_1 = _mm_hadd_ps(add_0, add_0);;
+#else
+	__m128 add_0 = _mm_add_ps(mul, _mm_shuffle_ps(mul, mul, _MM_SHUFFLE(2, 3, 0, 1)));
+	__m128 add_1 = _mm_add_ps(add_0, _mm_shuffle_ps(add_0, add_0, _MM_SHUFFLE(0, 1, 2, 3))); 
+#endif
+	return add_1;
+}
+
+template<size_t N>
+CHTHOLLY_FUNC float acsi_mm_dot_cvt_f32(__m128 x, __m128 y) noexcept;
+
+template<>
+CHTHOLLY_FUNC float acsi_mm_dot_cvt_f32<3>(__m128 x, __m128 y) noexcept
+{
+	__m128 mul = _mm_mul_ps(x, y);
+	__m128 sum_0 = _mm_add_ss(mul, _mm_shuffle_ps(mul, mul, _MM_SHUFFLE(0, 3, 2, 1)));
+	__m128 sum_1 = _mm_add_ss(sum_0, _mm_shuffle_ps(mul, mul, _MM_SHUFFLE(1, 0, 3, 2)));
+	return _mm_cvtss_f32(sum_1); 
+}
+
+template<>
+CHTHOLLY_FUNC float acsi_mm_dot_cvt_f32<4>(__m128 x, __m128 y) noexcept
+{
+	__m128 mul = _mm_mul_ps(x, y);
+	__m128 sum_0 = _mm_add_ps(mul, _mm_shuffle_ps(mul, mul, _MM_SHUFFLE(1, 0, 3, 2)));
+	__m128 sum_1 = _mm_add_ss(sum_0, _mm_shuffle_ps(sum_0, sum_0, _MM_SHUFFLE(0, 3, 2, 1)));
+	return _mm_cvtss_f32(sum_1); 
+}
+
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE2_FLAG
 
 CHTHOLLY_FUNC __m128i acsi_mm_neg_epi32(__m128i x) noexcept
@@ -128,14 +163,43 @@ CHTHOLLY_FUNC __m128i acsi_mm_clamp_epi32(__m128i x, __m128i min, __m128i max) n
 	return _mm_min_epi32(_mm_max_epi32(x, min), max);
 }
 
-template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_FUNC __m128i acsi_mm_mul_epi32_all(SimdT arg, SimdTs... args) noexcept
+CHTHOLLY_FUNC __m128i acsi_mm_dot_epi32(__m128i x, __m128i y) noexcept
 {
-	return _mm_mul_epi32(arg, acsi_mm_mul_epi32_all(args...));
+	__m128i mul = _mm_mullo_epi32(x, y);
+	__m128i add_0 = _mm_hadd_epi32(mul, mul);;
+	__m128i add_1 = _mm_hadd_epi32(add_0, add_0);;
+	return add_1;
+}
+
+template<size_t N>
+CHTHOLLY_FUNC int acsi_mm_dot_cvt_si32(__m128i x, __m128i y) noexcept;
+
+template<>
+CHTHOLLY_FUNC int acsi_mm_dot_cvt_si32<3>(__m128i x, __m128i y) noexcept
+{
+	__m128i mul = _mm_mullo_epi32(x, y);
+	__m128i sum_0 = _mm_add_epi32(mul, _mm_shuffle_epi32(mul, _MM_SHUFFLE(0, 3, 2, 1)));
+	__m128i sum_1 = _mm_add_epi32(sum_0, _mm_shuffle_epi32(mul, _MM_SHUFFLE(1, 0, 3, 2)));
+	return _mm_cvtsi128_si32(sum_1); 
 }
 
 template<>
-CHTHOLLY_FUNC __m128i acsi_mm_mul_epi32_all<__m128i>(__m128i arg) noexcept
+CHTHOLLY_FUNC int acsi_mm_dot_cvt_si32<4>(__m128i x, __m128i y) noexcept
+{
+	__m128i mul = _mm_mullo_epi32(x, y);
+	__m128i sum_0 = _mm_add_epi32(mul, _mm_shuffle_epi32(mul, _MM_SHUFFLE(1, 0, 3, 2)));
+	__m128i sum_1 = _mm_add_epi32(sum_0, _mm_shuffle_epi32(sum_0, _MM_SHUFFLE(0, 3, 2, 1)));
+	return _mm_cvtsi128_si32(sum_1); 
+}
+
+template<typename SimdT, typename ...SimdTs>
+CHTHOLLY_FUNC __m128i acsi_mm_mullo_epi32_all(SimdT arg, SimdTs... args) noexcept
+{
+	return _mm_mullo_epi32(arg, acsi_mm_mullo_epi32_all(args...));
+}
+
+template<>
+CHTHOLLY_FUNC __m128i acsi_mm_mullo_epi32_all<__m128i>(__m128i arg) noexcept
 {
 	return arg;
 }
