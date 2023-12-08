@@ -10,7 +10,7 @@ template<>
 struct ktm::detail::mat_common_implement::transpose<3, 3, float>
 {
     using M = mat<3, 3, float>;
-    using RetM = mat_traits_tp_t<M>;
+    using RetM = M;
     static CHTHOLLY_INLINE RetM call(const M& m) noexcept
     {
         float32x4_t c_0 = vld1q_f32(&m[0][0]);
@@ -36,7 +36,7 @@ template<>
 struct ktm::detail::mat_common_implement::transpose<4, 4, float>
 {
     using M = mat<4, 4, float>;
-    using RetM = mat_traits_tp_t<M>;
+    using RetM = M;
     static CHTHOLLY_INLINE RetM call(const M& m) noexcept
     {
         float32x4_t c_0 = vld1q_f32(&m[0][0]);
@@ -67,7 +67,7 @@ template<>
 struct ktm::detail::mat_common_implement::transpose<3, 3, int>
 {
     using M = mat<3, 3, int>;
-    using RetM = mat_traits_tp_t<M>;
+    using RetM = M;
     static CHTHOLLY_INLINE RetM call(const M& m) noexcept
     {
         int32x4_t c_0 = vld1q_s32(&m[0][0]);
@@ -93,7 +93,7 @@ template<>
 struct ktm::detail::mat_common_implement::transpose<4, 4, int>
 {
     using M = mat<4, 4, int>;
-    using RetM = mat_traits_tp_t<M>;
+    using RetM = M;
     static CHTHOLLY_INLINE RetM call(const M& m) noexcept
     {
         int32x4_t c_0 = vld1q_s32(&m[0][0]);
@@ -442,7 +442,7 @@ template<>
 struct ktm::detail::mat_common_implement::transpose<3, 3, float>
 {
     using M = mat<3, 3, float>;
-    using RetM = mat_traits_tp_t<M>;
+    using RetM = M;
     static CHTHOLLY_INLINE RetM call(const M& m) noexcept
     {
         __m128 c_0 = _mm_load_ps(&m[0][0]);
@@ -468,7 +468,7 @@ template<>
 struct ktm::detail::mat_common_implement::transpose<4, 4, float>
 {
     using M = mat<4, 4, float>;
-    using RetM = mat_traits_tp_t<M>;
+    using RetM = M;
     static CHTHOLLY_INLINE RetM call(const M& m) noexcept
     {
         __m128 c_0 = _mm_load_ps(&m[0][0]);
@@ -499,7 +499,7 @@ template<>
 struct ktm::detail::mat_common_implement::transpose<3, 3, int>
 {
     using M = mat<3, 3, int>;
-    using RetM = mat_traits_tp_t<M>;
+    using RetM = M;
     static CHTHOLLY_INLINE RetM call(const M& m) noexcept
     {
         __m128 c_0 = _mm_load_ps(reinterpret_cast<const float*>(&m[0][0]));
@@ -525,7 +525,7 @@ template<>
 struct ktm::detail::mat_common_implement::transpose<4, 4, int>
 {
     using M = mat<4, 4, int>;
-    using RetM = mat_traits_tp_t<M>;
+    using RetM = M;
     static CHTHOLLY_INLINE RetM call(const M& m) noexcept
     {
         __m128 c_0 = _mm_load_ps(reinterpret_cast<const float*>(&m[0][0]));

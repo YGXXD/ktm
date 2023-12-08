@@ -9,8 +9,8 @@ template<size_t Row, size_t Col, typename T>
 struct ktm::detail::mat_opt_implement::mat_mul_vec
 {
 	using M = mat<Row, Col, T>;
-    using ColV = mat_traits_col_t<M>;
-    using RowV = mat_traits_row_t<M>;
+    using ColV = vec<Col, T>;
+    using RowV = vec<Row, T>;
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v) noexcept
     {
         return call(m, v, std::make_index_sequence<Row>());
@@ -29,8 +29,8 @@ template<size_t Row, size_t Col, typename T>
 struct ktm::detail::mat_opt_implement::vec_mul_mat
 {
     using M = mat<Row, Col, T>;
-    using ColV = mat_traits_col_t<M>;
-    using RowV = mat_traits_row_t<M>;
+    using ColV = vec<Col, T>;
+    using RowV = vec<Row, T>;
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m) noexcept
     {
         return call(v, m, std::make_index_sequence<Row>());

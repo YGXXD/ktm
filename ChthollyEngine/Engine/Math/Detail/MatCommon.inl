@@ -25,8 +25,8 @@ template<size_t Row, size_t Col, typename T>
 struct ktm::detail::mat_common_implement::transpose
 {
 	using M = mat<Row, Col, T>;
-    using RetM = mat_traits_tp_t<M>;
-    using RowV = mat_traits_row_t<M>;
+    using RetM = mat<Col, Row, T>;
+    using RowV = vec<Row, T>;
     static CHTHOLLY_INLINE RetM call(const M& m) noexcept
     {
         return call(m, std::make_index_sequence<Col>(), std::make_index_sequence<Row>());
