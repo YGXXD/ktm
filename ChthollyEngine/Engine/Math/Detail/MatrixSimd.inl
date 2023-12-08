@@ -73,9 +73,9 @@ private:
         return ret;
     }
 
-    static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v)
+    static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v) noexcept
     {
-        return vaddv_f32(vmul_f32(vld1_f32(&v[0]), vld1_f32(&matrix_v[0])));
+        return acsi_vdotv_f32(vld1_f32(&v[0]), vld1_f32(&matrix_v[0]));
     }
 };
 
@@ -98,10 +98,9 @@ private:
         return ret;
     }
 
-    static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v)
+    static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v) noexcept
     {
-        float32x4_t v_mul_mv = vmulq_f32(vld1q_f32(&v[0]), vld1q_f32(&matrix_v[0]));
-        return vaddvq_f32(vsetq_lane_f32(zero<float>, v_mul_mv, 3));
+        return acsi_vdotvq_f32<3>(vld1q_f32(&v[0]), vld1q_f32(&matrix_v[0]));
     }
 };
 
@@ -126,7 +125,7 @@ private:
 
     static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v)
     {
-        return vaddvq_f32(vmulq_f32(vld1q_f32(&v[0]), vld1q_f32(&matrix_v[0])));
+        return acsi_vdotvq_f32<4>(vld1q_f32(&v[0]), vld1q_f32(&matrix_v[0]));
     }
 };
 
@@ -293,9 +292,9 @@ private:
         return ret;
     }
 
-    static CHTHOLLY_INLINE int core(const ColV& v, const ColV& matrix_v)
+    static CHTHOLLY_INLINE int core(const ColV& v, const ColV& matrix_v) noexcept
     {
-        return vaddv_s32(vmul_s32(vld1_s32(&v[0]), vld1_s32(&matrix_v[0])));
+        return acsi_vdotv_s32(vld1_s32(&v[0]), vld1_s32(&matrix_v[0]));
     }
 };
 
@@ -318,10 +317,9 @@ private:
         return ret;
     }
 
-    static CHTHOLLY_INLINE int core(const ColV& v, const ColV& matrix_v)
+    static CHTHOLLY_INLINE int core(const ColV& v, const ColV& matrix_v) noexcept
     {
-        int32x4_t v_mul_mv = vmulq_s32(vld1q_s32(&v[0]), vld1q_s32(&matrix_v[0]));
-        return vaddvq_s32(vsetq_lane_s32(zero<int>, v_mul_mv, 3));
+        return acsi_vdotvq_s32<3>(vld1q_s32(&v[0]), vld1q_s32(&matrix_v[0]));
     }
 };
 
@@ -346,7 +344,7 @@ private:
 
     static CHTHOLLY_INLINE int core(const ColV& v, const ColV& matrix_v)
     {
-        return vaddvq_s32(vmulq_s32(vld1q_s32(&v[0]), vld1q_s32(&matrix_v[0])));
+        return acsi_vdotvq_s32<4>(vld1q_s32(&v[0]), vld1q_s32(&matrix_v[0]));
     }
 };
 

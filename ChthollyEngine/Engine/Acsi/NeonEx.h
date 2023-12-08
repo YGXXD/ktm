@@ -2,6 +2,7 @@
 #define _NEON_EX_H_
 
 #include "SetupAcsi.h"
+#include <cstddef>
 
 #if defined(CHTHOLLY_SIMD_NEON)
 
@@ -40,6 +41,41 @@ CHTHOLLY_FUNC int32x2_t acsi_vclamp_s32(int32x2_t x, int32x2_t min, int32x2_t ma
 CHTHOLLY_FUNC int32x4_t acsi_vclampq_s32(int32x4_t x, int32x4_t min, int32x4_t max) noexcept
 {
 	return vminq_s32(vmaxq_s32(x, min), max);
+}
+
+CHTHOLLY_FUNC int32x2_t acsi_vdot_s32(int32x2_t x, int32x2_t y) noexcept
+{
+	int32x2_t mul = vmul_s32(x, y);
+	return vpadd_s32(mul, mul);
+}
+
+CHTHOLLY_FUNC int32x4_t acsi_vdotq_s32(int32x4_t x, int32x4_t y) noexcept
+{
+	int32x4_t mul = vmulq_s32(x, y);
+    int32x4_t add_0 = vpaddq_s32(mul, mul);
+    int32x4_t add_1 = vpaddq_s32(add_0, add_0);
+	return add_1;
+}
+
+CHTHOLLY_FUNC int acsi_vdotv_s32(int32x2_t x, int32x2_t y) noexcept
+{
+	return vaddv_s32(vmul_s32(x, y));
+}
+
+template<size_t N>
+CHTHOLLY_FUNC int acsi_vdotvq_s32(int32x4_t x, int32x4_t y) noexcept;
+
+template<>
+CHTHOLLY_FUNC int acsi_vdotvq_s32<3>(int32x4_t x, int32x4_t y) noexcept
+{
+	int32x4_t mul = vmulq_s32(x, y);
+	return vaddvq_s32(vsetq_lane_s32(0, mul, 3));	
+}
+
+template<>
+CHTHOLLY_FUNC int acsi_vdotvq_s32<4>(int32x4_t x, int32x4_t y) noexcept
+{
+	return vaddvq_s32(vmulq_s32(x, y));	
 }
 
 template<typename SimdT, typename ...SimdTs>
@@ -110,6 +146,41 @@ CHTHOLLY_FUNC float32x2_t acsi_vclamp_f32(float32x2_t x, float32x2_t min, float3
 CHTHOLLY_FUNC float32x4_t acsi_vclampq_f32(float32x4_t x, float32x4_t min, float32x4_t max) noexcept
 {
 	return vminq_f32(vmaxq_f32(x, min), max);
+}
+
+CHTHOLLY_FUNC float32x2_t acsi_vdot_f32(float32x2_t x, float32x2_t y) noexcept
+{
+	float32x2_t mul = vmul_f32(x, y);
+	return vpadd_f32(mul, mul);
+}
+
+CHTHOLLY_FUNC float32x4_t acsi_vdotq_f32(float32x4_t x, float32x4_t y) noexcept
+{
+	float32x4_t mul = vmulq_f32(x, y);
+    float32x4_t add_0 = vpaddq_f32(mul, mul);
+    float32x4_t add_1 = vpaddq_f32(add_0, add_0);
+	return add_1;
+}
+
+CHTHOLLY_FUNC float acsi_vdotv_f32(float32x2_t x, float32x2_t y) noexcept
+{
+	return vaddv_f32(vmul_f32(x, y));
+}
+
+template<size_t N>
+CHTHOLLY_FUNC float acsi_vdotvq_f32(float32x4_t x, float32x4_t y) noexcept;
+
+template<>
+CHTHOLLY_FUNC float acsi_vdotvq_f32<3>(float32x4_t x, float32x4_t y) noexcept
+{
+	float32x4_t mul = vmulq_f32(x, y);
+	return vaddvq_f32(vsetq_lane_f32(0.f, mul, 3));	
+}
+
+template<>
+CHTHOLLY_FUNC float acsi_vdotvq_f32<4>(float32x4_t x, float32x4_t y) noexcept
+{
+	return vaddvq_f32(vmulq_f32(x, y));	
 }
 
 template<typename SimdT, typename ...SimdTs>

@@ -132,8 +132,7 @@ struct ktm::detail::mat_common_implement::determinant<3, float>
         float32x4_t mul_00 = vmulq_f32(acsi_vshuffleq_f32(c_1, c_1, 3, 0, 2, 1), acsi_vshuffleq_f32(c_2, c_2, 3, 1, 0, 2));
         float32x4_t mul_01 = vmulq_f32(acsi_vshuffleq_f32(c_1, c_1, 3, 1, 0, 2), acsi_vshuffleq_f32(c_2, c_2, 3, 0, 2, 1));
         float32x4_t sub_0 = vsubq_f32(mul_00, mul_01);  
-        float32x4_t mul_0 = vmulq_f32(c_0, sub_0);
-        return vaddvq_f32(vsetq_lane_f32(zero<float>, mul_0, 3));
+        return acsi_vdotvq_f32<3>(c_0, sub_0);
     }
 };
 
@@ -190,8 +189,7 @@ struct ktm::detail::mat_common_implement::determinant<3, int>
         int32x4_t mul_00 = vmulq_s32(acsi_vshuffleq_s32(c_1, c_1, 3, 0, 2, 1), acsi_vshuffleq_s32(c_2, c_2, 3, 1, 0, 2));
         int32x4_t mul_01 = vmulq_s32(acsi_vshuffleq_s32(c_1, c_1, 3, 1, 0, 2), acsi_vshuffleq_s32(c_2, c_2, 3, 0, 2, 1));
         int32x4_t sub_0 = vsubq_s32(mul_00, mul_01);  
-        int32x4_t mul_0 = vmulq_s32(c_0, sub_0);
-        return vaddvq_s32(vsetq_lane_s32(zero<int>, mul_0, 3));
+        return acsi_vdotvq_s32<3>(c_0, sub_0);
     }
 };
 
@@ -424,10 +422,8 @@ struct ktm::detail::mat_common_implement::inverse<4, float>
         float32x4_t i_tmp_0 = acsi_vshuffleq_f32(inv_0, inv_1, 0, 0, 0, 0);
         float32x4_t i_tmp_1 = acsi_vshuffleq_f32(inv_2, inv_3, 0, 0, 0, 0);
         float32x4_t i_row_0 = acsi_vshuffleq_f32(i_tmp_0, i_tmp_1, 3, 1, 3, 1);
-        float32x4_t i_mul_0 = vmulq_f32(c_0, i_row_0);
-        float32x4_t i_add_0 = vpaddq_f32(i_mul_0, i_mul_0);
-        float32x4_t i_add_1 = vpaddq_f32(i_add_0, i_add_0);
-        float32x4_t one_over_det = vdivq_f32(vdupq_n_f32(one<float>), i_add_1);
+        float32x4_t i_dot_0 = acsi_vdotq_f32(c_0, i_row_0);
+        float32x4_t one_over_det = vdivq_f32(vdupq_n_f32(one<float>), i_dot_0);
         
         M ret;
 
