@@ -4,6 +4,7 @@
 #include "Library/Common.h"
 #include "Library/VecCommon.h"
 #include "Library/MatCommon.h"
+#include "Library/QuatCommon.h"
 
 #include "Library/Geometry.h"
 #include "Library/Transform3D.h"
