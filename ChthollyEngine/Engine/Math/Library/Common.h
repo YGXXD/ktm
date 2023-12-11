@@ -7,6 +7,74 @@ namespace ktm
 {
 
 template<typename T>
+CHTHOLLY_INLINE std::enable_if_t<(std::is_arithmetic_v<T> && !std::is_unsigned_v<T>), T> abs(T x) noexcept
+{
+    return x < 0 ? -x : x;
+}
+
+template<typename T>
+CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> max(T x, T y) noexcept
+{
+    return x > y ? x : y;
+}
+
+template<typename T>
+CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> min(T x, T y) noexcept
+{
+    return x < y ? x : y;
+}
+
+template<typename T>
+CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> clamp(T v, T min, T max) noexcept
+{
+    return ktm::min<T>(ktm::max<T>(v, min), max);
+}
+
+template<typename T>
+CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> pow2(T x) noexcept
+{
+    return x * x;
+}
+
+template<typename T>
+CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> pow5(T x) noexcept
+{
+    return pow2(x) * pow2(x) * x;
+}
+
+template<size_t N, typename T>
+CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> pow(T x) noexcept
+{
+    if constexpr(N == 0)
+    {
+        return one<T>;
+    }
+    else
+    {
+        return x * pow<N - 1>(x);
+    }
+}
+
+template<typename T>
+CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, bool> near_zero(T x) noexcept
+{
+    if constexpr(std::is_same_v<T, float>)
+    {
+        return abs(x) < 1e-4f;
+    }
+    else 
+    {
+        return abs(x) < 1e-8;
+    }
+}
+
+template<typename T>
+CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, bool> equal_zero(T x) noexcept
+{
+    return abs(x) < std::numeric_limits<T>::epsilon();
+}
+
+template<typename T>
 CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> sin(T x) noexcept
 {
     if constexpr(std::is_same_v<T, float>)
@@ -26,6 +94,19 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> asin(T x) noexc
         return ::asin(x);
     else 
         return ::asinl(x); 
+}
+
+template<typename T>
+CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> sinc(T x) noexcept
+{
+    if(equal_zero(x)) return one<T>;
+
+    if constexpr(std::is_same_v<T, float>)
+        return ::sinf(x) / x;
+    else if constexpr(std::is_same_v<T, double>)
+        return ::sin(x) / x;
+    else 
+        return ::sinl(x) / x; 
 }
 
 template<typename T>
@@ -125,74 +206,6 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> sqrt(T x) noexc
         return ::sqrt(x);
     else 
         return ::sqrtl(x);
-}
-
-template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<(std::is_arithmetic_v<T> && !std::is_unsigned_v<T>), T> abs(T x) noexcept
-{
-    return x < 0 ? -x : x;
-}
-
-template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> max(T x, T y) noexcept
-{
-    return x > y ? x : y;
-}
-
-template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> min(T x, T y) noexcept
-{
-    return x < y ? x : y;
-}
-
-template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> clamp(T v, T min, T max) noexcept
-{
-    return ktm::min<T>(ktm::max<T>(v, min), max);
-}
-
-template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> pow2(T x) noexcept
-{
-    return x * x;
-}
-
-template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> pow5(T x) noexcept
-{
-    return pow2(x) * pow2(x) * x;
-}
-
-template<size_t N, typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> pow(T x) noexcept
-{
-    if constexpr(N == 0)
-    {
-        return one<T>;
-    }
-    else
-    {
-        return x * pow<N - 1>(x);
-    }
-}
-
-template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, bool> near_zero(T x) noexcept
-{
-    if constexpr(std::is_same_v<T, float>)
-    {
-        return abs(x) < 1e-4f;
-    }
-    else 
-    {
-        return abs(x) < 1e-8;
-    }
-}
-
-template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, bool> equal_zero(T x) noexcept
-{
-    return abs(x) < std::numeric_limits<T>::epsilon();
 }
 
 template<typename T>
