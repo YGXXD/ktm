@@ -115,7 +115,7 @@ template<typename T>
 struct is_quaternion<quat<T>> : std::true_type { };
 
 template<typename T>
-struct is_floating_point_base : std::is_floating_point<T> { };
+struct is_floating_point_base : std::false_type { };
 
 template<size_t N, typename T>
 struct is_floating_point_base<vec<N, T>> : std::is_floating_point<T> { };
@@ -124,7 +124,7 @@ template<size_t Row, size_t Col, typename T>
 struct is_floating_point_base<mat<Row, Col, T>> : std::is_floating_point<T> { };
 
 template<typename T>
-struct is_floating_point_base<quat<T>> : std::is_floating_point<T> { };
+struct is_floating_point_base<quat<T>> : std::true_type { };
 
 template<typename T>
 inline constexpr bool is_vector_v = is_vector<T>::value;

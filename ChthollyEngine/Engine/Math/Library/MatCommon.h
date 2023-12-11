@@ -7,7 +7,7 @@
 namespace ktm
 {
 template<class M>
-CHTHOLLY_INLINE mat_traits_tp_t<M> transpose(const M& m) noexcept
+CHTHOLLY_INLINE std::enable_if_t<is_matrix_v<M>, mat_traits_tp_t<M>> transpose(const M& m) noexcept
 {
     return detail::mat_common_implement::transpose<mat_traits_row_n<M>, mat_traits_col_n<M>, mat_traits_base_t<M>>::call(m);
 } 
@@ -25,25 +25,25 @@ CHTHOLLY_INLINE std::enable_if_t<is_square_matrix_v<M>, mat_traits_base_t<M>> de
 }
 
 template<class M>
-CHTHOLLY_INLINE std::enable_if_t<is_square_matrix_v<M> && std::is_floating_point_v<mat_traits_base_t<M>>, M> inverse(const M& m)
+CHTHOLLY_INLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, M> inverse(const M& m)
 {
     return detail::mat_common_implement::inverse<mat_traits_col_n<M>, mat_traits_base_t<M>>::call(m);
 }
 
 template<class M>
-CHTHOLLY_INLINE std::enable_if_t<is_square_matrix_v<M> && std::is_floating_point_v<mat_traits_base_t<M>>, std::tuple<M, M>> factor_lu(const M& m)
+CHTHOLLY_INLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<M, M>> factor_lu(const M& m)
 {
     return detail::mat_common_implement::factor_lu<mat_traits_col_n<M>, mat_traits_base_t<M>>::call(m);
 }
 
 template<class M>
-CHTHOLLY_INLINE std::enable_if_t<is_square_matrix_v<M> && std::is_floating_point_v<mat_traits_base_t<M>>, std::tuple<M, M>> factor_qr(const M& m)
+CHTHOLLY_INLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<M, M>> factor_qr(const M& m)
 {
     return detail::mat_common_implement::factor_qr<mat_traits_col_n<M>, mat_traits_base_t<M>>::call(m);
 }
 
 template<class M>
-CHTHOLLY_INLINE std::enable_if_t<is_square_matrix_v<M> && std::is_floating_point_v<mat_traits_base_t<M>>, std::tuple<M, M, M>> factor_svd(const M& m)
+CHTHOLLY_INLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<M, M, M>> factor_svd(const M& m)
 {
     return detail::mat_common_implement::factor_svd<mat_traits_col_n<M>, mat_traits_base_t<M>>::call(m);
 }

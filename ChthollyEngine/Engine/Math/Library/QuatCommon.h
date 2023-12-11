@@ -28,13 +28,13 @@ CHTHOLLY_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> negate(const Q& q) noexc
 }
 
 template<class Q>
-CHTHOLLY_INLINE quat_traits_base_t<Q> dot(const Q& p, const Q& q) noexcept
+CHTHOLLY_INLINE std::enable_if_t<is_quaternion_v<Q>, quat_traits_base_t<Q>> dot(const Q& p, const Q& q) noexcept
 {
     return dot(p.vector, q.vector);
 }
 
 template<class Q>
-CHTHOLLY_INLINE quat_traits_base_t<Q> length(const Q& q) noexcept
+CHTHOLLY_INLINE std::enable_if_t<is_quaternion_v<Q>, quat_traits_base_t<Q>> length(const Q& q) noexcept
 {
     return length(q.vector);
 }
