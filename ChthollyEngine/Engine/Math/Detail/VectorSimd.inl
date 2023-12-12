@@ -2,7 +2,7 @@
 #define _VECTOR_SIMD_H_
 
 #include "VecOptFwd.h"
-#include "Math/Library/Definition.h"
+#include "Math/Library/ArtcBase.h"
 
 #if defined(CHTHOLLY_SIMD_NEON)
 
@@ -388,7 +388,7 @@ struct ktm::detail::vec_opt_implement::equal<2, float>
     using V = vec<2, float>;
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
-        float32x2_t ret = vclt_f32(vabs_f32(vsub_f32(vld1_f32(&x[0]), vld1_f32(&y[0]))), vdup_n_f32(std::numeric_limits<float>::epsilon()));
+        float32x2_t ret = vclt_f32(vabs_f32(vsub_f32(vld1_f32(&x[0]), vld1_f32(&y[0]))), vdup_n_f32(epsilon<float>));
         return static_cast<bool>(acsi_vandv_f32(ret)); 
     }
 };
@@ -399,7 +399,7 @@ struct ktm::detail::vec_opt_implement::equal<3, float>
     using V = vec<3, float>;
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
-        float32x4_t ret = vcltq_f32(vabsq_f32(vsubq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]))), vdupq_n_f32(std::numeric_limits<float>::epsilon()));
+        float32x4_t ret = vcltq_f32(vabsq_f32(vsubq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]))), vdupq_n_f32(epsilon<float>));
         ret = vsetq_lane_f32(ret[2], ret, 3);
         return static_cast<bool>(acsi_vandvq_f32(ret));
     }
@@ -411,7 +411,7 @@ struct ktm::detail::vec_opt_implement::equal<4, float>
     using V = vec<4, float>;
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
-        float32x4_t ret = vcltq_f32(vabsq_f32(vsubq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]))), vdupq_n_f32(std::numeric_limits<float>::epsilon()));
+        float32x4_t ret = vcltq_f32(vabsq_f32(vsubq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]))), vdupq_n_f32(epsilon<float>));
         return static_cast<bool>(acsi_vandvq_f32(ret));
     }
 };
@@ -934,7 +934,7 @@ struct ktm::detail::vec_opt_implement::equal<3, float>
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
         __m128 delta = _mm_sub_ps(_mm_load_ps(&x[0]), _mm_load_ps(&y[0]));
-        __m128 ret = _mm_cmplt_ps(acsi_mm_abs_ps(delta), _mm_set1_ps(std::numeric_limits<float>::epsilon()));     
+        __m128 ret = _mm_cmplt_ps(acsi_mm_abs_ps(delta), _mm_set1_ps(epsilon<float>));     
         __m128 and_0 = _mm_and_ps(ret, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(0, 3, 2, 1)));
         __m128 and_1 = _mm_and_ps(and_0, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(1, 0, 3, 2)));
         return static_cast<bool>(_mm_cvtss_f32(and_1));
@@ -948,7 +948,7 @@ struct ktm::detail::vec_opt_implement::equal<4, float>
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
         __m128 delta = _mm_sub_ps(_mm_load_ps(&x[0]), _mm_load_ps(&y[0]));
-        __m128 ret = _mm_cmplt_ps(acsi_mm_abs_ps(delta), _mm_set1_ps(std::numeric_limits<float>::epsilon()));     
+        __m128 ret = _mm_cmplt_ps(acsi_mm_abs_ps(delta), _mm_set1_ps(epsilon<float>));     
         __m128 and_0 = _mm_and_ps(ret, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(1, 0, 3, 2)));
         __m128 and_1 = _mm_and_ps(and_0, _mm_shuffle_ps(and_0, and_0, _MM_SHUFFLE(0, 3, 2, 1)));
         return static_cast<bool>(_mm_cvtss_f32(and_1));

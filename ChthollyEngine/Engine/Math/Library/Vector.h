@@ -1,7 +1,7 @@
 #ifndef _VECTOR_H_
 #define _VECTOR_H_
 
-#include "Definition.h"
+#include "ArtcBase.h"
 #include "Math/Interface/ICommon/IArray.h"
 #include "Math/Interface/IVector/IVecOpt.h"
 #include "Math/Interface/IVector/IVecData.h"

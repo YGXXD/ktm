@@ -2,7 +2,7 @@
 #define _VECTOR_INL_
 
 #include "VecOptFwd.h"
-#include "Math/Library/Definition.h"
+#include "Math/Library/ArtcBase.h"
 #include "Math/Library/Common.h"
 
 template<size_t N, typename T>

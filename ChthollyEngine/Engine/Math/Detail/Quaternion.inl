@@ -2,7 +2,7 @@
 #define _QUATERNION_INL_
 
 #include "QuatOptFwd.h"
-#include "Math/Library/Definition.h"
+#include "Math/Library/ArtcBase.h"
 
 template<typename T>
 struct ktm::detail::quat_opt_implement::mul

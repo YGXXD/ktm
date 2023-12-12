@@ -1,7 +1,7 @@
 #ifndef _I_QUAT_MAKE_H_
 #define _I_QUAT_MAKE_H_
 
-#include "Math/Library/Definition.h"
+#include "Math/Library/ArtcBase.h"
 #include "Math/Library/Common.h"
 #include "Math/Library/VecGeometry.h"
 

@@ -1,7 +1,7 @@
 #ifndef _I_VECTOR_H_
 #define _I_VECTOR_H_
 
-#include "Math/Library/Definition.h"
+#include "Math/Library/ArtcBase.h"
 
 #define KTM_PERMUTATION_2_2(x, y) \
 CHTHOLLY_INLINE vec<2, T> x##y() const noexcept { return vec<2, T>(x, y); } \

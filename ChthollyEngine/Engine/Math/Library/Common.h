@@ -1,7 +1,7 @@
 #ifndef _COMMON_H_
 #define _COMMON_H_
 
-#include "Definition.h"
+#include "ArtcBase.h"
 
 namespace ktm
 {
@@ -71,7 +71,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, bool> near_zero(T 
 template<typename T>
 CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, bool> equal_zero(T x) noexcept
 {
-    return abs(x) < std::numeric_limits<T>::epsilon();
+    return abs(x) < epsilon<float>;
 }
 
 template<typename T>

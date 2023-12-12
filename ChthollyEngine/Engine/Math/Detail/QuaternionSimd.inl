@@ -2,7 +2,7 @@
 #define _QUATERNION_SIMD_INL_
 
 #include "QuatOptFwd.h"
-#include "Math/Library/Definition.h"
+#include "Math/Library/ArtcBase.h"
 
 #if defined(CHTHOLLY_SIMD_NEON)
 

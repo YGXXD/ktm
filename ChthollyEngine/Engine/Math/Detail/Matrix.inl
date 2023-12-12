@@ -2,7 +2,7 @@
 #define _MATRIX_INL_
 
 #include "MatOptFwd.h"
-#include "Math/Library/Definition.h"
+#include "Math/Library/ArtcBase.h"
 #include "Math/Library/VecCommon.h"
 
 template<size_t Row, size_t Col, typename T>

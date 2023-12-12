@@ -1,7 +1,7 @@
 #ifndef _I_MAT_MAKE_H_
 #define _I_MAT_MAKE_H_
 
-#include "Math/Library/Definition.h"
+#include "Math/Library/ArtcBase.h"
 
 namespace ktm
 {

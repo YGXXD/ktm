@@ -2,7 +2,7 @@
 #define _MAT_COMMON_SIMD_INL_
 
 #include "MatCommonFwd.h"
-#include "Math/Library/Definition.h"
+#include "Math/Library/ArtcBase.h"
 
 #if defined(CHTHOLLY_SIMD_NEON)
 

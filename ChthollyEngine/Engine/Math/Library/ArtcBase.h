@@ -1,5 +1,5 @@
-#ifndef _BASE_TYPE_H_
-#define _BASE_TYPE_H_
+#ifndef _ARTC_BASE_H_
+#define _ARTC_BASE_H_
 
 #include "Basic/Basic.h"
 #include "Acsi/Acsi.h"

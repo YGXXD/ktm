@@ -1,7 +1,7 @@
 #ifndef _I_QUAT_OPT_H_
 #define _I_QUAT_OPT_H_
 
-#include "Math/Library/Definition.h"
+#include "Math/Library/ArtcBase.h"
 #include "Math/Detail/VecOptFwd.h"
 #include "Math/Detail/QuatOptFwd.h"
 
