@@ -1,5 +1,5 @@
-#ifndef _COMMON_H_
-#define _COMMON_H_
+#ifndef _ARTC_COMMON_H_
+#define _ARTC_COMMON_H_
 
 #include "ArtcBase.h"
 

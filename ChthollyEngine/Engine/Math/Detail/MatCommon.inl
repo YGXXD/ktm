@@ -3,7 +3,7 @@
 
 #include "MatCommonFwd.h"
 #include "Math/Library/ArtcBase.h"
-#include "Math/Library/Common.h"
+#include "Math/Library/ArtcCommon.h"
 
 template<size_t N, typename T>
 struct ktm::detail::mat_common_implement::trace

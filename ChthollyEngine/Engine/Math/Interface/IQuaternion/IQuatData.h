@@ -2,7 +2,7 @@
 #define _I_QUAT_DATA_H_
 
 #include "Math/Library/ArtcBase.h"
-#include "Math/Library/Common.h"
+#include "Math/Library/ArtcCommon.h"
 #include "Math/Library/VecGeometry.h"
 
 namespace ktm

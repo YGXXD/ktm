@@ -1,6 +1,7 @@
 #ifndef _VEC_COMMON_H_
 #define _VEC_COMMON_H_
 
+#include "ArtcTraits.h"
 #include "Vector.h"
 #include "Math/Detail/VecCommonFwd.h"
 

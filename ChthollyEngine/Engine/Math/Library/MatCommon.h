@@ -1,6 +1,7 @@
 #ifndef _MAT_COMMON_H_
 #define _MAT_COMMON_H_
 
+#include "ArtcTraits.h"
 #include "Matrix.h"
 #include "Math/Detail/MatCommonFwd.h"
 

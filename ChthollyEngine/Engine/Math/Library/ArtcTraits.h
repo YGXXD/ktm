@@ -1,27 +1,12 @@
-#ifndef _BASE_TYPE_H_
-#define _BASE_TYPE_H_
+#ifndef _ARTC_TRAITS_H_
+#define _ARTC_TRAITS_H_
 
-#include "Basic/Basic.h"
-#include "Acsi/Acsi.h"
+#include "ArtcBase.h"
 
 namespace ktm
 {
 
-template<typename T>
-inline constexpr std::enable_if_t<std::is_arithmetic_v<T>, T> epsilon = std::numeric_limits<T>::epsilon();
-
-template<typename T>
-inline constexpr std::enable_if_t<std::is_arithmetic_v<T>, T> pi = static_cast<T>(3.141592653589793);
-
-template<typename T>
-inline constexpr std::enable_if_t<std::is_arithmetic_v<T>, T> zero = static_cast<T>(0);
-
-template<typename T>
-inline constexpr std::enable_if_t<std::is_arithmetic_v<T>, T> one = static_cast<T>(1);
-
-// 定义vector
-template<size_t N, typename T, typename = std::enable_if_t<(N > 0) && std::is_arithmetic_v<T>>> struct vec;
-
+// vec traits
 template<typename T>
 struct vec_traits;
 
@@ -38,9 +23,7 @@ using vec_traits_base_t = typename vec_traits<T>::base_type;
 template<typename T>
 inline constexpr size_t vec_traits_len = vec_traits<T>::len;
 
-// 定义matrix, Row为行的长度, Col为列的长度
-template<size_t Row, size_t Col, typename T, typename = std::enable_if_t<(Row > 1) && (Col > 1) && std::is_arithmetic_v<T>>> struct mat;
-
+// mat traits
 template<typename T>
 struct mat_traits;
 
@@ -73,9 +56,7 @@ inline constexpr size_t mat_traits_col_n = mat_traits<T>::col;
 template<typename T>
 inline constexpr size_t mat_traits_row_n = mat_traits<T>::row;
 
-// 定义quaternion
-template<typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>> struct quat;
-
+// quat traits
 template<typename T>
 struct quat_traits;
 
