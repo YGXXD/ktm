@@ -75,6 +75,28 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, bool> equal_zero(T
 }
 
 template<typename T>
+CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> exp(T x) noexcept
+{
+    if constexpr(std::is_same_v<T, float>)
+        return ::expf(x);
+    else if constexpr(std::is_same_v<T, double>)
+        return ::exp(x);
+    else 
+        return ::expl(x); 
+}
+
+template<typename T>
+CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> log(T x) noexcept
+{
+    if constexpr(std::is_same_v<T, float>)
+        return ::logf(x);
+    else if constexpr(std::is_same_v<T, double>)
+        return ::log(x);
+    else 
+        return ::logl(x); 
+}
+
+template<typename T>
 CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> sin(T x) noexcept
 {
     if constexpr(std::is_same_v<T, float>)
