@@ -3,7 +3,7 @@
 
 #include "Math/Library/Definition.h"
 #include "Math/Library/Common.h"
-#include "Math/Library/Geometry.h"
+#include "Math/Library/VecGeometry.h"
 
 namespace ktm
 {

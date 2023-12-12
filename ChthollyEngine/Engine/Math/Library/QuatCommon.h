@@ -4,7 +4,7 @@
 #include "Quaternion.h"
 #include "Common.h"
 #include "VecCommon.h"
-#include "Geometry.h"
+#include "VecGeometry.h"
 
 namespace ktm
 {
@@ -29,6 +29,12 @@ CHTHOLLY_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> negate(const Q& q) noexc
 }
 
 template<class Q>
+CHTHOLLY_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> lerp(const Q& x, const Q& y, quat_traits_base_t<Q> t) noexcept
+{
+    return Q(lerp(x.vector, y.vector, t));
+}
+
+template<class Q>
 CHTHOLLY_INLINE std::enable_if_t<is_quaternion_v<Q>, quat_traits_base_t<Q>> dot(const Q& p, const Q& q) noexcept
 {
     return dot(p.vector, q.vector);
@@ -41,7 +47,7 @@ CHTHOLLY_INLINE std::enable_if_t<is_quaternion_v<Q>, quat_traits_base_t<Q>> leng
 }
 
 template<class Q>
-CHTHOLLY_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> normalize(const Q& q) noexcept
+CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> normalize(const Q& q) noexcept
 {
     using T = quat_traits_base_t<Q>;
     T length_squared = dot(q.vector, q.vector);
@@ -75,22 +81,8 @@ CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> log(const Q& q) noexce
     return Q::real_imag(real, imag);
 }
 
-// template<class Q>
-// CHTHOLLY_INLINE std::enable_if_t<is_quaternion_v<Q>, vec<3, quat_traits_base_t<Q>>> act(const Q& q, const vec<3, quat_traits_base_t<Q>>& v) noexcept
-// {
-//     using T = quat_traits_base_t<Q>;
-//     vec<3, quat_traits_base_t<Q>> t = static_cast<T>(2) * cross(q.imag(), v);
-//     return v + (q.real() * t) + cross(q.imag(), t);
-// }
-
 template<class Q>
-CHTHOLLY_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> lerp(const Q& x, const Q& y, quat_traits_base_t<Q> t) noexcept
-{
-    return Q(lerp(x.vector, y.vector, t));
-}
-
-template<class Q>
-CHTHOLLY_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> slerp_internal(const Q& x, const Q& y, quat_traits_base_t<Q> t)
+CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> slerp_internal(const Q& x, const Q& y, quat_traits_base_t<Q> t)
 {
     using T = quat_traits_base_t<Q>;
     T s = one<T> - t;
@@ -100,7 +92,7 @@ CHTHOLLY_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> slerp_internal(const Q& 
 }
 
 template<class Q>
-CHTHOLLY_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> slerp(const Q& x, const Q& y, quat_traits_base_t<Q> t)
+CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> slerp(const Q& x, const Q& y, quat_traits_base_t<Q> t)
 {
     if (dot(x, y) >= 0)
         return slerp_internal(x, y, t);
@@ -108,7 +100,7 @@ CHTHOLLY_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> slerp(const Q& x, const 
 }
 
 template<class Q>
-CHTHOLLY_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> slerp_longest(const Q& x, const Q& y, quat_traits_base_t<Q> t)
+CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> slerp_longest(const Q& x, const Q& y, quat_traits_base_t<Q> t)
 {
     if (dot(x, y) >= 0)
         return slerp_internal(x, negate(y), t);

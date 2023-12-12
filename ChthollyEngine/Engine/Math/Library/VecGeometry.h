@@ -1,5 +1,5 @@
-#ifndef _GEOMETRY_H_
-#define _GEOMETRY_H_
+#ifndef _VEC_GEOMETRY_H_
+#define _VEC_GEOMETRY_H_
 
 #include "Vector.h"
 #include "VecCommon.h"

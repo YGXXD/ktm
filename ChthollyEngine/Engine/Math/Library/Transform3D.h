@@ -3,7 +3,7 @@
 
 #include "Matrix.h"
 #include "Vector.h"
-#include "Geometry.h"
+#include "VecGeometry.h"
 
 namespace ktm
 {
