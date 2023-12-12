@@ -3,6 +3,7 @@
 
 #include "Quaternion.h"
 #include "Common.h"
+#include "VecCommon.h"
 #include "Geometry.h"
 
 namespace ktm
@@ -44,10 +45,34 @@ CHTHOLLY_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> normalize(const Q& q) no
 {
     using T = quat_traits_base_t<Q>;
     T length_squared = dot(q.vector, q.vector);
-    if(equal_zero(length_squared)) {
+    if(equal_zero(length_squared)) 
         return Q(one<T>, zero<T>, zero<T>, zero<T>);
-    }
     return Q(q.vector * rsqrt(length_squared));
+}
+
+template<class Q>
+CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> exp(const Q& q) noexcept
+{
+    using T = quat_traits_base_t<Q>;
+    vec<3, T> q_imag = q.imag();
+    T angle = length(q_imag);
+    if (equal_zero(angle)) 
+        return Q(exp(q.real()), zero<T>, zero<T>, zero<T>);
+    vec<3, T> axis = normalize(q_imag);
+    Q unit = Q::real_imag(cos(angle), sin(angle) * axis);
+    return exp(q.real()) * unit;
+}
+
+template<class Q>
+CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> log(const Q& q) noexcept
+{
+    using T = quat_traits_base_t<Q>;
+    T real = log(length_squared(q.vector)) / static_cast<T>(2);
+    vec<3, T> q_imag = q.imag();
+    if (q_imag == vec<3, T>()) 
+        return Q(real, zero<T>, zero<T>, zero<T>);
+    vec<3, T> imag = acos(q.real() / length(q)) * normalize(q_imag);
+    return Q::real_imag(real, imag);
 }
 
 // template<class Q>
@@ -57,6 +82,12 @@ CHTHOLLY_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> normalize(const Q& q) no
 //     vec<3, quat_traits_base_t<Q>> t = static_cast<T>(2) * cross(q.imag(), v);
 //     return v + (q.real() * t) + cross(q.imag(), t);
 // }
+
+template<class Q>
+CHTHOLLY_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> lerp(const Q& x, const Q& y, quat_traits_base_t<Q> t) noexcept
+{
+    return Q(lerp(x.vector, y.vector, t));
+}
 
 template<class Q>
 CHTHOLLY_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> slerp_internal(const Q& x, const Q& y, quat_traits_base_t<Q> t)
