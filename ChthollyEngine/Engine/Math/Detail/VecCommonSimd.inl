@@ -173,7 +173,7 @@ struct ktm::detail::vec_common_implement::reduce_min<3, float>
     static CHTHOLLY_INLINE float call(const V& x) noexcept
     {
         float32x4_t tmp = vld1q_f32(&x[0]);
-        return vminvq_f32(vsetq_lane_f32(tmp[2], tmp, 3));
+        return vminvq_f32(vsetq_lane_f32(vgetq_lane_f32(tmp, 2), tmp, 3));
     }
 };
 
@@ -204,7 +204,7 @@ struct ktm::detail::vec_common_implement::reduce_min<3, int>
     static CHTHOLLY_INLINE int call(const V& x) noexcept
     {
         int32x4_t tmp = vld1q_s32(&x[0]);
-        return vminvq_s32(vsetq_lane_s32(tmp[2], tmp, 3)); 
+        return vminvq_s32(vsetq_lane_s32(vgetq_lane_s32(tmp, 2), tmp, 3)); 
     }
 };
 
@@ -235,7 +235,7 @@ struct ktm::detail::vec_common_implement::reduce_max<3, float>
     static CHTHOLLY_INLINE float call(const V& x) noexcept
     {
         float32x4_t tmp = vld1q_f32(&x[0]);
-        return vmaxvq_f32(vsetq_lane_f32(tmp[2], tmp, 3)); 
+        return vmaxvq_f32(vsetq_lane_f32(vgetq_lane_f32(tmp, 2), tmp, 3)); 
     }
 };
 
@@ -266,7 +266,7 @@ struct ktm::detail::vec_common_implement::reduce_max<3, int>
     static CHTHOLLY_INLINE int call(const V& x) noexcept
     {
         int32x4_t tmp = vld1q_s32(&x[0]);
-        return vmaxvq_s32(vsetq_lane_s32(tmp[2], tmp, 3)); 
+        return vmaxvq_s32(vsetq_lane_s32(vgetq_lane_s32(tmp, 2), tmp, 3)); 
     }
 };
 
