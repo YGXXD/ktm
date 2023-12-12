@@ -716,27 +716,18 @@ struct ktm::detail::mat_common_implement::inverse<4, float>
         __m128 sign_a = _mm_set_ps(one<float>, -one<float>, one<float>, -one<float>);
         __m128 sign_b = _mm_set_ps(-one<float>, one<float>, -one<float>, one<float>);
 
-        // v_0 = { m[1][0], m[0][0], m[0][0], m[0][0] }
         __m128 tmp_0 = _mm_shuffle_ps(c_1, c_0, 0);
         __m128 v_0 = _mm_shuffle_ps(tmp_0, tmp_0,  _MM_SHUFFLE(2, 2, 2, 0));
 
-        // v_0 = { m[1][1], m[0][1], m[0][1], m[0][1] }
         __m128 tmp_1 = _mm_shuffle_ps(c_1, c_0, _MM_SHUFFLE(1, 1, 1, 1));
         __m128 v_1 = _mm_shuffle_ps(tmp_1, tmp_1,  _MM_SHUFFLE(2, 2, 2, 0));
 
-        // v_0 = { m[1][2], m[0][2], m[0][2], m[0][2] }
         __m128 tmp_2 = _mm_shuffle_ps(c_1, c_0, _MM_SHUFFLE(2, 2, 2, 2));
         __m128 v_2 = _mm_shuffle_ps(tmp_2, tmp_2,  _MM_SHUFFLE(2, 2, 2, 0));
 
-        // v_0 = { m[1][3], m[0][3], m[0][3], m[0][3] }
         __m128 tmp_3 = _mm_shuffle_ps(c_1, c_0, _MM_SHUFFLE(3, 3, 3, 3));
         __m128 v_3 = _mm_shuffle_ps(tmp_3, tmp_3,  _MM_SHUFFLE(2, 2, 2, 0));
 
-        // inv_0
-        // + (v_1[0] * fac_0[0] - v_2[0] * fac_1[0] + v_3[0] * fac_2[0])
-        // - (v_1[1] * fac_0[1] - v_2[1] * fac_1[1] + v_3[1] * fac_2[1])
-        // + (v_1[2] * fac_0[2] - v_2[2] * fac_1[2] + v_3[2] * fac_2[2])
-        // - (v_1[3] * fac_0[3] - v_2[3] * fac_1[3] + v_3[3] * fac_2[3])
         __m128 inv_0; 
         {
             // sign_b * (v_1 * fac_0 - v_2 * fac_1 + v_3 * fac_2)
@@ -747,11 +738,6 @@ struct ktm::detail::mat_common_implement::inverse<4, float>
             inv_0 = _mm_mul_ps(sign_b, sum_0);
         }
 
-        // inv_1
-        // - (v_0[0] * fac_0[0] - v_2[0] * fac_3[0] + v_3[0] * fac_4[0])
-        // + (v_0[0] * fac_0[1] - v_2[1] * fac_3[1] + v_3[1] * fac_4[1])
-        // - (v_0[0] * fac_0[2] - v_2[2] * fac_3[2] + v_3[2] * fac_4[2])
-        // + (v_0[0] * fac_0[3] - v_2[3] * fac_3[3] + v_3[3] * fac_4[3])
         __m128 inv_1;
         {
             // sign_a * (v_0 * fac_0 - v_2 * fac_3 + v_3 * fac_4)
@@ -762,11 +748,6 @@ struct ktm::detail::mat_common_implement::inverse<4, float>
             inv_1 = _mm_mul_ps(sign_a, sum_0);
         }
 
-        // inv_2
-        // + (v_0[0] * fac_1[0] - v_1[0] * fac_3[0] + v_3[0] * fac_5[0])
-        // - (v_0[0] * fac_1[1] - v_1[1] * fac_3[1] + v_3[1] * fac_5[1])
-        // + (v_0[0] * fac_1[2] - v_1[2] * fac_3[2] + v_3[2] * fac_5[2])
-        // - (v_0[0] * fac_1[3] - v_1[3] * fac_3[3] + v_3[3] * fac_5[3])
         __m128 inv_2;
         {
             // sign_b * (v_0 * fac_1 - v_1 * fac_3 + v_3 * fac_5)
@@ -777,11 +758,6 @@ struct ktm::detail::mat_common_implement::inverse<4, float>
             inv_2 = _mm_mul_ps(sign_b, sum_0);
         }
 
-        // inv_3
-        // - (v_0[0] * fac_2[0] - v_1[0] * fac_4[0] + v_2[0] * fac_5[0])
-        // + (v_0[0] * fac_2[1] - v_1[1] * fac_4[1] + v_2[1] * fac_5[1])
-        // - (v_0[0] * fac_2[2] - v_1[2] * fac_4[2] + v_2[2] * fac_5[2])
-        // + (v_0[0] * fac_2[3] - v_1[3] * fac_4[3] + v_2[3] * fac_5[3])
         __m128 inv_3;
         {
             // sign_a * (v_0 * fac_2 - v_1 * fac_4 + v_2 * fac_5)
@@ -792,11 +768,6 @@ struct ktm::detail::mat_common_implement::inverse<4, float>
             inv_3 = _mm_mul_ps(sign_a, sum_0);
         }
 
-        // det
-        // + m[0][0] * Inverse[0][0]
-        // + m[0][1] * Inverse[1][0]
-        // + m[0][2] * Inverse[2][0]
-        // + m[0][3] * Inverse[3][0];
         __m128 i_tmp_0 = _mm_shuffle_ps(inv_0, inv_1, 0);
         __m128 i_tmp_1 = _mm_shuffle_ps(inv_2, inv_3, 0);
         __m128 i_row_0 = _mm_shuffle_ps(i_tmp_0, i_tmp_1,  _MM_SHUFFLE(3, 1, 3, 1));
