@@ -17,18 +17,18 @@ struct IQuatMake<Father, quat<T>> : Father
 
     static CHTHOLLY_INLINE quat<T> identity() noexcept
     {
-        return quat<T>(one<T>, zero<T>, zero<T>, zero<T>);
+        return quat<T>(zero<T>, zero<T>, zero<T>, one<T>);
     }
 
     static CHTHOLLY_INLINE quat<T> real_imag(T real, const vec<3, T>& imag) noexcept
     {
-        return quat<T>(real, imag.x, imag.y, imag.z);
+        return quat<T>(imag.x, imag.y, imag.z, real);
     } 
 
     static CHTHOLLY_INLINE quat<T> angle_axis(T angle, const vec<3, T>& axis) noexcept
     {
         T sin_0p5angle = sin(angle * static_cast<T>(0.5));
-        return quat<T>(cos(angle * static_cast<T>(0.5)), sin_0p5angle * axis[0], sin_0p5angle * axis[1], sin_0p5angle * axis[2]);
+        return quat<T>(sin_0p5angle * axis[0], sin_0p5angle * axis[1], sin_0p5angle * axis[2], cos(angle * static_cast<T>(0.5)));
     }
 
     static CHTHOLLY_NOINLINE quat<T> from_to(const vec<3, T>& from, const vec<3, T>& to) noexcept

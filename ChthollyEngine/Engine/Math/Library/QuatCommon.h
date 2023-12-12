@@ -13,7 +13,7 @@ template<class Q>
 CHTHOLLY_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> conjugate(const Q& q) noexcept
 {
     using T = quat_traits_base_t<Q>;
-    return Q(q.vector * quat_traits_storage_t<Q>(one<T>, -one<T>, -one<T>, -one<T>));
+    return Q(q.vector * quat_traits_storage_t<Q>(-one<T>, -one<T>, -one<T>, one<T>));
 }
 
 template<class Q>
@@ -53,7 +53,7 @@ CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> normalize(const Q& q) 
     using T = quat_traits_base_t<Q>;
     T length_squared = dot(q.vector, q.vector);
     if(equal_zero(length_squared)) 
-        return Q(one<T>, zero<T>, zero<T>, zero<T>);
+        return Q(zero<T>, zero<T>, zero<T>, one<T>);
     return Q(q.vector * rsqrt(length_squared));
 }
 
@@ -64,7 +64,7 @@ CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> exp(const Q& q) noexce
     vec<3, T> q_imag = q.imag();
     T angle = length(q_imag);
     if (equal_zero(angle)) 
-        return Q(exp(q.real()), zero<T>, zero<T>, zero<T>);
+        return Q(zero<T>, zero<T>, zero<T>, exp(q.real()));
     vec<3, T> axis = normalize(q_imag);
     Q unit = Q::real_imag(cos(angle), sin(angle) * axis);
     return exp(q.real()) * unit;
@@ -77,7 +77,7 @@ CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> log(const Q& q) noexce
     T real = log(length_squared(q.vector)) / static_cast<T>(2);
     vec<3, T> q_imag = q.imag();
     if (q_imag == vec<3, T>()) 
-        return Q(real, zero<T>, zero<T>, zero<T>);
+        return Q(zero<T>, zero<T>, zero<T>, real);
     vec<3, T> imag = acos(q.real() / length(q)) * normalize(q_imag);
     return Q::real_imag(real, imag);
 }
