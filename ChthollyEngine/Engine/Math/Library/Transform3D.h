@@ -11,8 +11,8 @@ namespace ktm
 template<typename T>
 CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> view_look_at(const vec<3, T>& eye_pos, const vec<3, T>& focus_pos, const vec<3, T>& up)
 {
-    vec<3, T> z = nomorlize(focus_pos - eye_pos);
-    vec<3, T> x = nomorlize(cross(up, z));
+    vec<3, T> z = normalize(focus_pos - eye_pos);
+    vec<3, T> x = normalize(cross(up, z));
     vec<3, T> y = cross(z, x);
     T wx = -dot(eye_pos, x);
     T wy = -dot(eye_pos, y);

@@ -25,7 +25,7 @@ struct alignas(sizeof(vec<4, T>)) IQuatData<Father, quat<T>> : Father
     CHTHOLLY_INLINE T real() const noexcept { return r; }
     CHTHOLLY_INLINE vec<3, T> imag() const noexcept { return vec<3, T>(i, j, k); } 
     CHTHOLLY_INLINE T angle() const noexcept { return static_cast<T>(2) * atan2(length(imag()), r); }
-    CHTHOLLY_INLINE vec<3, T> axis() const noexcept { return nomorlize(imag()); } 
+    CHTHOLLY_INLINE vec<3, T> axis() const noexcept { return normalize(imag()); } 
 };
 }
 

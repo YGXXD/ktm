@@ -37,20 +37,20 @@ struct IQuatMake<Father, quat<T>> : Father
             return from_to_less_0p5pi(from, to); 
         }
         
-        vec<3, T> half = nomorlize(from) + nomorlize(to);
+        vec<3, T> half = normalize(from) + normalize(to);
         
         if (equal_zero(length_squared(half))) 
         {
             vec<3, T> abs_from = abs(from);
             if (abs_from.x <= abs_from.y && abs_from.x <= abs_from.z)
-                return real_imag(zero<T>, nomorlize(cross(from, vec<3, T>(one<T>, zero<T>, zero<T>)))); 
+                return real_imag(zero<T>, normalize(cross(from, vec<3, T>(one<T>, zero<T>, zero<T>)))); 
             else if (abs_from.y <= abs_from.z)
-                return real_imag(zero<T>, nomorlize(cross(from, vec<3, T>(zero<T>, one<T>, zero<T>)))); 
+                return real_imag(zero<T>, normalize(cross(from, vec<3, T>(zero<T>, one<T>, zero<T>)))); 
             else
-                return real_imag(zero<T>, nomorlize(cross(from, vec<3, T>(zero<T>, zero<T>, one<T>)))); 
+                return real_imag(zero<T>, normalize(cross(from, vec<3, T>(zero<T>, zero<T>, one<T>)))); 
         }
 
-        half = nomorlize(half);
+        half = normalize(half);
         return from_to_less_0p5pi(from, half) * from_to_less_0p5pi(half, to);
     }
 
@@ -58,7 +58,7 @@ private:
     static CHTHOLLY_INLINE quat<T> from_to_less_0p5pi(const vec<3, T>& from, const vec<3, T>& to)
     {
         // 计算向量旋转夹角小于二分之pi的四元数
-        vec<3, T> half = nomorlize(from + to);
+        vec<3, T> half = normalize(from + to);
         return real_imag(dot(from, half), cross(from, half));
     }
 };

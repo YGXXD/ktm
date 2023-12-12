@@ -60,6 +60,11 @@ struct IQuatOpt<Father, quat<T>> : Father
         return ret;
     }
 
+    friend CHTHOLLY_INLINE quat<T> operator*(T scalar, const quat<T>& x) noexcept 
+    { 
+        return x * scalar; 
+    }
+
     CHTHOLLY_INLINE quat<T>& operator*=(T scalar) noexcept
     {
         detail::vec_opt_implement::mul_scalar_to_self<4, T>::call(reinterpret_cast<vec<4, T>&>(*this), scalar);
