@@ -57,6 +57,12 @@ CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> normalize(const Q& q) 
     return Q(q.vector * rsqrt(length_squared));
 }
 
+// template<class Q>
+// CHTHOLLY_INLINE std::enable_if_t<is_quaternion_v<Q>, vec<3, quat_traits_base_t<Q>>> act(const Q& q, const vec<3, quat_traits_base_t<Q>>& v) noexcept
+// {
+//     return (q * Q::real_imag(zero<quat_traits_base_t<Q>>, v) * inverse(q)).imag();
+// }
+
 template<class Q>
 CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> exp(const Q& q) noexcept
 {
@@ -83,7 +89,7 @@ CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> log(const Q& q) noexce
 }
 
 template<class Q>
-CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> slerp_internal(const Q& x, const Q& y, quat_traits_base_t<Q> t)
+CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> slerp_internal(const Q& x, const Q& y, quat_traits_base_t<Q> t) noexcept
 {
     using T = quat_traits_base_t<Q>;
     T s = one<T> - t;
@@ -93,7 +99,7 @@ CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> slerp_internal(const Q
 }
 
 template<class Q>
-CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> slerp(const Q& x, const Q& y, quat_traits_base_t<Q> t)
+CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> slerp(const Q& x, const Q& y, quat_traits_base_t<Q> t) noexcept
 {
     if (dot(x, y) >= 0)
         return slerp_internal(x, y, t);
@@ -101,7 +107,7 @@ CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> slerp(const Q& x, cons
 }
 
 template<class Q>
-CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> slerp_longest(const Q& x, const Q& y, quat_traits_base_t<Q> t)
+CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> slerp_longest(const Q& x, const Q& y, quat_traits_base_t<Q> t) noexcept
 {
     if (dot(x, y) >= 0)
         return slerp_internal(x, negate(y), t);
