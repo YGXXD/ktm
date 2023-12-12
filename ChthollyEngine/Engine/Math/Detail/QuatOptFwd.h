@@ -14,6 +14,9 @@ struct mul;
 template<typename T>
 struct mul_to_self;
 
+template<typename T>
+struct act;
+
 }
 }
 }

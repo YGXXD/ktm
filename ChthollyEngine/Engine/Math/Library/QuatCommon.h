@@ -57,12 +57,6 @@ CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> normalize(const Q& q) 
     return Q(q.vector * rsqrt(length_squared));
 }
 
-// template<class Q>
-// CHTHOLLY_INLINE std::enable_if_t<is_quaternion_v<Q>, vec<3, quat_traits_base_t<Q>>> act(const Q& q, const vec<3, quat_traits_base_t<Q>>& v) noexcept
-// {
-//     return (q * Q::real_imag(zero<quat_traits_base_t<Q>>, v) * inverse(q)).imag();
-// }
-
 template<class Q>
 CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> exp(const Q& q) noexcept
 {

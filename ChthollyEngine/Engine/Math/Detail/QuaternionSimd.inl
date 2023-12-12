@@ -60,6 +60,55 @@ struct ktm::detail::quat_opt_implement::mul_to_self<float>
     }
 };
 
+template<>
+struct ktm::detail::quat_opt_implement::act<float>
+{
+    using Q = quat<float>;
+    static CHTHOLLY_INLINE vec<3, float> call(const Q& q, const vec<3, float>& v) noexcept
+    {
+        // |q| = 1 => q-1 <==> qc
+        // q * quat(v,0) * qc
+        float32x4_t t_q = vld1q_f32(&q[0]);
+        float32x4_t t_qi = vmulq_f32(t_q, vsetq_lane_f32(one<float>, vdupq_n_f32(-one<float>), 3));
+        float32x4_t mul_vqi = mul_vq(v, t_qi);
+        float32x4_t mul_vqi_opp = vnegq_f32(mul_vqi);
+
+        float32x4_t tmp_0 = acsi_vshuffleq_f32(mul_vqi, mul_vqi_opp, 2, 2, 3, 3);
+        float32x4_t tmp_1 = acsi_vshuffleq_f32(mul_vqi, mul_vqi_opp, 1, 0, 1, 0); 
+
+        float32x4_t mul_x = acsi_vshuffleq_f32(tmp_0, tmp_1, 2, 1, 3, 0); 
+        float32x4_t mul_y = acsi_vshuffleq_f32(mul_vqi, mul_vqi_opp, 1, 0, 3, 2); 
+        float32x4_t mul_z = acsi_vshuffleq_f32(tmp_1, tmp_0, 2, 1, 0, 3);
+
+        float32x4_t add_0 = vmulq_f32(vdupq_n_f32(q[0]), mul_x); 
+        float32x4_t add_1 = vmulq_f32(vdupq_n_f32(q[1]), mul_y); 
+        float32x4_t add_2 = vmulq_f32(vdupq_n_f32(q[2]), mul_z); 
+        float32x4_t add_3 = vmulq_f32(vdupq_n_f32(q[3]), mul_vqi); 
+
+        float32x4_t ret = acsi_vaddq_f32_all(add_0, add_1, add_2, add_3); 
+
+        return *reinterpret_cast<vec<3, float>*>(&ret);
+    }
+private:
+    static CHTHOLLY_INLINE float32x4_t mul_vq(const vec<3, float>& v, float32x4_t q) noexcept
+    {
+        float32x4_t q_opp = vnegq_f32(q);
+
+        float32x4_t tmp_0 = acsi_vshuffleq_f32(q, q_opp, 2, 2, 3, 3);
+        float32x4_t tmp_1 = acsi_vshuffleq_f32(q, q_opp, 1, 0, 1, 0); 
+
+        float32x4_t mul_x = acsi_vshuffleq_f32(tmp_0, tmp_1, 2, 1, 3, 0); 
+        float32x4_t mul_y = acsi_vshuffleq_f32(q, q_opp, 1, 0, 3, 2); 
+        float32x4_t mul_z = acsi_vshuffleq_f32(tmp_1, tmp_0, 2, 1, 0, 3);
+
+        float32x4_t add_0 = vmulq_f32(vdupq_n_f32(v[0]), mul_x); 
+        float32x4_t add_1 = vmulq_f32(vdupq_n_f32(v[1]), mul_y); 
+        float32x4_t add_2 = vmulq_f32(vdupq_n_f32(v[2]), mul_z); 
+
+        return acsi_vaddq_f32_all(add_0, add_1, add_2);
+    } 
+};
+
 #elif defined(CHTHOLLY_SIMD_SSE) 
 
 template<>

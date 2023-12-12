@@ -53,6 +53,11 @@ struct IQuatOpt<Father, quat<T>> : Father
         return this_ref;
     }
 
+    CHTHOLLY_INLINE vec<3, T> operator*(const vec<3, T>& v) noexcept
+    {
+        return detail::quat_opt_implement::act<T>::call(reinterpret_cast<const quat<T>&>(*this), v); 
+    }
+
     CHTHOLLY_INLINE quat<T> operator*(T scalar) const noexcept
     {
         quat<T> ret;
