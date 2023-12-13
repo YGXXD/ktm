@@ -40,8 +40,8 @@ struct ktm::detail::quat_opt_implement::act
     using Q = quat<T>;
     static CHTHOLLY_INLINE vec<3, T> call(const Q& q, const vec<3,T>& v) noexcept
     {   
-        vec<3, T> t = static_cast<T>(2) * cross(q.imag(), v);
-        return v + (q.real() * t) + cross(q.imag(), t);
+        vec<3, T> t = static_cast<T>(2) * ktm::cross(q.imag(), v);
+        return v + (q.real() * t) + ktm::cross(q.imag(), t);
     }
 };
 

@@ -54,7 +54,7 @@ private:
         if constexpr(sizeof...(Ns))
         {
             T ret = x[0];
-            ((ret = ktm::min<T>(ret, x[Ns + 1])), ...);
+            ((ret = ktm::min(ret, x[Ns + 1])), ...);
             return ret;
         }
         else
@@ -77,7 +77,7 @@ private:
         if constexpr(sizeof...(Ns))
         {
             T ret = x[0];
-            ((ret = ktm::max<T>(ret, x[Ns + 1])), ...);
+            ((ret = ktm::max(ret, x[Ns + 1])), ...);
             return ret;
         }
         else

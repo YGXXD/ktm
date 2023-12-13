@@ -40,7 +40,7 @@ private:
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = reduce_add<ColV>(m[Ns] * v)), ...);
+        ((ret[Ns] = ktm::reduce_add(m[Ns] * v)), ...);
         return ret;
     }
 };

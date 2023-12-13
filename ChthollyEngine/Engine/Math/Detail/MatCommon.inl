@@ -4,6 +4,7 @@
 #include "MatCommonFwd.h"
 #include "Math/Library/ArtcBase.h"
 #include "Math/Library/ArtcCommon.h"
+#include "Math/Library/VecCommon.h"
 
 template<size_t N, typename T>
 struct ktm::detail::mat_common_implement::trace
@@ -251,9 +252,9 @@ struct ktm::detail::mat_common_implement::factor_qr
             {
                 alpha += r[i][j] * r[i][j];
             }
-            alpha = r[i][i] > zero<T> ? -sqrt(alpha) : sqrt(alpha);
+            alpha = r[i][i] > zero<T> ? -ktm::sqrt(alpha) : ktm::sqrt(alpha);
 
-            T r_rho = rsqrt(static_cast<T>(2) * alpha * (alpha - r[i][i]));
+            T r_rho = ktm::rsqrt(static_cast<T>(2) * alpha * (alpha - r[i][i]));
             r[i][i] = (r[i][i] - alpha) * r_rho;
             for(int j = i + 1; j < N; ++j)
             {
@@ -312,7 +313,7 @@ struct ktm::detail::mat_common_implement::eigen_qr_it
             {
                 eigen_value[i] = a[i][i]; 
             }
-            if(equal_zero(reduce_max(abs(eigen_value - last_eigen_value))))
+            if(ktm::equal_zero(ktm::reduce_max(ktm::abs(eigen_value - last_eigen_value))))
                 break;
         }
         return { eigen_value, eigen_vec };
@@ -334,12 +335,12 @@ struct ktm::detail::mat_common_implement::eigen_jacobi_it
         {
             // 找到非对角线的最大元素
             int col = 0, row = 1;
-            T nd_max = abs(a[0][1]);
+            T nd_max = ktm::abs(a[0][1]);
             for(int i = 0; i < N; ++i)
             {
                 for(int j = i + 1; j < N; ++j)
                 {
-                    T nd_elem = abs(a[i][j]);
+                    T nd_elem = ktm::abs(a[i][j]);
                     if(nd_elem > nd_max)
                     {
                         col = i;
@@ -349,7 +350,7 @@ struct ktm::detail::mat_common_implement::eigen_jacobi_it
                 }
             }
             
-            if(equal_zero(nd_max))
+            if(ktm::equal_zero(nd_max))
                 break;
             
             T acc = a[col][col];
@@ -359,30 +360,30 @@ struct ktm::detail::mat_common_implement::eigen_jacobi_it
             // 计算旋转角度
             T sin_theta, cos_theta, sin_2theta, cos_2theta;
 
-            if(equal_zero(arr - acc))
+            if(ktm::equal_zero(arr - acc))
             {
                 if(acr < 0)
                 {
-                    sin_theta = -rsqrt(static_cast<T>(2));
-                    cos_theta = rsqrt(static_cast<T>(2));
+                    sin_theta = -ktm::rsqrt(static_cast<T>(2));
+                    cos_theta = ktm::rsqrt(static_cast<T>(2));
                     sin_2theta = -one<T>;
                     cos_2theta = zero<T>;
                 }
                 else 
                 {
-                    sin_theta = rsqrt(static_cast<T>(2));
-                    cos_theta = rsqrt(static_cast<T>(2));
+                    sin_theta = ktm::rsqrt(static_cast<T>(2));
+                    cos_theta = ktm::rsqrt(static_cast<T>(2));
                     sin_2theta = one<T>;
                     cos_2theta = zero<T>; 
                 }
             }
             else
             {
-                T theta = static_cast<T>(0.5) * atan2(static_cast<T>(2) * acr, arr - acc);
-                sin_theta = sin(theta);
-                cos_theta = cos(theta);
-                sin_2theta = sin(static_cast<T>(2) * theta);
-                cos_2theta = cos(static_cast<T>(2) * theta);
+                T theta = static_cast<T>(0.5) * ktm::atan2(static_cast<T>(2) * acr, arr - acc);
+                sin_theta = ktm::sin(theta);
+                cos_theta = ktm::cos(theta);
+                sin_2theta = ktm::sin(static_cast<T>(2) * theta);
+                cos_2theta = ktm::cos(static_cast<T>(2) * theta);
             }
 
             // 计算迭代后的的矩阵元素
@@ -438,7 +439,7 @@ struct ktm::detail::mat_common_implement::factor_svd
         vec<N, T>& ata_eigen_value_ref = std::get<0>(ata_eigen);
         for(int i = 0; i < N; ++i)
         {
-            ata_eigen_value_ref[i] = sqrt(abs(ata_eigen_value_ref[i])); 
+            ata_eigen_value_ref[i] = ktm::sqrt(ktm::abs(ata_eigen_value_ref[i])); 
         }
         M v = transpose<N, N, T>::call(std::get<1>(ata_eigen));
         M s = M::from_diag(ata_eigen_value_ref);
@@ -459,29 +460,29 @@ struct ktm::detail::mat_common_implement::factor_svd
 //     using M = mat<2, 2, T>;
 //     static CHTHOLLY_NOINLINE std::tuple<M, M, M> call(const M& m)
 //     {
-//             T a = m[0][0], c = m[0][1], b = m[1][0], d = m[1][1];
-//         T a2 = pow2(a), b2 = pow2(b), c2 = pow2(c), d2 = pow2(d);
+//         T a = m[0][0], c = m[0][1], b = m[1][0], d = m[1][1];
+//         T a2 = ktm::pow2(a), b2 = ktm::pow2(b), c2 = ktm::pow2(c), d2 = ktm::pow2(d);
 //         T a2_p_b2 = a2 + b2;
 //         T c2_p_d2 = c2 + d2;
 //         T ac_p_bd = a * c + b * d;
 //         T two_ac_p_bd = 2 * ac_p_bd;
 //         T a2_p_b2_m_c2_m_d2 = a2_p_b2 - c2_p_d2;
 
-//         T theta = static_cast<T>(0.5) * atan2(two_ac_p_bd, a2_p_b2_m_c2_m_d2);
-//         T cos_theta = cos(theta);
-//         T sin_theta = sin(theta);
+//         T theta = static_cast<T>(0.5) * ktm::atan2(two_ac_p_bd, a2_p_b2_m_c2_m_d2);
+//         T cos_theta = ktm::cos(theta);
+//         T sin_theta = ktm::sin(theta);
 
 //         M u = { { cos_theta, sin_theta }, { -sin_theta, cos_theta } };
 
 //         T sg1 = a2_p_b2 + c2_p_d2;
-//         T sg2 = sqrt(pow2(a2_p_b2_m_c2_m_d2) + pow2(two_ac_p_bd));
-//         T sigma1 = sqrt(static_cast<T>(0.5) * (sg1 + sg2));
-//         T sigma2 = sqrt(static_cast<T>(0.5) * (sg1 - sg2));
+//         T sg2 = ktm::sqrt(ktm::pow2(a2_p_b2_m_c2_m_d2) + ktm::pow2(two_ac_p_bd));
+//         T sigma1 = ktm::sqrt(static_cast<T>(0.5) * (sg1 + sg2));
+//         T sigma2 = ktm::sqrt(static_cast<T>(0.5) * (sg1 - sg2));
 //         M s = { { sigma1, 0 }, { 0, sigma2 } };
 
-//         T phi   = static_cast<T>(0.5) * atan2(static_cast<T>(2) * (a * b + c * d), a2 - b2 + c2 - d2);
-//         T cos_phi   = cos(phi);
-//         T sin_phi   = sin(phi);
+//         T phi   = static_cast<T>(0.5) * ktm::atan2(static_cast<T>(2) * (a * b + c * d), a2 - b2 + c2 - d2);
+//         T cos_phi   = ktm::cos(phi);
+//         T sin_phi   = ktm::sin(phi);
 
 //         T s11 = (a * cos_theta + c * sin_theta) * cos_theta + ( b * cos_theta + d * sin_theta) * sin_phi;
 //         T s22 = (a * sin_theta - c * cos_theta) * sin_phi   + (-b * sin_theta + d * cos_theta) * cos_phi;
@@ -492,5 +493,4 @@ struct ktm::detail::mat_common_implement::factor_svd
 //         return { u, s, v };
 //     } 
 // };
-
 #endif
