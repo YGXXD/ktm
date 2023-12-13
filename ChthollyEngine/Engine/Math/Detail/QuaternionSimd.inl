@@ -151,6 +151,53 @@ struct ktm::detail::quat_opt_implement::mul_to_self<float>
     }
 };
 
+template<>
+struct ktm::detail::quat_opt_implement::act<float>
+{
+    using Q = quat<float>;
+    static CHTHOLLY_INLINE vec<3, float> call(const Q& q, const vec<3, float>& v) noexcept
+    {
+        __m128 t_q = _mm_load_ps(&q[0]);
+        __m128 t_qi = _mm_mul_ps(t_q, _mm_set_ps(one<float>, -one<float>, -one<float>, -one<float>));
+        __m128 mul_vqi = mul_vq(v, t_qi);
+        __m128 mul_vqi_opp = acsi_mm_neg_ps(mul_vqi);
+
+        __m128 tmp_0 = _mm_shuffle_ps(mul_vqi, mul_vqi_opp, _MM_SHUFFLE(2, 2, 3, 3));
+        __m128 tmp_1 = _mm_shuffle_ps(mul_vqi, mul_vqi_opp, _MM_SHUFFLE(1, 0, 1, 0)); 
+
+        __m128 mul_x = _mm_shuffle_ps(tmp_0, tmp_1, _MM_SHUFFLE(2, 1, 3, 0)); 
+        __m128 mul_y = _mm_shuffle_ps(mul_vqi, mul_vqi_opp, _MM_SHUFFLE(1, 0, 3, 2)); 
+        __m128 mul_z = _mm_shuffle_ps(tmp_1, tmp_0, _MM_SHUFFLE(2, 1, 0, 3));
+
+        __m128 add_0 = _mm_mul_ps(_mm_set1_ps(q[0]), mul_x); 
+        __m128 add_1 = _mm_mul_ps(_mm_set1_ps(q[1]), mul_y); 
+        __m128 add_2 = _mm_mul_ps(_mm_set1_ps(q[2]), mul_z); 
+        __m128 add_3 = _mm_mul_ps(_mm_set1_ps(q[3]), mul_vqi); 
+
+        __m128 ret = acsi_mm_add_ps_all(add_0, add_1, add_2, add_3); 
+
+        return *reinterpret_cast<vec<3, float>*>(&ret);
+    }
+private:
+    static CHTHOLLY_INLINE __m128 mul_vq(const vec<3, float>& v, __m128 q) noexcept
+    {
+        __m128 q_opp = acsi_mm_neg_ps(q);
+
+        __m128 tmp_0 = _mm_shuffle_ps(q, q_opp, _MM_SHUFFLE(2, 2, 3, 3));
+        __m128 tmp_1 = _mm_shuffle_ps(q, q_opp, _MM_SHUFFLE(1, 0, 1, 0)); 
+
+        __m128 mul_x = _mm_shuffle_ps(tmp_0, tmp_1, _MM_SHUFFLE(2, 1, 3, 0)); 
+        __m128 mul_y = _mm_shuffle_ps(q, q_opp, _MM_SHUFFLE(1, 0, 3, 2)); 
+        __m128 mul_z = _mm_shuffle_ps(tmp_1, tmp_0, _MM_SHUFFLE(2, 1, 0, 3));
+
+        __m128 add_0 = _mm_mul_ps(_mm_set1_ps(v[0]), mul_x); 
+        __m128 add_1 = _mm_mul_ps(_mm_set1_ps(v[1]), mul_y); 
+        __m128 add_2 = _mm_mul_ps(_mm_set1_ps(v[2]), mul_z); 
+
+        return acsi_mm_add_ps_all(add_0, add_1, add_2);
+    } 
+};
+
 #endif
 
 #endif
