@@ -28,17 +28,26 @@ struct IQuatMake<Father, quat<T>> : Father
 
     static CHTHOLLY_INLINE quat<T> angle_axis(T angle, const vec<3, T>& axis) noexcept
     {
+        return angle_axis_nomal(angle, normalize(axis));
+    }
+ 
+    static CHTHOLLY_INLINE quat<T> angle_axis_nomal(T angle, const vec<3, T>& axis) noexcept
+    {
         T sin_0p5angle = sin(angle * static_cast<T>(0.5));
         return quat<T>(sin_0p5angle * axis[0], sin_0p5angle * axis[1], sin_0p5angle * axis[2], cos(angle * static_cast<T>(0.5)));
     }
 
-    static CHTHOLLY_NOINLINE quat<T> from_to(const vec<3, T>& from, const vec<3, T>& to) noexcept
+    static CHTHOLLY_INLINE quat<T> from_to(const vec<3, T>& from, const vec<3, T>& to) noexcept
+    {
+        return from_to_nomal(normalize(from), normalize(to));
+    }
+    static CHTHOLLY_NOINLINE quat<T> from_to_nomal(const vec<3, T>& from, const vec<3, T>& to) noexcept
     {
         if (dot(from, to) >= 0) {
             return from_to_less_0p5pi(from, to); 
         }
         
-        vec<3, T> half = normalize(from) + normalize(to);
+        vec<3, T> half = from + to;
         
         if (equal_zero(length_squared(half))) 
         {

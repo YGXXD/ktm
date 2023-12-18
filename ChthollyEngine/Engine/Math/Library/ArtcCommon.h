@@ -281,10 +281,12 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> rsqrt(T x) noex
         }
         T tmp = *reinterpret_cast<T*>(&i); 
         T ret = tmp * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * tmp * tmp)); 
-        while(!equal_zero(ret - tmp))
+        int iterator_num = 0;
+        while(!equal_zero(ret - tmp) && iterator_num < 10)
         {
             tmp = ret;
-            ret = tmp * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * tmp * tmp)); 
+            ret = tmp * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * tmp * tmp));
+            ++iterator_num;
         }
         
         return ret;

@@ -43,16 +43,18 @@ struct alignas(sizeof(vec<4, T>)) IQuatData<Father, quat<T>> : Father
 private:
     CHTHOLLY_NOINLINE void matrix(mat<3, 3, T>& m) const noexcept
     {
-        T xx = i * i, yy = j * j, zz = k * k, xy = i * j, xz = i * k, xw = i * r, yz = j * k, yw = j * r, zw = k * r;
-        m[0][0] = one<T> - static_cast<T>(2) * (yy + zz);
-        m[0][1] = static_cast<T>(2) * (xy + zw);
-        m[0][2] = static_cast<T>(2) * (xz - yw);
-        m[1][0] = static_cast<T>(2) * (xy - zw);
-        m[1][1] = one<T> - static_cast<T>(2) * (xx + zz);
-        m[1][2] = static_cast<T>(2) * (yz + xw);
-        m[2][0] = static_cast<T>(2) * (xz + yw); 
-        m[2][1] = static_cast<T>(2) * (yz - xw);
-        m[2][2] = one<T> - static_cast<T>(2) * (yy + xx);
+        T xx2 = i * i * static_cast<T>(2), yy2 = j * j * static_cast<T>(2), zz2 = k * k * static_cast<T>(2);
+        T xy2 = i * j * static_cast<T>(2), xz2 = i * k * static_cast<T>(2), xw2 = i * r * static_cast<T>(2);
+        T yz2 = j * k * static_cast<T>(2), yw2 = j * r * static_cast<T>(2), zw2 = k * r * static_cast<T>(2);
+        m[0][0] = one<T> - (yy2 + zz2);
+        m[0][1] = xy2 + zw2;
+        m[0][2] = xz2 - yw2;
+        m[1][0] = xy2 - zw2;
+        m[1][1] = one<T> - (xx2 + zz2);
+        m[1][2] = yz2 + xw2;
+        m[2][0] = xz2 + yw2; 
+        m[2][1] = yz2 - xw2;
+        m[2][2] = one<T> - (yy2 + xx2);
     }
 };
 }
