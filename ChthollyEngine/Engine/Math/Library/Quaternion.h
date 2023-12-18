@@ -2,6 +2,7 @@
 #define _QUATERNION_H_
 
 #include "Vector.h"
+#include "Matrix.h"
 #include "Math/Interface/ICommon/IArray.h"
 #include "Math/Interface/IQuaternion/IQuatData.h"
 #include "Math/Interface/IQuaternion/IQuatMake.h"
