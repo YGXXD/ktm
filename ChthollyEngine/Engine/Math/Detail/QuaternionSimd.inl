@@ -150,7 +150,7 @@ struct ktm::detail::quat_opt_implement::mul<float>
     {
         __m128 t_x = _mm_load_ps(&x[0]); 
         __m128 t_y = _mm_load_ps(&y[0]);
-        __m128 ret = mul_qq(t_x, t_y)
+        __m128 ret = mul_qq(t_x, t_y);
         return *reinterpret_cast<Q*>(&ret);
     }
 };
@@ -163,7 +163,7 @@ struct ktm::detail::quat_opt_implement::mul_to_self<float>
     {
         __m128 t_x = _mm_load_ps(&x[0]); 
         __m128 t_y = _mm_load_ps(&y[0]);
-        __m128 ret = mul_qq(t_x, t_y)
+        __m128 ret = mul_qq(t_x, t_y);
         _mm_store_ps(&x[0], ret);
     }
 };
