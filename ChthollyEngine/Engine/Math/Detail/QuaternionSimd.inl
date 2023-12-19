@@ -12,25 +12,6 @@ namespace detail
 {
 namespace quat_opt_implement
 {
-CHTHOLLY_FUNC float32x4_t mul_qq(float32x4_t x, float32x4_t y) noexcept
-{
-    float32x4_t y_opp = vnegq_f32(y);
-
-    float32x4_t tmp_0 = acsi_vshuffleq_f32(y, y_opp, 2, 2, 3, 3);
-    float32x4_t tmp_1 = acsi_vshuffleq_f32(y, y_opp, 1, 0, 1, 0); 
-
-    float32x4_t mul_x = acsi_vshuffleq_f32(tmp_0, tmp_1, 2, 1, 3, 0); 
-    float32x4_t mul_y = acsi_vshuffleq_f32(y, y_opp, 1, 0, 3, 2); 
-    float32x4_t mul_z = acsi_vshuffleq_f32(tmp_1, tmp_0, 2, 1, 0, 3);
-
-    float32x4_t add_0 = vmulq_f32(vdupq_n_f32(vgetq_lane_f32(x, 0)), mul_x); 
-    float32x4_t add_1 = vmulq_f32(vdupq_n_f32(vgetq_lane_f32(x, 1)), mul_y); 
-    float32x4_t add_2 = vmulq_f32(vdupq_n_f32(vgetq_lane_f32(x, 2)), mul_z); 
-    float32x4_t add_3 = vmulq_f32(vdupq_n_f32(vgetq_lane_f32(x, 3)), y); 
-
-    return acsi_vaddq_f32_all(add_0, add_1, add_2, add_3); 
-}
-
 CHTHOLLY_FUNC float32x4_t mul_vq(float32x4_t v, float32x4_t q) noexcept
 {
     float32x4_t q_opp = vnegq_f32(q);
@@ -47,6 +28,13 @@ CHTHOLLY_FUNC float32x4_t mul_vq(float32x4_t v, float32x4_t q) noexcept
     float32x4_t add_2 = vmulq_f32(vdupq_n_f32(vgetq_lane_f32(v, 2)), mul_z); 
 
     return acsi_vaddq_f32_all(add_0, add_1, add_2); 
+}
+
+CHTHOLLY_FUNC float32x4_t mul_qq(float32x4_t x, float32x4_t y) noexcept
+{
+    float32x4_t add_012 = mul_vq(x, y);
+    float32x4_t add_3 = vmulq_f32(vdupq_n_f32(vgetq_lane_f32(x, 3)), y); 
+    return vaddq_f32(add_012, add_3);
 }
 }
 }
@@ -102,25 +90,6 @@ namespace detail
 {
 namespace quat_opt_implement
 {
-CHTHOLLY_FUNC __m128 mul_qq(__m128 x, __m128 y) noexcept
-{
-    __m128 y_opp = acsi_mm_neg_ps(y);
-
-    __m128 tmp_0 = _mm_shuffle_ps(y, y_opp, _MM_SHUFFLE(2, 2, 3, 3));
-    __m128 tmp_1 = _mm_shuffle_ps(y, y_opp, _MM_SHUFFLE(1, 0, 1, 0)); 
-
-    __m128 mul_x = _mm_shuffle_ps(tmp_0, tmp_1, _MM_SHUFFLE(2, 1, 3, 0)); 
-    __m128 mul_y = _mm_shuffle_ps(y, y_opp, _MM_SHUFFLE(1, 0, 3, 2)); 
-    __m128 mul_z = _mm_shuffle_ps(tmp_1, tmp_0, _MM_SHUFFLE(2, 1, 0, 3));
-
-    __m128 add_0 = _mm_mul_ps(_mm_shuffle_ps(x, x, _MM_SHUFFLE(0, 0, 0, 0)), mul_x); 
-    __m128 add_1 = _mm_mul_ps(_mm_shuffle_ps(x, x, _MM_SHUFFLE(1, 1, 1, 1)), mul_y); 
-    __m128 add_2 = _mm_mul_ps(_mm_shuffle_ps(x, x, _MM_SHUFFLE(2, 2, 2, 2)), mul_z); 
-    __m128 add_3 = _mm_mul_ps(_mm_shuffle_ps(x, x, _MM_SHUFFLE(3, 3, 3, 3)), y); 
-
-    return acsi_mm_add_ps_all(add_0, add_1, add_2, add_3);
-}
-
 CHTHOLLY_FUNC __m128 mul_vq(__m128 v, __m128 q) noexcept
 {
     __m128 q_opp = acsi_mm_neg_ps(q);
@@ -137,6 +106,13 @@ CHTHOLLY_FUNC __m128 mul_vq(__m128 v, __m128 q) noexcept
     __m128 add_2 = _mm_mul_ps(_mm_shuffle_ps(v, v, _MM_SHUFFLE(2, 2, 2, 2)), mul_z); 
 
     return acsi_mm_add_ps_all(add_0, add_1, add_2);
+}
+
+CHTHOLLY_FUNC __m128 mul_qq(__m128 x, __m128 y) noexcept
+{
+    __m128 add_012 = mul_vq(x, y);
+    __m128 add_3 = _mm_mul_ps(_mm_shuffle_ps(x, x, _MM_SHUFFLE(3, 3, 3, 3)), y); 
+    return _mm_add_ps(add_012, add_3);
 }
 }
 }
