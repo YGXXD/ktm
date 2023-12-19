@@ -315,7 +315,7 @@ private:
     {
         if constexpr(std::is_floating_point_v<T>)
         {
-            return (ktm::equal_zero(x[Ns] - y[Ns]) && ...);
+            return (ktm::equal(x[Ns], y[Ns]) && ...);
         }
         else
         {

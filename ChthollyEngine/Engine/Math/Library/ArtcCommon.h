@@ -56,22 +56,29 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> pow(T x) noexcept
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, bool> near_zero(T x) noexcept
+CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, bool> equal_zero(T x, T e = epsilon<T>) noexcept
 {
-    if constexpr(std::is_same_v<T, float>)
-    {
-        return abs(x) < 1e-4f;
-    }
-    else 
-    {
-        return abs(x) < 1e-8;
-    }
+    return abs(x) < e;
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, bool> equal_zero(T x) noexcept
+CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, bool> equal(T x, T y, T e = epsilon<T>) noexcept
 {
-    return abs(x) < epsilon<T>;
+    return equal_zero(x - y, e);
+}
+
+template<typename T>
+CHTHOLLY_INLINE T radians(T degrees) noexcept
+{
+    constexpr T degrees_to_radians = pi<T> / static_cast<T>(180);
+    return degrees * degrees_to_radians;
+}
+
+template<typename T>
+CHTHOLLY_INLINE T degrees(T radians) noexcept
+{
+    constexpr T radians_to_degrees = static_cast<T>(180) * one_over_pi<T>;
+    return radians * radians_to_degrees;
 }
 
 template<typename T>
@@ -280,7 +287,7 @@ template<typename T>
 CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> fract(T x) noexcept
 {
     return min(x - ktm::floor<T>(x), one<T>);
-} 
+}
 
 }
 

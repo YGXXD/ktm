@@ -360,7 +360,7 @@ struct ktm::detail::mat_common_implement::eigen_jacobi_it
             // 计算旋转角度
             T sin_theta, cos_theta, sin_2theta, cos_2theta;
 
-            if(ktm::equal_zero(arr - acc))
+            if(ktm::equal(arr, acc))
             {
                 if(acr < 0)
                 {
