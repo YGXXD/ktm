@@ -79,18 +79,18 @@ namespace detail
 namespace transform_3d
 {
 template<typename T>
-CHTHOLLY_NOINLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_normal_vector(T sin_theta, T cos_theta, const vec<3, T>& v) noexcept
+CHTHOLLY_NOINLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_normal(T sin_theta, T cos_theta, const vec<3, T>& normal) noexcept
 {
 	T one_minus_cos_theta = one<T> - cos_theta;
-    T xx_one_minus_cos = v[0] * v[0] * one_minus_cos_theta;
-    T xy_one_minus_cos = v[0] * v[1] * one_minus_cos_theta;
-    T xz_one_minus_cos = v[0] * v[2] * one_minus_cos_theta;
-    T yy_one_minus_cos = v[1] * v[1] * one_minus_cos_theta;
-    T yz_one_minus_cos = v[1] * v[2] * one_minus_cos_theta;
-    T zz_one_minus_cos = v[2] * v[2] * one_minus_cos_theta;
-    T x_sin = v[0] * sin_theta, y_sin = v[1] * sin_theta, z_sin = v[2] * sin_theta; 
-	return mat<4, 4, T>({ xx_one_minus_cos + cos_theta , xy_one_minus_cos + z_sin, xz_one_minus_cos - y_sin, zero<T>},
-                        { xy_one_minus_cos - z_sin, yy_one_minus_cos + cos_theta, yz_one_minus_cos + x_sin, zero<T>},
+    T xx_one_minus_cos = normal[0] * normal[0] * one_minus_cos_theta;
+    T xy_one_minus_cos = normal[0] * normal[1] * one_minus_cos_theta;
+    T xz_one_minus_cos = normal[0] * normal[2] * one_minus_cos_theta;
+    T yy_one_minus_cos = normal[1] * normal[1] * one_minus_cos_theta;
+    T yz_one_minus_cos = normal[1] * normal[2] * one_minus_cos_theta;
+    T zz_one_minus_cos = normal[2] * normal[2] * one_minus_cos_theta;
+    T x_sin = normal[0] * sin_theta, y_sin = normal[1] * sin_theta, z_sin = normal[2] * sin_theta; 
+	return mat<4, 4, T>({ xx_one_minus_cos + cos_theta, xy_one_minus_cos + z_sin, xz_one_minus_cos - y_sin, zero<T> },
+                        { xy_one_minus_cos - z_sin, yy_one_minus_cos + cos_theta, yz_one_minus_cos + x_sin, zero<T> },
                         { xz_one_minus_cos + y_sin, yz_one_minus_cos - x_sin, zz_one_minus_cos + cos_theta, zero<T> },
                         { zero<T>, zero<T>, zero<T>, one<T> });
 }
@@ -98,35 +98,22 @@ CHTHOLLY_NOINLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> ro
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_axis_normal(T angle, const vec<3, T>& axis) noexcept
-{
-	return detail::transform_3d::rotate_normal_vector(sin(angle), cos(angle), axis);
-}
-
-template<typename T>
 CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_axis(T angle, const vec<3, T>& axis) noexcept
 {
-	return rotate_normal(angle, normalize(axis));
-}
-
-template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_from_to_normal(const vec<3, T>& from, const vec<3, T>& to) noexcept
-{
-    T cos_theta = dot(from, to);
-    T sin_theta = sqrt(one<T> - cos_theta * cos_theta);
-	return detail::transform_3d::rotate_normal_vector(sin_theta, cos_theta, normalize(cross(from, to)));
+	return detail::transform_3d::rotate_normal(sin(angle), cos(angle), axis);
 }
 
 template<typename T>
 CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_from_to(const vec<3, T>& from, const vec<3, T>& to) noexcept
 {
-	return rotate_from_to_normal(normalize(from), normalize(to));
+    T cos_theta = dot(from, to);
+    T sin_theta = sqrt(one<T> - cos_theta * cos_theta);
+	return detail::transform_3d::rotate_normal(sin_theta, cos_theta, normalize(cross(from, to)));
 }
 
 template<typename T>
-CHTHOLLY_NOINLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_any_axis(T angle, const vec<3, T>& axis_start, const vec<3, T>& axis_end) noexcept
+CHTHOLLY_NOINLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_any_axis(T angle, const vec<3, T>& axis_start, const vec<3, T>& axis) noexcept
 {
-	vec<3, T> axis = normalize(axis_end - axis_start);
 	T cos_theta = cos(angle);
 	T sin_theta = sin(angle);
 	T one_minus_cos_theta = one<T> - cos_theta;
