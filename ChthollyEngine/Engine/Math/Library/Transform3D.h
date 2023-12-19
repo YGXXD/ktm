@@ -9,18 +9,24 @@ namespace ktm
 {
 
 template<typename T>
+CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> view_look_dr(const vec<3, T>& eye_pos, const vec<3, T>& direction, const vec<3, T>& up) noexcept
+{
+    vec<3, T> x = normalize(cross(up, direction));
+    vec<3, T> y = cross(direction, x);
+    T wx = -dot(eye_pos, x);
+    T wy = -dot(eye_pos, y);
+    T wz = -dot(eye_pos, direction);
+    return mat<4, 4, T>({ x[0], y[0], direction[0], zero<T> },
+                        { x[1] ,y[1], direction[1], zero<T> },
+                        { x[2], y[2], direction[2], zero<T> },
+                        { wx, wy, wz, one<T> });
+}
+
+template<typename T>
 CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> view_look_at(const vec<3, T>& eye_pos, const vec<3, T>& focus_pos, const vec<3, T>& up) noexcept
 {
     vec<3, T> z = normalize(focus_pos - eye_pos);
-    vec<3, T> x = normalize(cross(up, z));
-    vec<3, T> y = cross(z, x);
-    T wx = -dot(eye_pos, x);
-    T wy = -dot(eye_pos, y);
-    T wz = -dot(eye_pos, z);
-    return mat<4, 4, T>({ x[0], y[0], z[0], zero<T> },
-                        { x[1] ,y[1], z[1], zero<T> },
-                        { x[2], y[2], z[2], zero<T> },
-                        { wx, wy, wz, one<T> });
+    return view_look_dr(eye_pos, z, up); 
 }
 
 template<typename T>
