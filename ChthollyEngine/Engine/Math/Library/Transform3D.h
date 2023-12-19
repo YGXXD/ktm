@@ -82,7 +82,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rota
 
 namespace detail
 {
-namespace transform_3d
+namespace transform_3d_implement
 {
 template<typename T>
 CHTHOLLY_NOINLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_normal(T sin_theta, T cos_theta, const vec<3, T>& normal) noexcept
@@ -106,7 +106,7 @@ CHTHOLLY_NOINLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> ro
 template<typename T>
 CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_axis(T angle, const vec<3, T>& axis) noexcept
 {
-	return detail::transform_3d::rotate_normal(sin(angle), cos(angle), axis);
+	return detail::transform_3d_implement::rotate_normal(sin(angle), cos(angle), axis);
 }
 
 template<typename T>
@@ -114,7 +114,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rota
 {
     T cos_theta = dot(from, to);
     T sin_theta = sqrt(one<T> - cos_theta * cos_theta);
-	return detail::transform_3d::rotate_normal(sin_theta, cos_theta, normalize(cross(from, to)));
+	return detail::transform_3d_implement::rotate_normal(sin_theta, cos_theta, normalize(cross(from, to)));
 }
 
 template<typename T>
