@@ -51,10 +51,20 @@ template<class Q>
 CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> normalize(const Q& q) noexcept
 {
     using T = quat_traits_base_t<Q>;
-    T length_squared = dot(q.vector, q.vector);
-    if(equal_zero(length_squared)) 
+    T ls = length_squared(q.vector);
+    if(equal_zero(ls)) 
         return Q(zero<T>, zero<T>, zero<T>, one<T>);
-    return Q(q.vector * rsqrt(length_squared));
+    return Q(q.vector * rsqrt(ls));
+}
+
+template<class Q>
+CHTHOLLY_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> fast_normalize(const Q& q) noexcept
+{
+    using T = quat_traits_base_t<Q>;
+    T ls = length_squared(q.vector);
+    if(equal_zero(ls))
+        return Q(zero<T>, zero<T>, zero<T>, one<T>);
+    return Q(q.vector * fast_rsqrt(ls));
 }
 
 template<class Q>
