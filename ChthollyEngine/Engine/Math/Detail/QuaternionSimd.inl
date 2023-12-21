@@ -23,9 +23,9 @@ CHTHOLLY_FUNC float32x4_t mul_vq(float32x4_t v, float32x4_t q) noexcept
     float32x4_t mul_y = acsi_vshuffleq_f32(q, q_opp, 1, 0, 3, 2); 
     float32x4_t mul_z = acsi_vshuffleq_f32(tmp_1, tmp_0, 2, 1, 0, 3);
 
-    float32x4_t add_0 = vmulq_f32(vdupq_n_f32(vgetq_lane_f32(v, 0)), mul_x); 
-    float32x4_t add_1 = vmulq_f32(vdupq_n_f32(vgetq_lane_f32(v, 1)), mul_y); 
-    float32x4_t add_2 = vmulq_f32(vdupq_n_f32(vgetq_lane_f32(v, 2)), mul_z); 
+    float32x4_t add_0 = vmulq_f32(vdupq_laneq_f32(v, 0), mul_x); 
+    float32x4_t add_1 = vmulq_f32(vdupq_laneq_f32(v, 1), mul_y); 
+    float32x4_t add_2 = vmulq_f32(vdupq_laneq_f32(v, 2), mul_z); 
 
     return acsi_vaddq_f32_all(add_0, add_1, add_2); 
 }
@@ -33,7 +33,7 @@ CHTHOLLY_FUNC float32x4_t mul_vq(float32x4_t v, float32x4_t q) noexcept
 CHTHOLLY_FUNC float32x4_t mul_qq(float32x4_t x, float32x4_t y) noexcept
 {
     float32x4_t add_012 = mul_vq(x, y);
-    float32x4_t add_3 = vmulq_f32(vdupq_n_f32(vgetq_lane_f32(x, 3)), y); 
+    float32x4_t add_3 = vmulq_f32(vdupq_laneq_f32(x, 3), y); 
     return vaddq_f32(add_012, add_3);
 }
 }

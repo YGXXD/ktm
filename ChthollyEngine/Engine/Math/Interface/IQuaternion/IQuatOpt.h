@@ -53,7 +53,7 @@ struct IQuatOpt<Father, quat<T>> : Father
         return this_ref;
     }
 
-    CHTHOLLY_INLINE vec<3, T> operator*(const vec<3, T>& v) noexcept
+    CHTHOLLY_INLINE vec<3, T> operator*(const vec<3, T>& v) const noexcept
     {
         return detail::quat_opt_implement::act<T>::call(reinterpret_cast<const quat<T>&>(*this), v); 
     }
@@ -78,12 +78,12 @@ struct IQuatOpt<Father, quat<T>> : Father
 
     CHTHOLLY_INLINE bool operator==(const quat<T>& y) const noexcept
     {
-        return detail::vec_opt_implement::equal<4, T>::call(reinterpret_cast<vec<4, T>&>(*this), y.vector); 
+        return detail::vec_opt_implement::equal<4, T>::call(reinterpret_cast<const vec<4, T>&>(*this), y.vector); 
     }
 
     CHTHOLLY_INLINE bool operator!=(const quat<T>& y) const noexcept
     {
-        return !detail::vec_opt_implement::equal<4, T>::call(reinterpret_cast<vec<4, T>&>(*this), y.vector); 
+        return !detail::vec_opt_implement::equal<4, T>::call(reinterpret_cast<const vec<4, T>&>(*this), y.vector); 
     }
 };
 

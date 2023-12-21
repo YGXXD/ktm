@@ -7,6 +7,7 @@
 #include "Event/AppEvent.h"
 #include "Event/MouseEvent.h"
 #include "Event/KeyEvent.h"
+#include "Math/KTMTest.h"
 
 bool keg::Application::bIsQuit = false;
 std::unique_ptr<keg::Window> keg::Application::mainWindow;
@@ -24,8 +25,19 @@ void keg::Application::Destroy()
 	WindowContext::Quit();
 }
 
+const char* a = "sss";
+
 void keg::Application::Run()
 {
+	// const char* b = "sss";
+	// const std::string c = "sss";
+	// const std::string d = "sss";
+
+	// int a[3][4] = {1, 2, 3 ,4 ,5 , 6, 7 , 8, 9, 10, 11, 12};
+	// int (*p)[4] = (int (*) [4])a;
+	// std::cout << ((int*)a)[14] << ", " << p[3][2] <<std::endl;
+	test::MatTest();
+	return;
     mainWindow = std::unique_ptr<Window>(Window::Create(WindowProps()));
  	mainWindow->eventCallback.BindAnyFunc(&Application::OnEvent);	
 	mainRenderer = std::unique_ptr<Renderer>(Renderer::Create(mainWindow->GetNativeWindow()));	
