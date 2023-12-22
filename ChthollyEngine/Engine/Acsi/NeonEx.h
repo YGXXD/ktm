@@ -8,18 +8,17 @@
 
 #if defined(CHTHOLLY_COMPILER_CLANG)
 
+#define acsi_vshuffle_s32(a, b, s2, s1) acsi_vshuffle_f32(a, b, s2, s1)
+#define acsi_vshuffleq_s32(a, b, s4, s3, s2, s1) acsi_vshuffleq_f32(a, b, s4, s3, s2, s1)
 #define acsi_vshuffle_f32(a, b, s2, s1) __builtin_shufflevector(a, b, s1, (s2) + 2)
 #define acsi_vshuffleq_f32(a, b, s4, s3, s2, s1) __builtin_shufflevector(a, b, s1, s2, (s3) + 4, (s4) + 4)
 
-#define acsi_vshuffle_s32(a, b, s2, s1) acsi_vshuffle_f32(a, b, s2, s1)
-#define acsi_vshuffleq_s32(a, b, s4, s3, s2, s1) acsi_vshuffleq_f32(a, b, s4, s3, s2, s1)
+#else
 
-#elif defined(CHTHOLLY_COMPILER_MSVC) || defined(CHTHOLLY_COMPILER_GCC) 
-
-#define acsi_vshuffle_f32(a, b, s2, s1) vset_lane_f32(vget_lane_f32(b, s2), vmov_n_f32(vget_lane_f32(a, s1)), 1)
-#define acsi_vshuffleq_f32(a, b, s4, s3, s2, s1) vsetq_lane_f32(vgetq_lane_f32(b, s4), vsetq_lane_f32(vgetq_lane_f32(b, s3), vsetq_lane_f32(vgetq_lane_f32(a, s2), vmovq_n_f32(vgetq_lane_f32(a, s1)), 1), 2), 3)
-#define acsi_vshuffle_s32(a, b, s2, s1) vset_lane_s32(vget_lane_s32(b, s2), vmov_n_s32(vget_lane_s32(a, s1)), 1)
-#define acsi_vshuffleq_s32(a, b, s4, s3, s2, s1) vsetq_lane_s32(vgetq_lane_s32(b, s4), vsetq_lane_s32(vgetq_lane_s32(b, s3), vsetq_lane_s32(vgetq_lane_s32(a, s2), vmovq_n_s32(vgetq_lane_s32(a, s1)), 1), 2), 3)
+#define acsi_vshuffle_s32(a, b, s2, s1) vcopy_lane_s32(vmov_n_s32(vget_lane_s32(a, s1)), 1, b, s2)
+#define acsi_vshuffleq_s32(a, b, s4, s3, s2, s1) vcopyq_laneq_s32(vcopyq_laneq_s32(vcopyq_laneq_s32(vmovq_n_s32(vgetq_lane_s32(a, s1)), 1, a, s2), 2, b, s3), 3, b, s4)
+#define acsi_vshuffle_f32(a, b, s2, s1) vcopy_lane_f32(vmov_n_f32(vget_lane_f32(a, s1)), 1, b, s2)
+#define acsi_vshuffleq_f32(a, b, s4, s3, s2, s1) vcopyq_laneq_f32(vcopyq_laneq_f32(vcopyq_laneq_f32(vmovq_n_f32(vgetq_lane_f32(a, s1)), 1, a, s2), 2, b, s3), 3, b, s4)
 
 #endif
 
