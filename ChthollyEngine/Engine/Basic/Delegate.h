@@ -2,10 +2,10 @@
 #define _DELEGATE_H_
 
 #include "SetupBasic.h"
+#include <vector>
 #include <memory>
 #include <sstream>
 #include <unordered_map>
-
 
 #define DECLARE_FUNCTION_DELEGATE(DelegateName, ReturnValueType, ...) typedef ::ktl::SingleDelegate<ReturnValueType, __VA_ARGS__> (DelegateName);
 #define DECLARE_FUNCTION_DELEGATE_NO_PARAMETER(DelegateName, ReturnValueType) typedef ::ktl::SingleDelegate<ReturnValueType> (DelegateName);
