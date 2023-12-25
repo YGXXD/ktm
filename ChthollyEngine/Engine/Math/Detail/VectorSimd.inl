@@ -833,7 +833,7 @@ struct ktm::detail::vec_opt_implement::opposite<N, std::enable_if_t<N == 3 || N 
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
         __m128 t_x = _mm_load_ps(&x[0]);
-	    __m128 ret = acsi_mm_neg_ps(t_x);
+	    __m128 ret = intrin::_mm_neg_ps(t_x);
         return *reinterpret_cast<V*>(&ret);
     }
 };
@@ -934,7 +934,7 @@ struct ktm::detail::vec_opt_implement::equal<3, float>
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
         __m128 delta = _mm_sub_ps(_mm_load_ps(&x[0]), _mm_load_ps(&y[0]));
-        __m128 ret = _mm_cmplt_ps(acsi_mm_abs_ps(delta), _mm_set1_ps(epsilon<float>));     
+        __m128 ret = _mm_cmplt_ps(intrin::_mm_abs_ps(delta), _mm_set1_ps(epsilon<float>));     
         __m128 and_0 = _mm_and_ps(ret, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(0, 3, 2, 1)));
         __m128 and_1 = _mm_and_ps(and_0, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(1, 0, 3, 2)));
         return static_cast<bool>(_mm_cvtss_f32(and_1));
@@ -948,7 +948,7 @@ struct ktm::detail::vec_opt_implement::equal<4, float>
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
         __m128 delta = _mm_sub_ps(_mm_load_ps(&x[0]), _mm_load_ps(&y[0]));
-        __m128 ret = _mm_cmplt_ps(acsi_mm_abs_ps(delta), _mm_set1_ps(epsilon<float>));     
+        __m128 ret = _mm_cmplt_ps(intrin::_mm_abs_ps(delta), _mm_set1_ps(epsilon<float>));     
         __m128 and_0 = _mm_and_ps(ret, _mm_shuffle_ps(ret, ret, _MM_SHUFFLE(1, 0, 3, 2)));
         __m128 and_1 = _mm_and_ps(and_0, _mm_shuffle_ps(and_0, and_0, _MM_SHUFFLE(0, 3, 2, 1)));
         return static_cast<bool>(_mm_cvtss_f32(and_1));
@@ -1016,7 +1016,7 @@ struct ktm::detail::vec_opt_implement::opposite<N, std::enable_if_t<N == 3 || N 
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
         __m128i t_x = _mm_load_si128(reinterpret_cast<const __m128i*>(&x[0]));
-        __m128i ret = acsi_mm_neg_epi32(t_x);
+        __m128i ret = intrin::_mm_neg_epi32(t_x);
         return *reinterpret_cast<V*>(&ret);
     }
 };

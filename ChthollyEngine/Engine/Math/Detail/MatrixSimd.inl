@@ -461,7 +461,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
-        __m128 ret = acsi_mm_add_ps_all(core(m[Ns], v[Ns])...);
+        __m128 ret = intrin::_mm_add_ps_all(core(m[Ns], v[Ns])...);
         return *reinterpret_cast<ColV*>(&ret); 
     }
 
@@ -492,7 +492,7 @@ private:
 
     static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v)
     {
-        return acsi_mm_dot_cvt_f32<3>(_mm_load_ps(&v[0]), _mm_load_ps(&matrix_v[0])); 
+        return intrin::_mm_dot_cvt_f32<3>(_mm_load_ps(&v[0]), _mm_load_ps(&matrix_v[0])); 
     }
 };
 
@@ -517,7 +517,7 @@ private:
 
     static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v)
     {
-        return acsi_mm_dot_cvt_f32<4>(_mm_load_ps(&v[0]), _mm_load_ps(&matrix_v[0])); 
+        return intrin::_mm_dot_cvt_f32<4>(_mm_load_ps(&v[0]), _mm_load_ps(&matrix_v[0])); 
     }
 };
 
@@ -638,7 +638,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
-        __m128i ret = asci_mm_add_epi32_all(core(m[Ns], v[Ns])...);
+        __m128i ret = intrin::_mm_add_epi32_all(core(m[Ns], v[Ns])...);
         return *reinterpret_cast<ColV*>(&ret); 
     }
 
@@ -669,7 +669,7 @@ private:
 
     static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v)
     {
-        return acsi_mm_dot_cvt_si32<3>(_mm_load_si128(reinterpret_cast<const __m128i*>(&v[0])), _mm_load_si128(reinterpret_cast<const __m128i*>(&matrix_v[0])));
+        return intrin::_mm_dot_cvt_si32<3>(_mm_load_si128(reinterpret_cast<const __m128i*>(&v[0])), _mm_load_si128(reinterpret_cast<const __m128i*>(&matrix_v[0])));
     }
 };
 
@@ -694,7 +694,7 @@ private:
 
     static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v)
     {
-        return acsi_mm_dot_cvt_si32<4>(_mm_load_si128(reinterpret_cast<const __m128i*>(&v[0])), _mm_load_si128(reinterpret_cast<const __m128i*>(&matrix_v[0])));
+        return intrin::_mm_dot_cvt_si32<4>(_mm_load_si128(reinterpret_cast<const __m128i*>(&v[0])), _mm_load_si128(reinterpret_cast<const __m128i*>(&matrix_v[0])));
     }
 };
 

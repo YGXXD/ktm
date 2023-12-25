@@ -565,7 +565,7 @@ struct ktm::detail::mat_common_implement::determinant<3, float>
         __m128 mul_01 = _mm_mul_ps(_mm_shuffle_ps(c_1, c_1, _MM_SHUFFLE(3, 1, 0, 2)), _mm_shuffle_ps(c_2, c_2, _MM_SHUFFLE(3, 0, 2, 1)));
         __m128 sub_0 = _mm_sub_ps(mul_00, mul_01);  
         
-        return acsi_mm_dot_cvt_f32<3>(c_0, sub_0); 
+        return intrin::_mm_dot_cvt_f32<3>(c_0, sub_0); 
     }
 };
 
@@ -771,7 +771,7 @@ struct ktm::detail::mat_common_implement::inverse<4, float>
         __m128 i_tmp_0 = _mm_shuffle_ps(inv_0, inv_1, 0);
         __m128 i_tmp_1 = _mm_shuffle_ps(inv_2, inv_3, 0);
         __m128 i_row_0 = _mm_shuffle_ps(i_tmp_0, i_tmp_1,  _MM_SHUFFLE(3, 1, 3, 1));
-        __m128 i_dot = acsi_mm_dot_ps(c_0, i_row_0);
+        __m128 i_dot = intrin::_mm_dot_ps(c_0, i_row_0);
         __m128 one_over_det = _mm_div_ps(_mm_set1_ps(one<float>), i_dot);
 
         M ret;
@@ -799,7 +799,7 @@ struct ktm::detail::mat_common_implement::determinant<3, int>
         __m128i mul_00 = _mm_mullo_epi32(_mm_shuffle_epi32(c_1, _MM_SHUFFLE(3, 0, 2, 1)), _mm_shuffle_epi32(c_2, _MM_SHUFFLE(3, 1, 0, 2)));
         __m128i mul_01 = _mm_mullo_epi32(_mm_shuffle_epi32(c_1, _MM_SHUFFLE(3, 1, 0, 2)), _mm_shuffle_epi32(c_2, _MM_SHUFFLE(3, 0, 2, 1)));
         __m128i sub_0 = _mm_sub_epi32(mul_00, mul_01);  
-        return acsi_mm_dot_cvt_si32<3>(c_0, sub_0); 
+        return intrin::_mm_dot_cvt_si32<3>(c_0, sub_0); 
     }
 };
 

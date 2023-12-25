@@ -6,19 +6,21 @@
 
 #if defined(CHTHOLLY_SIMD_SSE)
 
-CHTHOLLY_FUNC __m128 acsi_mm_clamp_ps(__m128 x, __m128 min, __m128 max) noexcept
+namespace intrin
+{
+CHTHOLLY_FUNC __m128 _mm_clamp_ps(__m128 x, __m128 min, __m128 max) noexcept
 {
 	return _mm_min_ps(_mm_max_ps(x, min), max);
 }
 
-CHTHOLLY_FUNC __m128 acsi_mm_abs_ps(__m128 x) noexcept
+CHTHOLLY_FUNC __m128 _mm_abs_ps(__m128 x) noexcept
 {
 	const union { unsigned int i; float f; } mask = { 0x7fffffff };
 	__m128 ret = _mm_and_ps(x, _mm_set1_ps(mask.f));
 	return ret;
 }
 
-CHTHOLLY_FUNC __m128 acsi_mm_neg_ps(__m128 x) noexcept
+CHTHOLLY_FUNC __m128 _mm_neg_ps(__m128 x) noexcept
 {
 	union { unsigned int i; float f; } mask = { 0x80000000 };
 	__m128 m_mask = _mm_set1_ps(mask.f);
@@ -27,30 +29,30 @@ CHTHOLLY_FUNC __m128 acsi_mm_neg_ps(__m128 x) noexcept
 }
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_FUNC __m128 acsi_mm_add_ps_all(SimdT arg, SimdTs... args) noexcept
+CHTHOLLY_FUNC __m128 _mm_add_ps_all(SimdT arg, SimdTs... args) noexcept
 {
-	return _mm_add_ps(arg, acsi_mm_add_ps_all(args...));
+	return _mm_add_ps(arg, _mm_add_ps_all(args...));
 }
 
 template<>
-CHTHOLLY_FUNC __m128 acsi_mm_add_ps_all<__m128>(__m128 arg) noexcept
+CHTHOLLY_FUNC __m128 _mm_add_ps_all<__m128>(__m128 arg) noexcept
 {
 	return arg;
 }
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_FUNC __m128 acsi_mm_mul_ps_all(SimdT arg, SimdTs... args) noexcept
+CHTHOLLY_FUNC __m128 _mm_mul_ps_all(SimdT arg, SimdTs... args) noexcept
 {
-	return _mm_mul_ps(arg, acsi_mm_mul_ps_all(args...));
+	return _mm_mul_ps(arg, _mm_mul_ps_all(args...));
 }
 
 template<>
-CHTHOLLY_FUNC __m128 acsi_mm_mul_ps_all<__m128>(__m128 arg) noexcept
+CHTHOLLY_FUNC __m128 _mm_mul_ps_all<__m128>(__m128 arg) noexcept
 {
 	return arg;
 }
 
-CHTHOLLY_FUNC __m128 acsi_mm_round_ps(__m128 x) noexcept
+CHTHOLLY_FUNC __m128 _mm_round_ps(__m128 x) noexcept
 {
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE4_1_FLAG
 	return _mm_round_ps(x, _MM_FROUND_TO_NEAREST_INT);
@@ -63,12 +65,12 @@ CHTHOLLY_FUNC __m128 acsi_mm_round_ps(__m128 x) noexcept
 #endif
 }
 
-CHTHOLLY_FUNC __m128 acsi_mm_floor_ps(__m128 x) noexcept
+CHTHOLLY_FUNC __m128 _mm_floor_ps(__m128 x) noexcept
 {
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE4_1_FLAG
 	return _mm_floor_ps(x);
 #else
-	__m128 rnd = acsi_mm_round_ps(x);
+	__m128 rnd = _mm_round_ps(x);
 	__m128 tmp = _mm_cmplt_ps(x, rnd);
 	tmp = _mm_and_ps(tmp, _mm_set1_ps(1.f));
 	__m128 ret = _mm_sub_ps(rnd, tmp);
@@ -77,12 +79,12 @@ CHTHOLLY_FUNC __m128 acsi_mm_floor_ps(__m128 x) noexcept
 }
 
 
-CHTHOLLY_FUNC __m128 acsi_mm_ceil_ps(__m128 x) noexcept
+CHTHOLLY_FUNC __m128 _mm_ceil_ps(__m128 x) noexcept
 {
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE4_1_FLAG
 	return _mm_ceil_ps(x);
 #else
-	__m128 rnd = acsi_mm_round_ps(x);
+	__m128 rnd = _mm_round_ps(x);
 	__m128 tmp = _mm_cmpgt_ps(x, rnd);
 	tmp = _mm_and_ps(tmp, _mm_set1_ps(1.0f));
 	__m128 ret = _mm_add_ps(rnd, tmp);
@@ -90,7 +92,7 @@ CHTHOLLY_FUNC __m128 acsi_mm_ceil_ps(__m128 x) noexcept
 #endif
 }
 
-CHTHOLLY_FUNC __m128 acsi_mm_dot_ps(__m128 x, __m128 y) noexcept
+CHTHOLLY_FUNC __m128 _mm_dot_ps(__m128 x, __m128 y) noexcept
 {
 	__m128 mul = _mm_mul_ps(x, y);
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE3_FLAG
@@ -104,10 +106,10 @@ CHTHOLLY_FUNC __m128 acsi_mm_dot_ps(__m128 x, __m128 y) noexcept
 }
 
 template<size_t N>
-CHTHOLLY_FUNC float acsi_mm_dot_cvt_f32(__m128 x, __m128 y) noexcept;
+CHTHOLLY_FUNC float _mm_dot_cvt_f32(__m128 x, __m128 y) noexcept;
 
 template<>
-CHTHOLLY_FUNC float acsi_mm_dot_cvt_f32<3>(__m128 x, __m128 y) noexcept
+CHTHOLLY_FUNC float _mm_dot_cvt_f32<3>(__m128 x, __m128 y) noexcept
 {
 	__m128 mul = _mm_mul_ps(x, y);
 	__m128 sum_0 = _mm_add_ss(mul, _mm_shuffle_ps(mul, mul, _MM_SHUFFLE(0, 3, 2, 1)));
@@ -116,7 +118,7 @@ CHTHOLLY_FUNC float acsi_mm_dot_cvt_f32<3>(__m128 x, __m128 y) noexcept
 }
 
 template<>
-CHTHOLLY_FUNC float acsi_mm_dot_cvt_f32<4>(__m128 x, __m128 y) noexcept
+CHTHOLLY_FUNC float _mm_dot_cvt_f32<4>(__m128 x, __m128 y) noexcept
 {
 	__m128 mul = _mm_mul_ps(x, y);
 	__m128 sum_0 = _mm_add_ps(mul, _mm_shuffle_ps(mul, mul, _MM_SHUFFLE(1, 0, 3, 2)));
@@ -126,24 +128,24 @@ CHTHOLLY_FUNC float acsi_mm_dot_cvt_f32<4>(__m128 x, __m128 y) noexcept
 
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE2_FLAG
 
-CHTHOLLY_FUNC __m128i acsi_mm_neg_epi32(__m128i x) noexcept
+CHTHOLLY_FUNC __m128i _mm_neg_epi32(__m128i x) noexcept
 {
 	return _mm_sub_epi32(_mm_set1_epi32(0), x);
 }
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_FUNC __m128i acsi_mm_add_epi32_all(SimdT arg, SimdTs... args) noexcept
+CHTHOLLY_FUNC __m128i _mm_add_epi32_all(SimdT arg, SimdTs... args) noexcept
 {
-	return _mm_add_epi32(arg, acsi_mm_add_epi32_all(args...));
+	return _mm_add_epi32(arg, _mm_add_epi32_all(args...));
 }
 
 template<>
-CHTHOLLY_FUNC __m128i acsi_mm_add_epi32_all<__m128i>(__m128i arg) noexcept
+CHTHOLLY_FUNC __m128i _mm_add_epi32_all<__m128i>(__m128i arg) noexcept
 {
 	return arg;
 }
 
-CHTHOLLY_FUNC __m128i acsi_mm_abs_epi32(__m128i x) noexcept
+CHTHOLLY_FUNC __m128i _mm_abs_epi32(__m128i x) noexcept
 {
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE3_FLAG
 	return _mm_abs_epi32(x);
@@ -158,12 +160,12 @@ CHTHOLLY_FUNC __m128i acsi_mm_abs_epi32(__m128i x) noexcept
 
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE4_1_FLAG
 
-CHTHOLLY_FUNC __m128i acsi_mm_clamp_epi32(__m128i x, __m128i min, __m128i max) noexcept
+CHTHOLLY_FUNC __m128i _mm_clamp_epi32(__m128i x, __m128i min, __m128i max) noexcept
 {
 	return _mm_min_epi32(_mm_max_epi32(x, min), max);
 }
 
-CHTHOLLY_FUNC __m128i acsi_mm_dot_epi32(__m128i x, __m128i y) noexcept
+CHTHOLLY_FUNC __m128i _mm_dot_epi32(__m128i x, __m128i y) noexcept
 {
 	__m128i mul = _mm_mullo_epi32(x, y);
 	__m128i add_0 = _mm_hadd_epi32(mul, mul);;
@@ -172,10 +174,10 @@ CHTHOLLY_FUNC __m128i acsi_mm_dot_epi32(__m128i x, __m128i y) noexcept
 }
 
 template<size_t N>
-CHTHOLLY_FUNC int acsi_mm_dot_cvt_si32(__m128i x, __m128i y) noexcept;
+CHTHOLLY_FUNC int _mm_dot_cvt_si32(__m128i x, __m128i y) noexcept;
 
 template<>
-CHTHOLLY_FUNC int acsi_mm_dot_cvt_si32<3>(__m128i x, __m128i y) noexcept
+CHTHOLLY_FUNC int _mm_dot_cvt_si32<3>(__m128i x, __m128i y) noexcept
 {
 	__m128i mul = _mm_mullo_epi32(x, y);
 	__m128i sum_0 = _mm_add_epi32(mul, _mm_shuffle_epi32(mul, _MM_SHUFFLE(0, 3, 2, 1)));
@@ -184,7 +186,7 @@ CHTHOLLY_FUNC int acsi_mm_dot_cvt_si32<3>(__m128i x, __m128i y) noexcept
 }
 
 template<>
-CHTHOLLY_FUNC int acsi_mm_dot_cvt_si32<4>(__m128i x, __m128i y) noexcept
+CHTHOLLY_FUNC int _mm_dot_cvt_si32<4>(__m128i x, __m128i y) noexcept
 {
 	__m128i mul = _mm_mullo_epi32(x, y);
 	__m128i sum_0 = _mm_add_epi32(mul, _mm_shuffle_epi32(mul, _MM_SHUFFLE(1, 0, 3, 2)));
@@ -193,17 +195,18 @@ CHTHOLLY_FUNC int acsi_mm_dot_cvt_si32<4>(__m128i x, __m128i y) noexcept
 }
 
 template<typename SimdT, typename ...SimdTs>
-CHTHOLLY_FUNC __m128i acsi_mm_mullo_epi32_all(SimdT arg, SimdTs... args) noexcept
+CHTHOLLY_FUNC __m128i _mm_mullo_epi32_all(SimdT arg, SimdTs... args) noexcept
 {
-	return _mm_mullo_epi32(arg, acsi_mm_mullo_epi32_all(args...));
+	return _mm_mullo_epi32(arg, _mm_mullo_epi32_all(args...));
 }
 
 template<>
-CHTHOLLY_FUNC __m128i acsi_mm_mullo_epi32_all<__m128i>(__m128i arg) noexcept
+CHTHOLLY_FUNC __m128i _mm_mullo_epi32_all<__m128i>(__m128i arg) noexcept
 {
 	return arg;
 }
-#endif
+#endif	
+} 
 
 #endif
 
