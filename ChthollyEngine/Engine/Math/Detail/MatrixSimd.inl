@@ -20,7 +20,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
-        float32x2_t ret = neon::vadd_f32_all(core(m[Ns], v[Ns])...);
+        float32x2_t ret = neon::add_f32_all(core(m[Ns], v[Ns])...);
         return *reinterpret_cast<ColV*>(&ret); 
     }
 
@@ -44,7 +44,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
-        float32x4_t ret = neon::vaddq_f32_all(core(m[Ns], v[Ns])...);
+        float32x4_t ret = neon::addq_f32_all(core(m[Ns], v[Ns])...);
         return *reinterpret_cast<ColV*>(&ret); 
     }
 
@@ -75,7 +75,7 @@ private:
 
     static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v) noexcept
     {
-        return neon::vdotv_f32(vld1_f32(&v[0]), vld1_f32(&matrix_v[0]));
+        return neon::dotv_f32(vld1_f32(&v[0]), vld1_f32(&matrix_v[0]));
     }
 };
 
@@ -100,7 +100,7 @@ private:
 
     static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v) noexcept
     {
-        return neon::vdotvq_f32<3>(vld1q_f32(&v[0]), vld1q_f32(&matrix_v[0]));
+        return neon::dotvq_f32<3>(vld1q_f32(&v[0]), vld1q_f32(&matrix_v[0]));
     }
 };
 
@@ -125,7 +125,7 @@ private:
 
     static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v)
     {
-        return neon::vdotvq_f32<4>(vld1q_f32(&v[0]), vld1q_f32(&matrix_v[0]));
+        return neon::dotvq_f32<4>(vld1q_f32(&v[0]), vld1q_f32(&matrix_v[0]));
     }
 };
 
@@ -239,7 +239,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
-        int32x2_t ret = neon::vadd_s32_all(core(m[Ns], v[Ns])...);
+        int32x2_t ret = neon::add_s32_all(core(m[Ns], v[Ns])...);
         return *reinterpret_cast<ColV*>(&ret); 
     }
 
@@ -263,7 +263,7 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
-        int32x4_t ret = neon::vaddq_s32_all(core(m[Ns], v[Ns])...);
+        int32x4_t ret = neon::addq_s32_all(core(m[Ns], v[Ns])...);
         return *reinterpret_cast<ColV*>(&ret); 
     }
 
@@ -294,7 +294,7 @@ private:
 
     static CHTHOLLY_INLINE int core(const ColV& v, const ColV& matrix_v) noexcept
     {
-        return neon::vdotv_s32(vld1_s32(&v[0]), vld1_s32(&matrix_v[0]));
+        return neon::dotv_s32(vld1_s32(&v[0]), vld1_s32(&matrix_v[0]));
     }
 };
 
@@ -319,7 +319,7 @@ private:
 
     static CHTHOLLY_INLINE int core(const ColV& v, const ColV& matrix_v) noexcept
     {
-        return neon::vdotvq_s32<3>(vld1q_s32(&v[0]), vld1q_s32(&matrix_v[0]));
+        return neon::dotvq_s32<3>(vld1q_s32(&v[0]), vld1q_s32(&matrix_v[0]));
     }
 };
 
@@ -344,7 +344,7 @@ private:
 
     static CHTHOLLY_INLINE int core(const ColV& v, const ColV& matrix_v)
     {
-        return neon::vdotvq_s32<4>(vld1q_s32(&v[0]), vld1q_s32(&matrix_v[0]));
+        return neon::dotvq_s32<4>(vld1q_s32(&v[0]), vld1q_s32(&matrix_v[0]));
     }
 };
 

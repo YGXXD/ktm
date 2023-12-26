@@ -16,18 +16,18 @@ CHTHOLLY_FUNC float32x4_t mul_vq(float32x4_t v, float32x4_t q) noexcept
 {
     float32x4_t q_opp = vnegq_f32(q);
 
-    float32x4_t tmp_0 = neon_vshuffleq_f32(q, q_opp, 2, 2, 3, 3);
-    float32x4_t tmp_1 = neon_vshuffleq_f32(q, q_opp, 1, 0, 1, 0); 
+    float32x4_t tmp_0 = neon_shuffleq_f32(q, q_opp, 2, 2, 3, 3);
+    float32x4_t tmp_1 = neon_shuffleq_f32(q, q_opp, 1, 0, 1, 0); 
 
-    float32x4_t mul_x = neon_vshuffleq_f32(tmp_0, tmp_1, 2, 1, 3, 0); 
-    float32x4_t mul_y = neon_vshuffleq_f32(q, q_opp, 1, 0, 3, 2); 
-    float32x4_t mul_z = neon_vshuffleq_f32(tmp_1, tmp_0, 2, 1, 0, 3);
+    float32x4_t mul_x = neon_shuffleq_f32(tmp_0, tmp_1, 2, 1, 3, 0); 
+    float32x4_t mul_y = neon_shuffleq_f32(q, q_opp, 1, 0, 3, 2); 
+    float32x4_t mul_z = neon_shuffleq_f32(tmp_1, tmp_0, 2, 1, 0, 3);
 
     float32x4_t add_0 = vmulq_f32(vdupq_laneq_f32(v, 0), mul_x); 
     float32x4_t add_1 = vmulq_f32(vdupq_laneq_f32(v, 1), mul_y); 
     float32x4_t add_2 = vmulq_f32(vdupq_laneq_f32(v, 2), mul_z); 
 
-    return neon::vaddq_f32_all(add_0, add_1, add_2); 
+    return neon::addq_f32_all(add_0, add_1, add_2); 
 }
 
 CHTHOLLY_FUNC float32x4_t mul_qq(float32x4_t x, float32x4_t y) noexcept
