@@ -5,7 +5,7 @@
 
 #define KTM_PERMUTATION_2_2(x, y) \
 CHTHOLLY_INLINE vec<2, T> x##y() const noexcept { return vec<2, T>(x, y); } \
-CHTHOLLY_INLINE vec<2, T> y##x() const noexcept { return vec<2, T>(y, x); } \
+CHTHOLLY_INLINE vec<2, T> y##x() const noexcept { return vec<2, T>(y, x); }
 
 #define KTM_PERMUTATION_3_2(x, y, z) \
 CHTHOLLY_INLINE vec<3, T> x##y##z() const noexcept { return vec<3, T>(x, y, z); } \
@@ -50,8 +50,7 @@ KTM_PERMUTATION_2_2(x, z) \
 KTM_PERMUTATION_2_2(x, w) \
 KTM_PERMUTATION_2_2(y, z) \
 KTM_PERMUTATION_2_2(y, w) \
-KTM_PERMUTATION_2_2(z, w) \
-
+KTM_PERMUTATION_2_2(z, w) 
 
 namespace ktm
 {
