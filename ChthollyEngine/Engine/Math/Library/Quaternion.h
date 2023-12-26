@@ -19,7 +19,7 @@ struct quat<T> : ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, ktm::IQuatD
 };
 }
 
-#include "Math/Detail/Quaternion.inl"
-#include "Math/Detail/QuaternionSimd.inl"
+#include "Math/Detail/Quaternion/Quaternion.inl"
+#include "Math/Detail/Quaternion/QuaternionSimd.inl"
 
 #endif

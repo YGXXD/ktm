@@ -3,7 +3,7 @@
 
 #include "ArtcTraits.h"
 #include "Vector.h"
-#include "Math/Detail/VecCommonFwd.h"
+#include "Math/Detail/VecCommon/VecCommonFwd.h"
 
 namespace ktm
 {
@@ -94,7 +94,7 @@ CHTHOLLY_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, 
 
 }   
 
-#include "Math/Detail/VecCommon.inl"
-#include "Math/Detail/VecCommonSimd.inl"
+#include "Math/Detail/VecCommon/VecCommon.inl"
+#include "Math/Detail/VecCommon/VecCommonSimd.inl"
 
 #endif
