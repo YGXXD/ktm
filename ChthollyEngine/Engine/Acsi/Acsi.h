@@ -2,7 +2,7 @@
 #define _ACSI_H_
 
 #include "SetupAcsi.h"
-#include "NeonEx.h"
-#include "IntrinEx.h"
+#include "AcsiNeon.h"
+#include "AcsiIntrin.h"
 
 #endif

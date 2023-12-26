@@ -1,5 +1,5 @@
-#ifndef _NEON_EX_H_
-#define _NEON_EX_H_
+#ifndef _ACSI_NEON_H_ 
+#define _ACSI_NEON_H_
 
 #include "SetupAcsi.h"
 #include <cstddef>
@@ -24,6 +24,8 @@
 
 namespace neon
 {
+namespace ex 
+{
 CHTHOLLY_FUNC int andv_s32(int32x2_t x) noexcept
 {
 	return vget_lane_s32(x, 0) & vget_lane_s32(x, 1);
@@ -42,41 +44,6 @@ CHTHOLLY_FUNC int32x2_t clamp_s32(int32x2_t x, int32x2_t min, int32x2_t max) noe
 CHTHOLLY_FUNC int32x4_t clampq_s32(int32x4_t x, int32x4_t min, int32x4_t max) noexcept
 {
 	return vminq_s32(vmaxq_s32(x, min), max);
-}
-
-CHTHOLLY_FUNC int32x2_t dot_s32(int32x2_t x, int32x2_t y) noexcept
-{
-	int32x2_t mul = vmul_s32(x, y);
-	return vpadd_s32(mul, mul);
-}
-
-CHTHOLLY_FUNC int32x4_t dotq_s32(int32x4_t x, int32x4_t y) noexcept
-{
-	int32x4_t mul = vmulq_s32(x, y);
-    int32x4_t add_0 = vpaddq_s32(mul, mul);
-    int32x4_t add_1 = vpaddq_s32(add_0, add_0);
-	return add_1;
-}
-
-CHTHOLLY_FUNC int dotv_s32(int32x2_t x, int32x2_t y) noexcept
-{
-	return vaddv_s32(vmul_s32(x, y));
-}
-
-template<size_t N>
-CHTHOLLY_FUNC int dotvq_s32(int32x4_t x, int32x4_t y) noexcept;
-
-template<>
-CHTHOLLY_FUNC int dotvq_s32<3>(int32x4_t x, int32x4_t y) noexcept
-{
-	int32x4_t mul = vmulq_s32(x, y);
-	return vaddvq_s32(vsetq_lane_s32(0, mul, 3));	
-}
-
-template<>
-CHTHOLLY_FUNC int dotvq_s32<4>(int32x4_t x, int32x4_t y) noexcept
-{
-	return vaddvq_s32(vmulq_s32(x, y));	
 }
 
 template<typename SimdT, typename ...SimdTs>
@@ -149,41 +116,6 @@ CHTHOLLY_FUNC float32x4_t clampq_f32(float32x4_t x, float32x4_t min, float32x4_t
 	return vminq_f32(vmaxq_f32(x, min), max);
 }
 
-CHTHOLLY_FUNC float32x2_t dot_f32(float32x2_t x, float32x2_t y) noexcept
-{
-	float32x2_t mul = vmul_f32(x, y);
-	return vpadd_f32(mul, mul);
-}
-
-CHTHOLLY_FUNC float32x4_t dotq_f32(float32x4_t x, float32x4_t y) noexcept
-{
-	float32x4_t mul = vmulq_f32(x, y);
-    float32x4_t add_0 = vpaddq_f32(mul, mul);
-    float32x4_t add_1 = vpaddq_f32(add_0, add_0);
-	return add_1;
-}
-
-CHTHOLLY_FUNC float dotv_f32(float32x2_t x, float32x2_t y) noexcept
-{
-	return vaddv_f32(vmul_f32(x, y));
-}
-
-template<size_t N>
-CHTHOLLY_FUNC float dotvq_f32(float32x4_t x, float32x4_t y) noexcept;
-
-template<>
-CHTHOLLY_FUNC float dotvq_f32<3>(float32x4_t x, float32x4_t y) noexcept
-{
-	float32x4_t mul = vmulq_f32(x, y);
-	return vaddvq_f32(vsetq_lane_f32(0.f, mul, 3));	
-}
-
-template<>
-CHTHOLLY_FUNC float dotvq_f32<4>(float32x4_t x, float32x4_t y) noexcept
-{
-	return vaddvq_f32(vmulq_f32(x, y));	
-}
-
 template<typename SimdT, typename ...SimdTs>
 CHTHOLLY_FUNC float32x2_t add_f32_all(SimdT arg, SimdTs... args) noexcept
 {
@@ -230,6 +162,80 @@ template<>
 CHTHOLLY_FUNC float32x4_t mulq_f32_all<float32x4_t>(float32x4_t arg) noexcept
 {
 	return arg;
+}
+}
+
+namespace geo
+{
+CHTHOLLY_FUNC int32x2_t sv2_dot2(int32x2_t x, int32x2_t y) noexcept
+{
+	int32x2_t mul = vmul_s32(x, y);
+	return vpadd_s32(mul, mul);
+}
+
+CHTHOLLY_FUNC int32x4_t sv4_dot4(int32x4_t x, int32x4_t y) noexcept
+{
+	int32x4_t mul = vmulq_s32(x, y);
+    int32x4_t add_0 = vpaddq_s32(mul, mul);
+    int32x4_t add_1 = vpaddq_s32(add_0, add_0);
+	return add_1;
+}
+
+CHTHOLLY_FUNC int sv2_dot1(int32x2_t x, int32x2_t y) noexcept
+{
+	return vaddv_s32(vmul_s32(x, y));
+}
+
+template<size_t N>
+CHTHOLLY_FUNC int sv4_dot1(int32x4_t x, int32x4_t y) noexcept;
+
+template<>
+CHTHOLLY_FUNC int sv4_dot1<3>(int32x4_t x, int32x4_t y) noexcept
+{
+	int32x4_t mul = vmulq_s32(x, y);
+	return vaddvq_s32(vsetq_lane_s32(0, mul, 3));	
+}
+
+template<>
+CHTHOLLY_FUNC int sv4_dot1<4>(int32x4_t x, int32x4_t y) noexcept
+{
+	return vaddvq_s32(vmulq_s32(x, y));	
+}
+
+CHTHOLLY_FUNC float32x2_t fv2_dot2(float32x2_t x, float32x2_t y) noexcept
+{
+	float32x2_t mul = vmul_f32(x, y);
+	return vpadd_f32(mul, mul);
+}
+
+CHTHOLLY_FUNC float32x4_t fv4_dot4(float32x4_t x, float32x4_t y) noexcept
+{
+	float32x4_t mul = vmulq_f32(x, y);
+    float32x4_t add_0 = vpaddq_f32(mul, mul);
+    float32x4_t add_1 = vpaddq_f32(add_0, add_0);
+	return add_1;
+}
+
+CHTHOLLY_FUNC float fv2_dot1(float32x2_t x, float32x2_t y) noexcept
+{
+	return vaddv_f32(vmul_f32(x, y));
+}
+
+template<size_t N>
+CHTHOLLY_FUNC float fv4_dot1(float32x4_t x, float32x4_t y) noexcept;
+
+template<>
+CHTHOLLY_FUNC float fv4_dot1<3>(float32x4_t x, float32x4_t y) noexcept
+{
+	float32x4_t mul = vmulq_f32(x, y);
+	return vaddvq_f32(vsetq_lane_f32(0.f, mul, 3));	
+}
+
+template<>
+CHTHOLLY_FUNC float fv4_dot1<4>(float32x4_t x, float32x4_t y) noexcept
+{
+	return vaddvq_f32(vmulq_f32(x, y));	
+}
 }
 }
 

@@ -27,7 +27,7 @@ CHTHOLLY_FUNC float32x4_t mul_vq(float32x4_t v, float32x4_t q) noexcept
     float32x4_t add_1 = vmulq_f32(vdupq_laneq_f32(v, 1), mul_y); 
     float32x4_t add_2 = vmulq_f32(vdupq_laneq_f32(v, 2), mul_z); 
 
-    return neon::addq_f32_all(add_0, add_1, add_2); 
+    return neon::ex::addq_f32_all(add_0, add_1, add_2); 
 }
 
 CHTHOLLY_FUNC float32x4_t mul_qq(float32x4_t x, float32x4_t y) noexcept
@@ -92,7 +92,7 @@ namespace quat_opt_implement
 {
 CHTHOLLY_FUNC __m128 mul_vq(__m128 v, __m128 q) noexcept
 {
-    __m128 q_opp = intrin::neg_ps(q);
+    __m128 q_opp = intrin::ex::neg_ps(q);
 
     __m128 tmp_0 = _mm_shuffle_ps(q, q_opp, _MM_SHUFFLE(2, 2, 3, 3));
     __m128 tmp_1 = _mm_shuffle_ps(q, q_opp, _MM_SHUFFLE(1, 0, 1, 0)); 
@@ -105,7 +105,7 @@ CHTHOLLY_FUNC __m128 mul_vq(__m128 v, __m128 q) noexcept
     __m128 add_1 = _mm_mul_ps(_mm_shuffle_ps(v, v, _MM_SHUFFLE(1, 1, 1, 1)), mul_y); 
     __m128 add_2 = _mm_mul_ps(_mm_shuffle_ps(v, v, _MM_SHUFFLE(2, 2, 2, 2)), mul_z); 
 
-    return intrin::add_ps_all(add_0, add_1, add_2);
+    return intrin::ex::add_ps_all(add_0, add_1, add_2);
 }
 
 CHTHOLLY_FUNC __m128 mul_qq(__m128 x, __m128 y) noexcept
