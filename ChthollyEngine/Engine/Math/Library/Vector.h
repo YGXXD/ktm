@@ -19,6 +19,6 @@ struct vec<N, T> : ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, ktm::IVec
 
 }
 
-#include "Math/Detail/Vector/Vector.inl"
-#include "Math/Detail/Vector/VectorSimd.inl"
+#include "Math/Detail/Vector/VecOpt.inl"
+#include "Math/Detail/Vector/VecOptSimd.inl"
 #endif
