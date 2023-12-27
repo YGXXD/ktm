@@ -1,5 +1,5 @@
-#ifndef _MATRIX_INL_
-#define _MATRIX_INL_
+#ifndef _MAT_OPT_INL_
+#define _MAT_OPT_INL_
 
 #include "MatOptFwd.h"
 #include "Math/Library/ArtcBase.h"

@@ -1,5 +1,5 @@
-#ifndef _VECTOR_INL_
-#define _VECTOR_INL_
+#ifndef _VEC_OPT_INL_
+#define _VEC_OPT_INL_
 
 #include "VecOptFwd.h"
 #include "Math/Library/ArtcBase.h"

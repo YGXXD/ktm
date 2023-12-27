@@ -1,5 +1,5 @@
-#ifndef _VECTOR_SIMD_H_
-#define _VECTOR_SIMD_H_
+#ifndef _VEC_OPT_SIMD_H_
+#define _VEC_OPT_SIMD_H_
 
 #include "VecOptFwd.h"
 #include "Math/Library/ArtcBase.h"

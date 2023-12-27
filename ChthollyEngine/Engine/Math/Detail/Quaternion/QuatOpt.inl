@@ -1,5 +1,5 @@
-#ifndef _QUATERNION_INL_
-#define _QUATERNION_INL_
+#ifndef _QUAT_OPT_INL_
+#define _QUAT_OPT_INL_
 
 #include "QuatOptFwd.h"
 #include "Math/Library/ArtcBase.h"

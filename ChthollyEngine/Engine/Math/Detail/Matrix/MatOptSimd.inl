@@ -1,5 +1,5 @@
-#ifndef _MATRIX_SIMD_H_
-#define _MATRIX_SIMD_H_
+#ifndef _MAT_OPT_SIMD_H_
+#define _MAT_OPT_SIMD_H_
 
 #include "MatOptFwd.h"
 #include "Math/Library/ArtcBase.h"
