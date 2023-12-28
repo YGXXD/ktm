@@ -400,7 +400,7 @@ struct ktm::detail::vec_opt_implement::equal<3, float>
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
         float32x4_t ret = vcltq_f32(vabsq_f32(vsubq_f32(vld1q_f32(&x[0]), vld1q_f32(&y[0]))), vdupq_n_f32(epsilon<float>));
-        ret = vsetq_lane_f32(vgetq_lane_f32(ret, 2), ret, 3);
+        ret = vcopyq_laneq_f32(ret, 3, ret, 2);
         return static_cast<bool>(neon::ex::andvq_f32(ret));
     }
 };
@@ -720,7 +720,7 @@ struct ktm::detail::vec_opt_implement::equal<3, int>
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
         int32x4_t ret = vceqq_s32(vld1q_s32(&x[0]), vld1q_s32(&y[0]));
-        ret = vsetq_lane_s32(vgetq_lane_s32(ret, 2), ret, 3);
+        ret = vcopyq_laneq_s32(ret, 3, ret, 2);;
         return static_cast<bool>(neon::ex::andvq_s32(ret)); 
     }
 };
