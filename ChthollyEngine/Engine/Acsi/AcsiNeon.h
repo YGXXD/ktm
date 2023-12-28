@@ -8,17 +8,17 @@
 
 #if defined(CHTHOLLY_COMPILER_CLANG)
 
-#define neon_shuffle_s32(a, b, s2, s1) neon_shuffle_f32(a, b, s2, s1)
-#define neon_shuffleq_s32(a, b, s4, s3, s2, s1) neon_shuffleq_f32(a, b, s4, s3, s2, s1)
-#define neon_shuffle_f32(a, b, s2, s1) __builtin_shufflevector(a, b, s1, (s2) + 2)
-#define neon_shuffleq_f32(a, b, s4, s3, s2, s1) __builtin_shufflevector(a, b, s1, s2, (s3) + 4, (s4) + 4)
+#define neon_shuffle_s32(a, b, s1, s0) neon_shuffle_f32(a, b, s1, s0)
+#define neon_shuffleq_s32(a, b, s3, s2, s1, s0) neon_shuffleq_f32(a, b, s3, s2, s1, s0)
+#define neon_shuffle_f32(a, b, s1, s0) __builtin_shufflevector(a, b, s0, (s1) + 2)
+#define neon_shuffleq_f32(a, b, s3, s2, s1, s0) __builtin_shufflevector(a, b, s0, s1, (s2) + 4, (s3) + 4)
 
 #else
 
-#define neon_shuffle_s32(a, b, s2, s1) vcopy_lane_s32(vmov_n_s32(vget_lane_s32(a, s1)), 1, b, s2)
-#define neon_shuffleq_s32(a, b, s4, s3, s2, s1) vcopyq_laneq_s32(vcopyq_laneq_s32(vcopyq_laneq_s32(vmovq_n_s32(vgetq_lane_s32(a, s1)), 1, a, s2), 2, b, s3), 3, b, s4)
-#define neon_shuffle_f32(a, b, s2, s1) vcopy_lane_f32(vmov_n_f32(vget_lane_f32(a, s1)), 1, b, s2)
-#define neon_shuffleq_f32(a, b, s4, s3, s2, s1) vcopyq_laneq_f32(vcopyq_laneq_f32(vcopyq_laneq_f32(vmovq_n_f32(vgetq_lane_f32(a, s1)), 1, a, s2), 2, b, s3), 3, b, s4)
+#define neon_shuffle_s32(a, b, s1, s0) vcopy_lane_s32(vmov_n_s32(vget_lane_s32(a, s0)), 1, b, s1)
+#define neon_shuffleq_s32(a, b, s3, s2, s1, s0) vcopyq_laneq_s32(vcopyq_laneq_s32(vcopyq_laneq_s32(vmovq_n_s32(vgetq_lane_s32(a, s0)), 1, a, s1), 2, b, s2), 3, b, s3)
+#define neon_shuffle_f32(a, b, s1, s0) vcopy_lane_f32(vmov_n_f32(vget_lane_f32(a, s0)), 1, b, s1)
+#define neon_shuffleq_f32(a, b, s3, s2, s1, s0) vcopyq_laneq_f32(vcopyq_laneq_f32(vcopyq_laneq_f32(vmovq_n_f32(vgetq_lane_f32(a, s0)), 1, a, s1), 2, b, s2), 3, b, s3)
 
 #endif
 
