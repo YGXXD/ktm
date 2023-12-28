@@ -45,7 +45,7 @@ public:
 template<size_t ON, size_t IN, typename T, size_t ...E>
 struct ktm::detail::vec_data_implement::vec_swizzle
 {
-    static_assert(sizeof...(E) == ON && ((E < IN) && ...));
+    static_assert(ON <= IN && sizeof...(E) == ON && ((E < IN) && ...));
     using V = vec<IN, T>;
     using RetV = vec<ON, T>;
     static CHTHOLLY_INLINE RetV call(const V& v) noexcept
