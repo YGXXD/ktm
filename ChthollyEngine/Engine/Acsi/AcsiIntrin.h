@@ -217,6 +217,61 @@ CHTHOLLY_FUNC int sv4_dot1<4>(__m128i x, __m128i y) noexcept
 
 #endif
 }
+
+namespace mt
+{
+CHTHOLLY_FUNC void fmt3_tp(__m128 out[3], const __m128 in[3]) noexcept
+{
+	__m128 tmp_0 = _mm_shuffle_ps(in[0], in[1], _MM_SHUFFLE(1, 0, 1, 0));
+	__m128 tmp_1 = _mm_shuffle_ps(in[0], in[1], _MM_SHUFFLE(3, 2, 3, 2));
+
+	out[0] = _mm_shuffle_ps(tmp_0, in[2], _MM_SHUFFLE(3, 0, 2, 0));
+	out[1] = _mm_shuffle_ps(tmp_0, in[2], _MM_SHUFFLE(3, 1, 3, 1));
+	out[2] = _mm_shuffle_ps(tmp_1, in[2], _MM_SHUFFLE(3, 2, 2, 0));
+}
+
+CHTHOLLY_FUNC void fmt4_tp(__m128 out[4], const __m128 in[4]) noexcept
+{
+	__m128 tmp_0 = _mm_shuffle_ps(in[0], in[1], _MM_SHUFFLE(1, 0, 1, 0));
+	__m128 tmp_2 = _mm_shuffle_ps(in[0], in[1], _MM_SHUFFLE(3, 2, 3, 2));
+	__m128 tmp_1 = _mm_shuffle_ps(in[2], in[3], _MM_SHUFFLE(1, 0, 1, 0));
+	__m128 tmp_3 = _mm_shuffle_ps(in[2], in[3], _MM_SHUFFLE(3, 2, 3, 2));
+
+	out[0] = _mm_shuffle_ps(tmp_0, tmp_1, _MM_SHUFFLE(2, 0, 2, 0));
+	out[1] = _mm_shuffle_ps(tmp_0, tmp_1, _MM_SHUFFLE(3, 1, 3, 1));
+	out[2] = _mm_shuffle_ps(tmp_2, tmp_3, _MM_SHUFFLE(2, 0, 2, 0));
+	out[3] = _mm_shuffle_ps(tmp_2, tmp_3, _MM_SHUFFLE(3, 1, 3, 1));
+}
+}
+
+namespace qt
+{
+CHTHOLLY_FUNC __m128 fv3_mul_fq(__m128 v, __m128 q) noexcept
+{
+    __m128 q_opp = intrin::ex::neg_ps(q);
+
+    __m128 tmp_0 = _mm_shuffle_ps(q, q_opp, _MM_SHUFFLE(2, 2, 3, 3));
+    __m128 tmp_1 = _mm_shuffle_ps(q, q_opp, _MM_SHUFFLE(1, 0, 1, 0)); 
+
+    __m128 mul_x = _mm_shuffle_ps(tmp_0, tmp_1, _MM_SHUFFLE(2, 1, 3, 0)); 
+    __m128 mul_y = _mm_shuffle_ps(q, q_opp, _MM_SHUFFLE(1, 0, 3, 2)); 
+    __m128 mul_z = _mm_shuffle_ps(tmp_1, tmp_0, _MM_SHUFFLE(2, 1, 0, 3));
+
+    __m128 add_0 = _mm_mul_ps(_mm_shuffle_ps(v, v, _MM_SHUFFLE(0, 0, 0, 0)), mul_x); 
+    __m128 add_1 = _mm_mul_ps(_mm_shuffle_ps(v, v, _MM_SHUFFLE(1, 1, 1, 1)), mul_y); 
+    __m128 add_2 = _mm_mul_ps(_mm_shuffle_ps(v, v, _MM_SHUFFLE(2, 2, 2, 2)), mul_z); 
+
+    return intrin::ex::add_ps_all(add_0, add_1, add_2);
+}
+
+CHTHOLLY_FUNC __m128 fq_mul_fq(__m128 x, __m128 y) noexcept
+{
+    __m128 add_012 = fv3_mul_fq(x, y);
+    __m128 add_3 = _mm_mul_ps(_mm_shuffle_ps(x, x, _MM_SHUFFLE(3, 3, 3, 3)), y); 
+    return _mm_add_ps(add_012, add_3);
+}
+}
+
 } 
 
 #endif

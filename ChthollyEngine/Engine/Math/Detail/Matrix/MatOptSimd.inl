@@ -20,14 +20,10 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
-        float32x2_t ret = neon::ex::add_f32_all(core(m[Ns], v[Ns])...);
-        return *reinterpret_cast<ColV*>(&ret); 
+        ColV ret;
+        ret.st = neon::ex::add_f32_all(vmul_f32(m[Ns].st, vdup_n_f32(v[Ns]))...);
+        return ret; 
     }
-
-    static CHTHOLLY_INLINE float32x2_t core(const ColV& matrix_v, float v_elem) noexcept
-    {
-        return vmul_f32(vld1_f32(&matrix_v[0]), vdup_n_f32(v_elem));
-    } 
 };
 
 template<size_t Row, size_t Col>
@@ -44,14 +40,10 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
-        float32x4_t ret = neon::ex::addq_f32_all(core(m[Ns], v[Ns])...);
-        return *reinterpret_cast<ColV*>(&ret); 
+        ColV ret;
+        ret.st = neon::ex::addq_f32_all(vmulq_f32(m[Ns].st, vdupq_n_f32(v[Ns]))...);
+        return ret; 
     }
-
-    static CHTHOLLY_INLINE float32x4_t core(const ColV& matrix_v, float v_elem) noexcept
-    {
-        return vmulq_f32(vld1q_f32(&matrix_v[0]), vdupq_n_f32(v_elem));
-    } 
 };
 
 template<size_t Row>
@@ -69,13 +61,8 @@ private:
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = core(v, m[Ns])), ...);
+        ((ret[Ns] = neon::geo::fv2_dot1(v.st, m[Ns].st)), ...);
         return ret;
-    }
-
-    static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v) noexcept
-    {
-        return neon::geo::fv2_dot1(vld1_f32(&v[0]), vld1_f32(&matrix_v[0]));
     }
 };
 
@@ -94,13 +81,8 @@ private:
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = core(v, m[Ns])), ...);
+        ((ret[Ns] = neon::geo::fv4_dot1<3>(v.st, m[Ns].st)), ...);
         return ret;
-    }
-
-    static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v) noexcept
-    {
-        return neon::geo::fv4_dot1<3>(vld1q_f32(&v[0]), vld1q_f32(&matrix_v[0]));
     }
 };
 
@@ -119,13 +101,8 @@ private:
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = core(v, m[Ns])), ...);
+        ((ret[Ns] = neon::geo::fv4_dot1<4>(v.st, m[Ns].st)), ...);
         return ret;
-    }
-
-    static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v)
-    {
-        return neon::geo::fv4_dot1<4>(vld1q_f32(&v[0]), vld1q_f32(&matrix_v[0]));
     }
 };
 
@@ -143,13 +120,8 @@ private:
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
     {
         M ret;
-        ((core(ret[Ns], m1[Ns], m2[Ns])), ...);
+        ((ret[Ns].st = vadd_f32(m1[Ns].st, m2[Ns].st)), ...);
         return ret;
-    }
-
-    static CHTHOLLY_INLINE void core(ColV& ret_v, const ColV& m1_v, const ColV& m2_v)
-    {
-        vst1_f32(&ret_v[0], vadd_f32(vld1_f32(&m1_v[0]), vld1_f32(&m2_v[0])));
     }
 };
 
@@ -167,13 +139,8 @@ private:
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
     {
         M ret;
-        ((core(ret[Ns], m1[Ns], m2[Ns])), ...);
+        ((ret[Ns].st = vaddq_f32(m1[Ns].st, m2[Ns].st)), ...);
         return ret;
-    }
-
-    static CHTHOLLY_INLINE void core(ColV& ret_v, const ColV& m1_v, const ColV& m2_v)
-    {
-        vst1q_f32(&ret_v[0], vaddq_f32(vld1q_f32(&m1_v[0]), vld1q_f32(&m2_v[0])));
     }
 };
 
@@ -191,13 +158,8 @@ private:
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
     {
         M ret;
-        ((core(&ret[Ns], &m1[Ns], &m2[Ns])), ...);
+        ((ret[Ns].st = vsub_f32(m1[Ns].st, m2[Ns].st)), ...);
         return ret;
-    }
-
-    static CHTHOLLY_INLINE void core(ColV& ret_v, const ColV& m1_v, const ColV& m2_v)
-    {
-        vst1_f32(&ret_v[0], vsub_f32(vld1_f32(&m1_v[0]), vld1_f32(&m2_v[0])));
     }
 };
 
@@ -215,13 +177,8 @@ private:
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
     {
         M ret;
-        ((core(&ret[Ns], &m1[Ns], &m2[Ns])), ...);
+        ((ret[Ns].st = vsubq_f32(m1[Ns].st, m2[Ns].st)), ...);
         return ret;
-    }
-
-    static CHTHOLLY_INLINE void core(ColV& ret_v, const ColV& m1_v, const ColV& m2_v)
-    {
-        vst1q_f32(&ret_v[0], vsubq_f32(vld1q_f32(&m1_v[0]), vld1q_f32(&m2_v[0])));
     }
 };
 
@@ -239,14 +196,10 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
-        int32x2_t ret = neon::ex::add_s32_all(core(m[Ns], v[Ns])...);
-        return *reinterpret_cast<ColV*>(&ret); 
+        ColV ret;
+        ret.st = neon::ex::add_s32_all(vmul_s32(m[Ns].st, vdup_n_s32(v[Ns]))...);
+        return ret; 
     }
-
-    static CHTHOLLY_INLINE int32x2_t core(const ColV& matrix_v, int v_elem) noexcept
-    {
-        return vmul_s32(vld1_s32(&matrix_v[0]), vdup_n_s32(v_elem));
-    } 
 };
 
 template<size_t Row, size_t Col>
@@ -262,15 +215,11 @@ struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, std::enable_if_t<Co
 private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
-    {
-        int32x4_t ret = neon::ex::addq_s32_all(core(m[Ns], v[Ns])...);
-        return *reinterpret_cast<ColV*>(&ret); 
+    {   
+        ColV ret;
+        ret.st = neon::ex::addq_s32_all(vmulq_s32(m[Ns].st, vdupq_n_s32(v[Ns]))...);
+        return ret; 
     }
-
-    static CHTHOLLY_INLINE std::select_if_t<Col == 2, int32x2_t, int32x4_t> core(const ColV& matrix_v, int v_elem) noexcept
-    {
-        return vmulq_s32(vld1q_s32(&matrix_v[0]), vdupq_n_s32(v_elem));
-    } 
 };
 
 template<size_t Row>
@@ -288,13 +237,8 @@ private:
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = core(v, m[Ns])), ...);
+        ((ret[Ns] = neon::geo::sv2_dot1(v.st, m[Ns].st)), ...);
         return ret;
-    }
-
-    static CHTHOLLY_INLINE int core(const ColV& v, const ColV& matrix_v) noexcept
-    {
-        return neon::geo::sv2_dot1(vld1_s32(&v[0]), vld1_s32(&matrix_v[0]));
     }
 };
 
@@ -313,13 +257,8 @@ private:
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = core(v, m[Ns])), ...);
+        ((ret[Ns] = neon::geo::sv4_dot1<3>(v.st, m[Ns].st)), ...);
         return ret;
-    }
-
-    static CHTHOLLY_INLINE int core(const ColV& v, const ColV& matrix_v) noexcept
-    {
-        return neon::geo::sv4_dot1<3>(vld1q_s32(&v[0]), vld1q_s32(&matrix_v[0]));
     }
 };
 
@@ -338,13 +277,8 @@ private:
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = core(v, m[Ns])), ...);
+        ((ret[Ns] = neon::geo::sv4_dot1<4>(v.st, m[Ns].st)), ...);
         return ret;
-    }
-
-    static CHTHOLLY_INLINE int core(const ColV& v, const ColV& matrix_v)
-    {
-        return neon::geo::sv4_dot1<4>(vld1q_s32(&v[0]), vld1q_s32(&matrix_v[0]));
     }
 };
 
@@ -362,13 +296,8 @@ private:
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
     {
         M ret;
-        ((core(ret[Ns], m1[Ns], m2[Ns])), ...);
+        ((ret[Ns].st = vadd_s32(m1[Ns].st, m2[Ns].st)), ...);
         return ret;
-    }
-
-    static CHTHOLLY_INLINE void core(ColV& ret_v, const ColV& m1_v, const ColV& m2_v)
-    {
-        vst1_s32(&ret_v[0], vadd_s32(vld1_s32(&m1_v[0]), vld1_s32(&m2_v[0])));
     }
 };
 
@@ -386,13 +315,8 @@ private:
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
     {
         M ret;
-        ((core(ret[Ns], m1[Ns], m2[Ns])), ...);
+        ((ret[Ns].st = vaddq_s32(m1[Ns].st, m2[Ns].st)), ...);
         return ret;
-    }
-
-    static CHTHOLLY_INLINE void core(ColV& ret_v, const ColV& m1_v, const ColV& m2_v)
-    {
-        vst1q_s32(&ret_v[0], vaddq_s32(vld1q_s32(&m1_v[0]), vld1q_s32(&m2_v[0])));
     }
 };
 
@@ -410,13 +334,8 @@ private:
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
     {
         M ret;
-        ((core(&ret[Ns], &m1[Ns], &m2[Ns])), ...);
+        ((ret[Ns].st = vsub_s32(m1[Ns].st, m2[Ns].st)), ...);
         return ret;
-    }
-
-    static CHTHOLLY_INLINE void core(ColV& ret_v, const ColV& m1_v, const ColV& m2_v)
-    {
-        vst1_s32(&ret_v[0], vsub_s32(vld1_s32(&m1_v[0]), vld1_s32(&m2_v[0])));
     }
 };
 
@@ -434,13 +353,8 @@ private:
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
     {
         M ret;
-        ((core(&ret[Ns], &m1[Ns], &m2[Ns])), ...);
+        ((ret[Ns].st = vsubq_s32(m1[Ns].st, m2[Ns].st)), ...);
         return ret;
-    }
-
-    static CHTHOLLY_INLINE void core(ColV& ret_v, const ColV& m1_v, const ColV& m2_v)
-    {
-        vst1q_s32(&ret_v[0], vsubq_s32(vld1q_s32(&m1_v[0]), vld1q_s32(&m2_v[0])));
     }
 };
 
@@ -461,14 +375,10 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
-        __m128 ret = intrin::ex::add_ps_all(core(m[Ns], v[Ns])...);
-        return *reinterpret_cast<ColV*>(&ret); 
+        ColV ret;
+        ret.st = intrin::ex::add_ps_all(_mm_mul_ps(m[Ns].st, _mm_set1_ps(v[Ns]))...);
+        return ret; 
     }
-
-    static CHTHOLLY_INLINE __m128 core(const ColV& matrix_v, float v_elem) noexcept
-    {
-        return _mm_mul_ps(_mm_load_ps(&matrix_v[0]), _mm_set1_ps(v_elem));
-    } 
 };
 
 template<size_t Row>
@@ -486,13 +396,8 @@ private:
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = core(v, m[Ns])), ...);
+        ((ret[Ns] = intrin::geo::fv4_dot1<3>(v.st, m[Ns].st)), ...);
         return ret;
-    }
-
-    static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v)
-    {
-        return intrin::geo::fv4_dot1<3>(_mm_load_ps(&v[0]), _mm_load_ps(&matrix_v[0])); 
     }
 };
 
@@ -511,13 +416,8 @@ private:
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = core(v, m[Ns])), ...);
+        ((ret[Ns] = intrin::geo::fv4_dot1<4>(v.st, m[Ns].st)), ...);
         return ret;
-    }
-
-    static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v)
-    {
-        return intrin::geo::fv4_dot1<4>(_mm_load_ps(&v[0]), _mm_load_ps(&matrix_v[0])); 
     }
 };
 
@@ -535,13 +435,8 @@ private:
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
     {
         M ret;
-        ((core(ret[Ns], m1[Ns], m2[Ns])), ...);
+        ((ret[Ns].st = _mm_add_ps(m1[Ns].st, m2[Ns].st)), ...);
         return ret;
-    }
-
-    static CHTHOLLY_INLINE void core(ColV& ret_v, const ColV& m1_v, const ColV& m2_v)
-    {
-        _mm_store_ps(&ret_v[0], _mm_add_ps(_mm_load_ps(&m1_v[0]), _mm_load_ps(&m2_v[0])));
     }
 };
 
@@ -559,13 +454,8 @@ private:
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
     {
         M ret;
-        ((core(&ret[Ns], &m1[Ns], &m2[Ns])), ...);
+        ((ret[Ns].st = _mm_sub_ps(m1[Ns].st, m2[Ns].st)), ...);
         return ret;
-    }
-
-    static CHTHOLLY_INLINE void core(ColV& ret_v, const ColV& m1_v, const ColV& m2_v)
-    {
-        _mm_store_ps(&ret_v[0], _mm_sub_ps(_mm_load_ps(&m1_v[0]), _mm_load_ps(&m2_v[0])));
     }
 };
 
@@ -585,13 +475,8 @@ private:
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
     {
         M ret;
-        ((core(ret[Ns], m1[Ns], m2[Ns])), ...);
+        ((ret[Ns].st = _mm_add_epi32(m1[Ns].st, m2[Ns].st)), ...);
         return ret;
-    }
-
-    static CHTHOLLY_INLINE void core(ColV& ret_v, const ColV& m1_v, const ColV& m2_v)
-    {
-        _mm_store_si128(reinterpret_cast<__m128i*>(&ret_v[0]), _mm_add_epi32(_mm_load_si128(reinterpret_cast<const __m128i*>(&m1_v[0])), _mm_load_si128(reinterpret_cast<const __m128i*>(&m2_v[0]))));
     }
 };
 
@@ -609,13 +494,8 @@ private:
     static CHTHOLLY_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
     {
         M ret;
-        ((core(&ret[Ns], &m1[Ns], &m2[Ns])), ...);
+        ((ret[Ns].st = _mm_sub_epi32(m1[Ns].st, m2[Ns].st)), ...);
         return ret;
-    }
-
-    static CHTHOLLY_INLINE void core(ColV& ret_v, const ColV& m1_v, const ColV& m2_v)
-    {
-        _mm_store_si128(reinterpret_cast<__m128i*>(&ret_v[0]), _mm_sub_epi32(_mm_load_si128(reinterpret_cast<const __m128i*>(&m1_v[0])), _mm_load_si128(reinterpret_cast<const __m128i*>(&m2_v[0]))));
     }
 };
 
@@ -638,14 +518,10 @@ private:
     template<size_t ...Ns>
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
-        __m128i ret = intrin::ex::add_epi32_all(core(m[Ns], v[Ns])...);
-        return *reinterpret_cast<ColV*>(&ret); 
+        ColV ret; 
+        ret.st = intrin::ex::add_epi32_all(_mm_mullo_epi32(m[Ns].st, _mm_set1_epi32(v[Ns]))...);
+        return ret; 
     }
-
-    static CHTHOLLY_INLINE __m128i core(const ColV& matrix_v, int v_elem) noexcept
-    {
-        return _mm_mullo_epi32(_mm_load_si128(reinterpret_cast<const __m128i*>(&matrix_v[0])), _mm_set1_epi32(v_elem));
-    } 
 };
 
 template<size_t Row>
@@ -663,13 +539,8 @@ private:
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = core(v, m[Ns])), ...);
+        ((ret[Ns] = intrin::geo::sv4_dot1<3>(v.st, m[Ns].st)), ...);
         return ret;
-    }
-
-    static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v)
-    {
-        return intrin::geo::sv4_dot1<3>(_mm_load_si128(reinterpret_cast<const __m128i*>(&v[0])), _mm_load_si128(reinterpret_cast<const __m128i*>(&matrix_v[0])));
     }
 };
 
@@ -688,13 +559,8 @@ private:
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = core(v, m[Ns])), ...);
+        ((ret[Ns] = intrin::geo::sv4_dot1<4>(v.st, m[Ns].st)), ...);
         return ret;
-    }
-
-    static CHTHOLLY_INLINE float core(const ColV& v, const ColV& matrix_v)
-    {
-        return intrin::geo::sv4_dot1<4>(_mm_load_si128(reinterpret_cast<const __m128i*>(&v[0])), _mm_load_si128(reinterpret_cast<const __m128i*>(&matrix_v[0])));
     }
 };
 
