@@ -237,6 +237,60 @@ CHTHOLLY_FUNC float fv4_dot1<4>(float32x4_t x, float32x4_t y) noexcept
 	return vaddvq_f32(vmulq_f32(x, y));	
 }
 }
+
+namespace mt
+{
+CHTHOLLY_FUNC void fmt3_tp(float32x4_t out[3], const float32x4_t in[3]) noexcept
+{
+	float32x4_t tmp_0 = neon_shuffleq_f32(in[0], in[1], 1, 0, 1, 0);
+	float32x4_t tmp_1 = neon_shuffleq_f32(in[0], in[1], 3, 2, 3, 2);
+
+	out[0] = neon_shuffleq_f32(tmp_0, in[2], 3, 0, 2, 0);
+	out[1] = neon_shuffleq_f32(tmp_0, in[2], 3, 1, 3, 1);
+	out[2] = neon_shuffleq_f32(tmp_1, in[2], 3, 2, 2, 0);
+}
+
+CHTHOLLY_FUNC void fmt4_tp(float32x4_t out[4], const float32x4_t in[4]) noexcept
+{
+	int32x4_t tmp_0 = neon_shuffleq_s32(in[0], in[1], 1, 0, 1, 0);
+	int32x4_t tmp_2 = neon_shuffleq_s32(in[0], in[1], 3, 2, 3, 2);
+	int32x4_t tmp_1 = neon_shuffleq_s32(in[2], in[3], 1, 0, 1, 0);
+	int32x4_t tmp_3 = neon_shuffleq_s32(in[2], in[3], 3, 2, 3, 2);
+
+	out[0] = neon_shuffleq_s32(tmp_0, tmp_1, 2, 0, 2, 0);
+	out[1] = neon_shuffleq_s32(tmp_0, tmp_1, 3, 1, 3, 1);
+	out[2] = neon_shuffleq_s32(tmp_2, tmp_3, 2, 0, 2, 0);
+	out[3] = neon_shuffleq_s32(tmp_2, tmp_3, 3, 1, 3, 1);
+}
+}
+
+namespace qt
+{
+CHTHOLLY_FUNC float32x4_t fv3_mul_fq(float32x4_t v, float32x4_t q) noexcept
+{
+    float32x4_t q_opp = vnegq_f32(q);
+
+    float32x4_t tmp_0 = neon_shuffleq_f32(q, q_opp, 2, 2, 3, 3);
+    float32x4_t tmp_1 = neon_shuffleq_f32(q, q_opp, 1, 0, 1, 0); 
+
+    float32x4_t mul_x = neon_shuffleq_f32(tmp_0, tmp_1, 2, 1, 3, 0); 
+    float32x4_t mul_y = neon_shuffleq_f32(q, q_opp, 1, 0, 3, 2); 
+    float32x4_t mul_z = neon_shuffleq_f32(tmp_1, tmp_0, 2, 1, 0, 3);
+
+    float32x4_t add_0 = vmulq_f32(vdupq_laneq_f32(v, 0), mul_x); 
+    float32x4_t add_1 = vmulq_f32(vdupq_laneq_f32(v, 1), mul_y); 
+    float32x4_t add_2 = vmulq_f32(vdupq_laneq_f32(v, 2), mul_z); 
+
+    return neon::ex::addq_f32_all(add_0, add_1, add_2); 
+}
+
+CHTHOLLY_FUNC float32x4_t fq_mul_fq(float32x4_t x, float32x4_t y) noexcept
+{
+    float32x4_t add_012 = fv3_mul_fq(x, y);
+    float32x4_t add_3 = vmulq_f32(vdupq_laneq_f32(x, 3), y); 
+    return vaddq_f32(add_012, add_3);
+}
+}
 }
 
 #endif
