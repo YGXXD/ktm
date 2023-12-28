@@ -10,25 +10,25 @@ KTM_VEC_ST_ENUM_PACKAGE(r, g, b, a)
 #define KTM_PERMUTATION_2_2(x, y, n) \
 CHTHOLLY_INLINE vec<2, T> x##y() const noexcept \
 { \
-    using detail::vec_data_implement::vec_swizzle; \
-    return vec_swizzle<2, n, T, KTM_VEC_ST_ENUM_GET(x), KTM_VEC_ST_ENUM_GET(y)>::call(st); \
+    return detail::vec_data_implement::vec_swizzle<2, n, T, KTM_VEC_ST_ENUM_GET(x), \
+        KTM_VEC_ST_ENUM_GET(y)>::call(reinterpret_cast<const vec<n, T>&>(*this)); \
 } \
 CHTHOLLY_INLINE vec<2, T> y##x() const noexcept \
 { \
-    using detail::vec_data_implement::vec_swizzle; \
-    return vec_swizzle<2, n, T, KTM_VEC_ST_ENUM_GET(y), KTM_VEC_ST_ENUM_GET(x)>::call(st); \
+    return detail::vec_data_implement::vec_swizzle<2, n, T, KTM_VEC_ST_ENUM_GET(y), \
+        KTM_VEC_ST_ENUM_GET(x)>::call(reinterpret_cast<const vec<n, T>&>(*this)); \
 }
 
 #define KTM_PERMUTATION_3_2(x, y, z, n) \
 CHTHOLLY_INLINE vec<3, T> x##y##z() const noexcept \
 { \
-    using detail::vec_data_implement::vec_swizzle; \
-    return vec_swizzle<3, n, T, KTM_VEC_ST_ENUM_GET(x), KTM_VEC_ST_ENUM_GET(y), KTM_VEC_ST_ENUM_GET(z)>::call(st); \
+    return detail::vec_data_implement::vec_swizzle<3, n, T, KTM_VEC_ST_ENUM_GET(x), \
+        KTM_VEC_ST_ENUM_GET(y), KTM_VEC_ST_ENUM_GET(z)>::call(reinterpret_cast<const vec<n, T>&>(*this)); \
 } \
 CHTHOLLY_INLINE vec<3, T> x##z##y() const noexcept \
 { \
-    using detail::vec_data_implement::vec_swizzle; \
-    return vec_swizzle<3, n, T, KTM_VEC_ST_ENUM_GET(x), KTM_VEC_ST_ENUM_GET(z), KTM_VEC_ST_ENUM_GET(y)>::call(st); \
+    return detail::vec_data_implement::vec_swizzle<3, n, T, KTM_VEC_ST_ENUM_GET(x), \
+        KTM_VEC_ST_ENUM_GET(z), KTM_VEC_ST_ENUM_GET(y)>::call(reinterpret_cast<const vec<n, T>&>(*this)); \
 }
 
 #define KTM_PERMUTATION_3_3(x, y, z, n) \
@@ -39,13 +39,13 @@ KTM_PERMUTATION_3_2(z, x, y, n)
 #define KTM_PERMUTATION_4_2(x, y, z, w, n) \
 CHTHOLLY_INLINE vec<4, T> x##y##z##w() const noexcept \
 { \
-    using detail::vec_data_implement::vec_swizzle; \
-    return vec_swizzle<4, n, T, KTM_VEC_ST_ENUM_GET(x), KTM_VEC_ST_ENUM_GET(y), KTM_VEC_ST_ENUM_GET(z), KTM_VEC_ST_ENUM_GET(w)>::call(st); \
+    return detail::vec_data_implement::vec_swizzle<4, n, T, KTM_VEC_ST_ENUM_GET(x), \
+        KTM_VEC_ST_ENUM_GET(y), KTM_VEC_ST_ENUM_GET(z), KTM_VEC_ST_ENUM_GET(w)>::call(reinterpret_cast<const vec<n, T>&>(*this)); \
 } \
 CHTHOLLY_INLINE vec<4, T> x##y##w##z() const noexcept \
 { \
-    using detail::vec_data_implement::vec_swizzle; \
-    return vec_swizzle<4, n, T, KTM_VEC_ST_ENUM_GET(x), KTM_VEC_ST_ENUM_GET(y), KTM_VEC_ST_ENUM_GET(w), KTM_VEC_ST_ENUM_GET(z)>::call(st); \
+    return detail::vec_data_implement::vec_swizzle<4, n, T, KTM_VEC_ST_ENUM_GET(x), \
+        KTM_VEC_ST_ENUM_GET(y), KTM_VEC_ST_ENUM_GET(w), KTM_VEC_ST_ENUM_GET(z)>::call(reinterpret_cast<const vec<n, T>&>(*this)); \
 }
 
 #define KTM_PERMUTATION_4_3(x, y, z, w, n) \
@@ -87,13 +87,14 @@ template<class Father, class Child>
 struct IVecData;
 
 template<class Father, typename T>
-struct alignas(sizeof(T)) IVecData<Father, vec<1, T>> : Father
+struct IVecData<Father, vec<1, T>> : Father
 {
     using Father::Father;
     union
     {
         struct { T x; };
         struct { T r; };
+        typename detail::vec_data_implement::vec_storage<1, T>::type st;
     };
     constexpr IVecData(T xi) noexcept : x(xi) { }
     template<typename U, typename = std::enable_if_t<!std::is_same_v<U, T>>>
@@ -101,7 +102,7 @@ struct alignas(sizeof(T)) IVecData<Father, vec<1, T>> : Father
 };
 
 template<class Father, typename T>
-struct alignas(2 * sizeof(T)) IVecData<Father, vec<2, T>> : Father
+struct IVecData<Father, vec<2, T>> : Father
 {
     using Father::Father;
     union
@@ -120,7 +121,7 @@ struct alignas(2 * sizeof(T)) IVecData<Father, vec<2, T>> : Father
 };
 
 template<class Father, typename T>
-struct alignas(4 * sizeof(T)) IVecData<Father, vec<3, T>> : Father
+struct IVecData<Father, vec<3, T>> : Father
 {
     using Father::Father;
     union
@@ -139,7 +140,7 @@ struct alignas(4 * sizeof(T)) IVecData<Father, vec<3, T>> : Father
 };
 
 template<class Father, typename T>
-struct alignas(4 * sizeof(T)) IVecData<Father, vec<4, T>> : Father
+struct IVecData<Father, vec<4, T>> : Father
 {
     using Father::Father;
     union

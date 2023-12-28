@@ -11,7 +11,7 @@ template<class Father, class Child>
 struct IQuatData;
 
 template<class Father, typename T>
-struct alignas(sizeof(vec<4, T>)) IQuatData<Father, quat<T>> : Father
+struct IQuatData<Father, quat<T>> : Father
 {
     using Father::Father;
     union
