@@ -1070,7 +1070,7 @@ struct ktm::detail::vec_opt_implement::equal<3, int>
     using V = vec<3, int>;
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
-        __m128i ret = _mm_cmpeq_epi32(x.st, t.st);   
+        __m128i ret = _mm_cmpeq_epi32(x.st, y.st);   
         __m128i and_0 = _mm_and_si128(ret, _mm_shuffle_epi32(ret, _MM_SHUFFLE(0, 3, 2, 1)));
         __m128i and_1 = _mm_and_si128(and_0, _mm_shuffle_epi32(ret, _MM_SHUFFLE(1, 0, 3, 2)));
         return static_cast<bool>(_mm_cvtsi128_si32(and_1));
@@ -1083,7 +1083,7 @@ struct ktm::detail::vec_opt_implement::equal<4, int>
     using V = vec<4, int>;
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
-        __m128i ret = _mm_cmpeq_epi32(x.st, t.st);   
+        __m128i ret = _mm_cmpeq_epi32(x.st, y.st);   
         __m128i and_0 = _mm_and_si128(ret, _mm_shuffle_epi32(ret, _MM_SHUFFLE(1, 0, 3, 2)));
         __m128i and_1 = _mm_and_si128(and_0, _mm_shuffle_epi32(and_0, _MM_SHUFFLE(0, 3, 2, 1)));
         return static_cast<bool>(_mm_cvtsi128_si32(and_1));

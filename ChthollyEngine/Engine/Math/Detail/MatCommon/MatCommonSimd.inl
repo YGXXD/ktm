@@ -408,7 +408,7 @@ struct ktm::detail::mat_common_implement::transpose<3, 3, int>
     static CHTHOLLY_INLINE RetM call(const M& m) noexcept
     {
         RetM ret;
-        neon::mt::fmt3_tp(reinterpret_cast<__m128*>(&ret[0].st), reinterpret_cast<const __m128*>(&m[0].st));
+        intrin::mt::fmt3_tp(reinterpret_cast<__m128*>(&ret[0].st), reinterpret_cast<const __m128*>(&m[0].st));
         return ret; 
     }
 };
@@ -421,7 +421,7 @@ struct ktm::detail::mat_common_implement::transpose<4, 4, int>
     static CHTHOLLY_INLINE RetM call(const M& m) noexcept
     {
         RetM ret;
-        neon::mt::fmt4_tp(reinterpret_cast<__m128*>(&ret[0].st), reinterpret_cast<const __m128*>(&m[0].st));
+        intrin::mt::fmt4_tp(reinterpret_cast<__m128*>(&ret[0].st), reinterpret_cast<const __m128*>(&m[0].st));
         return ret; 
     }
 };
