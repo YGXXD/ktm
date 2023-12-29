@@ -57,6 +57,24 @@ CHTHOLLY_INLINE std::enable_if_t<is_vector_v<V>, V> clamp(const V& v, const V& m
 }
 
 template<class V>
+CHTHOLLY_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> floor(const V& x) noexcept
+{
+    return detail::vec_common_implement::floor<vec_traits_len<V>, vec_traits_base_t<V>>::call(x);
+}
+
+template<class V>
+CHTHOLLY_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> ceil(const V& x) noexcept
+{
+    return detail::vec_common_implement::ceil<vec_traits_len<V>, vec_traits_base_t<V>>::call(x);
+}
+
+template<class V>
+CHTHOLLY_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> round(const V& x) noexcept
+{
+    return detail::vec_common_implement::round<vec_traits_len<V>, vec_traits_base_t<V>>::call(x);
+}
+
+template<class V>
 CHTHOLLY_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> lerp(const V& x, const V& y, vec_traits_base_t<V> t) noexcept
 {
     return detail::vec_common_implement::lerp<vec_traits_len<V>, vec_traits_base_t<V>>::call(x, y, t);

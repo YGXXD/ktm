@@ -279,14 +279,14 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> step(T edge, T 
 template<typename T>
 CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> smoothstep(T edge0, T edge1, T x) noexcept
 {
-    const T tmp = ktm::clamp<T>((x - edge0) / (edge1 - edge0), zero<T>, one<T>);
+    const T tmp = ktm::clamp((x - edge0) / (edge1 - edge0), zero<T>, one<T>);
     return tmp * tmp * (static_cast<T>(3) - static_cast<T>(2) * tmp);
 }
 
 template<typename T>
 CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> fract(T x) noexcept
 {
-    return min(x - ktm::floor<T>(x), one<T>);
+    return x - ktm::floor(x);
 }
 
 }

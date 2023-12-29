@@ -35,6 +35,15 @@ template<size_t N, typename T>
 struct clamp;
 
 template<size_t N, typename T>
+struct floor;
+
+template<size_t N, typename T>
+struct ceil;
+
+template<size_t N, typename T>
+struct round;
+
+template<size_t N, typename T>
 struct lerp;
 
 template<size_t N, typename T>

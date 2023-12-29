@@ -161,6 +161,63 @@ private:
 };
 
 template<size_t N, typename T>
+struct ktm::detail::vec_common_implement::floor
+{
+    using V = vec<N, T>;
+    static_assert(std::is_floating_point_v<T>);
+    static CHTHOLLY_INLINE V call(const V& x) noexcept
+    {
+        return call(x, std::make_index_sequence<N>());
+    }
+private:
+    template<size_t ...Ns>
+    static CHTHOLLY_INLINE V call(const V& x, std::index_sequence<Ns...>) noexcept
+    {
+        V ret;
+        ((ret[Ns] = ktm::floor(x[Ns])), ...);
+        return ret;
+    }
+};
+
+template<size_t N, typename T>
+struct ktm::detail::vec_common_implement::ceil
+{
+    using V = vec<N, T>;
+    static_assert(std::is_floating_point_v<T>);
+    static CHTHOLLY_INLINE V call(const V& x) noexcept
+    {
+        return call(x, std::make_index_sequence<N>());
+    }
+private:
+    template<size_t ...Ns>
+    static CHTHOLLY_INLINE V call(const V& x, std::index_sequence<Ns...>) noexcept
+    {
+        V ret;
+        ((ret[Ns] = ktm::ceil(x[Ns])), ...);
+        return ret;
+    }
+};
+
+template<size_t N, typename T>
+struct ktm::detail::vec_common_implement::round
+{
+    using V = vec<N, T>;
+    static_assert(std::is_floating_point_v<T>);
+    static CHTHOLLY_INLINE V call(const V& x) noexcept
+    {
+        return call(x, std::make_index_sequence<N>());
+    }
+private:
+    template<size_t ...Ns>
+    static CHTHOLLY_INLINE V call(const V& x, std::index_sequence<Ns...>) noexcept
+    {
+        V ret;
+        ((ret[Ns] = ktm::round(x[Ns])), ...);
+        return ret;
+    }
+};
+
+template<size_t N, typename T>
 struct ktm::detail::vec_common_implement::lerp
 {
     using V = vec<N, T>;

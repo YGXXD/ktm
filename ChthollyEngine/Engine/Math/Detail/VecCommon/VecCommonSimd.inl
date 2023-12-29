@@ -467,6 +467,78 @@ struct ktm::detail::vec_common_implement::clamp<N, std::enable_if_t<N == 3 || N 
 };
 
 template<>
+struct ktm::detail::vec_common_implement::floor<2, float>
+{
+    using V = vec<2, float>;
+    static CHTHOLLY_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = vrndm_f32(x.st);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::vec_common_implement::floor<N, std::enable_if_t<N == 3 || N == 4, float>>
+{
+    using V = vec<N, float>;
+    static CHTHOLLY_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = vrndmq_f32(x.st);
+        return ret;
+    }
+};
+
+template<>
+struct ktm::detail::vec_common_implement::ceil<2, float>
+{
+    using V = vec<2, float>;
+    static CHTHOLLY_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = vrndp_f32(x.st);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::vec_common_implement::ceil<N, std::enable_if_t<N == 3 || N == 4, float>>
+{
+    using V = vec<N, float>;
+    static CHTHOLLY_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = vrndpq_f32(x.st);
+        return ret;
+    }
+};
+
+template<>
+struct ktm::detail::vec_common_implement::round<2, float>
+{
+    using V = vec<2, float>;
+    static CHTHOLLY_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = vrnda_f32(x.st);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::vec_common_implement::round<N, std::enable_if_t<N == 3 || N == 4, float>>
+{
+    using V = vec<N, float>;
+    static CHTHOLLY_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = vrndaq_f32(x.st);
+        return ret;
+    }
+};
+
+template<>
 struct ktm::detail::vec_common_implement::lerp<2, float>
 {
     using V = vec<2, float>;
@@ -609,7 +681,7 @@ struct ktm::detail::vec_common_implement::fract<2, float>
     {
         V ret;
         float32x2_t floor = vrndm_f32(x.st);
-        ret.st = vmin_f32(vsub_f32(x.st, floor), vdup_n_f32(one<float>));
+        ret.st = vsub_f32(x.st, floor), vdup_n_f32(one<float>);
         return ret;
     }
 };
@@ -622,7 +694,7 @@ struct ktm::detail::vec_common_implement::fract<N, std::enable_if_t<N == 3 || N 
     {
         V ret;
         float32x4_t floor = vrndmq_f32(x.st);
-        ret.st = vminq_f32(vsubq_f32(x.st, floor), vdupq_n_f32(one<float>));
+        ret.st = vsubq_f32(x.st, floor);
         return ret;
     }
 };
@@ -781,6 +853,42 @@ struct ktm::detail::vec_common_implement::clamp<N, std::enable_if_t<N == 3 || N 
 };
 
 template<size_t N>
+struct ktm::detail::vec_common_implement::floor<N, std::enable_if_t<N == 3 || N == 4, float>>
+{
+    using V = vec<N, float>;
+    static CHTHOLLY_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = intrin::ex::floor_ps(x.st);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::vec_common_implement::floor<N, std::enable_if_t<N == 3 || N == 4, float>>
+{
+    using V = vec<N, float>;
+    static CHTHOLLY_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = intrin::ex::ceil_ps(x.st);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::vec_common_implement::floor<N, std::enable_if_t<N == 3 || N == 4, float>>
+{
+    using V = vec<N, float>;
+    static CHTHOLLY_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = intrin::ex::round_ps(x.st);
+        return ret;
+    }
+};
+
+template<size_t N>
 struct ktm::detail::vec_common_implement::lerp<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
@@ -852,7 +960,7 @@ struct ktm::detail::vec_common_implement::fract<N, std::enable_if_t<N == 3 || N 
     {
         V ret;
         __m128 floor = intrin::ex::floor_ps(x.st);
-        ret.st = _mm_min_ps(_mm_sub_ps(x.st, floor), _mm_set1_ps(one<float>));
+        ret.st = _mm_sub_ps(x.st, floor);
         return ret;
     }
 };
