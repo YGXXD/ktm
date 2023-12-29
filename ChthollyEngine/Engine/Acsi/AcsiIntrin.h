@@ -17,14 +17,14 @@ CHTHOLLY_FUNC __m128 clamp_ps(__m128 x, __m128 min, __m128 max) noexcept
 
 CHTHOLLY_FUNC __m128 abs_ps(__m128 x) noexcept
 {
-	const union { unsigned int i; float f; } mask = { 0x7fffffff };
+	constexpr union { unsigned int i; float f; } mask = { 0x7fffffff };
 	__m128 ret = _mm_and_ps(x, _mm_set1_ps(mask.f));
 	return ret;
 }
 
 CHTHOLLY_FUNC __m128 neg_ps(__m128 x) noexcept
 {
-	union { unsigned int i; float f; } mask = { 0x80000000 };
+	constexpr union { unsigned int i; float f; } mask = { 0x80000000 };
 	__m128 m_mask = _mm_set1_ps(mask.f);
 	__m128 ret = _mm_or_ps(_mm_andnot_ps(x, m_mask), _mm_andnot_ps(m_mask, x));
 	return ret;
@@ -59,7 +59,7 @@ CHTHOLLY_FUNC __m128 round_ps(__m128 x) noexcept
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE4_1_FLAG
 	return _mm_round_ps(x, _MM_FROUND_TO_NEAREST_INT);
 #else
-	const union { unsigned int i; float f; } mask = { 0x80000000 };
+	constexpr union { unsigned int i; float f; } mask = { 0x80000000 };
 	__m128 tmp = _mm_and_ps(x, _mm_set1_ps(mask.f));
 	tmp = _mm_or_ps(tmp, _mm_set_ps1(8388608.f));
     __m128 ret = _mm_sub_ps(_mm_add_ps(x, tmp), tmp);
