@@ -203,7 +203,7 @@ struct ktm::detail::vec_data_implement::vec_swizzle<3, IN, std::enable_if_t<IN =
     static CHTHOLLY_INLINE RetV call(const V& v) noexcept
     {
         RetV ret;
-        ret.st = _mm_shuffle_ps(v.st, v.st, 3, S2, S1, S0);
+        ret.st = _mm_shuffle_ps(v.st, v.st, _MM_SHUFFLE(3, S2, S1, S0));
         return ret;
     }
 };
@@ -216,7 +216,7 @@ struct ktm::detail::vec_data_implement::vec_swizzle<4, 4, float, S0, S1, S2, S3>
     static CHTHOLLY_INLINE RetV call(const V& v) noexcept
     {
         RetV ret;
-        ret.st = _mm_shuffle_ps(v.st, v.st, S3, S2, S1, S0);
+        ret.st = _mm_shuffle_ps(v.st, v.st, _MM_SHUFFLE(S3, S2, S1, S0));
         return ret;
     }
 };
@@ -276,7 +276,7 @@ struct ktm::detail::vec_data_implement::vec_swizzle<3, IN, std::enable_if_t<IN =
     static CHTHOLLY_INLINE RetV call(const V& v) noexcept
     {
         RetV ret;
-        ret.st = _mm_shuffle_epi32(v.st, 3, S2, S1, S0);
+        ret.st = _mm_shuffle_epi32(v.st, _MM_SHUFFLE(3, S2, S1, S0));
         return ret;
     }
 };
@@ -289,7 +289,7 @@ struct ktm::detail::vec_data_implement::vec_swizzle<4, 4, int, S0, S1, S2, S3>
     static CHTHOLLY_INLINE RetV call(const V& v) noexcept
     {
         RetV ret;
-        ret.st = _mm_shuffle_epi32(v.st, S3, S2, S1, S0);
+        ret.st = _mm_shuffle_epi32(v.st, _MM_SHUFFLE(S3, S2, S1, S0));
         return ret;
     }
 };
