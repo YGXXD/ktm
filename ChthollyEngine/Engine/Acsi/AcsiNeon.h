@@ -167,13 +167,13 @@ CHTHOLLY_FUNC float32x4_t mulq_f32_all<float32x4_t>(float32x4_t arg) noexcept
 
 namespace geo
 {
-CHTHOLLY_FUNC int32x2_t sv2_dot2(int32x2_t x, int32x2_t y) noexcept
+CHTHOLLY_FUNC int32x2_t sv2_dot(int32x2_t x, int32x2_t y) noexcept
 {
 	int32x2_t mul = vmul_s32(x, y);
 	return vpadd_s32(mul, mul);
 }
 
-CHTHOLLY_FUNC int32x4_t sv4_dot4(int32x4_t x, int32x4_t y) noexcept
+CHTHOLLY_FUNC int32x4_t sv4_dot(int32x4_t x, int32x4_t y) noexcept
 {
 	int32x4_t mul = vmulq_s32(x, y);
     int32x4_t add_0 = vpaddq_s32(mul, mul);
@@ -186,29 +186,24 @@ CHTHOLLY_FUNC int sv2_dot1(int32x2_t x, int32x2_t y) noexcept
 	return vaddv_s32(vmul_s32(x, y));
 }
 
-template<size_t N>
-CHTHOLLY_FUNC int sv4_dot1(int32x4_t x, int32x4_t y) noexcept;
-
-template<>
-CHTHOLLY_FUNC int sv4_dot1<3>(int32x4_t x, int32x4_t y) noexcept
+CHTHOLLY_FUNC int sv3_dot1(int32x4_t x, int32x4_t y) noexcept
 {
 	int32x4_t mul = vmulq_s32(x, y);
 	return vaddvq_s32(vsetq_lane_s32(0, mul, 3));	
 }
 
-template<>
-CHTHOLLY_FUNC int sv4_dot1<4>(int32x4_t x, int32x4_t y) noexcept
+CHTHOLLY_FUNC int sv4_dot1(int32x4_t x, int32x4_t y) noexcept
 {
 	return vaddvq_s32(vmulq_s32(x, y));	
 }
 
-CHTHOLLY_FUNC float32x2_t fv2_dot2(float32x2_t x, float32x2_t y) noexcept
+CHTHOLLY_FUNC float32x2_t fv2_dot(float32x2_t x, float32x2_t y) noexcept
 {
 	float32x2_t mul = vmul_f32(x, y);
 	return vpadd_f32(mul, mul);
 }
 
-CHTHOLLY_FUNC float32x4_t fv4_dot4(float32x4_t x, float32x4_t y) noexcept
+CHTHOLLY_FUNC float32x4_t fv4_dot(float32x4_t x, float32x4_t y) noexcept
 {
 	float32x4_t mul = vmulq_f32(x, y);
     float32x4_t add_0 = vpaddq_f32(mul, mul);
@@ -221,18 +216,13 @@ CHTHOLLY_FUNC float fv2_dot1(float32x2_t x, float32x2_t y) noexcept
 	return vaddv_f32(vmul_f32(x, y));
 }
 
-template<size_t N>
-CHTHOLLY_FUNC float fv4_dot1(float32x4_t x, float32x4_t y) noexcept;
-
-template<>
-CHTHOLLY_FUNC float fv4_dot1<3>(float32x4_t x, float32x4_t y) noexcept
+CHTHOLLY_FUNC float fv3_dot1(float32x4_t x, float32x4_t y) noexcept
 {
 	float32x4_t mul = vmulq_f32(x, y);
 	return vaddvq_f32(vsetq_lane_f32(0.f, mul, 3));	
 }
 
-template<>
-CHTHOLLY_FUNC float fv4_dot1<4>(float32x4_t x, float32x4_t y) noexcept
+CHTHOLLY_FUNC float fv4_dot1(float32x4_t x, float32x4_t y) noexcept
 {
 	return vaddvq_f32(vmulq_f32(x, y));	
 }

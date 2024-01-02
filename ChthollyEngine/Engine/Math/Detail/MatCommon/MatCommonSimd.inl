@@ -70,7 +70,7 @@ struct ktm::detail::mat_common_implement::determinant<3, float>
         float32x4_t mul_00 = vmulq_f32(neon_shuffleq_f32(c_1, c_1, 3, 0, 2, 1), neon_shuffleq_f32(c_2, c_2, 3, 1, 0, 2));
         float32x4_t mul_01 = vmulq_f32(neon_shuffleq_f32(c_1, c_1, 3, 1, 0, 2), neon_shuffleq_f32(c_2, c_2, 3, 0, 2, 1));
         float32x4_t sub_0 = vsubq_f32(mul_00, mul_01);  
-        return neon::geo::fv4_dot1<3>(c_0, sub_0);
+        return neon::geo::fv3_dot1(c_0, sub_0);
     }
 };
 
@@ -127,7 +127,7 @@ struct ktm::detail::mat_common_implement::determinant<3, int>
         int32x4_t mul_00 = vmulq_s32(neon_shuffleq_s32(c_1, c_1, 3, 0, 2, 1), neon_shuffleq_s32(c_2, c_2, 3, 1, 0, 2));
         int32x4_t mul_01 = vmulq_s32(neon_shuffleq_s32(c_1, c_1, 3, 1, 0, 2), neon_shuffleq_s32(c_2, c_2, 3, 0, 2, 1));
         int32x4_t sub_0 = vsubq_s32(mul_00, mul_01);  
-        return neon::geo::sv4_dot1<3>(c_0, sub_0);
+        return neon::geo::sv3_dot1(c_0, sub_0);
     }
 };
 
@@ -360,7 +360,7 @@ struct ktm::detail::mat_common_implement::inverse<4, float>
         float32x4_t i_tmp_0 = neon_shuffleq_f32(inv_0, inv_1, 0, 0, 0, 0);
         float32x4_t i_tmp_1 = neon_shuffleq_f32(inv_2, inv_3, 0, 0, 0, 0);
         float32x4_t i_row_0 = neon_shuffleq_f32(i_tmp_0, i_tmp_1, 3, 1, 3, 1);
-        float32x4_t i_dot_0 = neon::geo::fv4_dot4(c_0, i_row_0);
+        float32x4_t i_dot_0 = neon::geo::fv4_dot(c_0, i_row_0);
         float32x4_t one_over_det = vdivq_f32(vdupq_n_f32(one<float>), i_dot_0);
         
         M ret;
@@ -439,7 +439,7 @@ struct ktm::detail::mat_common_implement::determinant<3, float>
         __m128 mul_01 = _mm_mul_ps(_mm_shuffle_ps(c_1, c_1, _MM_SHUFFLE(3, 1, 0, 2)), _mm_shuffle_ps(c_2, c_2, _MM_SHUFFLE(3, 0, 2, 1)));
         __m128 sub_0 = _mm_sub_ps(mul_00, mul_01);  
         
-        return intrin::geo::fv4_dot1<3>(c_0, sub_0); 
+        return intrin::geo::fv3_dot1(c_0, sub_0); 
     }
 };
 
@@ -641,7 +641,7 @@ struct ktm::detail::mat_common_implement::inverse<4, float>
         __m128 i_tmp_0 = _mm_shuffle_ps(inv_0, inv_1, 0);
         __m128 i_tmp_1 = _mm_shuffle_ps(inv_2, inv_3, 0);
         __m128 i_row_0 = _mm_shuffle_ps(i_tmp_0, i_tmp_1,  _MM_SHUFFLE(3, 1, 3, 1));
-        __m128 i_dot = intrin::geo::fv4_dot4(c_0, i_row_0);
+        __m128 i_dot = intrin::geo::fv4_dot(c_0, i_row_0);
         __m128 one_over_det = _mm_div_ps(_mm_set1_ps(one<float>), i_dot);
 
         M ret;
@@ -667,7 +667,7 @@ struct ktm::detail::mat_common_implement::determinant<3, int>
         __m128i mul_00 = _mm_mullo_epi32(_mm_shuffle_epi32(c_1, _MM_SHUFFLE(3, 0, 2, 1)), _mm_shuffle_epi32(c_2, _MM_SHUFFLE(3, 1, 0, 2)));
         __m128i mul_01 = _mm_mullo_epi32(_mm_shuffle_epi32(c_1, _MM_SHUFFLE(3, 1, 0, 2)), _mm_shuffle_epi32(c_2, _MM_SHUFFLE(3, 0, 2, 1)));
         __m128i sub_0 = _mm_sub_epi32(mul_00, mul_01);  
-        return intrin::geo::sv4_dot1<3>(c_0, sub_0); 
+        return intrin::geo::sv3_dot1(c_0, sub_0); 
     }
 };
 

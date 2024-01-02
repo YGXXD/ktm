@@ -150,7 +150,7 @@ CHTHOLLY_FUNC __m128i mullo_epi32_all<__m128i>(__m128i arg) noexcept
 
 namespace geo
 {
-CHTHOLLY_FUNC __m128 fv4_dot4(__m128 x, __m128 y) noexcept
+CHTHOLLY_FUNC __m128 fv4_dot(__m128 x, __m128 y) noexcept
 {
 	__m128 mul = _mm_mul_ps(x, y);
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE3_FLAG
@@ -163,11 +163,7 @@ CHTHOLLY_FUNC __m128 fv4_dot4(__m128 x, __m128 y) noexcept
 	return add_1;
 }
 
-template<size_t N>
-CHTHOLLY_FUNC float fv4_dot1(__m128 x, __m128 y) noexcept;
-
-template<>
-CHTHOLLY_FUNC float fv4_dot1<3>(__m128 x, __m128 y) noexcept
+CHTHOLLY_FUNC float fv3_dot1(__m128 x, __m128 y) noexcept // _mm_movehl_ps 可以实现合并
 {
 	__m128 mul = _mm_mul_ps(x, y);
 	__m128 sum_0 = _mm_add_ss(mul, _mm_shuffle_ps(mul, mul, _MM_SHUFFLE(0, 3, 2, 1)));
@@ -175,8 +171,7 @@ CHTHOLLY_FUNC float fv4_dot1<3>(__m128 x, __m128 y) noexcept
 	return _mm_cvtss_f32(sum_1); 
 }
 
-template<>
-CHTHOLLY_FUNC float fv4_dot1<4>(__m128 x, __m128 y) noexcept
+CHTHOLLY_FUNC float fv4_dot1(__m128 x, __m128 y) noexcept
 {
 	__m128 mul = _mm_mul_ps(x, y);
 	__m128 sum_0 = _mm_add_ps(mul, _mm_shuffle_ps(mul, mul, _MM_SHUFFLE(1, 0, 3, 2)));
@@ -186,7 +181,7 @@ CHTHOLLY_FUNC float fv4_dot1<4>(__m128 x, __m128 y) noexcept
 
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE4_1_FLAG
 
-CHTHOLLY_FUNC __m128i sv4_dot4(__m128i x, __m128i y) noexcept
+CHTHOLLY_FUNC __m128i sv4_dot(__m128i x, __m128i y) noexcept
 {
 	__m128i mul = _mm_mullo_epi32(x, y);
 	__m128i add_0 = _mm_hadd_epi32(mul, mul);;
@@ -194,11 +189,7 @@ CHTHOLLY_FUNC __m128i sv4_dot4(__m128i x, __m128i y) noexcept
 	return add_1;
 }
 
-template<size_t N>
-CHTHOLLY_FUNC int sv4_dot1(__m128i x, __m128i y) noexcept;
-
-template<>
-CHTHOLLY_FUNC int sv4_dot1<3>(__m128i x, __m128i y) noexcept
+CHTHOLLY_FUNC int sv3_dot1(__m128i x, __m128i y) noexcept
 {
 	__m128i mul = _mm_mullo_epi32(x, y);
 	__m128i sum_0 = _mm_add_epi32(mul, _mm_shuffle_epi32(mul, _MM_SHUFFLE(0, 3, 2, 1)));
@@ -206,8 +197,7 @@ CHTHOLLY_FUNC int sv4_dot1<3>(__m128i x, __m128i y) noexcept
 	return _mm_cvtsi128_si32(sum_1); 
 }
 
-template<>
-CHTHOLLY_FUNC int sv4_dot1<4>(__m128i x, __m128i y) noexcept
+CHTHOLLY_FUNC int sv4_dot1(__m128i x, __m128i y) noexcept
 {
 	__m128i mul = _mm_mullo_epi32(x, y);
 	__m128i sum_0 = _mm_add_epi32(mul, _mm_shuffle_epi32(mul, _MM_SHUFFLE(1, 0, 3, 2)));

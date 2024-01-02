@@ -81,7 +81,7 @@ private:
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = neon::geo::fv4_dot1<3>(v.st, m[Ns].st)), ...);
+        ((ret[Ns] = neon::geo::fv3_dot1(v.st, m[Ns].st)), ...);
         return ret;
     }
 };
@@ -101,7 +101,7 @@ private:
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = neon::geo::fv4_dot1<4>(v.st, m[Ns].st)), ...);
+        ((ret[Ns] = neon::geo::fv4_dot1(v.st, m[Ns].st)), ...);
         return ret;
     }
 };
@@ -257,7 +257,7 @@ private:
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = neon::geo::sv4_dot1<3>(v.st, m[Ns].st)), ...);
+        ((ret[Ns] = neon::geo::sv3_dot1(v.st, m[Ns].st)), ...);
         return ret;
     }
 };
@@ -277,7 +277,7 @@ private:
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = neon::geo::sv4_dot1<4>(v.st, m[Ns].st)), ...);
+        ((ret[Ns] = neon::geo::sv4_dot1(v.st, m[Ns].st)), ...);
         return ret;
     }
 };
@@ -396,7 +396,7 @@ private:
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = intrin::geo::fv4_dot1<3>(v.st, m[Ns].st)), ...);
+        ((ret[Ns] = intrin::geo::fv3_dot1(v.st, m[Ns].st)), ...);
         return ret;
     }
 };
@@ -416,7 +416,7 @@ private:
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = intrin::geo::fv4_dot1<4>(v.st, m[Ns].st)), ...);
+        ((ret[Ns] = intrin::geo::fv4_dot1(v.st, m[Ns].st)), ...);
         return ret;
     }
 };
@@ -539,7 +539,7 @@ private:
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = intrin::geo::sv4_dot1<3>(v.st, m[Ns].st)), ...);
+        ((ret[Ns] = intrin::geo::sv3_dot1(v.st, m[Ns].st)), ...);
         return ret;
     }
 };
@@ -559,7 +559,7 @@ private:
     static CHTHOLLY_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = intrin::geo::sv4_dot1<4>(v.st, m[Ns].st)), ...);
+        ((ret[Ns] = intrin::geo::sv4_dot1(v.st, m[Ns].st)), ...);
         return ret;
     }
 };
