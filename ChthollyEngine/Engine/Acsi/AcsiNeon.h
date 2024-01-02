@@ -28,12 +28,12 @@ namespace ex
 {
 CHTHOLLY_FUNC int andv_s32(int32x2_t x) noexcept
 {
-	return vget_lane_s32(x, 0) & vget_lane_s32(x, 1);
+	return vget_lane_s32(vand_s32(x, vrev64_s32(x)), 0);
 }
 
 CHTHOLLY_FUNC int andvq_s32(int32x4_t x) noexcept
 {
-	return andv_s32(vand_s32(vget_low_s32(x), vget_high_s32(x)));
+	return andv_s32(vget_low_s32(vandq_s32(x, vrev64q_s32(x))));
 }
 
 CHTHOLLY_FUNC int32x2_t clamp_s32(int32x2_t x, int32x2_t min, int32x2_t max) noexcept
