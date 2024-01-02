@@ -116,7 +116,7 @@ CHTHOLLY_FUNC __m128i add_epi32_all<__m128i>(__m128i arg) noexcept
 CHTHOLLY_FUNC __m128i abs_epi32(__m128i x) noexcept
 {
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE3_FLAG
-	return abs_epi32(x);
+	return _mm_abs_epi32(x);
 #else
 	__m128i tmp = _mm_srai_epi32(x, 31);
 	__m128i ret = _mm_sub_epi32(_mm_xor_si128(x, tmp), tmp);

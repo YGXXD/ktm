@@ -521,7 +521,7 @@ struct ktm::detail::vec_common_implement::round<2, float>
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = vrnda_f32(x.st);
+        ret.st = vrndi_f32(x.st);
         return ret;
     }
 };
@@ -533,7 +533,7 @@ struct ktm::detail::vec_common_implement::round<N, std::enable_if_t<N == 3 || N 
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = vrndaq_f32(x.st);
+        ret.st = vrndiq_f32(x.st);
         return ret;
     }
 };
@@ -865,7 +865,7 @@ struct ktm::detail::vec_common_implement::floor<N, std::enable_if_t<N == 3 || N 
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::floor<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_common_implement::ceil<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -877,7 +877,7 @@ struct ktm::detail::vec_common_implement::floor<N, std::enable_if_t<N == 3 || N 
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::floor<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_common_implement::round<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
