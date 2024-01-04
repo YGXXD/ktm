@@ -440,9 +440,9 @@ struct ktm::detail::mat_common_implement::transpose<4, 4, float>
 };
 
 template<>
-struct ktm::detail::mat_common_implement::transpose<2, 2, float>
+struct ktm::detail::mat_common_implement::transpose<2, 2, int>
 {
-    using M = mat<2, 2, float>;
+    using M = mat<2, 2, int>;
     using RetM = M;
     static CHTHOLLY_INLINE RetM call(const M& m) noexcept
     {
