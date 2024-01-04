@@ -7,6 +7,19 @@
 #if defined(CHTHOLLY_SIMD_NEON)
 
 template<>
+struct ktm::detail::mat_common_implement::transpose<2, 2, float>
+{
+    using M = mat<2, 2, float>;
+    using RetM = M;
+    static CHTHOLLY_INLINE RetM call(const M& m) noexcept
+    {
+        RetM ret;
+        neon::mt::fmt2_tp(&ret[0].st, &m[0].st);
+        return ret;
+    }
+};
+
+template<>
 struct ktm::detail::mat_common_implement::transpose<3, 3, float>
 {
     using M = mat<3, 3, float>;
@@ -28,6 +41,19 @@ struct ktm::detail::mat_common_implement::transpose<4, 4, float>
     {
         RetM ret;
         neon::mt::fmt4_tp(&ret[0].st, &m[0].st);
+        return ret;
+    }
+};
+
+template<>
+struct ktm::detail::mat_common_implement::transpose<2, 2, int>
+{
+    using M = mat<2, 2, int>;
+    using RetM = M;
+    static CHTHOLLY_INLINE RetM call(const M& m) noexcept
+    {
+        RetM ret;
+        neon::mt::fmt2_tp(reinterpret_cast<float32x2_t*>(&ret[0].st), reinterpret_cast<const float32x2_t*>(&m[0].st));
         return ret;
     }
 };
@@ -375,6 +401,19 @@ struct ktm::detail::mat_common_implement::inverse<4, float>
 #elif defined(CHTHOLLY_SIMD_SSE)
 
 template<>
+struct ktm::detail::mat_common_implement::transpose<2, 2, float>
+{
+    using M = mat<2, 2, float>;
+    using RetM = M;
+    static CHTHOLLY_INLINE RetM call(const M& m) noexcept
+    {
+        RetM ret;
+        intrin::mt::fmt2_tp(&ret[0].st, &m[0].st);
+        return ret;
+    }
+};
+
+template<>
 struct ktm::detail::mat_common_implement::transpose<3, 3, float>
 {
     using M = mat<3, 3, float>;
@@ -396,6 +435,19 @@ struct ktm::detail::mat_common_implement::transpose<4, 4, float>
     {
         RetM ret;
         intrin::mt::fmt4_tp(&ret[0].st, &m[0].st); 
+        return ret;
+    }
+};
+
+template<>
+struct ktm::detail::mat_common_implement::transpose<2, 2, float>
+{
+    using M = mat<2, 2, float>;
+    using RetM = M;
+    static CHTHOLLY_INLINE RetM call(const M& m) noexcept
+    {
+        RetM ret;
+        intrin::mt::fmt2_tp(&ret[0].st, &m[0].st);
         return ret;
     }
 };

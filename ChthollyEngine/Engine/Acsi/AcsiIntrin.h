@@ -163,7 +163,7 @@ CHTHOLLY_FUNC __m128 fv4_dot(__m128 x, __m128 y) noexcept
 	return add_1;
 }
 
-CHTHOLLY_FUNC float fv3_dot1(__m128 x, __m128 y) noexcept // _mm_movehl_ps 可以实现合并
+CHTHOLLY_FUNC float fv3_dot1(__m128 x, __m128 y) noexcept
 {
 	__m128 mul = _mm_mul_ps(x, y);
 	__m128 sum_0 = _mm_add_ss(mul, _mm_shuffle_ps(mul, mul, _MM_SHUFFLE(0, 3, 2, 1)));
@@ -210,6 +210,12 @@ CHTHOLLY_FUNC int sv4_dot1(__m128i x, __m128i y) noexcept
 
 namespace mt
 {
+CHTHOLLY_FUNC void fmt2_tp(__m64 out[2], const __m64 in[2]) noexcept
+{
+	out[0] = _mm_unpacklo_pi32(in[0], in[1]);
+	out[1] = _mm_unpackhi_pi32(in[0], in[1]); 
+}
+
 CHTHOLLY_FUNC void fmt3_tp(__m128 out[3], const __m128 in[3]) noexcept
 {
 	__m128 tmp_0 = _mm_shuffle_ps(in[0], in[1], _MM_SHUFFLE(1, 0, 1, 0));

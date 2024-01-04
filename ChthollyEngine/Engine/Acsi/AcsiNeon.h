@@ -237,6 +237,14 @@ CHTHOLLY_FUNC float fv4_dot1(float32x4_t x, float32x4_t y) noexcept
 
 namespace mt
 {
+CHTHOLLY_FUNC void fmt2_tp(float32x2_t out[2], const float32x2_t in[2]) noexcept
+{
+	float32x4_t tmp = vcombine_f32(in[0], in[1]);
+	tmp = neon_shuffleq_f32(tmp, tmp, 3, 1, 2, 0);
+	out[0] = vget_low_f32(tmp);
+	out[1] = vget_high_f32(tmp);
+}
+
 CHTHOLLY_FUNC void fmt3_tp(float32x4_t out[3], const float32x4_t in[3]) noexcept
 {
 	float32x4_t tmp_0 = neon_shuffleq_f32(in[0], in[1], 1, 0, 1, 0);
