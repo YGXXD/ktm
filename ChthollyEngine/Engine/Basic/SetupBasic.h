@@ -54,19 +54,22 @@
 #endif
 
 // function Function config
-#if defined(CHTHOLLY_COMPILER_CLANG) || defined(CHTHOLLY_COMPILER_GCC)
+#if defined(CHTHOLLY_COMPILER_CLANG)
 	#define CHTHOLLY_INLINE __inline__ __attribute__((always_inline))
 	#define CHTHOLLY_NOINLINE __attribute__((noinline))
-	#define CHTHOLLY_NOTHROW __attribute__((nothrow))
-	#define CHTHOLLY_NODEBUG __attribute__((nodebug))
+	#define CHTHOLLY_FUNC __inline__ __attribute__((always_inline, nothrow, nodebug))
+#elif defined(CHTHOLLY_COMPILER_GCC)
+	#define CHTHOLLY_INLINE __inline__ __attribute__((__always_inline__))
+	#define CHTHOLLY_NOINLINE __attribute__((__noinline__))
+	#define CHTHOLLY_FUNC __inline__ __attribute__((__always_inline__, __nothrow__, __artificial__))
 #elif defined(CHTHOLLY_COMPILER_MSVC)
 	#define CHTHOLLY_INLINE __forceinline
 	#define CHTHOLLY_NOINLINE __declspec(noinline)
 	#define CHTHOLLY_NOTHROW __declspec(nothrow)
-	#define CHTHOLLY_NODEBUG 
+	#define CHTHOLLY_FUNC __forceinline __declspec(nothrow)
 #endif
 
-#define CHTHOLLY_FUNC CHTHOLLY_INLINE CHTHOLLY_NODEBUG CHTHOLLY_NOTHROW
+
 
 // build engine config
 #if defined(CHTHOLLY_COMPILER_CLANG)

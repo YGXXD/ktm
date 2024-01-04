@@ -623,8 +623,8 @@ struct ktm::detail::vec_common_implement::step<2, float>
     static CHTHOLLY_INLINE V call(const V& edge, const V& x) noexcept
     {
         V ret;
-        float32x2_t cmp = vclt_f32(x.st, edge.st);
-        uint32x2_t tmp = vand_u32(vreinterpret_u32_f32(vdup_n_f32(one<float>)), vreinterpret_u32_f32(cmp));
+        uint32x2_t cmp = vclt_f32(x.st, edge.st);
+        uint32x2_t tmp = vand_u32(vreinterpret_u32_f32(vdup_n_f32(one<float>)), cmp);
         ret.st = vreinterpret_f32_u32(tmp);
         return ret;
     }
@@ -637,8 +637,8 @@ struct ktm::detail::vec_common_implement::step<N, std::enable_if_t<N == 3 || N =
     static CHTHOLLY_INLINE V call(const V& edge, const V& x) noexcept
     {
         V ret;
-        float32x4_t cmp = vcltq_f32(x.st, edge.st);
-        uint32x4_t tmp = vandq_u32(vreinterpretq_u32_f32(vdupq_n_f32(one<float>)), vreinterpretq_u32_f32(cmp));
+        uint32x4_t cmp = vcltq_f32(x.st, edge.st);
+        uint32x4_t tmp = vandq_u32(vreinterpretq_u32_f32(vdupq_n_f32(one<float>)), cmp);
         ret.st = vreinterpretq_f32_u32(tmp);
         return ret;
     }

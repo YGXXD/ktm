@@ -54,7 +54,7 @@ struct IArray : Father
 
     CHTHOLLY_FUNC typename array_type::reference operator[](size_t i) noexcept { return to_array()[i]; }
     CHTHOLLY_FUNC typename array_type::const_reference operator[](size_t i) const noexcept { return to_array()[i]; }
-    friend CHTHOLLY_FUNC std::ostream& operator<<(std::ostream& o, const Child& x) 
+    friend CHTHOLLY_FUNC std::ostream& operator<<(std::ostream& o, const Child& x) noexcept 
     {
         auto it = x.begin();
         for(; it != x.end() - 1; ++it)
@@ -62,7 +62,7 @@ struct IArray : Father
         o << *it;
         return o;
     }
-    friend CHTHOLLY_FUNC std::istream& operator>>(std::istream& i, const Child& x) 
+    friend CHTHOLLY_FUNC std::istream& operator>>(std::istream& i, const Child& x) noexcept
     {
         for(auto it = x.begin(); it != x.end(); ++it)
             i >> *it;

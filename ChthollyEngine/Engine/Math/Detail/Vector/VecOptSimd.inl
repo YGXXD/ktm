@@ -391,8 +391,8 @@ struct ktm::detail::vec_opt_implement::equal<2, float>
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
         float32x2_t delta = vabs_f32(vsub_f32(x.st, y.st));
-        float32x2_t ret = vclt_f32(delta, vdup_n_f32(epsilon<float>));
-        return static_cast<bool>(neon::ex::andv_f32(ret)); 
+        uint32x2_t ret = vclt_f32(delta, vdup_n_f32(epsilon<float>));
+        return static_cast<bool>(neon::ex::andv_u32(ret)); 
     }
 };
 
@@ -403,9 +403,9 @@ struct ktm::detail::vec_opt_implement::equal<3, float>
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
         float32x4_t delta = vabsq_f32(vsubq_f32(x.st, y.st));
-        float32x4_t ret = vcltq_f32(delta, vdupq_n_f32(epsilon<float>));
-        ret = vcopyq_laneq_f32(ret, 3, ret, 2);
-        return static_cast<bool>(neon::ex::andvq_f32(ret));
+        uint32x4_t ret = vcltq_f32(delta, vdupq_n_f32(epsilon<float>));
+        ret = vcopyq_laneq_u32(ret, 3, ret, 2);
+        return static_cast<bool>(neon::ex::andvq_u32(ret));
     }
 };
 
@@ -416,8 +416,8 @@ struct ktm::detail::vec_opt_implement::equal<4, float>
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
         float32x4_t delta = vabsq_f32(vsubq_f32(x.st, y.st));
-        float32x4_t ret = vcltq_f32(delta, vdupq_n_f32(epsilon<float>));
-        return static_cast<bool>(neon::ex::andvq_f32(ret));
+        uint32x4_t ret = vcltq_f32(delta, vdupq_n_f32(epsilon<float>));
+        return static_cast<bool>(neon::ex::andvq_u32(ret));
     }
 };
 
@@ -715,8 +715,8 @@ struct ktm::detail::vec_opt_implement::equal<2, int>
     using V = vec<2, int>;
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
-        int32x2_t ret = vceq_s32(x.st, y.st);
-        return static_cast<bool>(neon::ex::andv_s32(ret)); 
+        uint32x2_t ret = vceq_s32(x.st, y.st);
+        return static_cast<bool>(neon::ex::andv_u32(ret)); 
     }
 };
 
@@ -726,9 +726,9 @@ struct ktm::detail::vec_opt_implement::equal<3, int>
     using V = vec<3, int>;
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
-        int32x4_t ret = vceqq_s32(x.st, y.st);
-        ret = vcopyq_laneq_s32(ret, 3, ret, 2);;
-        return static_cast<bool>(neon::ex::andvq_s32(ret)); 
+        uint32x4_t ret = vceqq_s32(x.st, y.st);
+        ret = vcopyq_laneq_u32(ret, 3, ret, 2);;
+        return static_cast<bool>(neon::ex::andvq_u32(ret)); 
     }
 };
 
@@ -738,8 +738,8 @@ struct ktm::detail::vec_opt_implement::equal<4, int>
     using V = vec<4, int>;
     static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
     {
-        int32x4_t ret = vceqq_s32(x.st, y.st);
-        return static_cast<bool>(neon::ex::andvq_s32(ret));  
+        uint32x4_t ret = vceqq_s32(x.st, y.st);
+        return static_cast<bool>(neon::ex::andvq_u32(ret));  
     }
 };
 

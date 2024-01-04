@@ -17,7 +17,7 @@
 
 #define neon_shuffle_s32(a, b, s1, s0) neon_shuffle_f32(a, b, s1, s0)
 #define neon_shuffleq_s32(a, b, s3, s2, s1, s0) neon_shuffleq_f32(a, b, s3, s2, s1, s0)
-#define neon_shuffle_f32(a, b, s1, s0) __builtin_shuffle(a, b, uint32x4_t{ s0, (s1) + 2 })
+#define neon_shuffle_f32(a, b, s1, s0) __builtin_shuffle(a, b, uint32x2_t{ s0, (s1) + 2 })
 #define neon_shuffleq_f32(a, b, s3, s2, s1, s0) __builtin_shuffle(a, b, uint32x4_t{ s0, s1, (s2) + 4, (s3) + 4 })
 
 #else 
@@ -33,14 +33,14 @@ namespace neon
 {
 namespace ex 
 {
-CHTHOLLY_FUNC int andv_s32(int32x2_t x) noexcept
+CHTHOLLY_FUNC unsigned int andv_u32(uint32x2_t x) noexcept
 {
-	return vget_lane_s32(vand_s32(x, vrev64_s32(x)), 0);
+	return vget_lane_u32(vand_u32(x, vrev64_u32(x)), 0);
 }
 
-CHTHOLLY_FUNC int andvq_s32(int32x4_t x) noexcept
+CHTHOLLY_FUNC unsigned int andvq_u32(uint32x4_t x) noexcept
 {
-	return andv_s32(vget_low_s32(vandq_s32(x, vrev64q_s32(x))));
+	return andv_u32(vget_low_u32(vandq_u32(x, vrev64q_u32(x))));
 }
 
 CHTHOLLY_FUNC int32x2_t clamp_s32(int32x2_t x, int32x2_t min, int32x2_t max) noexcept
@@ -99,18 +99,6 @@ template<>
 CHTHOLLY_FUNC int32x4_t mulq_s32_all<int32x4_t>(int32x4_t arg) noexcept
 {
 	return arg;
-}
-
-CHTHOLLY_FUNC float andv_f32(float32x2_t x) noexcept
-{
-	const union { int i; float f; } ret = { andv_s32(vreinterpret_s32_f32(x)) };
-	return ret.f;
-}
-
-CHTHOLLY_FUNC float andvq_f32(float32x4_t x) noexcept
-{
-	const union { int i; float f; } ret = { andvq_s32(vreinterpretq_s32_f32(x)) };
-	return ret.f;
 }
 
 CHTHOLLY_FUNC float32x2_t clamp_f32(float32x2_t x, float32x2_t min, float32x2_t max) noexcept
@@ -257,15 +245,15 @@ CHTHOLLY_FUNC void fmt3_tp(float32x4_t out[3], const float32x4_t in[3]) noexcept
 
 CHTHOLLY_FUNC void fmt4_tp(float32x4_t out[4], const float32x4_t in[4]) noexcept
 {
-	int32x4_t tmp_0 = neon_shuffleq_s32(in[0], in[1], 1, 0, 1, 0);
-	int32x4_t tmp_2 = neon_shuffleq_s32(in[0], in[1], 3, 2, 3, 2);
-	int32x4_t tmp_1 = neon_shuffleq_s32(in[2], in[3], 1, 0, 1, 0);
-	int32x4_t tmp_3 = neon_shuffleq_s32(in[2], in[3], 3, 2, 3, 2);
+	float32x4_t tmp_0 = neon_shuffleq_f32(in[0], in[1], 1, 0, 1, 0);
+	float32x4_t tmp_2 = neon_shuffleq_f32(in[0], in[1], 3, 2, 3, 2);
+	float32x4_t tmp_1 = neon_shuffleq_f32(in[2], in[3], 1, 0, 1, 0);
+	float32x4_t tmp_3 = neon_shuffleq_f32(in[2], in[3], 3, 2, 3, 2);
 
-	out[0] = neon_shuffleq_s32(tmp_0, tmp_1, 2, 0, 2, 0);
-	out[1] = neon_shuffleq_s32(tmp_0, tmp_1, 3, 1, 3, 1);
-	out[2] = neon_shuffleq_s32(tmp_2, tmp_3, 2, 0, 2, 0);
-	out[3] = neon_shuffleq_s32(tmp_2, tmp_3, 3, 1, 3, 1);
+	out[0] = neon_shuffleq_f32(tmp_0, tmp_1, 2, 0, 2, 0);
+	out[1] = neon_shuffleq_f32(tmp_0, tmp_1, 3, 1, 3, 1);
+	out[2] = neon_shuffleq_f32(tmp_2, tmp_3, 2, 0, 2, 0);
+	out[3] = neon_shuffleq_f32(tmp_2, tmp_3, 3, 1, 3, 1);
 }
 }
 
