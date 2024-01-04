@@ -946,7 +946,7 @@ struct ktm::detail::vec_common_implement::smoothstep<N, std::enable_if_t<N == 3 
     {
         V ret;
         __m128 tmp = _mm_div_ps(_mm_sub_ps(x.st, edge0.st), _mm_sub_ps(edge1.st, edge0.st));
-        tmp = intrin::ex::clamp_ps(tmp, _mm_set1_ps(zero<float>), _mm_set1_ps(one<float>));
+        tmp = intrin::ex::clamp_ps(tmp, _mm_setzero_ps(), _mm_set1_ps(one<float>));
         ret.st = _mm_mul_ps(_mm_mul_ps(tmp, tmp), _mm_sub_ps(_mm_set1_ps(3.f), _mm_mul_ps(_mm_set1_ps(2.f), tmp)));
         return ret;
     }
