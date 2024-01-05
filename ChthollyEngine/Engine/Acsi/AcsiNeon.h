@@ -158,6 +158,55 @@ CHTHOLLY_FUNC float32x4_t mulq_f32_all<float32x4_t>(float32x4_t arg) noexcept
 {
 	return arg;
 }
+
+CHTHOLLY_FUNC float32x2_t fast_rsqrt_f32(float32x2_t x) noexcept
+{
+	float32x2_t r = vrsqrte_f32(x);
+	return vmul_f32(r, vrsqrts_f32(x, vmul_f32(r,r)));
+}
+
+CHTHOLLY_FUNC float32x4_t fast_rsqrtq_f32(float32x4_t x) noexcept
+{
+	float32x4_t r = vrsqrteq_f32(x);
+  	return vmulq_f32(r, vrsqrtsq_f32(x, vmulq_f32(r, r)));
+}
+
+CHTHOLLY_FUNC float32x2_t rsqrt_f32(float32x2_t x) noexcept
+{
+	float32x2_t r = fast_rsqrt_f32(x);
+	return vmul_f32(r, vrsqrts_f32(x, vmul_f32(r,r)));
+}
+
+CHTHOLLY_FUNC float32x4_t rsqrtq_f32(float32x4_t x) noexcept
+{
+	float32x4_t r = fast_rsqrtq_f32(x);
+	return vmulq_f32(r, vrsqrtsq_f32(x, vmulq_f32(r,r)));
+}
+
+CHTHOLLY_FUNC float32x2_t fast_recip_f32(float32x2_t x) noexcept
+{
+	float32x2_t r = vrecpe_f32(x);
+  	return vmul_f32(r, vrecps_f32(x, r));
+}
+
+CHTHOLLY_FUNC float32x4_t fast_recipq_f32(float32x4_t x) noexcept
+{
+	float32x4_t r = vrecpeq_f32(x);
+  	return vmulq_f32(r, vrecpsq_f32(x, r));
+}
+
+CHTHOLLY_FUNC float32x2_t recip_f32(float32x2_t x) noexcept
+{
+	float32x2_t r = fast_recip_f32(x);
+  	return vmul_f32(r, vrecps_f32(x, r));
+}
+
+CHTHOLLY_FUNC float32x4_t recipq_f32(float32x4_t x) noexcept
+{
+	float32x4_t r = fast_recipq_f32(x);
+	return vmulq_f32(r, vrecpsq_f32(x, r));
+}
+
 }
 
 namespace geo

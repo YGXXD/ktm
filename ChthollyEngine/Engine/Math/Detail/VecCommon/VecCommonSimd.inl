@@ -595,9 +595,7 @@ struct ktm::detail::vec_common_implement::recip<2, float>
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = vrecpe_f32(x.st);
-        ret.st = vmul_f32(ret.st, vrecps_f32(x.st, ret.st));
-        ret.st = vmul_f32(ret.st, vrecps_f32(x.st, ret.st));
+        ret.st = neon::ex::recip_f32(x.st);
         return ret;
     }
 };
@@ -609,9 +607,7 @@ struct ktm::detail::vec_common_implement::recip<N, std::enable_if_t<N == 3 || N 
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = vrecpeq_f32(x.st);
-        ret.st = vmulq_f32(ret.st, vrecpsq_f32(x.st, ret.st));
-        ret.st = vmulq_f32(ret.st, vrecpsq_f32(x.st, ret.st));
+        ret.st = neon::ex::recipq_f32(x.st);
         return ret;
     }
 };
@@ -920,7 +916,7 @@ struct ktm::detail::vec_common_implement::recip<N, std::enable_if_t<N == 3 || N 
     static CHTHOLLY_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = _mm_rcp_ps(x.st);
+        ret.st = intrin::ex::recip_ps(x.st);
         return ret;
     }
 };

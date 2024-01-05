@@ -54,6 +54,32 @@ CHTHOLLY_FUNC __m128 mul_ps_all<__m128>(__m128 arg) noexcept
 	return arg;
 }
 
+CHTHOLLY_FUNC __m128 fast_rsqrt_ps(__m128 x) noexcept
+{
+	return _mm_rsqrt_ps(x);
+}
+
+CHTHOLLY_FUNC __m128 rsqrt_ps(__m128 x) noexcept
+{
+	__m128 r = fast_rsqrt_ps(x);
+	__m128 mul = mul_ps_all(_mm_set1_ps(0.5f), x, r, r);
+	__m128 sub = _mm_sub_ps(_mm_set1_ps(1.5f), mul);
+	return _mm_mul_ps(r, sub);
+}
+
+CHTHOLLY_FUNC __m128 fast_recip_ps(__m128 x) noexcept
+{
+	return _mm_rcp_ps(x);
+}
+
+CHTHOLLY_FUNC __m128 recip_ps(__m128 x) noexcept
+{
+	__m128 r = fast_recip_pss(x);
+	__m128 mul = _mm_mul_ps(x, r);
+	__m128 sub = _mm_sub_ps(_mm_set1_ps(2.f), mul);
+	return _mm_mul_ps(r, sub);
+}
+
 CHTHOLLY_FUNC __m128 round_ps(__m128 x) noexcept
 {
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE4_1_FLAG
