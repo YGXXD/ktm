@@ -178,18 +178,18 @@ CHTHOLLY_FUNC int32x4_t sv4_dot(int32x4_t x, int32x4_t y) noexcept
 
 CHTHOLLY_FUNC int sv2_dot1(int32x2_t x, int32x2_t y) noexcept
 {
-	return vaddv_s32(vmul_s32(x, y));
+	return vget_lane_s32(sv2_dot(x, y), 0);
 }
 
 CHTHOLLY_FUNC int sv3_dot1(int32x4_t x, int32x4_t y) noexcept
 {
-	int32x4_t mul = vmulq_s32(x, y);
-	return vaddvq_s32(vsetq_lane_s32(0, mul, 3));	
+	int32x4_t m_x = vsetq_lane_s32(0, x, 3);
+	return vgetq_lane_s32(sv4_dot(m_x, y), 0);	
 }
 
 CHTHOLLY_FUNC int sv4_dot1(int32x4_t x, int32x4_t y) noexcept
 {
-	return vaddvq_s32(vmulq_s32(x, y));	
+	return vgetq_lane_s32(sv4_dot(x, y), 0);
 }
 
 CHTHOLLY_FUNC float32x2_t fv2_dot(float32x2_t x, float32x2_t y) noexcept
@@ -208,18 +208,18 @@ CHTHOLLY_FUNC float32x4_t fv4_dot(float32x4_t x, float32x4_t y) noexcept
 
 CHTHOLLY_FUNC float fv2_dot1(float32x2_t x, float32x2_t y) noexcept
 {
-	return vaddv_f32(vmul_f32(x, y));
+	return vget_lane_f32(fv2_dot(x, y), 0);
 }
 
 CHTHOLLY_FUNC float fv3_dot1(float32x4_t x, float32x4_t y) noexcept
 {
-	float32x4_t mul = vmulq_f32(x, y);
-	return vaddvq_f32(vsetq_lane_f32(0.f, mul, 3));	
+	float32x4_t m_x = vsetq_lane_f32(0.f, x, 3);
+	return vgetq_lane_f32(fv4_dot(m_x, y), 0);
 }
 
 CHTHOLLY_FUNC float fv4_dot1(float32x4_t x, float32x4_t y) noexcept
 {
-	return vaddvq_f32(vmulq_f32(x, y));	
+	return vgetq_lane_f32(fv4_dot(x, y), 0);
 }
 }
 

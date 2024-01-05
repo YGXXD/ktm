@@ -98,7 +98,7 @@ CHTHOLLY_FUNC __m128 ceil_ps(__m128 x) noexcept
 
 CHTHOLLY_FUNC __m128i neg_epi32(__m128i x) noexcept
 {
-	return _mm_sub_epi32(_mm_set1_epi32(0), x);
+	return _mm_sub_epi32(_mm_setzero_si128(), x);
 }
 
 template<typename SimdT, typename ...SimdTs>
@@ -173,10 +173,7 @@ CHTHOLLY_FUNC float fv3_dot1(__m128 x, __m128 y) noexcept
 
 CHTHOLLY_FUNC float fv4_dot1(__m128 x, __m128 y) noexcept
 {
-	__m128 mul = _mm_mul_ps(x, y);
-	__m128 sum_0 = _mm_add_ps(mul, _mm_shuffle_ps(mul, mul, _MM_SHUFFLE(1, 0, 3, 2)));
-	__m128 sum_1 = _mm_add_ss(sum_0, _mm_shuffle_ps(sum_0, sum_0, _MM_SHUFFLE(0, 3, 2, 1)));
-	return _mm_cvtss_f32(sum_1); 
+	return _mm_cvtss_f32(fv4_dot(x, y)); 
 }
 
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE4_1_FLAG
@@ -199,10 +196,7 @@ CHTHOLLY_FUNC int sv3_dot1(__m128i x, __m128i y) noexcept
 
 CHTHOLLY_FUNC int sv4_dot1(__m128i x, __m128i y) noexcept
 {
-	__m128i mul = _mm_mullo_epi32(x, y);
-	__m128i sum_0 = _mm_add_epi32(mul, _mm_shuffle_epi32(mul, _MM_SHUFFLE(1, 0, 3, 2)));
-	__m128i sum_1 = _mm_add_epi32(sum_0, _mm_shuffle_epi32(sum_0, _MM_SHUFFLE(0, 3, 2, 1)));
-	return _mm_cvtsi128_si32(sum_1); 
+	return _mm_cvtsi128_si32(sv4_dot(x, y)); 
 }
 
 #endif
@@ -244,7 +238,7 @@ namespace qt
 {
 CHTHOLLY_FUNC __m128 fv3_mul_fq(__m128 v, __m128 q) noexcept
 {
-    __m128 q_opp = intrin::ex::neg_ps(q);
+    __m128 q_opp = neg_ps(q);
 
     __m128 tmp_0 = _mm_shuffle_ps(q, q_opp, _MM_SHUFFLE(2, 2, 3, 3));
     __m128 tmp_1 = _mm_shuffle_ps(q, q_opp, _MM_SHUFFLE(1, 0, 1, 0)); 
