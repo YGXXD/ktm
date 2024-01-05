@@ -74,7 +74,7 @@ CHTHOLLY_FUNC __m128 fast_recip_ps(__m128 x) noexcept
 
 CHTHOLLY_FUNC __m128 recip_ps(__m128 x) noexcept
 {
-	__m128 r = fast_recip_pss(x);
+	__m128 r = fast_recip_ps(x);
 	__m128 mul = _mm_mul_ps(x, r);
 	__m128 sub = _mm_sub_ps(_mm_set1_ps(2.f), mul);
 	return _mm_mul_ps(r, sub);
@@ -264,7 +264,7 @@ namespace qt
 {
 CHTHOLLY_FUNC __m128 fv3_mul_fq(__m128 v, __m128 q) noexcept
 {
-    __m128 q_opp = neg_ps(q);
+    __m128 q_opp = ex::neg_ps(q);
 
     __m128 tmp_0 = _mm_shuffle_ps(q, q_opp, _MM_SHUFFLE(2, 2, 3, 3));
     __m128 tmp_1 = _mm_shuffle_ps(q, q_opp, _MM_SHUFFLE(1, 0, 1, 0)); 
