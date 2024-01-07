@@ -33,14 +33,15 @@ namespace neon
 {
 namespace ex 
 {
-CHTHOLLY_FUNC unsigned int andv_u32(uint32x2_t x) noexcept
+CHTHOLLY_FUNC unsigned int maskq_u32(uint32x4_t x)
 {
-	return vget_lane_u32(vand_u32(x, vrev64_u32(x)), 0);
-}
-
-CHTHOLLY_FUNC unsigned int andvq_u32(uint32x4_t x) noexcept
-{
-	return andv_u32(vget_low_u32(vandq_u32(x, vrev64q_u32(x))));
+	constexpr union { unsigned int u[4]; uint32x4_t n; } mask = { 1, 2, 4, 8 };
+    uint32x4_t tmp = vandq_u32(x, mask.n);
+    uint32x2_t l = vget_low_u32(tmp);
+    uint32x2_t h = vget_high_u32(tmp);
+    l = vorr_u32(l, h);  
+    l = vpadd_u32(l, l);
+    return vget_lane_u32(l, 0); 
 }
 
 CHTHOLLY_FUNC int32x2_t clamp_s32(int32x2_t x, int32x2_t min, int32x2_t max) noexcept
