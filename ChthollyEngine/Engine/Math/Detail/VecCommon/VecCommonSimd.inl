@@ -677,7 +677,7 @@ struct ktm::detail::vec_common_implement::fract<2, float>
     {
         V ret;
         float32x2_t floor = vrndm_f32(x.st);
-        ret.st = vsub_f32(x.st, floor), vdup_n_f32(one<float>);
+        ret.st = vsub_f32(x.st, floor);
         return ret;
     }
 };

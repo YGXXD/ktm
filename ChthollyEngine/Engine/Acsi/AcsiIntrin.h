@@ -106,7 +106,6 @@ CHTHOLLY_FUNC __m128 floor_ps(__m128 x) noexcept
 #endif
 }
 
-
 CHTHOLLY_FUNC __m128 ceil_ps(__m128 x) noexcept
 {
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE4_1_FLAG
