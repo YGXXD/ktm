@@ -24,9 +24,6 @@ struct add;
 template<size_t Row, size_t Col, typename T>
 struct minus;
 
-template<size_t Row, size_t Col, typename T>
-struct equal;
-
 }
 }
 }

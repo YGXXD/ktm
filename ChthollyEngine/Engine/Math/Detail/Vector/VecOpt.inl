@@ -301,27 +301,4 @@ private:
     }
 };
 
-template<size_t N, typename T>
-struct ktm::detail::vec_opt_implement::equal
-{
-    using V = vec<N, T>;
-    static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
-    {
-        return call(x, y, std::make_index_sequence<N>());
-    }
-private:
-    template<size_t ...Ns>
-    static CHTHOLLY_INLINE bool call(const V& x, const V& y, std::index_sequence<Ns...>) noexcept
-    {
-        if constexpr(std::is_floating_point_v<T>)
-        {
-            return (ktm::equal(x[Ns], y[Ns]) && ...);
-        }
-        else
-        {
-            return ((x[Ns] == y[Ns]) && ...);
-        }
-    }
-};
-
 #endif

@@ -105,20 +105,4 @@ private:
     }
 };
 
-template<size_t Row, size_t Col, typename T>
-struct ktm::detail::mat_opt_implement::equal
-{
-	using M = mat<Row, Col, T>;
-    static CHTHOLLY_INLINE bool call(const M& m1, const M& m2) noexcept
-    {
-        return call(m1, m2, std::make_index_sequence<Row>());
-    }
-private:
-    template<size_t ...Ns>
-    static CHTHOLLY_INLINE bool call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
-    {
-        return ((m1[Ns] == m2[Ns]) && ...);
-    }
-};
-
 #endif

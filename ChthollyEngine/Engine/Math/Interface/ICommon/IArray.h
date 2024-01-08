@@ -54,6 +54,14 @@ struct IArray : Father
 
     CHTHOLLY_FUNC typename array_type::reference operator[](size_t i) noexcept { return to_array()[i]; }
     CHTHOLLY_FUNC typename array_type::const_reference operator[](size_t i) const noexcept { return to_array()[i]; }
+
+    friend CHTHOLLY_FUNC bool operator==(const Child& x, const Child& y) { return x.to_array() == y.to_array(); }
+    friend CHTHOLLY_FUNC bool operator!=(const Child& x, const Child& y) { return x.to_array() != y.to_array(); }
+    friend CHTHOLLY_FUNC bool operator< (const Child& x, const Child& y) { return x.to_array() <  y.to_array(); }
+    friend CHTHOLLY_FUNC bool operator> (const Child& x, const Child& y) { return x.to_array() >  y.to_array(); }
+    friend CHTHOLLY_FUNC bool operator<=(const Child& x, const Child& y) { return x.to_array() <= y.to_array(); }
+    friend CHTHOLLY_FUNC bool operator>=(const Child& x, const Child& y) { return x.to_array() >= y.to_array(); }
+
     friend CHTHOLLY_FUNC std::ostream& operator<<(std::ostream& o, const Child& x) noexcept 
     {
         auto it = x.begin();

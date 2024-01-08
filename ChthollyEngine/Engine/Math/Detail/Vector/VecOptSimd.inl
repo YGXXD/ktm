@@ -385,43 +385,6 @@ struct ktm::detail::vec_opt_implement::div_scalar_to_self<N, std::enable_if_t<N 
 };
 
 template<>
-struct ktm::detail::vec_opt_implement::equal<2, float>
-{
-    using V = vec<2, float>;
-    static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
-    {
-        float32x2_t delta = vabs_f32(vsub_f32(x.st, y.st));
-        uint32x2_t cmp = vclt_f32(delta, vdup_n_f32(epsilon<float>));
-        return static_cast<bool>(vget_lane_u32(cmp, 0) & vget_lane_u32(cmp, 1)); 
-    }
-};
-
-template<>
-struct ktm::detail::vec_opt_implement::equal<3, float>
-{
-    using V = vec<3, float>;
-    static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
-    {
-        float32x4_t delta = vabsq_f32(vsubq_f32(x.st, y.st));
-        uint32x4_t cmp = vcltq_f32(delta, vdupq_n_f32(epsilon<float>));
-        uint32_t ret = neon::ex::maskq_u32(cmp);
-        return ret == 0xf || ret == 0x7;
-    }
-};
-
-template<>
-struct ktm::detail::vec_opt_implement::equal<4, float>
-{
-    using V = vec<4, float>;
-    static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
-    {
-        float32x4_t delta = vabsq_f32(vsubq_f32(x.st, y.st));
-        uint32x4_t cmp = vcltq_f32(delta, vdupq_n_f32(epsilon<float>));
-        return neon::ex::maskq_u32(cmp) == 0xf;
-    }
-};
-
-template<>
 struct ktm::detail::vec_opt_implement::add<2, int>
 {
     using V = vec<2, int>;
@@ -709,40 +672,6 @@ struct ktm::detail::vec_opt_implement::mul_scalar_to_self<N, std::enable_if_t<N 
     }
 };
 
-template<>
-struct ktm::detail::vec_opt_implement::equal<2, int>
-{
-    using V = vec<2, int>;
-    static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
-    {
-        uint32x2_t cmp = vceq_s32(x.st, y.st);
-        return static_cast<bool>(vget_lane_u32(cmp, 0) & vget_lane_u32(cmp, 1)); 
-    }
-};
-
-template<>
-struct ktm::detail::vec_opt_implement::equal<3, int>
-{
-    using V = vec<3, int>;
-    static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
-    {
-        uint32x4_t cmp = vceqq_s32(x.st, y.st);
-        uint32_t ret = neon::ex::maskq_u32(cmp);
-        return ret == 0xf || ret == 0x7;
-    }
-};
-
-template<>
-struct ktm::detail::vec_opt_implement::equal<4, int>
-{
-    using V = vec<4, int>;
-    static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
-    {
-        uint32x4_t cmp = vceqq_s32(x.st, y.st);
-        return neon::ex::maskq_u32(cmp) == 0xf;  
-    }
-};
-
 #elif defined(CHTHOLLY_SIMD_SSE)
 
 template<size_t N>
@@ -934,31 +863,6 @@ struct ktm::detail::vec_opt_implement::div_scalar_to_self<N, std::enable_if_t<N 
     }
 };
 
-template<>
-struct ktm::detail::vec_opt_implement::equal<3, float>
-{
-    using V = vec<3, float>;
-    static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
-    {
-        __m128 delta = intrin::ex::abs_ps(_mm_sub_ps(x.st, y.st));
-        __m128 cmp = _mm_cmplt_ps(delta, _mm_set1_ps(epsilon<float>));     
-        int ret = _mm_movemask_ps(cmp);
-        return ret == 0xf || ret == 0x7;
-    }
-};
-
-template<>
-struct ktm::detail::vec_opt_implement::equal<4, float>
-{
-    using V = vec<4, float>;
-    static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
-    {
-        __m128 delta = intrin::ex::abs_ps(_mm_sub_ps(x.st, y.st));
-        __m128 cmp = _mm_cmplt_ps(delta, _mm_set1_ps(epsilon<float>));     
-        return _mm_movemask_ps(cmp) == 0xf;
-    }
-};
-
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE2_FLAG
 
 template<size_t N>
@@ -1058,29 +962,6 @@ struct ktm::detail::vec_opt_implement::minus_scalar_to_self<N, std::enable_if_t<
     static CHTHOLLY_INLINE void call(V& x, int scalar) noexcept
     {
         x.st = _mm_sub_epi32(x.st, _mm_set1_epi32(scalar));
-    }
-};
-
-template<>
-struct ktm::detail::vec_opt_implement::equal<3, int>
-{
-    using V = vec<3, int>;
-    static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
-    {
-        __m128i cmp = _mm_cmpeq_epi32(x.st, y.st);
-        int ret = _mm_movemask_ps(_mm_castsi128_ps(cmp));
-        return ret == 0xf || ret == 0x7;
-    }
-};
-
-template<>
-struct ktm::detail::vec_opt_implement::equal<4, int>
-{
-    using V = vec<4, int>;
-    static CHTHOLLY_INLINE bool call(const V& x, const V& y) noexcept
-    {
-        __m128i cmp = _mm_cmpeq_epi32(x.st, y.st);
-        return _mm_movemask_ps(_mm_castsi128_ps(cmp)) == 0xf;
     }
 };
 

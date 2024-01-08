@@ -39,17 +39,6 @@ struct IMatOpt<Father, mat<Row, Col, T>> : Father
     {
         return detail::mat_opt_implement::minus<Row, Col, T>::call(reinterpret_cast<const mat<Row, Col, T>&>(*this), m2); 
     }
-
-    CHTHOLLY_INLINE bool operator==(const mat<Row, Col, T>& m2) const noexcept
-    {
-        return detail::mat_opt_implement::equal<Row, Col, T>::call(reinterpret_cast<const mat<Row, Col, T>&>(*this), m2); 
-    }
-
-    CHTHOLLY_INLINE bool operator!=(const mat<Row, Col, T>& m2) const noexcept
-    {
-        return !detail::mat_opt_implement::equal<Row, Col, T>::call(reinterpret_cast<const mat<Row, Col, T>&>(*this), m2); 
-    }
-
 };
 }
 

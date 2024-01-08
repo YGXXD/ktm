@@ -60,9 +60,6 @@ struct div_scalar;
 template<size_t N, typename T>
 struct div_scalar_to_self;
 
-template<size_t N, typename T>
-struct equal;
-
 }
 }
 }

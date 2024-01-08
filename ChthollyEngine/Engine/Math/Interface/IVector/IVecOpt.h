@@ -124,16 +124,6 @@ struct IVecOpt<Father, vec<N, T>> : Father
         detail::vec_opt_implement::div_scalar_to_self<N, T>::call(this_ref, scalar);
         return this_ref;
     }
-
-    CHTHOLLY_INLINE bool operator==(const vec<N, T>& y) const noexcept
-    {
-        return detail::vec_opt_implement::equal<N, T>::call(reinterpret_cast<const vec<N, T>&>(*this), y);
-    }
-
-    CHTHOLLY_INLINE bool operator!=(const vec<N, T>& y) const noexcept
-    {
-        return !detail::vec_opt_implement::equal<N, T>::call(reinterpret_cast<const vec<N, T>&>(*this), y);
-    }
 };
 
 }
