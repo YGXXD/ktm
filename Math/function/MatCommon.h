@@ -3,7 +3,7 @@
 
 #include "../type/traits.h"
 #include "../type/mat.h"
-#include "Math/detail/MatCommon/MatCommonFwd.h"
+#include "../detail/function/MatCommonFwd.h"
 
 namespace ktm
 {
@@ -50,7 +50,7 @@ CHTHOLLY_INLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base
 }
 }
 
-#include "Math/detail/MatCommon/MatCommon.inl"
-#include "Math/detail/MatCommon/MatCommonSimd.inl"
+#include "../detail/function/MatCommon.inl"
+#include "../detail/function/MatCommonSimd.inl"
 
 #endif

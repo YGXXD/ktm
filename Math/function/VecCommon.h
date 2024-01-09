@@ -3,7 +3,7 @@
 
 #include "../type/traits.h"
 #include "../type/vec.h"
-#include "Math/detail/VecCommon/VecCommonFwd.h"
+#include "../detail/function/VecCommonFwd.h"
 
 namespace ktm
 {
@@ -112,7 +112,7 @@ CHTHOLLY_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, 
 
 }   
 
-#include "Math/detail/VecCommon/VecCommon.inl"
-#include "Math/detail/VecCommon/VecCommonSimd.inl"
+#include "../detail/function/VecCommon.inl"
+#include "../detail/function/VecCommonSimd.inl"
 
 #endif
