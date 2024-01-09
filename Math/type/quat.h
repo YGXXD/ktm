@@ -3,23 +3,23 @@
 
 #include "vec.h"
 #include "mat.h"
-#include "Math/interface/ICommon/IArray.h"
-#include "Math/interface/IQuaternion/IQuatData.h"
-#include "Math/interface/IQuaternion/IQuatMake.h"
-#include "Math/interface/IQuaternion/IQuatArray.h"
-#include "Math/interface/IQuaternion/IQuatOpt.h"
+#include "../interface/shared/iarray.h"
+#include "../interface/quaternion/iquat_data.h"
+#include "../interface/quaternion/iquat_make.h"
+#include "../interface/quaternion/iquat_array.h"
+#include "../interface/quaternion/iquat_calc.h"
 
 namespace ktm
 {
 template<typename T>
-struct quat<T> : ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, ktm::IQuatData, ktm::IQuatMake, ktm::IQuatArray, ktm::IQuatOpt>, quat<T>>
+struct quat<T> : ktl::SingleExtends_t<ktl::TemplateList<ktm::iarray, ktm::iquat_data, ktm::iquat_make, ktm::iquat_array, ktm::iquat_calc>, quat<T>>
 {
-    using Father = ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, ktm::IQuatData, ktm::IQuatMake, ktm::IQuatArray, ktm::IQuatOpt>, quat<T>>;
+    using Father = ktl::SingleExtends_t<ktl::TemplateList<ktm::iarray, ktm::iquat_data, ktm::iquat_make, ktm::iquat_array, ktm::iquat_calc>, quat<T>>;
     using Father::Father;
 };
 }
 
-#include "Math/detail/Quaternion/QuatOpt.inl"
-#include "Math/detail/Quaternion/QuatOptSimd.inl"
+#include "../detail/quaternion/quat_calc.inl"
+#include "../detail/quaternion/quat_calc_simd.inl"
 
 #endif
