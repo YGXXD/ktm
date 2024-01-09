@@ -1,7 +1,7 @@
 #ifndef _I_QUAT_MAKE_H_
 #define _I_QUAT_MAKE_H_
 
-#include "Math/function/ArtcBase.h"
+#include "../../type/basic.h"
 #include "Math/function/ArtcCommon.h"
 #include "Math/function/VecGeometry.h"
 #include "Math/function/MatCommon.h"

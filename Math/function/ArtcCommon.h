@@ -1,7 +1,7 @@
 #ifndef _ARTC_COMMON_H_
 #define _ARTC_COMMON_H_
 
-#include "ArtcBase.h"
+#include "../type/basic.h"
 #include <cmath>
 
 namespace ktm

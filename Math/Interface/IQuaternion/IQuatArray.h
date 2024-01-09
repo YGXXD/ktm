@@ -1,7 +1,7 @@
 #ifndef _I_QUAT_ARRAY_H_
 #define _I_QUAT_ARRAY_H_
 
-#include "Math/function/ArtcBase.h"
+#include "../../type/basic.h"
 #include <array>
 
 namespace ktm

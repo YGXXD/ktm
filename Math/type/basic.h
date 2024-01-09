@@ -1,5 +1,5 @@
-#ifndef _ARTC_BASE_H_
-#define _ARTC_BASE_H_
+#ifndef _KTM_BASIC_H_
+#define _KTM_BASIC_H_
 
 #include "../Basic/Basic.h"
 #include "../Acsi/Acsi.h"

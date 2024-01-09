@@ -1,8 +1,8 @@
 #ifndef _VEC_COMMON_H_
 #define _VEC_COMMON_H_
 
-#include "ArtcTraits.h"
-#include "Vector.h"
+#include "../type/traits.h"
+#include "../type/vec.h"
 #include "Math/detail/VecCommon/VecCommonFwd.h"
 
 namespace ktm

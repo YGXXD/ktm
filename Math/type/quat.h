@@ -1,8 +1,8 @@
-#ifndef _QUATERNION_H_
-#define _QUATERNION_H_
+#ifndef _KTM_QUAT_H_
+#define _KTM_QUAT_H_
 
-#include "Vector.h"
-#include "Matrix.h"
+#include "vec.h"
+#include "mat.h"
 #include "Math/interface/ICommon/IArray.h"
 #include "Math/interface/IQuaternion/IQuatData.h"
 #include "Math/interface/IQuaternion/IQuatMake.h"

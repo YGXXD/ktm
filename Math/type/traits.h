@@ -1,7 +1,7 @@
-#ifndef _ARTC_TRAITS_H_
-#define _ARTC_TRAITS_H_
+#ifndef _KTM_TRAITS_H_
+#define _KTM_TRAITS_H_
 
-#include "ArtcBase.h"
+#include "basic.h"
 
 namespace ktm
 {

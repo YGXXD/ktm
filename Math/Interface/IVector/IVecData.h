@@ -1,7 +1,7 @@
 #ifndef _I_VECTOR_H_
 #define _I_VECTOR_H_
 
-#include "Math/function/ArtcBase.h"
+#include "../../type/basic.h"
 #include "Math/detail/Vector/VecDataFwd.h"
 
 KTM_VEC_ST_ENUM_PACKAGE(x, y, z, w)

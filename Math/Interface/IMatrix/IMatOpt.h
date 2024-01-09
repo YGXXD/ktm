@@ -1,7 +1,7 @@
 #ifndef _I_MAT_OPT_H_
 #define _I_MAT_OPT_H_
 
-#include "Math/function/ArtcBase.h"
+#include "../../type/basic.h"
 #include "Math/detail/Matrix/MatOptFwd.h"
 
 namespace ktm

@@ -1,7 +1,7 @@
 #ifndef _QUAT_TYPE_H_
 #define _QUAT_TYPE_H_
 
-#include "Math/function/Quaternion.h"
+#include "Math/type/quat.h"
 
 namespace ktm
 {

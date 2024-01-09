@@ -1,8 +1,8 @@
 #ifndef _MAT_COMMON_H_
 #define _MAT_COMMON_H_
 
-#include "ArtcTraits.h"
-#include "Matrix.h"
+#include "../type/traits.h"
+#include "../type/mat.h"
 #include "Math/detail/MatCommon/MatCommonFwd.h"
 
 namespace ktm

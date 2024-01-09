@@ -2,7 +2,7 @@
 #define _MAT_OPT_INL_
 
 #include "MatOptFwd.h"
-#include "Math/function/ArtcBase.h"
+#include "../../type/basic.h"
 #include "Math/function/VecCommon.h"
 
 template<size_t Row, size_t Col, typename T>

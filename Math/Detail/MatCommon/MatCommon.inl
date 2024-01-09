@@ -2,7 +2,7 @@
 #define _MAT_COMMON_INL_
 
 #include "MatCommonFwd.h"
-#include "Math/function/ArtcBase.h"
+#include "../../type/basic.h"
 #include "Math/function/ArtcCommon.h"
 #include "Math/function/VecCommon.h"
 

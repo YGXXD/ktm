@@ -1,7 +1,6 @@
 #ifndef _VEC_DATA_FWD_H_
 #define _VEC_DATA_FWD_H_
 
-#include "Math/function/ArtcBase.h"
 #include <cstddef>
 
 namespace ktm

@@ -1,7 +1,7 @@
 #ifndef _VEC_TYPE_H_
 #define _VEC_TYPE_H_
 
-#include "Math/function/Vector.h"
+#include "Math/type/vec.h"
 
 namespace ktm
 {

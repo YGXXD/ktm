@@ -2,7 +2,7 @@
 #define _QUAT_OPT_INL_
 
 #include "QuatOptFwd.h"
-#include "Math/function/ArtcBase.h"
+#include "../../type/basic.h"
 #include "Math/function/VecGeometry.h"
 
 template<typename T>

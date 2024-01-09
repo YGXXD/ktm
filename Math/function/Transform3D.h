@@ -1,8 +1,8 @@
 #ifndef _TRANSFORM_3D_H_
 #define _TRANSFORM_3D_H_
 
-#include "Matrix.h"
-#include "Vector.h"
+#include "../type/vec.h"
+#include "../type/mat.h"
 #include "VecGeometry.h"
 
 namespace ktm

@@ -1,7 +1,7 @@
-#ifndef _MATRIX_H_
-#define _MATRIX_H_
+#ifndef _KTM_MAT_H_
+#define _KTM_MAT_H_
 
-#include "Vector.h"
+#include "vec.h"
 #include "Math/interface/ICommon/IArray.h"
 #include "Math/interface/IMatrix/IMatData.h"
 #include "Math/interface/IMatrix/IMatMake.h"

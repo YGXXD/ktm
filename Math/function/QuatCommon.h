@@ -1,8 +1,8 @@
 #ifndef _QUAT_COMMON_H_
 #define _QUAT_COMMON_H_
 
-#include "ArtcTraits.h"
-#include "Quaternion.h"
+#include "../type/traits.h"
+#include "../type/quat.h"
 #include "ArtcCommon.h"
 #include "VecCommon.h"
 #include "VecGeometry.h"

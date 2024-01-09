@@ -1,8 +1,8 @@
 #ifndef _KT_MATH_H_
 #define _KT_MATH_H_
 
-#include "function/ArtcBase.h"
-#include "function/ArtcTraits.h"
+#include "type/basic.h"
+#include "type/traits.h"
 #include "function/ArtcCommon.h"
 
 #include "function/VecCommon.h"

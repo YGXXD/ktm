@@ -2,7 +2,7 @@
 #define _VEC_OPT_INL_
 
 #include "VecOptFwd.h"
-#include "Math/function/ArtcBase.h"
+#include "../../type/basic.h"
 #include "Math/function/ArtcCommon.h"
 
 template<size_t N, typename T>

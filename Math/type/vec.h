@@ -1,7 +1,7 @@
-#ifndef _VECTOR_H_
-#define _VECTOR_H_
+#ifndef _KTM_VEC_H_
+#define _KTM_VEC_H_
 
-#include "ArtcBase.h"
+#include "basic.h"
 #include "Math/interface/ICommon/IArray.h"
 #include "Math/interface/IVector/IVecOpt.h"
 #include "Math/interface/IVector/IVecData.h"

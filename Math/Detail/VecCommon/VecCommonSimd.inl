@@ -2,7 +2,7 @@
 #define _VEC_COMMON_SIMD_INL_
 
 #include "VecCommonFwd.h"
-#include "Math/function/ArtcBase.h"
+#include "../../type/basic.h"
 
 #if defined(CHTHOLLY_SIMD_NEON)
 

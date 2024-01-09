@@ -1,7 +1,7 @@
 #ifndef _I_ARRAY_H_
 #define _I_ARRAY_H_
 
-#include "Math/function/ArtcBase.h"
+#include "../../type/basic.h"
 #include <array>
 #include <iostream>
 
