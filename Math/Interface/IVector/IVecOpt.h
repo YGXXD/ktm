@@ -1,8 +1,8 @@
 #ifndef _I_VEC_OPT_H_
 #define _I_VEC_OPT_H_
 
-#include "Math/Library/ArtcBase.h"
-#include "Math/Detail/Vector/VecOptFwd.h"
+#include "Math/function/ArtcBase.h"
+#include "Math/detail/Vector/VecOptFwd.h"
 
 namespace ktm
 {

@@ -1,7 +1,7 @@
 #ifndef _I_MAT_DATA_H_
 #define _I_MAT_DATA_H_ 
 
-#include "Math/Library/ArtcBase.h"
+#include "Math/function/ArtcBase.h"
 
 namespace ktm
 {

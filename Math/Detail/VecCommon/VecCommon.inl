@@ -2,7 +2,7 @@
 #define _VEC_COMMON_INL_
 
 #include "VecCommonFwd.h"
-#include "Math/Library/ArtcCommon.h"
+#include "Math/function/ArtcCommon.h"
 
 template<size_t StepN, size_t N, typename T>
 struct ktm::detail::vec_common_implement::elem_move

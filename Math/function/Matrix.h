@@ -2,11 +2,11 @@
 #define _MATRIX_H_
 
 #include "Vector.h"
-#include "Math/Interface/ICommon/IArray.h"
-#include "Math/Interface/IMatrix/IMatData.h"
-#include "Math/Interface/IMatrix/IMatMake.h"
-#include "Math/Interface/IMatrix/IMatArray.h"
-#include "Math/Interface/IMatrix/IMatOpt.h"
+#include "Math/interface/ICommon/IArray.h"
+#include "Math/interface/IMatrix/IMatData.h"
+#include "Math/interface/IMatrix/IMatMake.h"
+#include "Math/interface/IMatrix/IMatArray.h"
+#include "Math/interface/IMatrix/IMatOpt.h"
 
 namespace ktm
 {
@@ -18,7 +18,7 @@ struct mat<Row, Col, T> : ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, kt
 };
 }
 
-#include "Math/Detail/Matrix/MatOpt.inl"
-#include "Math/Detail/Matrix/MatOptSimd.inl"
+#include "Math/detail/Matrix/MatOpt.inl"
+#include "Math/detail/Matrix/MatOptSimd.inl"
 
 #endif

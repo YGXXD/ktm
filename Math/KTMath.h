@@ -1,15 +1,15 @@
 #ifndef _KT_MATH_H_
 #define _KT_MATH_H_
 
-#include "Library/ArtcBase.h"
-#include "Library/ArtcTraits.h"
-#include "Library/ArtcCommon.h"
+#include "function/ArtcBase.h"
+#include "function/ArtcTraits.h"
+#include "function/ArtcCommon.h"
 
-#include "Library/VecCommon.h"
-#include "Library/VecGeometry.h"
-#include "Library/MatCommon.h"
-#include "Library/QuatCommon.h"
-#include "Library/Transform3D.h"
+#include "function/VecCommon.h"
+#include "function/VecGeometry.h"
+#include "function/MatCommon.h"
+#include "function/QuatCommon.h"
+#include "function/Transform3D.h"
 
 #include "MathType/VecType.h"
 #include "MathType/MatType.h"

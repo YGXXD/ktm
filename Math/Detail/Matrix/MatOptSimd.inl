@@ -2,7 +2,7 @@
 #define _MAT_OPT_SIMD_H_
 
 #include "MatOptFwd.h"
-#include "Math/Library/ArtcBase.h"
+#include "Math/function/ArtcBase.h"
 
 #if defined(CHTHOLLY_SIMD_NEON)
 

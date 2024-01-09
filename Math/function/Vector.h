@@ -2,10 +2,10 @@
 #define _VECTOR_H_
 
 #include "ArtcBase.h"
-#include "Math/Interface/ICommon/IArray.h"
-#include "Math/Interface/IVector/IVecOpt.h"
-#include "Math/Interface/IVector/IVecData.h"
-#include "Math/Interface/IVector/IVecArray.h"
+#include "Math/interface/ICommon/IArray.h"
+#include "Math/interface/IVector/IVecOpt.h"
+#include "Math/interface/IVector/IVecData.h"
+#include "Math/interface/IVector/IVecArray.h"
 
 namespace ktm
 {
@@ -19,9 +19,9 @@ struct vec<N, T> : ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, ktm::IVec
 
 }
 
-#include "Math/Detail/Vector/VecData.inl"
-#include "Math/Detail/Vector/VecDataSimd.inl"
-#include "Math/Detail/Vector/VecOpt.inl"
-#include "Math/Detail/Vector/VecOptSimd.inl"
+#include "Math/detail/Vector/VecData.inl"
+#include "Math/detail/Vector/VecDataSimd.inl"
+#include "Math/detail/Vector/VecOpt.inl"
+#include "Math/detail/Vector/VecOptSimd.inl"
 
 #endif

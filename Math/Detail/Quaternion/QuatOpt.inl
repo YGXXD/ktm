@@ -2,8 +2,8 @@
 #define _QUAT_OPT_INL_
 
 #include "QuatOptFwd.h"
-#include "Math/Library/ArtcBase.h"
-#include "Math/Library/VecGeometry.h"
+#include "Math/function/ArtcBase.h"
+#include "Math/function/VecGeometry.h"
 
 template<typename T>
 struct ktm::detail::quat_opt_implement::mul

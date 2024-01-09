@@ -2,7 +2,7 @@
 #define _VEC_DATA_SIMD_INL_
 
 #include "VecDataFwd.h"
-#include "Math/Library/ArtcBase.h"
+#include "Math/function/ArtcBase.h"
 
 #if defined(CHTHOLLY_SIMD_NEON)
 

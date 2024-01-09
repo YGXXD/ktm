@@ -2,9 +2,9 @@
 #define _MAT_COMMON_INL_
 
 #include "MatCommonFwd.h"
-#include "Math/Library/ArtcBase.h"
-#include "Math/Library/ArtcCommon.h"
-#include "Math/Library/VecCommon.h"
+#include "Math/function/ArtcBase.h"
+#include "Math/function/ArtcCommon.h"
+#include "Math/function/VecCommon.h"
 
 template<size_t N, typename T>
 struct ktm::detail::mat_common_implement::trace

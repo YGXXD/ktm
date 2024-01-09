@@ -3,11 +3,11 @@
 
 #include "Vector.h"
 #include "Matrix.h"
-#include "Math/Interface/ICommon/IArray.h"
-#include "Math/Interface/IQuaternion/IQuatData.h"
-#include "Math/Interface/IQuaternion/IQuatMake.h"
-#include "Math/Interface/IQuaternion/IQuatArray.h"
-#include "Math/Interface/IQuaternion/IQuatOpt.h"
+#include "Math/interface/ICommon/IArray.h"
+#include "Math/interface/IQuaternion/IQuatData.h"
+#include "Math/interface/IQuaternion/IQuatMake.h"
+#include "Math/interface/IQuaternion/IQuatArray.h"
+#include "Math/interface/IQuaternion/IQuatOpt.h"
 
 namespace ktm
 {
@@ -19,7 +19,7 @@ struct quat<T> : ktl::SingleExtends_t<ktl::TemplateList<ktm::IArray, ktm::IQuatD
 };
 }
 
-#include "Math/Detail/Quaternion/QuatOpt.inl"
-#include "Math/Detail/Quaternion/QuatOptSimd.inl"
+#include "Math/detail/Quaternion/QuatOpt.inl"
+#include "Math/detail/Quaternion/QuatOptSimd.inl"
 
 #endif

@@ -1,9 +1,9 @@
 #ifndef _I_QUAT_OPT_H_
 #define _I_QUAT_OPT_H_
 
-#include "Math/Library/ArtcBase.h"
-#include "Math/Detail/Vector/VecOptFwd.h"
-#include "Math/Detail/Quaternion/QuatOptFwd.h"
+#include "Math/function/ArtcBase.h"
+#include "Math/detail/Vector/VecOptFwd.h"
+#include "Math/detail/Quaternion/QuatOptFwd.h"
 
 namespace ktm
 {
