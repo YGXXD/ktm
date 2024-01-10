@@ -1,4 +1,4 @@
-#include "Math/KTMath.h"
+#include "ktm/ktm.h"
 #include <iostream>
 
 static void VecTest()
