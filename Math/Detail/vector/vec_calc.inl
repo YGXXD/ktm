@@ -2,8 +2,8 @@
 #define _KTM_VEC_CALC_INL_
 
 #include "vec_calc_fwd.h"
+#include "../../setup.h"
 #include "../../type/basic.h"
-#include "Math/function/ArtcCommon.h"
 
 template<size_t N, typename T>
 struct ktm::detail::vec_calc_implement::add

@@ -2,8 +2,8 @@
 #define _KTM_MAT_CALC_INL_
 
 #include "mat_calc_fwd.h"
-#include "../../type/basic.h"
-#include "Math/function/VecCommon.h"
+#include "../../setup.h"
+#include "../../function/common.h"
 
 template<size_t Row, size_t Col, typename T>
 struct ktm::detail::mat_opt_implement::mat_mul_vec

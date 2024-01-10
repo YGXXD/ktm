@@ -2,7 +2,7 @@
 #define _KTM_VEC_CALC_SIMD_INL_
 
 #include "vec_calc_fwd.h"
-#include "../../type/basic.h"
+#include "../../setup.h"
 
 #if defined(CHTHOLLY_SIMD_NEON)
 

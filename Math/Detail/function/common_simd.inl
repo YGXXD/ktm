@@ -1,13 +1,14 @@
-#ifndef _VEC_COMMON_SIMD_INL_
-#define _VEC_COMMON_SIMD_INL_
+#ifndef _KTM_COMMON_SIMD_INL_
+#define _KTM_COMMON_SIMD_INL_
 
-#include "VecCommonFwd.h"
+#include "common_fwd.h"
+#include "../../setup.h"
 #include "../../type/basic.h"
 
 #if defined(CHTHOLLY_SIMD_NEON)
 
 template<size_t L>
-struct ktm::detail::vec_common_implement::elem_move<L, 2, float>
+struct ktm::detail::common_implement::elem_move<L, 2, float>
 {
     static_assert(L == 1);
     using V = vec<2, float>;
@@ -20,7 +21,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, 2, float>
 };
 
 template<size_t L>
-struct ktm::detail::vec_common_implement::elem_move<L, 3, float>
+struct ktm::detail::common_implement::elem_move<L, 3, float>
 {
     static_assert(L > 0 && L < 3);
     using V = vec<3, float>;
@@ -35,7 +36,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, 3, float>
 };
 
 template<size_t L>
-struct ktm::detail::vec_common_implement::elem_move<L, 4, float>
+struct ktm::detail::common_implement::elem_move<L, 4, float>
 {
     static_assert(L > 0 && L < 4);
     using V = vec<4, float>;
@@ -51,7 +52,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, 4, float>
 };
 
 template<size_t L>
-struct ktm::detail::vec_common_implement::elem_move<L, 2, int>
+struct ktm::detail::common_implement::elem_move<L, 2, int>
 {
     static_assert(L == 1);
     using V = vec<2, int>;
@@ -64,7 +65,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, 2, int>
 };
 
 template<size_t L>
-struct ktm::detail::vec_common_implement::elem_move<L, 3, int>
+struct ktm::detail::common_implement::elem_move<L, 3, int>
 {
     static_assert(L > 0 && L < 3);
     using V = vec<3, int>;
@@ -79,7 +80,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, 3, int>
 };
 
 template<size_t L>
-struct ktm::detail::vec_common_implement::elem_move<L, 4, int>
+struct ktm::detail::common_implement::elem_move<L, 4, int>
 {
     static_assert(L > 0 && L < 3);
     using V = vec<3, int>;
@@ -95,7 +96,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, 4, int>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_add<2, float>
+struct ktm::detail::common_implement::reduce_add<2, float>
 {
     using V = vec<2, float>;
     static CHTHOLLY_INLINE float call(const V& x) noexcept
@@ -105,7 +106,7 @@ struct ktm::detail::vec_common_implement::reduce_add<2, float>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_add<3, float>
+struct ktm::detail::common_implement::reduce_add<3, float>
 {
     using V = vec<3, float>;
     static CHTHOLLY_INLINE float call(const V& x) noexcept
@@ -115,7 +116,7 @@ struct ktm::detail::vec_common_implement::reduce_add<3, float>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_add<4, float>
+struct ktm::detail::common_implement::reduce_add<4, float>
 {
     using V = vec<4, float>;
     static CHTHOLLY_INLINE float call(const V& x) noexcept
@@ -125,7 +126,7 @@ struct ktm::detail::vec_common_implement::reduce_add<4, float>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_add<2, int>
+struct ktm::detail::common_implement::reduce_add<2, int>
 {
     using V = vec<2, int>;
     static CHTHOLLY_INLINE int call(const V& x) noexcept
@@ -135,7 +136,7 @@ struct ktm::detail::vec_common_implement::reduce_add<2, int>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_add<3, int>
+struct ktm::detail::common_implement::reduce_add<3, int>
 {
     using V = vec<3, int>;
     static CHTHOLLY_INLINE int call(const V& x) noexcept
@@ -145,7 +146,7 @@ struct ktm::detail::vec_common_implement::reduce_add<3, int>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_add<4, int>
+struct ktm::detail::common_implement::reduce_add<4, int>
 {
     using V = vec<4, int>;
     static CHTHOLLY_INLINE int call(const V& x) noexcept
@@ -155,7 +156,7 @@ struct ktm::detail::vec_common_implement::reduce_add<4, int>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_min<2, float>
+struct ktm::detail::common_implement::reduce_min<2, float>
 {
     using V = vec<2, float>;
     static CHTHOLLY_INLINE float call(const V& x) noexcept
@@ -165,7 +166,7 @@ struct ktm::detail::vec_common_implement::reduce_min<2, float>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_min<3, float>
+struct ktm::detail::common_implement::reduce_min<3, float>
 {
     using V = vec<3, float>;
     static CHTHOLLY_INLINE float call(const V& x) noexcept
@@ -175,7 +176,7 @@ struct ktm::detail::vec_common_implement::reduce_min<3, float>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_min<4, float>
+struct ktm::detail::common_implement::reduce_min<4, float>
 {
     using V = vec<4, float>;
     static CHTHOLLY_INLINE float call(const V& x) noexcept
@@ -185,7 +186,7 @@ struct ktm::detail::vec_common_implement::reduce_min<4, float>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_min<2, int>
+struct ktm::detail::common_implement::reduce_min<2, int>
 {
     using V = vec<2, int>;
     static CHTHOLLY_INLINE int call(const V& x) noexcept
@@ -195,7 +196,7 @@ struct ktm::detail::vec_common_implement::reduce_min<2, int>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_min<3, int>
+struct ktm::detail::common_implement::reduce_min<3, int>
 {
     using V = vec<3, int>;
     static CHTHOLLY_INLINE int call(const V& x) noexcept
@@ -205,7 +206,7 @@ struct ktm::detail::vec_common_implement::reduce_min<3, int>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_min<4, int>
+struct ktm::detail::common_implement::reduce_min<4, int>
 {
     using V = vec<4, int>;
     static CHTHOLLY_INLINE int call(const V& x) noexcept
@@ -215,7 +216,7 @@ struct ktm::detail::vec_common_implement::reduce_min<4, int>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_max<2, float>
+struct ktm::detail::common_implement::reduce_max<2, float>
 {
     using V = vec<2, float>;
     static CHTHOLLY_INLINE float call(const V& x) noexcept
@@ -225,7 +226,7 @@ struct ktm::detail::vec_common_implement::reduce_max<2, float>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_max<3, float>
+struct ktm::detail::common_implement::reduce_max<3, float>
 {
     using V = vec<3, float>;
     static CHTHOLLY_INLINE float call(const V& x) noexcept
@@ -235,7 +236,7 @@ struct ktm::detail::vec_common_implement::reduce_max<3, float>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_max<4, float>
+struct ktm::detail::common_implement::reduce_max<4, float>
 {
     using V = vec<4, float>;
     static CHTHOLLY_INLINE float call(const V& x) noexcept
@@ -245,7 +246,7 @@ struct ktm::detail::vec_common_implement::reduce_max<4, float>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_max<2, int>
+struct ktm::detail::common_implement::reduce_max<2, int>
 {
     using V = vec<2, int>;
     static CHTHOLLY_INLINE int call(const V& x) noexcept
@@ -255,7 +256,7 @@ struct ktm::detail::vec_common_implement::reduce_max<2, int>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_max<3, int>
+struct ktm::detail::common_implement::reduce_max<3, int>
 {
     using V = vec<3, int>;
     static CHTHOLLY_INLINE int call(const V& x) noexcept
@@ -265,7 +266,7 @@ struct ktm::detail::vec_common_implement::reduce_max<3, int>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_max<4, int>
+struct ktm::detail::common_implement::reduce_max<4, int>
 {
     using V = vec<4, int>;
     static CHTHOLLY_INLINE int call(const V& x) noexcept
@@ -275,7 +276,7 @@ struct ktm::detail::vec_common_implement::reduce_max<4, int>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::abs<2, float>
+struct ktm::detail::common_implement::abs<2, float>
 {
     using V = vec<2, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -287,7 +288,7 @@ struct ktm::detail::vec_common_implement::abs<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::abs<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::abs<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -299,7 +300,7 @@ struct ktm::detail::vec_common_implement::abs<N, std::enable_if_t<N == 3 || N ==
 };
 
 template<>
-struct ktm::detail::vec_common_implement::abs<2, int>
+struct ktm::detail::common_implement::abs<2, int>
 {
     using V = vec<2, int>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -311,7 +312,7 @@ struct ktm::detail::vec_common_implement::abs<2, int>
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::abs<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::common_implement::abs<N, std::enable_if_t<N == 3 || N == 4, int>>
 {
     using V = vec<N, int>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -323,7 +324,7 @@ struct ktm::detail::vec_common_implement::abs<N, std::enable_if_t<N == 3 || N ==
 };
 
 template<>
-struct ktm::detail::vec_common_implement::min<2, float>
+struct ktm::detail::common_implement::min<2, float>
 {
     using V = vec<2, float>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
@@ -335,7 +336,7 @@ struct ktm::detail::vec_common_implement::min<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::min<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::min<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
@@ -347,7 +348,7 @@ struct ktm::detail::vec_common_implement::min<N, std::enable_if_t<N == 3 || N ==
 };
 
 template<>
-struct ktm::detail::vec_common_implement::min<2, int>
+struct ktm::detail::common_implement::min<2, int>
 {
     using V = vec<2, int>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
@@ -359,7 +360,7 @@ struct ktm::detail::vec_common_implement::min<2, int>
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::min<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::common_implement::min<N, std::enable_if_t<N == 3 || N == 4, int>>
 {
     using V = vec<N, int>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
@@ -371,7 +372,7 @@ struct ktm::detail::vec_common_implement::min<N, std::enable_if_t<N == 3 || N ==
 };
 
 template<>
-struct ktm::detail::vec_common_implement::max<2, float>
+struct ktm::detail::common_implement::max<2, float>
 {
     using V = vec<2, float>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
@@ -383,7 +384,7 @@ struct ktm::detail::vec_common_implement::max<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::max<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::max<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
@@ -395,7 +396,7 @@ struct ktm::detail::vec_common_implement::max<N, std::enable_if_t<N == 3 || N ==
 };
 
 template<>
-struct ktm::detail::vec_common_implement::max<2, int>
+struct ktm::detail::common_implement::max<2, int>
 {
     using V = vec<2, int>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
@@ -407,7 +408,7 @@ struct ktm::detail::vec_common_implement::max<2, int>
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::max<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::common_implement::max<N, std::enable_if_t<N == 3 || N == 4, int>>
 {
     using V = vec<N, int>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
@@ -419,7 +420,7 @@ struct ktm::detail::vec_common_implement::max<N, std::enable_if_t<N == 3 || N ==
 };
 
 template<>
-struct ktm::detail::vec_common_implement::clamp<2, float>
+struct ktm::detail::common_implement::clamp<2, float>
 {
     using V = vec<2, float>;
     static CHTHOLLY_INLINE V call(const V& v, const V& min, const V& max) noexcept
@@ -431,7 +432,7 @@ struct ktm::detail::vec_common_implement::clamp<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::clamp<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::clamp<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& v, const V& min, const V& max) noexcept
@@ -443,7 +444,7 @@ struct ktm::detail::vec_common_implement::clamp<N, std::enable_if_t<N == 3 || N 
 };
 
 template<>
-struct ktm::detail::vec_common_implement::clamp<2, int>
+struct ktm::detail::common_implement::clamp<2, int>
 {
     using V = vec<2, int>;
     static CHTHOLLY_INLINE V call(const V& v, const V& min, const V& max) noexcept
@@ -455,7 +456,7 @@ struct ktm::detail::vec_common_implement::clamp<2, int>
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::clamp<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::common_implement::clamp<N, std::enable_if_t<N == 3 || N == 4, int>>
 {
     using V = vec<N, int>;
     static CHTHOLLY_INLINE V call(const V& v, const V& min, const V& max) noexcept
@@ -467,7 +468,7 @@ struct ktm::detail::vec_common_implement::clamp<N, std::enable_if_t<N == 3 || N 
 };
 
 template<>
-struct ktm::detail::vec_common_implement::floor<2, float>
+struct ktm::detail::common_implement::floor<2, float>
 {
     using V = vec<2, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -479,7 +480,7 @@ struct ktm::detail::vec_common_implement::floor<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::floor<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::floor<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -491,7 +492,7 @@ struct ktm::detail::vec_common_implement::floor<N, std::enable_if_t<N == 3 || N 
 };
 
 template<>
-struct ktm::detail::vec_common_implement::ceil<2, float>
+struct ktm::detail::common_implement::ceil<2, float>
 {
     using V = vec<2, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -503,7 +504,7 @@ struct ktm::detail::vec_common_implement::ceil<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::ceil<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::ceil<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -515,7 +516,7 @@ struct ktm::detail::vec_common_implement::ceil<N, std::enable_if_t<N == 3 || N =
 };
 
 template<>
-struct ktm::detail::vec_common_implement::round<2, float>
+struct ktm::detail::common_implement::round<2, float>
 {
     using V = vec<2, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -527,7 +528,7 @@ struct ktm::detail::vec_common_implement::round<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::round<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::round<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -539,7 +540,7 @@ struct ktm::detail::vec_common_implement::round<N, std::enable_if_t<N == 3 || N 
 };
 
 template<>
-struct ktm::detail::vec_common_implement::lerp<2, float>
+struct ktm::detail::common_implement::lerp<2, float>
 {
     using V = vec<2, float>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y, float t) noexcept
@@ -552,7 +553,7 @@ struct ktm::detail::vec_common_implement::lerp<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::lerp<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::lerp<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y, float t) noexcept
@@ -565,7 +566,7 @@ struct ktm::detail::vec_common_implement::lerp<N, std::enable_if_t<N == 3 || N =
 };
 
 template<>
-struct ktm::detail::vec_common_implement::mix<2, float>
+struct ktm::detail::common_implement::mix<2, float>
 {
     using V = vec<2, float>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y, const V& t) noexcept
@@ -577,7 +578,7 @@ struct ktm::detail::vec_common_implement::mix<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::mix<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::mix<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y, const V& t) noexcept
@@ -589,7 +590,7 @@ struct ktm::detail::vec_common_implement::mix<N, std::enable_if_t<N == 3 || N ==
 };
 
 template<>
-struct ktm::detail::vec_common_implement::recip<2, float>
+struct ktm::detail::common_implement::recip<2, float>
 {
     using V = vec<2, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -601,7 +602,7 @@ struct ktm::detail::vec_common_implement::recip<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::recip<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::recip<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -613,7 +614,7 @@ struct ktm::detail::vec_common_implement::recip<N, std::enable_if_t<N == 3 || N 
 };
 
 template<>
-struct ktm::detail::vec_common_implement::step<2, float>
+struct ktm::detail::common_implement::step<2, float>
 {
     using V = vec<2, float>;
     static CHTHOLLY_INLINE V call(const V& edge, const V& x) noexcept
@@ -627,7 +628,7 @@ struct ktm::detail::vec_common_implement::step<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::step<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::step<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& edge, const V& x) noexcept
@@ -641,7 +642,7 @@ struct ktm::detail::vec_common_implement::step<N, std::enable_if_t<N == 3 || N =
 };
 
 template<>
-struct ktm::detail::vec_common_implement::smoothstep<2, float>
+struct ktm::detail::common_implement::smoothstep<2, float>
 {
     using V = vec<2, float>;
     static CHTHOLLY_INLINE V call(const V& edge0, const V& edge1, const V& x) noexcept
@@ -656,7 +657,7 @@ struct ktm::detail::vec_common_implement::smoothstep<2, float>
 
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::smoothstep<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::smoothstep<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& edge0, const V& edge1, const V& x) noexcept
@@ -670,7 +671,7 @@ struct ktm::detail::vec_common_implement::smoothstep<N, std::enable_if_t<N == 3 
 };
 
 template<>
-struct ktm::detail::vec_common_implement::fract<2, float>
+struct ktm::detail::common_implement::fract<2, float>
 {
     using V = vec<2, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -683,7 +684,7 @@ struct ktm::detail::vec_common_implement::fract<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::fract<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::fract<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -698,7 +699,7 @@ struct ktm::detail::vec_common_implement::fract<N, std::enable_if_t<N == 3 || N 
 #elif defined(CHTHOLLY_SIMD_SSE)
 
 template<size_t L>
-struct ktm::detail::vec_common_implement::elem_move<L, 3, float>
+struct ktm::detail::common_implement::elem_move<L, 3, float>
 {
     static_assert(L > 0 && L < 3);
     using V = vec<3, float>;
@@ -713,7 +714,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, 3, float>
 };
 
 template<size_t L>
-struct ktm::detail::vec_common_implement::elem_move<L, 4, float>
+struct ktm::detail::common_implement::elem_move<L, 4, float>
 {
     static_assert(L > 0 && L < 4);
     using V = vec<4, float>;
@@ -729,7 +730,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, 4, float>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_add<3, float>
+struct ktm::detail::common_implement::reduce_add<3, float>
 {
     using V = vec<3, float>;
     static CHTHOLLY_INLINE float call(const V& x) noexcept
@@ -741,7 +742,7 @@ struct ktm::detail::vec_common_implement::reduce_add<3, float>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_add<4, float>
+struct ktm::detail::common_implement::reduce_add<4, float>
 {
     using V = vec<4, float>;
     static CHTHOLLY_INLINE float call(const V& x) noexcept
@@ -753,7 +754,7 @@ struct ktm::detail::vec_common_implement::reduce_add<4, float>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_min<3, float>
+struct ktm::detail::common_implement::reduce_min<3, float>
 {
     using V = vec<3, float>;
     static CHTHOLLY_INLINE float call(const V& x) noexcept
@@ -765,7 +766,7 @@ struct ktm::detail::vec_common_implement::reduce_min<3, float>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_min<4, float>
+struct ktm::detail::common_implement::reduce_min<4, float>
 {
     using V = vec<4, float>;
     static CHTHOLLY_INLINE float call(const V& x) noexcept
@@ -777,7 +778,7 @@ struct ktm::detail::vec_common_implement::reduce_min<4, float>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_max<3, float>
+struct ktm::detail::common_implement::reduce_max<3, float>
 {
     using V = vec<3, float>;
     static CHTHOLLY_INLINE float call(const V& x) noexcept
@@ -789,7 +790,7 @@ struct ktm::detail::vec_common_implement::reduce_max<3, float>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_max<4, float>
+struct ktm::detail::common_implement::reduce_max<4, float>
 {
     using V = vec<4, float>;
     static CHTHOLLY_INLINE float call(const V& x) noexcept
@@ -801,7 +802,7 @@ struct ktm::detail::vec_common_implement::reduce_max<4, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::abs<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::abs<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -813,7 +814,7 @@ struct ktm::detail::vec_common_implement::abs<N, std::enable_if_t<N == 3 || N ==
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::min<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::min<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
@@ -825,7 +826,7 @@ struct ktm::detail::vec_common_implement::min<N, std::enable_if_t<N == 3 || N ==
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::max<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::max<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
@@ -837,7 +838,7 @@ struct ktm::detail::vec_common_implement::max<N, std::enable_if_t<N == 3 || N ==
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::clamp<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::clamp<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& v, const V& min, const V& max) noexcept
@@ -849,7 +850,7 @@ struct ktm::detail::vec_common_implement::clamp<N, std::enable_if_t<N == 3 || N 
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::floor<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::floor<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -861,7 +862,7 @@ struct ktm::detail::vec_common_implement::floor<N, std::enable_if_t<N == 3 || N 
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::ceil<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::ceil<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -873,7 +874,7 @@ struct ktm::detail::vec_common_implement::ceil<N, std::enable_if_t<N == 3 || N =
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::round<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::round<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -885,7 +886,7 @@ struct ktm::detail::vec_common_implement::round<N, std::enable_if_t<N == 3 || N 
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::lerp<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::lerp<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y, float t) noexcept
@@ -898,7 +899,7 @@ struct ktm::detail::vec_common_implement::lerp<N, std::enable_if_t<N == 3 || N =
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::mix<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::mix<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y, const V& t) noexcept
@@ -910,7 +911,7 @@ struct ktm::detail::vec_common_implement::mix<N, std::enable_if_t<N == 3 || N ==
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::recip<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::recip<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -922,7 +923,7 @@ struct ktm::detail::vec_common_implement::recip<N, std::enable_if_t<N == 3 || N 
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::step<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::step<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& edge, const V& x) noexcept
@@ -935,7 +936,7 @@ struct ktm::detail::vec_common_implement::step<N, std::enable_if_t<N == 3 || N =
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::smoothstep<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::smoothstep<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& edge0, const V& edge1, const V& x) noexcept
@@ -949,7 +950,7 @@ struct ktm::detail::vec_common_implement::smoothstep<N, std::enable_if_t<N == 3 
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::fract<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::fract<N, std::enable_if_t<N == 3 || N == 4, float>>
 {
     using V = vec<N, float>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -964,7 +965,7 @@ struct ktm::detail::vec_common_implement::fract<N, std::enable_if_t<N == 3 || N 
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE2_FLAG
 
 template<size_t L>
-struct ktm::detail::vec_common_implement::elem_move<L, 3, int>
+struct ktm::detail::common_implement::elem_move<L, 3, int>
 {
     static_assert(L > 0 && L < 3);
     using V = vec<3, int>;
@@ -979,7 +980,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, 3, int>
 };
 
 template<size_t L>
-struct ktm::detail::vec_common_implement::elem_move<L, 4, int>
+struct ktm::detail::common_implement::elem_move<L, 4, int>
 {
     static_assert(L > 0 && L < 4);
     using V = vec<4, int>;
@@ -995,7 +996,7 @@ struct ktm::detail::vec_common_implement::elem_move<L, 4, int>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_add<3, int>
+struct ktm::detail::common_implement::reduce_add<3, int>
 {
     using V = vec<3, int>;
     static CHTHOLLY_INLINE int call(const V& x) noexcept
@@ -1007,7 +1008,7 @@ struct ktm::detail::vec_common_implement::reduce_add<3, int>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_add<4, int>
+struct ktm::detail::common_implement::reduce_add<4, int>
 {
     using V = vec<4, int>;
     static CHTHOLLY_INLINE int call(const V& x) noexcept
@@ -1019,7 +1020,7 @@ struct ktm::detail::vec_common_implement::reduce_add<4, int>
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::abs<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::common_implement::abs<N, std::enable_if_t<N == 3 || N == 4, int>>
 {
     using V = vec<N, int>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -1035,7 +1036,7 @@ struct ktm::detail::vec_common_implement::abs<N, std::enable_if_t<N == 3 || N ==
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE4_1_FLAG
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_min<3, int>
+struct ktm::detail::common_implement::reduce_min<3, int>
 {
     using V = vec<3, int>;
     static CHTHOLLY_INLINE int call(const V& x) noexcept
@@ -1047,7 +1048,7 @@ struct ktm::detail::vec_common_implement::reduce_min<3, int>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_min<4, int>
+struct ktm::detail::common_implement::reduce_min<4, int>
 {
     using V = vec<4, int>;
     static CHTHOLLY_INLINE int call(const V& x) noexcept
@@ -1059,7 +1060,7 @@ struct ktm::detail::vec_common_implement::reduce_min<4, int>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_max<3, int>
+struct ktm::detail::common_implement::reduce_max<3, int>
 {
     using V = vec<3, int>;
     static CHTHOLLY_INLINE int call(const V& x) noexcept
@@ -1071,7 +1072,7 @@ struct ktm::detail::vec_common_implement::reduce_max<3, int>
 };
 
 template<>
-struct ktm::detail::vec_common_implement::reduce_max<4, int>
+struct ktm::detail::common_implement::reduce_max<4, int>
 {
     using V = vec<4, int>;
     static CHTHOLLY_INLINE int call(const V& x) noexcept
@@ -1083,7 +1084,7 @@ struct ktm::detail::vec_common_implement::reduce_max<4, int>
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::min<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::common_implement::min<N, std::enable_if_t<N == 3 || N == 4, int>>
 {
     using V = vec<N, int>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
@@ -1095,7 +1096,7 @@ struct ktm::detail::vec_common_implement::min<N, std::enable_if_t<N == 3 || N ==
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::max<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::common_implement::max<N, std::enable_if_t<N == 3 || N == 4, int>>
 {
     using V = vec<N, int>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
@@ -1107,7 +1108,7 @@ struct ktm::detail::vec_common_implement::max<N, std::enable_if_t<N == 3 || N ==
 };
 
 template<size_t N>
-struct ktm::detail::vec_common_implement::clamp<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::common_implement::clamp<N, std::enable_if_t<N == 3 || N == 4, int>>
 {
     using V = vec<N, int>;
     static CHTHOLLY_INLINE V call(const V& v, const V& min, const V& max) noexcept

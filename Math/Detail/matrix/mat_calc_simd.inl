@@ -2,7 +2,7 @@
 #define _KTM_MAT_CALC_SIMD_H_
 
 #include "mat_calc_fwd.h"
-#include "../../type/basic.h"
+#include "../../setup.h"
 
 #if defined(CHTHOLLY_SIMD_NEON)
 

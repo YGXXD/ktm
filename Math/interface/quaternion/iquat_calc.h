@@ -1,7 +1,9 @@
 #ifndef _KTM_I_QUAT_CALC_H_
 #define _KTM_I_QUAT_CALC_H_
 
-#include "../../type/basic.h"
+#include "../../setup.h"
+#include "../../type/vec_fwd.h"
+#include "../../type/quat_fwd.h"
 #include "../../detail/vector/vec_calc_fwd.h"
 #include "../../detail/quaternion/quat_calc_fwd.h"
 

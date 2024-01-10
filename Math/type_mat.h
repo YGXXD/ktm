@@ -1,7 +1,7 @@
-#ifndef _MAT_TYPE_H_
-#define _MAT_TYPE_H_
+#ifndef _KTM_TYPE_MAT_H_
+#define _KTM_TYPE_MAT_H_
 
-#include "Math/type/mat.h"
+#include "type/mat.h"
 
 namespace ktm
 {

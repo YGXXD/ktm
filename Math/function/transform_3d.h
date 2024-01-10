@@ -1,9 +1,10 @@
-#ifndef _TRANSFORM_3D_H_
-#define _TRANSFORM_3D_H_
+#ifndef _KTM_TRANSFORM_3D_H_
+#define _KTM_TRANSFORM_3D_H_
 
+#include "../setup.h"
 #include "../type/vec.h"
 #include "../type/mat.h"
-#include "VecGeometry.h"
+#include "geometric.h"
 
 namespace ktm
 {

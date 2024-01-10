@@ -1,10 +1,13 @@
 #ifndef _KTM_I_QUAT_MAKE_H_
 #define _KTM_I_QUAT_MAKE_H_
 
-#include "../../type/basic.h"
-#include "Math/function/ArtcCommon.h"
-#include "Math/function/VecGeometry.h"
-#include "Math/function/MatCommon.h"
+#include "../../setup.h"
+#include "../../type/vec_fwd.h"
+#include "../../type/quat_fwd.h"
+#include "../../type/mat_fwd.h"
+#include "../../function/arithmetic.h"
+#include "../../function/geometric.h"
+#include "../../function/matrix.h"
 
 namespace ktm
 {

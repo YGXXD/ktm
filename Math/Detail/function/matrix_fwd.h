@@ -1,5 +1,5 @@
-#ifndef _MAT_COMMON_FWD_H_
-#define _MAT_COMMON_FWD_H_
+#ifndef _KTM_MATRIX_FWD_H_
+#define _KTM_MATRIX_FWD_H_
 
 #include <cstddef>
 
@@ -7,7 +7,7 @@ namespace ktm
 {
 namespace detail
 {
-namespace mat_common_implement
+namespace matrix_implement
 {
 template<size_t N, typename T>
 struct trace;

@@ -1,7 +1,7 @@
-#ifndef _QUAT_TYPE_H_
-#define _QUAT_TYPE_H_
+#ifndef _KTM_TYPE_QUAT_H_
+#define _KTM_TYPE_QUAT_H_
 
-#include "Math/type/quat.h"
+#include "type/quat.h"
 
 namespace ktm
 {

@@ -1,13 +1,15 @@
-#ifndef _MAT_COMMON_SIMD_INL_
-#define _MAT_COMMON_SIMD_INL_
+#ifndef _KTM_MATRIX_SIMD_INL_
+#define _KTM_MATRIX_SIMD_INL_
 
-#include "MatCommonFwd.h"
+#include "matrix_fwd.h"
+#include "../../setup.h"
 #include "../../type/basic.h"
+#include "../../type/mat_fwd.h"
 
 #if defined(CHTHOLLY_SIMD_NEON)
 
 template<>
-struct ktm::detail::mat_common_implement::transpose<2, 2, float>
+struct ktm::detail::matrix_implement::transpose<2, 2, float>
 {
     using M = mat<2, 2, float>;
     using RetM = M;
@@ -20,7 +22,7 @@ struct ktm::detail::mat_common_implement::transpose<2, 2, float>
 };
 
 template<>
-struct ktm::detail::mat_common_implement::transpose<3, 3, float>
+struct ktm::detail::matrix_implement::transpose<3, 3, float>
 {
     using M = mat<3, 3, float>;
     using RetM = M;
@@ -33,7 +35,7 @@ struct ktm::detail::mat_common_implement::transpose<3, 3, float>
 };
 
 template<>
-struct ktm::detail::mat_common_implement::transpose<4, 4, float>
+struct ktm::detail::matrix_implement::transpose<4, 4, float>
 {
     using M = mat<4, 4, float>;
     using RetM = M;
@@ -46,7 +48,7 @@ struct ktm::detail::mat_common_implement::transpose<4, 4, float>
 };
 
 template<>
-struct ktm::detail::mat_common_implement::transpose<2, 2, int>
+struct ktm::detail::matrix_implement::transpose<2, 2, int>
 {
     using M = mat<2, 2, int>;
     using RetM = M;
@@ -59,7 +61,7 @@ struct ktm::detail::mat_common_implement::transpose<2, 2, int>
 };
 
 template<>
-struct ktm::detail::mat_common_implement::transpose<3, 3, int>
+struct ktm::detail::matrix_implement::transpose<3, 3, int>
 {
     using M = mat<3, 3, int>;
     using RetM = M;
@@ -72,7 +74,7 @@ struct ktm::detail::mat_common_implement::transpose<3, 3, int>
 };
 
 template<>
-struct ktm::detail::mat_common_implement::transpose<4, 4, int>
+struct ktm::detail::matrix_implement::transpose<4, 4, int>
 {
     using M = mat<4, 4, int>;
     using RetM = M;
@@ -85,7 +87,7 @@ struct ktm::detail::mat_common_implement::transpose<4, 4, int>
 };
 
 template<>
-struct ktm::detail::mat_common_implement::determinant<3, float>
+struct ktm::detail::matrix_implement::determinant<3, float>
 {
     using M = mat<3, 3, float>;
     static CHTHOLLY_INLINE float call(const M& m) noexcept
@@ -101,7 +103,7 @@ struct ktm::detail::mat_common_implement::determinant<3, float>
 };
 
 template<>
-struct ktm::detail::mat_common_implement::determinant<4, float>
+struct ktm::detail::matrix_implement::determinant<4, float>
 {
     using M = mat<4, 4, float>;
     static CHTHOLLY_INLINE float call(const M& m) noexcept
@@ -142,7 +144,7 @@ struct ktm::detail::mat_common_implement::determinant<4, float>
 };
 
 template<>
-struct ktm::detail::mat_common_implement::determinant<3, int>
+struct ktm::detail::matrix_implement::determinant<3, int>
 {
     using M = mat<3, 3, int>;
     static CHTHOLLY_INLINE float call(const M& m) noexcept
@@ -158,7 +160,7 @@ struct ktm::detail::mat_common_implement::determinant<3, int>
 };
 
 template<>
-struct ktm::detail::mat_common_implement::determinant<4, int>
+struct ktm::detail::matrix_implement::determinant<4, int>
 {
     using M = mat<4, 4, int>;
     static CHTHOLLY_INLINE float call(const M& m) noexcept
@@ -199,7 +201,7 @@ struct ktm::detail::mat_common_implement::determinant<4, int>
 };
 
 template<>
-struct ktm::detail::mat_common_implement::inverse<4, float>
+struct ktm::detail::matrix_implement::inverse<4, float>
 {
     using M = mat<4, 4, float>;
     static CHTHOLLY_INLINE M call(const M& m) noexcept
@@ -401,7 +403,7 @@ struct ktm::detail::mat_common_implement::inverse<4, float>
 #elif defined(CHTHOLLY_SIMD_SSE)
 
 template<>
-struct ktm::detail::mat_common_implement::transpose<2, 2, float>
+struct ktm::detail::matrix_implement::transpose<2, 2, float>
 {
     using M = mat<2, 2, float>;
     using RetM = M;
@@ -414,7 +416,7 @@ struct ktm::detail::mat_common_implement::transpose<2, 2, float>
 };
 
 template<>
-struct ktm::detail::mat_common_implement::transpose<3, 3, float>
+struct ktm::detail::matrix_implement::transpose<3, 3, float>
 {
     using M = mat<3, 3, float>;
     using RetM = M;
@@ -427,7 +429,7 @@ struct ktm::detail::mat_common_implement::transpose<3, 3, float>
 };
 
 template<>
-struct ktm::detail::mat_common_implement::transpose<4, 4, float>
+struct ktm::detail::matrix_implement::transpose<4, 4, float>
 {
     using M = mat<4, 4, float>;
     using RetM = M;
@@ -440,7 +442,7 @@ struct ktm::detail::mat_common_implement::transpose<4, 4, float>
 };
 
 template<>
-struct ktm::detail::mat_common_implement::transpose<2, 2, int>
+struct ktm::detail::matrix_implement::transpose<2, 2, int>
 {
     using M = mat<2, 2, int>;
     using RetM = M;
@@ -453,7 +455,7 @@ struct ktm::detail::mat_common_implement::transpose<2, 2, int>
 };
 
 template<>
-struct ktm::detail::mat_common_implement::transpose<3, 3, int>
+struct ktm::detail::matrix_implement::transpose<3, 3, int>
 {
     using M = mat<3, 3, int>;
     using RetM = M;
@@ -466,7 +468,7 @@ struct ktm::detail::mat_common_implement::transpose<3, 3, int>
 };
 
 template<>
-struct ktm::detail::mat_common_implement::transpose<4, 4, int>
+struct ktm::detail::matrix_implement::transpose<4, 4, int>
 {
     using M = mat<4, 4, int>;
     using RetM = M;
@@ -479,7 +481,7 @@ struct ktm::detail::mat_common_implement::transpose<4, 4, int>
 };
 
 template<>
-struct ktm::detail::mat_common_implement::determinant<3, float>
+struct ktm::detail::matrix_implement::determinant<3, float>
 {
     using M = mat<3, 3, float>;
     static CHTHOLLY_INLINE float call(const M& m) noexcept
@@ -496,7 +498,7 @@ struct ktm::detail::mat_common_implement::determinant<3, float>
 };
 
 template<>
-struct ktm::detail::mat_common_implement::determinant<4, float>
+struct ktm::detail::matrix_implement::determinant<4, float>
 {
     using M = mat<4, 4, float>;
     static CHTHOLLY_INLINE float call(const M& m) noexcept
@@ -539,7 +541,7 @@ struct ktm::detail::mat_common_implement::determinant<4, float>
 };
 
 template<>
-struct ktm::detail::mat_common_implement::inverse<4, float>
+struct ktm::detail::matrix_implement::inverse<4, float>
 {
     using M = mat<4, 4, float>;
     static CHTHOLLY_INLINE M call(const M& m) noexcept
@@ -708,7 +710,7 @@ struct ktm::detail::mat_common_implement::inverse<4, float>
 #if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE4_1_FLAG
 
 template<>
-struct ktm::detail::mat_common_implement::determinant<3, int>
+struct ktm::detail::matrix_implement::determinant<3, int>
 {
     using M = mat<3, 3, int>;
     static CHTHOLLY_INLINE float call(const M& m) noexcept
@@ -724,7 +726,7 @@ struct ktm::detail::mat_common_implement::determinant<3, int>
 };
 
 template<>
-struct ktm::detail::mat_common_implement::determinant<4, int>
+struct ktm::detail::matrix_implement::determinant<4, int>
 {
     using M = mat<4, 4, int>;
     static CHTHOLLY_INLINE float call(const M& m) noexcept

@@ -1,6 +1,7 @@
-#ifndef _ARTC_COMMON_H_
-#define _ARTC_COMMON_H_
+#ifndef _KTM_ARITHMETIC_H_
+#define _KTM_ARITHMETIC_H_
 
+#include "../setup.h"
 #include "../type/basic.h"
 #include <cmath>
 

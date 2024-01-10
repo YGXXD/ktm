@@ -1,13 +1,15 @@
-#ifndef _MAT_COMMON_INL_
-#define _MAT_COMMON_INL_
+#ifndef _KTM_MATRIX_INL_
+#define _KTM_MATRIX_INL_
 
-#include "MatCommonFwd.h"
+#include "matrix_fwd.h"
+#include "../../setup.h"
 #include "../../type/basic.h"
-#include "Math/function/ArtcCommon.h"
-#include "Math/function/VecCommon.h"
+#include "../../type/mat_fwd.h"
+#include "../../function/arithmetic.h"
+#include "../../function/common.h"
 
 template<size_t N, typename T>
-struct ktm::detail::mat_common_implement::trace
+struct ktm::detail::matrix_implement::trace
 {
     using M = mat<N, N, T>;
     static CHTHOLLY_INLINE T call(const M& m) noexcept
@@ -23,7 +25,7 @@ private:
 };
 
 template<size_t Row, size_t Col, typename T>
-struct ktm::detail::mat_common_implement::transpose
+struct ktm::detail::matrix_implement::transpose
 {
 	using M = mat<Row, Col, T>;
     using RetM = mat<Col, Row, T>;
@@ -44,7 +46,7 @@ private:
 };
 
 template<typename T>
-struct ktm::detail::mat_common_implement::determinant<2, T>
+struct ktm::detail::matrix_implement::determinant<2, T>
 {
     using M = mat<2, 2, T>;
     static CHTHOLLY_INLINE T call(const M& m) noexcept
@@ -54,7 +56,7 @@ struct ktm::detail::mat_common_implement::determinant<2, T>
 };
 
 template<typename T>
-struct ktm::detail::mat_common_implement::determinant<3, T>
+struct ktm::detail::matrix_implement::determinant<3, T>
 {
     using M = mat<3, 3, T>;
     static CHTHOLLY_INLINE T call(const M& m) noexcept
@@ -66,7 +68,7 @@ struct ktm::detail::mat_common_implement::determinant<3, T>
 };
 
 template<typename T>
-struct ktm::detail::mat_common_implement::determinant<4, T>
+struct ktm::detail::matrix_implement::determinant<4, T>
 {
     using M = mat<4, 4, T>;
     static CHTHOLLY_INLINE T call(const M& m) noexcept
@@ -88,7 +90,7 @@ struct ktm::detail::mat_common_implement::determinant<4, T>
 };
 
 template<typename T>
-struct ktm::detail::mat_common_implement::inverse<2, T>
+struct ktm::detail::matrix_implement::inverse<2, T>
 {
     static_assert(std::is_floating_point_v<T>);
     using M = mat<2, 2, T>;
@@ -105,7 +107,7 @@ struct ktm::detail::mat_common_implement::inverse<2, T>
 };
 
 template<typename T>
-struct ktm::detail::mat_common_implement::inverse<3, T>
+struct ktm::detail::matrix_implement::inverse<3, T>
 {
     static_assert(std::is_floating_point_v<T>);
     using M = mat<3, 3, T>;
@@ -127,7 +129,7 @@ struct ktm::detail::mat_common_implement::inverse<3, T>
 };
 
 template<typename T>
-struct ktm::detail::mat_common_implement::inverse<4, T>
+struct ktm::detail::matrix_implement::inverse<4, T>
 {
     static_assert(std::is_floating_point_v<T>);
     using M = mat<4, 4, T>;
@@ -188,7 +190,7 @@ struct ktm::detail::mat_common_implement::inverse<4, T>
 };
 
 template<size_t N, typename T>
-struct ktm::detail::mat_common_implement::factor_lu
+struct ktm::detail::matrix_implement::factor_lu
 {
     static_assert(std::is_floating_point_v<T>);
     using M = mat<N, N, T>;
@@ -236,7 +238,7 @@ struct ktm::detail::mat_common_implement::factor_lu
 };
 
 template<size_t N, typename T>
-struct ktm::detail::mat_common_implement::factor_qr
+struct ktm::detail::matrix_implement::factor_qr
 {
     static_assert(std::is_floating_point_v<T>);
     using M = mat<N, N, T>;
@@ -287,7 +289,7 @@ struct ktm::detail::mat_common_implement::factor_qr
 };
 
 template<size_t N, typename T>
-struct ktm::detail::mat_common_implement::eigen_qr_it
+struct ktm::detail::matrix_implement::eigen_qr_it
 {
     using M = mat<N, N, T>;
     using E = vec<N, T>;
@@ -321,7 +323,7 @@ struct ktm::detail::mat_common_implement::eigen_qr_it
 };
 
 template<size_t N, typename T>
-struct ktm::detail::mat_common_implement::eigen_jacobi_it
+struct ktm::detail::matrix_implement::eigen_jacobi_it
 {
     using M = mat<N, N, T>;
     using E = vec<N, T>;
@@ -427,7 +429,7 @@ struct ktm::detail::mat_common_implement::eigen_jacobi_it
 };
 
 template<size_t N, typename T>
-struct ktm::detail::mat_common_implement::factor_svd
+struct ktm::detail::matrix_implement::factor_svd
 {
     static_assert(std::is_floating_point_v<T>);
     using M = mat<N, N, T>;
@@ -453,7 +455,7 @@ struct ktm::detail::mat_common_implement::factor_svd
 };
 
 // template<typename T>
-// struct ktm::detail::mat_common_implement::factor_svd<2, T>
+// struct ktm::detail::matrix_implement::factor_svd<2, T>
 // {
 //     // ref: https://lucidar.me/en/mathematics/singular-value-decomposition-of-a-2x2-matrix/
 //     static_assert(std::is_floating_point_v<T>);

@@ -1,11 +1,12 @@
-#ifndef _VEC_COMMON_INL_
-#define _VEC_COMMON_INL_
+#ifndef _KTM_COMMON_INL_
+#define _KTM_COMMON_INL_
 
-#include "VecCommonFwd.h"
+#include "common_fwd.h"
+#include "../../setup.h"
 #include "../../type/basic.h"
 
 template<size_t StepN, size_t N, typename T>
-struct ktm::detail::vec_common_implement::elem_move
+struct ktm::detail::common_implement::elem_move
 {
     static_assert(StepN > 0 && StepN < N);
 	using V = vec<N, T>;
@@ -24,7 +25,7 @@ private:
 };
 
 template<size_t N, typename T>
-struct ktm::detail::vec_common_implement::reduce_add
+struct ktm::detail::common_implement::reduce_add
 {
     using V = vec<N, T>;
     static CHTHOLLY_INLINE T call(const V& x) noexcept
@@ -40,7 +41,7 @@ private:
 };
 
 template<size_t N, typename T>
-struct ktm::detail::vec_common_implement::reduce_min
+struct ktm::detail::common_implement::reduce_min
 {
     using V = vec<N, T>;
     static CHTHOLLY_INLINE T call(const V& x) noexcept
@@ -63,7 +64,7 @@ private:
 };
 
 template<size_t N, typename T>
-struct ktm::detail::vec_common_implement::reduce_max
+struct ktm::detail::common_implement::reduce_max
 {
     using V = vec<N, T>;
     static CHTHOLLY_INLINE T call(const V& x) noexcept
@@ -86,7 +87,7 @@ private:
 };
 
 template<size_t N, typename T>
-struct ktm::detail::vec_common_implement::abs
+struct ktm::detail::common_implement::abs
 {
     using V = vec<N, T>;
     static CHTHOLLY_INLINE V call(const V& x) noexcept
@@ -107,7 +108,7 @@ private:
 };
 
 template<size_t N, typename T>
-struct ktm::detail::vec_common_implement::min
+struct ktm::detail::common_implement::min
 {
     using V = vec<N, T>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
@@ -125,7 +126,7 @@ private:
 };
 
 template<size_t N, typename T>
-struct ktm::detail::vec_common_implement::max
+struct ktm::detail::common_implement::max
 {
     using V = vec<N, T>;
     static CHTHOLLY_INLINE V call(const V& x, const V& y) noexcept
@@ -143,7 +144,7 @@ private:
 };
 
 template<size_t N, typename T>
-struct ktm::detail::vec_common_implement::clamp
+struct ktm::detail::common_implement::clamp
 {
     using V = vec<N, T>;
     static CHTHOLLY_INLINE V call(const V& v, const V& min, const V& max) noexcept
@@ -161,7 +162,7 @@ private:
 };
 
 template<size_t N, typename T>
-struct ktm::detail::vec_common_implement::floor
+struct ktm::detail::common_implement::floor
 {
     using V = vec<N, T>;
     static_assert(std::is_floating_point_v<T>);
@@ -180,7 +181,7 @@ private:
 };
 
 template<size_t N, typename T>
-struct ktm::detail::vec_common_implement::ceil
+struct ktm::detail::common_implement::ceil
 {
     using V = vec<N, T>;
     static_assert(std::is_floating_point_v<T>);
@@ -199,7 +200,7 @@ private:
 };
 
 template<size_t N, typename T>
-struct ktm::detail::vec_common_implement::round
+struct ktm::detail::common_implement::round
 {
     using V = vec<N, T>;
     static_assert(std::is_floating_point_v<T>);
@@ -218,7 +219,7 @@ private:
 };
 
 template<size_t N, typename T>
-struct ktm::detail::vec_common_implement::lerp
+struct ktm::detail::common_implement::lerp
 {
     using V = vec<N, T>;
     static_assert(std::is_floating_point_v<T>);
@@ -237,7 +238,7 @@ private:
 };
 
 template<size_t N, typename T>
-struct ktm::detail::vec_common_implement::mix
+struct ktm::detail::common_implement::mix
 {
     using V = vec<N, T>;
     static_assert(std::is_floating_point_v<T>);
@@ -256,7 +257,7 @@ private:
 };
 
 template<size_t N, typename T>
-struct ktm::detail::vec_common_implement::recip
+struct ktm::detail::common_implement::recip
 {
     using V = vec<N, T>;
     static_assert(std::is_floating_point_v<T>);
@@ -275,7 +276,7 @@ private:
 };
 
 template<size_t N, typename T>
-struct ktm::detail::vec_common_implement::step
+struct ktm::detail::common_implement::step
 {
     using V = vec<N, T>;
     static_assert(std::is_floating_point_v<T>);
@@ -294,7 +295,7 @@ private:
 };
 
 template<size_t N, typename T>
-struct ktm::detail::vec_common_implement::smoothstep
+struct ktm::detail::common_implement::smoothstep
 {
     using V = vec<N, T>;
     static_assert(std::is_floating_point_v<T>);
@@ -313,7 +314,7 @@ private:
 };
 
 template<size_t N, typename T>
-struct ktm::detail::vec_common_implement::fract
+struct ktm::detail::common_implement::fract
 {
     using V = vec<N, T>;
     static_assert(std::is_floating_point_v<T>);

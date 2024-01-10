@@ -1,11 +1,12 @@
-#ifndef _QUAT_COMMON_H_
-#define _QUAT_COMMON_H_
+#ifndef _KTM_QUATERNION_H_
+#define _KTM_QUATERNION_H_
 
+#include "../setup.h"
 #include "../type/traits.h"
 #include "../type/quat.h"
-#include "ArtcCommon.h"
-#include "VecCommon.h"
-#include "VecGeometry.h"
+#include "arithmetic.h"
+#include "common.h"
+#include "geometric.h"
 
 namespace ktm
 {

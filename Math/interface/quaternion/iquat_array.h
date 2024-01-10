@@ -1,7 +1,8 @@
 #ifndef _KTM_I_QUAT_ARRAY_H_
 #define _KTM_I_QUAT_ARRAY_H_
 
-#include "../../type/basic.h"
+#include "../../setup.h"
+#include "../../type/quat_fwd.h"
 #include <array>
 
 namespace ktm

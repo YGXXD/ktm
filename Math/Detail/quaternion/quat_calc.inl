@@ -2,8 +2,8 @@
 #define _KTM_QUAT_CALC_INL_
 
 #include "quat_calc_fwd.h"
-#include "../../type/basic.h"
-#include "Math/function/VecGeometry.h"
+#include "../../setup.h"
+#include "../../function/geometric.h"
 
 template<typename T>
 struct ktm::detail::quat_calc_implement::mul

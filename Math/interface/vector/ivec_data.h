@@ -1,7 +1,8 @@
 #ifndef _KTM_I_VEC_DATA_H_
 #define _KTM_I_VEC_DATA_H_
 
-#include "../../type/basic.h"
+#include "../../setup.h"
+#include "../../type/vec_fwd.h"
 #include "../../detail/vector/vec_data_fwd.h"
 
 KTM_VEC_ST_ENUM_PACKAGE(x, y, z, w)

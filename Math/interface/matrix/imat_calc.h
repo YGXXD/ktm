@@ -1,7 +1,8 @@
 #ifndef _KTM_I_MAT_CALC_H_
 #define _KTM_I_MAT_CALC_H_
 
-#include "../../type/basic.h"
+#include "../../setup.h"
+#include "../../type/mat_fwd.h"
 #include "../../detail/matrix/mat_calc_fwd.h"
 
 namespace ktm

@@ -2,6 +2,7 @@
 #define _KTM_VEC_DATA_INL_
 
 #include "vec_data_fwd.h"
+#include "../../setup.h"
 
 template<size_t N, typename T>
 struct ktm::detail::vec_data_implement::vec_storage

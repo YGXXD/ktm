@@ -1,5 +1,5 @@
-#ifndef _VEC_COMMON_FWD_H_
-#define _VEC_COMMON_FWD_H_
+#ifndef _KTM_COMMON_FWD_H_
+#define _KTM_COMMON_FWD_H_
 
 #include <cstddef>
 
@@ -7,7 +7,7 @@ namespace ktm
 {
 namespace detail
 {
-namespace vec_common_implement
+namespace common_implement
 {
 
 template<size_t StepN, size_t N, typename T>

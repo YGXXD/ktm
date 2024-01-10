@@ -1,7 +1,9 @@
 #ifndef _KTM_I_MAT_MAKE_H_
 #define _KTM_I_MAT_MAKE_H_
 
-#include "../../type/basic.h"
+#include "../../setup.h"
+#include "../../type/vec_fwd.h"
+#include "../../type/mat_fwd.h"
 
 namespace ktm
 {

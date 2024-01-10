@@ -1,7 +1,9 @@
 #ifndef _KTM_TRAITS_H_
 #define _KTM_TRAITS_H_
 
-#include "basic.h"
+#include "vec_fwd.h"
+#include "mat_fwd.h"
+#include "quat_fwd.h"
 
 namespace ktm
 {

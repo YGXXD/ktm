@@ -1,9 +1,10 @@
-#ifndef _VEC_GEOMETRY_H_
-#define _VEC_GEOMETRY_H_
+#ifndef _KTM_GEOMETRIC_H_
+#define _KTM_GEOMETRIC_H_
 
+#include "../setup.h"
 #include "../type/traits.h"
 #include "../type/vec.h"
-#include "VecCommon.h"
+#include "common.h"
 
 namespace ktm
 {
