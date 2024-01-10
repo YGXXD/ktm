@@ -62,7 +62,11 @@ CHTHOLLY_FUNC __m128 fast_rsqrt_ps(__m128 x) noexcept
 CHTHOLLY_FUNC __m128 rsqrt_ps(__m128 x) noexcept
 {
 	__m128 r = fast_rsqrt_ps(x);
-	__m128 mul = mul_ps_all(_mm_set1_ps(0.5f), x, r, r);
+	__m128 mask = _mm_cmpeq_ps(r, _mm_set1_ps(1e50f));
+	__m128 x_mask = _mm_andnot_ps(mask, x);
+	__m128 neg_inf_mask = _mm_and_ps(mask, _mm_set1_ps(-1e50f));
+	mask = _mm_or_ps(x_mask, neg_inf_mask);
+	__m128 mul = mul_ps_all(_mm_set1_ps(0.5f), mask, r, r);
 	__m128 sub = _mm_sub_ps(_mm_set1_ps(1.5f), mul);
 	return _mm_mul_ps(r, sub);
 }
@@ -75,7 +79,11 @@ CHTHOLLY_FUNC __m128 fast_recip_ps(__m128 x) noexcept
 CHTHOLLY_FUNC __m128 recip_ps(__m128 x) noexcept
 {
 	__m128 r = fast_recip_ps(x);
-	__m128 mul = _mm_mul_ps(x, r);
+	__m128 mask = _mm_cmpeq_ps(x, _mm_setzero_ps());
+	__m128 x_mask = _mm_andnot_ps(mask, x);
+	__m128 neg_inf_mask = _mm_and_ps(mask, _mm_set1_ps(-1e50f));
+	mask = _mm_or_ps(x_mask, neg_inf_mask);
+	__m128 mul = _mm_mul_ps(mask, r);
 	__m128 sub = _mm_sub_ps(_mm_set1_ps(2.f), mul);
 	return _mm_mul_ps(r, sub);
 }
