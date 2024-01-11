@@ -2,6 +2,7 @@
 #define _KTM_VEC_H_
 
 #include "basic.h"
+#include "../traits/type_single_extend.h"
 #include "../interface/shared/iarray.h"
 #include "../interface/vector/ivec_data.h"
 #include "../interface/vector/ivec_array.h"
@@ -11,10 +12,10 @@ namespace ktm
 {
 
 template<size_t N, typename T>
-struct vec<N, T> : ktl::SingleExtends_t<ktl::TemplateList<ktm::iarray, ktm::ivec_data, ktm::ivec_array, ktm::ivec_calc>, vec<N, T>> 
+struct vec<N, T> : single_extends_t<template_list<iarray, ivec_data, ivec_array, ivec_calc>, vec<N, T>> 
 {
-    using Father = ktl::SingleExtends_t<ktl::TemplateList<ktm::iarray, ktm::ivec_data, ktm::ivec_array, ktm::ivec_calc>, vec<N, T>>; 
-    using Father::Father;
+    using fater_type = single_extends_t<template_list<iarray, ivec_data, ivec_array, ivec_calc>, vec<N, T>>; 
+    using fater_type::fater_type;
 };
 
 }

@@ -2,7 +2,7 @@
 #define _KTM_QUATERNION_H_
 
 #include "../setup.h"
-#include "../type/traits.h"
+#include "../traits/type_traits_math.h"
 #include "../type/quat.h"
 #include "arithmetic.h"
 #include "common.h"

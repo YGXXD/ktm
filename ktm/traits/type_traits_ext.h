@@ -1,9 +1,8 @@
-#ifndef _TRAITS_EX_H_
-#define _TRAITS_EX_H_
+#ifndef _STD_TYPE_TRAITS_EXT_H_
+#define _STD_TYPE_TRAITS_EXT_H_
 
 #include <type_traits>
 
-// std traits extensions
 namespace std
 {
 
@@ -20,6 +19,19 @@ struct select_if<false, TT, FT> { using type = FT; };
 template<bool E, typename TT, typename FT>
 using select_if_t = typename select_if<E, TT, FT>::type;
 
+// 选择类型, 根据索引选择后面的类型
+template<size_t N, typename ...Ts>
+struct select_idx;
+
+template<size_t N, typename T, typename ...Ts>
+struct select_idx<N, T, Ts...> { using type = typename select_idx<N - 1, Ts...>::type; };
+
+template<typename T, typename ...Ts>
+struct select_idx<0, T, Ts...> { using type = T; };
+
+template<size_t N, typename ...Ts>
+using select_idx_t = typename select_idx<N, Ts...>::type;
+
 // 多个类型相比较,都相同返回true,有一个不相同返回false
 template<class ...Tps>
 inline bool is_same_vs;
@@ -35,19 +47,6 @@ inline constexpr bool is_same_vs<Tp> = true;
 
 template<>
 inline constexpr bool is_same_vs<> = true;
-
-// 多个类型检测,都为数学基本类型返回true,有一个不为数学基本类型返回false
-template<class ...Tps>
-inline bool is_arithmetic_vs;
-
-template<class Tp, class ...Tps>
-inline constexpr bool is_arithmetic_vs<Tp, Tps...> = is_arithmetic_vs<Tp> && is_arithmetic_vs<Tps...>;
-
-template<class Tp>
-inline constexpr bool is_arithmetic_vs<Tp> = is_arithmetic_v<Tp>;
-
-template<>
-inline constexpr bool is_arithmetic_vs<> = false;
 
 // 多个类型检测,存在相同的类型返回true,没有相同类型返回false
 template<class ...Tps>

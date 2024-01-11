@@ -2,7 +2,7 @@
 #define _KTM_COMMON_H_
 
 #include "../setup.h"
-#include "../type/traits.h"
+#include "../traits/type_traits_math.h"
 #include "../type/vec.h"
 #include "../detail/function/common_fwd.h"
 

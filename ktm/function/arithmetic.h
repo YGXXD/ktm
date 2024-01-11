@@ -1,9 +1,10 @@
 #ifndef _KTM_ARITHMETIC_H_
 #define _KTM_ARITHMETIC_H_
 
+#include <cmath>
 #include "../setup.h"
 #include "../type/basic.h"
-#include <cmath>
+#include "../traits/type_traits_ext.h"
 
 namespace ktm
 {

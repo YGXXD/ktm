@@ -3,6 +3,7 @@
 
 #include "vec.h"
 #include "mat.h"
+#include "../traits/type_single_extend.h"
 #include "../interface/shared/iarray.h"
 #include "../interface/quaternion/iquat_data.h"
 #include "../interface/quaternion/iquat_make.h"
@@ -12,10 +13,10 @@
 namespace ktm
 {
 template<typename T>
-struct quat<T> : ktl::SingleExtends_t<ktl::TemplateList<ktm::iarray, ktm::iquat_data, ktm::iquat_make, ktm::iquat_array, ktm::iquat_calc>, quat<T>>
+struct quat<T> : single_extends_t<template_list<iarray, iquat_data, iquat_make, iquat_array, iquat_calc>, quat<T>>
 {
-    using Father = ktl::SingleExtends_t<ktl::TemplateList<ktm::iarray, ktm::iquat_data, ktm::iquat_make, ktm::iquat_array, ktm::iquat_calc>, quat<T>>;
-    using Father::Father;
+    using fater_type = single_extends_t<template_list<iarray, iquat_data, iquat_make, iquat_array, iquat_calc>, quat<T>>;
+    using fater_type::fater_type;
 };
 }
 

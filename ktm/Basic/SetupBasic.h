@@ -1,42 +1,6 @@
 #ifndef _SETUP_BASE_H_
 #define _SETUP_BASE_H_
 
-// os platform config, only support 64-bit os
-#if defined(__APPLE__)
-	#if defined(__LP64__)
-		#define CHTHOLLY_PLATFORM_APPLE
-		#include <TargetConditionals.h>
-		#if TARGET_IPHONE_SIMULATOR == 1
-			#error "Chtholly Engine don't support ios simulator!"
-		#elif TARGET_OS_IPHONE == 1
-			#error "Chtholly Engine don't support ios!"
-		#elif TARGET_OS_MAC == 1
-			#define CHTHOLLY_RENDER_API_METAL
-			#define CHTHOLLY_RENDER_API_VULKAN
-		#else
-			#error "Chtholly Engine don't support unkown apple platform!"
-		#endif
-	#else 
-		#error "Chtholly Engine don't support apple 32-bit platform!"	
-	#endif
-#elif defined(_WIN32)
-	#if defined(_WIN64)
-		#define CHTHOLLY_PLATFORM_WINDOWS
-		#define CHTHOLLY_RENDER_API_DX12
-		#define CHTHOLLY_RENDER_API_VULKAN
-	#else
-		#error "Chtholly Engine don't support windows 32-bit platform!"
-	#endif
-#elif defined(__linux__)
-	#define CHTHOLLY_PLATFORM_LINUX
-	#error "Chtholly Engine don't support linux!"
-#elif defined(__ANDROID__)
-	#define CHTHOLLY_PLATFORM_ANDROID
-	#error "Chtholly Engine don't support android!"
-#else
-	#error "Chtholly Engine don't support the unknown platform!"
-#endif
-
 // debug state
 #ifndef NDEBUG
 	#define CHTHOLLY_DEBUG_ENABLE

@@ -1,9 +1,9 @@
-#ifndef _KTM_TRAITS_H_
-#define _KTM_TRAITS_H_
+#ifndef _KTM_TYPE_TRAITS_MATH_H_
+#define _KTM_TYPE_TRAITS_MATH_H_
 
-#include "vec_fwd.h"
-#include "mat_fwd.h"
-#include "quat_fwd.h"
+#include "../type/vec_fwd.h"
+#include "../type/mat_fwd.h"
+#include "../type/quat_fwd.h"
 
 namespace ktm
 {

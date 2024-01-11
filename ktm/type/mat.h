@@ -2,6 +2,7 @@
 #define _KTM_MAT_H_
 
 #include "vec.h"
+#include "../traits/type_single_extend.h"
 #include "../interface/shared/iarray.h"
 #include "../interface/matrix/imat_data.h"
 #include "../interface/matrix/imat_make.h"
@@ -11,10 +12,10 @@
 namespace ktm
 {
 template<size_t Row, size_t Col, typename T>
-struct mat<Row, Col, T> : ktl::SingleExtends_t<ktl::TemplateList<ktm::iarray, ktm::imat_data, ktm::imat_make, ktm::imat_array, ktm::imat_calc>, mat<Row, Col, T>>
+struct mat<Row, Col, T> : single_extends_t<template_list<iarray, imat_data, imat_make, imat_array, imat_calc>, mat<Row, Col, T>>
 {
-    using Father = ktl::SingleExtends_t<ktl::TemplateList<ktm::iarray, ktm::imat_data, ktm::imat_make, ktm::imat_array, ktm::imat_calc>, mat<Row, Col, T>>;
-    using Father::Father;
+    using fater_type = single_extends_t<template_list<iarray, imat_data, imat_make, imat_array, imat_calc>, mat<Row, Col, T>>;
+    using fater_type::fater_type;
 };
 }
 
