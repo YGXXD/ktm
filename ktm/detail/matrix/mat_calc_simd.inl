@@ -21,7 +21,7 @@ private:
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
         ColV ret;
-        ret.st = neon::ex::add_f32_all(vmul_f32(m[Ns].st, vdup_n_f32(v[Ns]))...);
+        ret.st = neon::ext::add_f32_all(vmul_f32(m[Ns].st, vdup_n_f32(v[Ns]))...);
         return ret; 
     }
 };
@@ -41,7 +41,7 @@ private:
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
         ColV ret;
-        ret.st = neon::ex::addq_f32_all(vmulq_f32(m[Ns].st, vdupq_n_f32(v[Ns]))...);
+        ret.st = neon::ext::addq_f32_all(vmulq_f32(m[Ns].st, vdupq_n_f32(v[Ns]))...);
         return ret; 
     }
 };
@@ -197,7 +197,7 @@ private:
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
         ColV ret;
-        ret.st = neon::ex::add_s32_all(vmul_s32(m[Ns].st, vdup_n_s32(v[Ns]))...);
+        ret.st = neon::ext::add_s32_all(vmul_s32(m[Ns].st, vdup_n_s32(v[Ns]))...);
         return ret; 
     }
 };
@@ -217,7 +217,7 @@ private:
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {   
         ColV ret;
-        ret.st = neon::ex::addq_s32_all(vmulq_s32(m[Ns].st, vdupq_n_s32(v[Ns]))...);
+        ret.st = neon::ext::addq_s32_all(vmulq_s32(m[Ns].st, vdupq_n_s32(v[Ns]))...);
         return ret; 
     }
 };
@@ -376,7 +376,7 @@ private:
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
         ColV ret;
-        ret.st = intrin::ex::add_ps_all(_mm_mul_ps(m[Ns].st, _mm_set1_ps(v[Ns]))...);
+        ret.st = intrin::ext::add_ps_all(_mm_mul_ps(m[Ns].st, _mm_set1_ps(v[Ns]))...);
         return ret; 
     }
 };
@@ -519,7 +519,7 @@ private:
     static CHTHOLLY_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
         ColV ret; 
-        ret.st = intrin::ex::add_epi32_all(_mm_mullo_epi32(m[Ns].st, _mm_set1_epi32(v[Ns]))...);
+        ret.st = intrin::ext::add_epi32_all(_mm_mullo_epi32(m[Ns].st, _mm_set1_epi32(v[Ns]))...);
         return ret; 
     }
 };

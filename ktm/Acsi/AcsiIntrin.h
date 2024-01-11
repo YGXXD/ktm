@@ -8,7 +8,7 @@
 
 namespace intrin
 {
-namespace ex
+namespace ext
 {
 CHTHOLLY_FUNC __m128 clamp_ps(__m128 x, __m128 min, __m128 max) noexcept
 {
@@ -271,7 +271,7 @@ namespace qt
 {
 CHTHOLLY_FUNC __m128 fv3_mul_fq(__m128 v, __m128 q) noexcept
 {
-    __m128 q_opp = ex::neg_ps(q);
+    __m128 q_opp = ext::neg_ps(q);
 
     __m128 tmp_0 = _mm_shuffle_ps(q, q_opp, _MM_SHUFFLE(2, 2, 3, 3));
     __m128 tmp_1 = _mm_shuffle_ps(q, q_opp, _MM_SHUFFLE(1, 0, 1, 0)); 
@@ -284,7 +284,7 @@ CHTHOLLY_FUNC __m128 fv3_mul_fq(__m128 v, __m128 q) noexcept
     __m128 add_1 = _mm_mul_ps(_mm_shuffle_ps(v, v, _MM_SHUFFLE(1, 1, 1, 1)), mul_y); 
     __m128 add_2 = _mm_mul_ps(_mm_shuffle_ps(v, v, _MM_SHUFFLE(2, 2, 2, 2)), mul_z); 
 
-    return intrin::ex::add_ps_all(add_0, add_1, add_2);
+    return intrin::ext::add_ps_all(add_0, add_1, add_2);
 }
 
 CHTHOLLY_FUNC __m128 fq_mul_fq(__m128 x, __m128 y) noexcept

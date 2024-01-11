@@ -31,7 +31,7 @@
 
 namespace neon
 {
-namespace ex 
+namespace ext 
 {
 CHTHOLLY_FUNC unsigned int maskq_u32(uint32x4_t x)
 {
@@ -324,7 +324,7 @@ CHTHOLLY_FUNC float32x4_t fv3_mul_fq(float32x4_t v, float32x4_t q) noexcept
     float32x4_t add_1 = vmulq_f32(vdupq_laneq_f32(v, 1), mul_y); 
     float32x4_t add_2 = vmulq_f32(vdupq_laneq_f32(v, 2), mul_z); 
 
-    return neon::ex::addq_f32_all(add_0, add_1, add_2); 
+    return neon::ext::addq_f32_all(add_0, add_1, add_2); 
 }
 
 CHTHOLLY_FUNC float32x4_t fq_mul_fq(float32x4_t x, float32x4_t y) noexcept
