@@ -6,14 +6,14 @@
 #include "../../type/basic.h"
 #include "../../type/mat_fwd.h"
 
-#if defined(CHTHOLLY_SIMD_NEON)
+#if defined(KTM_SIMD_NEON)
 
 template<>
 struct ktm::detail::matrix_implement::transpose<2, 2, float>
 {
     using M = mat<2, 2, float>;
     using RetM = M;
-    static CHTHOLLY_INLINE RetM call(const M& m) noexcept
+    static KTM_INLINE RetM call(const M& m) noexcept
     {
         RetM ret;
         neon::mt::fmt2_tp(&ret[0].st, &m[0].st);
@@ -26,7 +26,7 @@ struct ktm::detail::matrix_implement::transpose<3, 3, float>
 {
     using M = mat<3, 3, float>;
     using RetM = M;
-    static CHTHOLLY_INLINE RetM call(const M& m) noexcept
+    static KTM_INLINE RetM call(const M& m) noexcept
     {
         RetM ret;
         neon::mt::fmt3_tp(&ret[0].st, &m[0].st);
@@ -39,7 +39,7 @@ struct ktm::detail::matrix_implement::transpose<4, 4, float>
 {
     using M = mat<4, 4, float>;
     using RetM = M;
-    static CHTHOLLY_INLINE RetM call(const M& m) noexcept
+    static KTM_INLINE RetM call(const M& m) noexcept
     {
         RetM ret;
         neon::mt::fmt4_tp(&ret[0].st, &m[0].st);
@@ -52,7 +52,7 @@ struct ktm::detail::matrix_implement::transpose<2, 2, int>
 {
     using M = mat<2, 2, int>;
     using RetM = M;
-    static CHTHOLLY_INLINE RetM call(const M& m) noexcept
+    static KTM_INLINE RetM call(const M& m) noexcept
     {
         RetM ret;
         neon::mt::fmt2_tp(reinterpret_cast<float32x2_t*>(&ret[0].st), reinterpret_cast<const float32x2_t*>(&m[0].st));
@@ -65,7 +65,7 @@ struct ktm::detail::matrix_implement::transpose<3, 3, int>
 {
     using M = mat<3, 3, int>;
     using RetM = M;
-    static CHTHOLLY_INLINE RetM call(const M& m) noexcept
+    static KTM_INLINE RetM call(const M& m) noexcept
     {
         RetM ret;
         neon::mt::fmt3_tp(reinterpret_cast<float32x4_t*>(&ret[0].st), reinterpret_cast<const float32x4_t*>(&m[0].st));
@@ -78,7 +78,7 @@ struct ktm::detail::matrix_implement::transpose<4, 4, int>
 {
     using M = mat<4, 4, int>;
     using RetM = M;
-    static CHTHOLLY_INLINE RetM call(const M& m) noexcept
+    static KTM_INLINE RetM call(const M& m) noexcept
     {
         RetM ret;
         neon::mt::fmt4_tp(reinterpret_cast<float32x4_t*>(&ret[0].st), reinterpret_cast<const float32x4_t*>(&m[0].st));
@@ -90,7 +90,7 @@ template<>
 struct ktm::detail::matrix_implement::determinant<3, float>
 {
     using M = mat<3, 3, float>;
-    static CHTHOLLY_INLINE float call(const M& m) noexcept
+    static KTM_INLINE float call(const M& m) noexcept
     {
         const float32x4_t& c_0 = m[0].st;
         const float32x4_t& c_1 = m[1].st;
@@ -106,7 +106,7 @@ template<>
 struct ktm::detail::matrix_implement::determinant<4, float>
 {
     using M = mat<4, 4, float>;
-    static CHTHOLLY_INLINE float call(const M& m) noexcept
+    static KTM_INLINE float call(const M& m) noexcept
     {
         const float32x4_t& c_0 = m[0].st;
         const float32x4_t& c_1 = m[1].st;
@@ -147,7 +147,7 @@ template<>
 struct ktm::detail::matrix_implement::determinant<3, int>
 {
     using M = mat<3, 3, int>;
-    static CHTHOLLY_INLINE float call(const M& m) noexcept
+    static KTM_INLINE float call(const M& m) noexcept
     {
         const int32x4_t& c_0 = m[0].st;
         const int32x4_t& c_1 = m[1].st;
@@ -163,7 +163,7 @@ template<>
 struct ktm::detail::matrix_implement::determinant<4, int>
 {
     using M = mat<4, 4, int>;
-    static CHTHOLLY_INLINE float call(const M& m) noexcept
+    static KTM_INLINE float call(const M& m) noexcept
     {
         const int32x4_t& c_0 = m[0].st;
         const int32x4_t& c_1 = m[1].st;
@@ -204,7 +204,7 @@ template<>
 struct ktm::detail::matrix_implement::inverse<4, float>
 {
     using M = mat<4, 4, float>;
-    static CHTHOLLY_INLINE M call(const M& m) noexcept
+    static KTM_INLINE M call(const M& m) noexcept
     {
         const float32x4_t& c_0 = m[0].st;
         const float32x4_t& c_1 = m[1].st;
@@ -400,14 +400,14 @@ struct ktm::detail::matrix_implement::inverse<4, float>
     }
 };
 
-#elif defined(CHTHOLLY_SIMD_SSE)
+#elif defined(KTM_SIMD_SSE)
 
 template<>
 struct ktm::detail::matrix_implement::transpose<2, 2, float>
 {
     using M = mat<2, 2, float>;
     using RetM = M;
-    static CHTHOLLY_INLINE RetM call(const M& m) noexcept
+    static KTM_INLINE RetM call(const M& m) noexcept
     {
         RetM ret;
         intrin::mt::fmt2_tp(&ret[0].st, &m[0].st);
@@ -420,7 +420,7 @@ struct ktm::detail::matrix_implement::transpose<3, 3, float>
 {
     using M = mat<3, 3, float>;
     using RetM = M;
-    static CHTHOLLY_INLINE RetM call(const M& m) noexcept
+    static KTM_INLINE RetM call(const M& m) noexcept
     {
         RetM ret;
         intrin::mt::fmt3_tp(&ret[0].st, &m[0].st); 
@@ -433,7 +433,7 @@ struct ktm::detail::matrix_implement::transpose<4, 4, float>
 {
     using M = mat<4, 4, float>;
     using RetM = M;
-    static CHTHOLLY_INLINE RetM call(const M& m) noexcept
+    static KTM_INLINE RetM call(const M& m) noexcept
     {
         RetM ret;
         intrin::mt::fmt4_tp(&ret[0].st, &m[0].st); 
@@ -446,7 +446,7 @@ struct ktm::detail::matrix_implement::transpose<2, 2, int>
 {
     using M = mat<2, 2, int>;
     using RetM = M;
-    static CHTHOLLY_INLINE RetM call(const M& m) noexcept
+    static KTM_INLINE RetM call(const M& m) noexcept
     {
         RetM ret;
         intrin::mt::fmt2_tp(&ret[0].st, &m[0].st);
@@ -459,7 +459,7 @@ struct ktm::detail::matrix_implement::transpose<3, 3, int>
 {
     using M = mat<3, 3, int>;
     using RetM = M;
-    static CHTHOLLY_INLINE RetM call(const M& m) noexcept
+    static KTM_INLINE RetM call(const M& m) noexcept
     {
         RetM ret;
         intrin::mt::fmt3_tp(reinterpret_cast<__m128*>(&ret[0].st), reinterpret_cast<const __m128*>(&m[0].st));
@@ -472,7 +472,7 @@ struct ktm::detail::matrix_implement::transpose<4, 4, int>
 {
     using M = mat<4, 4, int>;
     using RetM = M;
-    static CHTHOLLY_INLINE RetM call(const M& m) noexcept
+    static KTM_INLINE RetM call(const M& m) noexcept
     {
         RetM ret;
         intrin::mt::fmt4_tp(reinterpret_cast<__m128*>(&ret[0].st), reinterpret_cast<const __m128*>(&m[0].st));
@@ -484,7 +484,7 @@ template<>
 struct ktm::detail::matrix_implement::determinant<3, float>
 {
     using M = mat<3, 3, float>;
-    static CHTHOLLY_INLINE float call(const M& m) noexcept
+    static KTM_INLINE float call(const M& m) noexcept
     {
         const __m128& c_0 = m[0].st;
         const __m128& c_1 = m[1].st;
@@ -501,7 +501,7 @@ template<>
 struct ktm::detail::matrix_implement::determinant<4, float>
 {
     using M = mat<4, 4, float>;
-    static CHTHOLLY_INLINE float call(const M& m) noexcept
+    static KTM_INLINE float call(const M& m) noexcept
     {
         const __m128& c_0 = m[0].st;
         const __m128& c_1 = m[1].st;
@@ -544,7 +544,7 @@ template<>
 struct ktm::detail::matrix_implement::inverse<4, float>
 {
     using M = mat<4, 4, float>;
-    static CHTHOLLY_INLINE M call(const M& m) noexcept
+    static KTM_INLINE M call(const M& m) noexcept
     {
         const __m128& c_0 = m[0].st;
         const __m128& c_1 = m[1].st;
@@ -707,13 +707,13 @@ struct ktm::detail::matrix_implement::inverse<4, float>
     }
 };
 
-#if CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE4_1_FLAG
+#if KTM_SIMD_SSE & KTM_SIMD_SSE4_1_FLAG
 
 template<>
 struct ktm::detail::matrix_implement::determinant<3, int>
 {
     using M = mat<3, 3, int>;
-    static CHTHOLLY_INLINE float call(const M& m) noexcept
+    static KTM_INLINE float call(const M& m) noexcept
     {
         const __m128i& c_0 = m[0].st;
         const __m128i& c_1 = m[1].st;
@@ -729,7 +729,7 @@ template<>
 struct ktm::detail::matrix_implement::determinant<4, int>
 {
     using M = mat<4, 4, int>;
-    static CHTHOLLY_INLINE float call(const M& m) noexcept
+    static KTM_INLINE float call(const M& m) noexcept
     {
         const __m128i& c_0 = m[0].st;
         const __m128i& c_1 = m[1].st;
@@ -768,7 +768,7 @@ struct ktm::detail::matrix_implement::determinant<4, int>
     }
 };
 
-#endif // CHTHOLLY_SIMD_SSE & CHTHOLLY_SIMD_SSE2_FLAG 
+#endif // KTM_SIMD_SSE & KTM_SIMD_SSE2_FLAG 
 
 #endif
 

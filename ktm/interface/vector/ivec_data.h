@@ -9,24 +9,24 @@ KTM_VEC_ST_ENUM_PACKAGE(x, y, z, w)
 KTM_VEC_ST_ENUM_PACKAGE(r, g, b, a)
 
 #define KTM_PERMUTATION_2_2(x, y, n) \
-CHTHOLLY_INLINE vec<2, T> x##y() const noexcept \
+KTM_INLINE vec<2, T> x##y() const noexcept \
 { \
     return detail::vec_data_implement::vec_swizzle<2, n, T, KTM_VEC_ST_ENUM_GET(x), \
         KTM_VEC_ST_ENUM_GET(y)>::call(reinterpret_cast<const vec<n, T>&>(*this)); \
 } \
-CHTHOLLY_INLINE vec<2, T> y##x() const noexcept \
+KTM_INLINE vec<2, T> y##x() const noexcept \
 { \
     return detail::vec_data_implement::vec_swizzle<2, n, T, KTM_VEC_ST_ENUM_GET(y), \
         KTM_VEC_ST_ENUM_GET(x)>::call(reinterpret_cast<const vec<n, T>&>(*this)); \
 }
 
 #define KTM_PERMUTATION_3_2(x, y, z, n) \
-CHTHOLLY_INLINE vec<3, T> x##y##z() const noexcept \
+KTM_INLINE vec<3, T> x##y##z() const noexcept \
 { \
     return detail::vec_data_implement::vec_swizzle<3, n, T, KTM_VEC_ST_ENUM_GET(x), \
         KTM_VEC_ST_ENUM_GET(y), KTM_VEC_ST_ENUM_GET(z)>::call(reinterpret_cast<const vec<n, T>&>(*this)); \
 } \
-CHTHOLLY_INLINE vec<3, T> x##z##y() const noexcept \
+KTM_INLINE vec<3, T> x##z##y() const noexcept \
 { \
     return detail::vec_data_implement::vec_swizzle<3, n, T, KTM_VEC_ST_ENUM_GET(x), \
         KTM_VEC_ST_ENUM_GET(z), KTM_VEC_ST_ENUM_GET(y)>::call(reinterpret_cast<const vec<n, T>&>(*this)); \
@@ -38,12 +38,12 @@ KTM_PERMUTATION_3_2(y, z, x, n) \
 KTM_PERMUTATION_3_2(z, x, y, n)
 
 #define KTM_PERMUTATION_4_2(x, y, z, w, n) \
-CHTHOLLY_INLINE vec<4, T> x##y##z##w() const noexcept \
+KTM_INLINE vec<4, T> x##y##z##w() const noexcept \
 { \
     return detail::vec_data_implement::vec_swizzle<4, n, T, KTM_VEC_ST_ENUM_GET(x), \
         KTM_VEC_ST_ENUM_GET(y), KTM_VEC_ST_ENUM_GET(z), KTM_VEC_ST_ENUM_GET(w)>::call(reinterpret_cast<const vec<n, T>&>(*this)); \
 } \
-CHTHOLLY_INLINE vec<4, T> x##y##w##z() const noexcept \
+KTM_INLINE vec<4, T> x##y##w##z() const noexcept \
 { \
     return detail::vec_data_implement::vec_swizzle<4, n, T, KTM_VEC_ST_ENUM_GET(x), \
         KTM_VEC_ST_ENUM_GET(y), KTM_VEC_ST_ENUM_GET(w), KTM_VEC_ST_ENUM_GET(z)>::call(reinterpret_cast<const vec<n, T>&>(*this)); \

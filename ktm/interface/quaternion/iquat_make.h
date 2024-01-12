@@ -19,23 +19,23 @@ struct iquat_make<Father, quat<T>> : Father
 {
     using Father::Father;
 
-    static CHTHOLLY_INLINE quat<T> identity() noexcept
+    static KTM_INLINE quat<T> identity() noexcept
     {
         return quat<T>(zero<T>, zero<T>, zero<T>, one<T>);
     }
 
-    static CHTHOLLY_INLINE quat<T> real_imag(T real, const vec<3, T>& imag) noexcept
+    static KTM_INLINE quat<T> real_imag(T real, const vec<3, T>& imag) noexcept
     {
         return quat<T>(imag.x, imag.y, imag.z, real);
     }
  
-    static CHTHOLLY_INLINE quat<T> angle_axis(T angle, const vec<3, T>& axis) noexcept
+    static KTM_INLINE quat<T> angle_axis(T angle, const vec<3, T>& axis) noexcept
     {
         T sin_0p5angle = sin(angle * static_cast<T>(0.5));
         return quat<T>(sin_0p5angle * axis[0], sin_0p5angle * axis[1], sin_0p5angle * axis[2], cos(angle * static_cast<T>(0.5)));
     }
 
-    static CHTHOLLY_NOINLINE quat<T> from_to(const vec<3, T>& from, const vec<3, T>& to) noexcept
+    static KTM_NOINLINE quat<T> from_to(const vec<3, T>& from, const vec<3, T>& to) noexcept
     {
         if (dot(from, to) >= 0) {
             return from_to_less_0p5pi(from, to); 
@@ -58,13 +58,13 @@ struct iquat_make<Father, quat<T>> : Father
         return from_to_less_0p5pi(from, half) * from_to_less_0p5pi(half, to);
     }
 
-    static CHTHOLLY_INLINE quat<T> from_matrix(const mat<4, 4, T>& m) noexcept
+    static KTM_INLINE quat<T> from_matrix(const mat<4, 4, T>& m) noexcept
     {
         const mat<3, 3, T>* m33_ptr = reinterpret_cast<const mat<3, 3, T>*>(&m);
         return from_matrix(*m33_ptr);
     }
 
-    static CHTHOLLY_NOINLINE quat<T> from_matrix(const mat<3, 3, T>& m) noexcept
+    static KTM_NOINLINE quat<T> from_matrix(const mat<3, 3, T>& m) noexcept
     {
         T m_trace = trace(m);
         if (m_trace >= zero<T>)
@@ -97,7 +97,7 @@ struct iquat_make<Father, quat<T>> : Father
         }
     }
 private:
-    static CHTHOLLY_INLINE quat<T> from_to_less_0p5pi(const vec<3, T>& from, const vec<3, T>& to)
+    static KTM_INLINE quat<T> from_to_less_0p5pi(const vec<3, T>& from, const vec<3, T>& to)
     {
         // 计算向量旋转夹角小于二分之pi的四元数
         vec<3, T> half = normalize(from + to);

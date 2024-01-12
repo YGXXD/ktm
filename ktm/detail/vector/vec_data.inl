@@ -8,7 +8,7 @@ template<size_t N, typename T>
 struct ktm::detail::vec_data_implement::vec_storage
 {
 private:
-    constexpr static CHTHOLLY_INLINE size_t align() noexcept
+    constexpr static KTM_INLINE size_t align() noexcept
     {
         if constexpr(N == 2)
         {
@@ -23,7 +23,7 @@ private:
             return sizeof(T);
         }
     }
-    constexpr static CHTHOLLY_INLINE size_t elem_num() noexcept
+    constexpr static KTM_INLINE size_t elem_num() noexcept
     {
         if constexpr(N == 3)
         {
@@ -49,7 +49,7 @@ struct ktm::detail::vec_data_implement::vec_swizzle
     static_assert(ON <= IN && sizeof...(E) == ON && ((E < IN) && ...));
     using V = vec<IN, T>;
     using RetV = vec<ON, T>;
-    static CHTHOLLY_INLINE RetV call(const V& v) noexcept
+    static KTM_INLINE RetV call(const V& v) noexcept
     {
         return RetV(v[E]...);
     }

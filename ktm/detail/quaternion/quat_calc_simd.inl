@@ -5,13 +5,13 @@
 #include "../../setup.h"
 #include "../../type/basic.h"
 
-#if defined(CHTHOLLY_SIMD_NEON)
+#if defined(KTM_SIMD_NEON)
 
 template<>
 struct ktm::detail::quat_calc_implement::mul<float>
 {
     using Q = quat<float>;
-    static CHTHOLLY_INLINE Q call(const Q& x, const Q& y) noexcept
+    static KTM_INLINE Q call(const Q& x, const Q& y) noexcept
     {
         Q ret;
         ret.vector.st = neon::qt::fq_mul_fq(x.vector.st, y.vector.st);
@@ -23,7 +23,7 @@ template<>
 struct ktm::detail::quat_calc_implement::mul_to_self<float>
 {
     using Q = quat<float>;
-    static CHTHOLLY_INLINE void call(Q& x, const Q& y) noexcept
+    static KTM_INLINE void call(Q& x, const Q& y) noexcept
     {
         x.vector.st = neon::qt::fq_mul_fq(x.vector.st, y.vector.st);
     }
@@ -33,7 +33,7 @@ template<>
 struct ktm::detail::quat_calc_implement::act<float>
 {
     using Q = quat<float>;
-    static CHTHOLLY_INLINE vec<3, float> call(const Q& q, const vec<3, float>& v) noexcept
+    static KTM_INLINE vec<3, float> call(const Q& q, const vec<3, float>& v) noexcept
     {
         // |q| = 1 => q-1 <==> qc
         // q * quat(v,0) * qc
@@ -44,13 +44,13 @@ struct ktm::detail::quat_calc_implement::act<float>
     }
 };
 
-#elif defined(CHTHOLLY_SIMD_SSE) 
+#elif defined(KTM_SIMD_SSE) 
 
 template<>
 struct ktm::detail::quat_calc_implement::mul<float>
 {
     using Q = quat<float>;
-    static CHTHOLLY_INLINE Q call(const Q& x, const Q& y) noexcept
+    static KTM_INLINE Q call(const Q& x, const Q& y) noexcept
     {
         Q ret;
         ret.vector.st = intrin::qt::fq_mul_fq(x.vector.st, y.vector.st);
@@ -62,7 +62,7 @@ template<>
 struct ktm::detail::quat_calc_implement::mul_to_self<float>
 {
     using Q = quat<float>;
-    static CHTHOLLY_INLINE void call(Q& x, const Q& y) noexcept
+    static KTM_INLINE void call(Q& x, const Q& y) noexcept
     {
         x.vector.st = intrin::qt::fq_mul_fq(x.vector.st, y.vector.st);
     }
@@ -72,7 +72,7 @@ template<>
 struct ktm::detail::quat_calc_implement::act<float>
 {
     using Q = quat<float>;
-    static CHTHOLLY_INLINE vec<3, float> call(const Q& q, const vec<3, float>& v) noexcept
+    static KTM_INLINE vec<3, float> call(const Q& q, const vec<3, float>& v) noexcept
     {
         vec<3, float> ret;
         __m128 qi = _mm_mul_ps(q.vector.st, _mm_set_ps(one<float>, -one<float>, -one<float>, -one<float>));

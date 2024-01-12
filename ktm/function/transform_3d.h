@@ -10,7 +10,7 @@ namespace ktm
 {
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> view_look_dr(const vec<3, T>& eye_pos, const vec<3, T>& direction, const vec<3, T>& up) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> view_look_dr(const vec<3, T>& eye_pos, const vec<3, T>& direction, const vec<3, T>& up) noexcept
 {
     vec<3, T> x = normalize(cross(up, direction));
     vec<3, T> y = cross(direction, x);
@@ -24,14 +24,14 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> view
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> view_look_at(const vec<3, T>& eye_pos, const vec<3, T>& focus_pos, const vec<3, T>& up) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> view_look_at(const vec<3, T>& eye_pos, const vec<3, T>& focus_pos, const vec<3, T>& up) noexcept
 {
     vec<3, T> z = normalize(focus_pos - eye_pos);
     return view_look_dr(eye_pos, z, up); 
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> perspective(T fov_radians, T aspect, T znear, T zfar) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> perspective(T fov_radians, T aspect, T znear, T zfar) noexcept
 {
     T ys = one<T> / tan(fov_radians * static_cast<T>(0.5));
     T xs = ys / aspect;
@@ -43,7 +43,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> pers
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> ortho(T left, T right, T top, T bottom, T znear, T zfar) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> ortho(T left, T right, T top, T bottom, T znear, T zfar) noexcept
 {
     T dx = right - left;
     T dy = top - bottom;
@@ -55,7 +55,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> orth
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_x(T angle_radians) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_x(T angle_radians) noexcept
 {
     return mat<4, 4, T>({ one<T>, zero<T>, zero<T>, zero<T> },
                         { zero<T>, cos(angle_radians), sin(angle_radians), zero<T> },
@@ -64,7 +64,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rota
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_y(T angle_radians) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_y(T angle_radians) noexcept
 {
     return mat<4, 4, T>({ cos(angle_radians), zero<T>, -sin(angle_radians), zero<T> },
                         { zero<T>, one<T>, zero<T>, zero<T> },
@@ -73,7 +73,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rota
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_z(T angle_radians) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_z(T angle_radians) noexcept
 {
     return mat<4, 4, T>({ cos(angle_radians), sin(angle_radians), zero<T>, zero<T> },
                         { -sin(angle_radians), cos(angle_radians), zero<T>, zero<T> },
@@ -86,7 +86,7 @@ namespace detail
 namespace transform_3d_implement
 {
 template<typename T>
-CHTHOLLY_NOINLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_normal(T sin_theta, T cos_theta, const vec<3, T>& normal) noexcept
+KTM_NOINLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_normal(T sin_theta, T cos_theta, const vec<3, T>& normal) noexcept
 {
 	T one_minus_cos_theta = one<T> - cos_theta;
     T xx_one_minus_cos = normal[0] * normal[0] * one_minus_cos_theta;
@@ -105,13 +105,13 @@ CHTHOLLY_NOINLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> ro
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_axis(T angle, const vec<3, T>& axis) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_axis(T angle, const vec<3, T>& axis) noexcept
 {
 	return detail::transform_3d_implement::rotate_normal(sin(angle), cos(angle), axis);
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_from_to(const vec<3, T>& from, const vec<3, T>& to) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_from_to(const vec<3, T>& from, const vec<3, T>& to) noexcept
 {
     T cos_theta = dot(from, to);
     T sin_theta = sqrt(one<T> - cos_theta * cos_theta);
@@ -119,7 +119,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rota
 }
 
 template<typename T>
-CHTHOLLY_NOINLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_any_axis(T angle, const vec<3, T>& axis_start, const vec<3, T>& axis) noexcept
+KTM_NOINLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_any_axis(T angle, const vec<3, T>& axis_start, const vec<3, T>& axis) noexcept
 {
 	T cos_theta = cos(angle);
 	T sin_theta = sin(angle);
@@ -142,7 +142,7 @@ CHTHOLLY_NOINLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> ro
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> translate(const vec<3, T>& v) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> translate(const vec<3, T>& v) noexcept
 {
     return mat<4, 4, T>({ one<T>, zero<T>, zero<T>, zero<T> },
                         { zero<T>, one<T>, zero<T>, zero<T> },
@@ -151,7 +151,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> tran
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> scale(const vec<3, T>& v) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> scale(const vec<3, T>& v) noexcept
 {
     return mat<4, 4, T>({ v[0], zero<T>, zero<T>, zero<T> },
                         { zero<T>, v[1], zero<T>, zero<T> },

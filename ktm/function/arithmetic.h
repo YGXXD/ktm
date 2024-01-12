@@ -10,43 +10,43 @@ namespace ktm
 {
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<(std::is_arithmetic_v<T> && !std::is_unsigned_v<T>), T> abs(T x) noexcept
+KTM_INLINE std::enable_if_t<(std::is_arithmetic_v<T> && !std::is_unsigned_v<T>), T> abs(T x) noexcept
 {
     return x < 0 ? -x : x;
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> max(T x, T y) noexcept
+KTM_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> max(T x, T y) noexcept
 {
     return x > y ? x : y;
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> min(T x, T y) noexcept
+KTM_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> min(T x, T y) noexcept
 {
     return x < y ? x : y;
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> clamp(T v, T min, T max) noexcept
+KTM_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> clamp(T v, T min, T max) noexcept
 {
     return ktm::min<T>(ktm::max<T>(v, min), max);
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> pow2(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> pow2(T x) noexcept
 {
     return x * x;
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> pow5(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> pow5(T x) noexcept
 {
     return pow2(x) * pow2(x) * x;
 }
 
 template<size_t N, typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> pow(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> pow(T x) noexcept
 {
     if constexpr(N == 0)
     {
@@ -59,33 +59,33 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> pow(T x) noexcept
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, bool> equal_zero(T x, T e = epsilon<T>) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, bool> equal_zero(T x, T e = epsilon<T>) noexcept
 {
     return abs(x) < e;
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, bool> equal(T x, T y, T e = epsilon<T>) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, bool> equal(T x, T y, T e = epsilon<T>) noexcept
 {
     return equal_zero(x - y, e);
 }
 
 template<typename T>
-CHTHOLLY_INLINE T radians(T degrees) noexcept
+KTM_INLINE T radians(T degrees) noexcept
 {
     constexpr T degrees_to_radians = pi<T> / static_cast<T>(180);
     return degrees * degrees_to_radians;
 }
 
 template<typename T>
-CHTHOLLY_INLINE T degrees(T radians) noexcept
+KTM_INLINE T degrees(T radians) noexcept
 {
     constexpr T radians_to_degrees = static_cast<T>(180) * one_over_pi<T>;
     return radians * radians_to_degrees;
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> exp(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> exp(T x) noexcept
 {
     if constexpr(std::is_same_v<T, float>)
         return ::expf(x);
@@ -96,7 +96,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> exp(T x) noexce
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> log(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> log(T x) noexcept
 {
     if constexpr(std::is_same_v<T, float>)
         return ::logf(x);
@@ -107,7 +107,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> log(T x) noexce
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> sin(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> sin(T x) noexcept
 {
     if constexpr(std::is_same_v<T, float>)
         return ::sinf(x);
@@ -118,7 +118,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> sin(T x) noexce
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> asin(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> asin(T x) noexcept
 {
     if constexpr(std::is_same_v<T, float>)
         return ::asinf(x);
@@ -129,7 +129,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> asin(T x) noexc
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> sinc(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> sinc(T x) noexcept
 {
     if(equal_zero(x)) return one<T>;
 
@@ -142,7 +142,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> sinc(T x) noexc
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> cos(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> cos(T x) noexcept
 {
     if constexpr(std::is_same_v<T, float>)
         return ::cosf(x);
@@ -153,7 +153,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> cos(T x) noexce
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> acos(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> acos(T x) noexcept
 {
     if constexpr(std::is_same_v<T, float>)
         return ::acosf(x);
@@ -164,7 +164,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> acos(T x) noexc
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> tan(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> tan(T x) noexcept
 {
     if constexpr(std::is_same_v<T, float>)
         return ::tanf(x);
@@ -175,7 +175,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> tan(T x) noexce
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> atan(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> atan(T x) noexcept
 {
     if constexpr(std::is_same_v<T, float>)
         return ::atanf(x);
@@ -186,7 +186,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> atan(T x) noexc
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> atan2(T x, T y) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> atan2(T x, T y) noexcept
 {
     if constexpr(std::is_same_v<T, float>)
         return ::atan2f(x, y);
@@ -197,7 +197,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> atan2(T x, T y)
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> floor(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> floor(T x) noexcept
 {
     if constexpr(std::is_same_v<T, float>)
         return ::floorf(x);
@@ -208,7 +208,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> floor(T x) noex
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> ceil(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> ceil(T x) noexcept
 {
     if constexpr(std::is_same_v<T, float>)
         return ::ceilf(x);
@@ -219,7 +219,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> ceil(T x) noexc
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> round(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> round(T x) noexcept
 {
     if constexpr(std::is_same_v<T, float>)
         return ::roundf(x);
@@ -230,7 +230,7 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> round(T x) noex
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> sqrt(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> sqrt(T x) noexcept
 {
     if constexpr(std::is_same_v<T, float>)
         return ::sqrtf(x);
@@ -241,13 +241,13 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> sqrt(T x) noexc
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> rsqrt(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> rsqrt(T x) noexcept
 {
     return one<T> / sqrt(x);
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_exist_same_vs<float, double, T>, T> fast_rsqrt(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_exist_same_vs<float, double, T>, T> fast_rsqrt(T x) noexcept
 {
     using integral_type = std::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
     integral_type i = *reinterpret_cast<const integral_type*>(&x);
@@ -266,13 +266,13 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_exist_same_vs<float, double, T>, T> fas
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> recip(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> recip(T x) noexcept
 {
     return one<T> / x;
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_exist_same_vs<float, double, T>, T> fast_recip(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_exist_same_vs<float, double, T>, T> fast_recip(T x) noexcept
 {
     using integral_type = std::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
     integral_type i = *reinterpret_cast<const integral_type*>(&x);
@@ -291,26 +291,26 @@ CHTHOLLY_INLINE std::enable_if_t<std::is_exist_same_vs<float, double, T>, T> fas
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> mix(T x, T y, T t) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> mix(T x, T y, T t) noexcept
 {
     return x + t * (y - x);
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> step(T edge, T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> step(T edge, T x) noexcept
 {
     return x < edge ? one<T> : zero<T>;
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> smoothstep(T edge0, T edge1, T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> smoothstep(T edge0, T edge1, T x) noexcept
 {
     const T tmp = ktm::clamp((x - edge0) / (edge1 - edge0), zero<T>, one<T>);
     return tmp * tmp * (static_cast<T>(3) - static_cast<T>(2) * tmp);
 }
 
 template<typename T>
-CHTHOLLY_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> fract(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> fract(T x) noexcept
 {
     return x - ktm::floor(x);
 }

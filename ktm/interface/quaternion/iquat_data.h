@@ -25,17 +25,17 @@ struct iquat_data<Father, quat<T>> : Father
     constexpr iquat_data(T x, T y, T z, T w) noexcept : i(x), j(y), k(z), r(w) { }
     iquat_data(const vec<4, T>& vec) noexcept : vector(vec) { }
 
-    CHTHOLLY_INLINE T real() const noexcept { return r; }
-    CHTHOLLY_INLINE vec<3, T> imag() const noexcept { return vec<3, T>(i, j, k); } 
-    CHTHOLLY_INLINE T angle() const noexcept { return static_cast<T>(2) * atan2(length(imag()), real()); }
-    CHTHOLLY_INLINE vec<3, T> axis() const noexcept { return normalize(imag()); }
-    CHTHOLLY_INLINE mat<3, 3, T> matrix3x3() const noexcept 
+    KTM_INLINE T real() const noexcept { return r; }
+    KTM_INLINE vec<3, T> imag() const noexcept { return vec<3, T>(i, j, k); } 
+    KTM_INLINE T angle() const noexcept { return static_cast<T>(2) * atan2(length(imag()), real()); }
+    KTM_INLINE vec<3, T> axis() const noexcept { return normalize(imag()); }
+    KTM_INLINE mat<3, 3, T> matrix3x3() const noexcept 
     {
         mat<3, 3, T> ret;
         matrix(ret);
         return ret;
     }
-    CHTHOLLY_INLINE mat<4, 4, T> matrix4x4() const noexcept 
+    KTM_INLINE mat<4, 4, T> matrix4x4() const noexcept 
     {
         mat<4, 4, T> ret = { };
         ret[3][3] = one<T>;
@@ -44,7 +44,7 @@ struct iquat_data<Father, quat<T>> : Father
         return ret;
     }
 private:
-    CHTHOLLY_NOINLINE void matrix(mat<3, 3, T>& m) const noexcept
+    KTM_NOINLINE void matrix(mat<3, 3, T>& m) const noexcept
     {
         T xx2 = i * i * static_cast<T>(2), yy2 = j * j * static_cast<T>(2), zz2 = k * k * static_cast<T>(2);
         T xy2 = i * j * static_cast<T>(2), xz2 = i * k * static_cast<T>(2), xw2 = i * r * static_cast<T>(2);

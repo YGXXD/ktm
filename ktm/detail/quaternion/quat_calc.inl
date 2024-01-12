@@ -9,7 +9,7 @@ template<typename T>
 struct ktm::detail::quat_calc_implement::mul
 {
     using Q = quat<T>;
-    static CHTHOLLY_INLINE Q call(const Q& x, const Q& y) noexcept
+    static KTM_INLINE Q call(const Q& x, const Q& y) noexcept
     {
         Q ret;
         ret[0] = x[3] * y[0] + y[3] * x[0] + x[1] * y[2] - x[2] * y[1];
@@ -24,7 +24,7 @@ template<typename T>
 struct ktm::detail::quat_calc_implement::mul_to_self
 {
     using Q = quat<T>;
-    static CHTHOLLY_INLINE void call(Q& x, const Q& y) noexcept
+    static KTM_INLINE void call(Q& x, const Q& y) noexcept
     {
         Q tmp = x;
         x[0] = tmp[3] * y[0] + y[3] * tmp[0] + tmp[1] * y[2] - tmp[2] * y[1];
@@ -38,7 +38,7 @@ template<typename T>
 struct ktm::detail::quat_calc_implement::act
 {
     using Q = quat<T>;
-    static CHTHOLLY_INLINE vec<3, T> call(const Q& q, const vec<3,T>& v) noexcept
+    static KTM_INLINE vec<3, T> call(const Q& q, const vec<3,T>& v) noexcept
     {   
         vec<3, T> t = static_cast<T>(2) * ktm::cross(q.imag(), v);
         return v + (q.real() * t) + ktm::cross(q.imag(), t);

@@ -12,13 +12,13 @@ template<size_t N, typename T>
 struct ktm::detail::matrix_implement::trace
 {
     using M = mat<N, N, T>;
-    static CHTHOLLY_INLINE T call(const M& m) noexcept
+    static KTM_INLINE T call(const M& m) noexcept
     {
         return call(m, std::make_index_sequence<N>());
     }
 private:
     template<size_t ...Ns>
-    static CHTHOLLY_INLINE T call(const M& m, std::index_sequence<Ns...>) noexcept
+    static KTM_INLINE T call(const M& m, std::index_sequence<Ns...>) noexcept
     {
         return ((m[Ns][Ns])+ ...);
     }
@@ -30,13 +30,13 @@ struct ktm::detail::matrix_implement::transpose
 	using M = mat<Row, Col, T>;
     using RetM = mat<Col, Row, T>;
     using RowV = vec<Row, T>;
-    static CHTHOLLY_INLINE RetM call(const M& m) noexcept
+    static KTM_INLINE RetM call(const M& m) noexcept
     {
         return call(m, std::make_index_sequence<Col>(), std::make_index_sequence<Row>());
     }
 private:
     template<size_t ...Rs, size_t ...Cs>
-    static CHTHOLLY_INLINE RetM call(const M& m, std::index_sequence<Rs...>, std::index_sequence<Cs...>) noexcept
+    static KTM_INLINE RetM call(const M& m, std::index_sequence<Rs...>, std::index_sequence<Cs...>) noexcept
     {
         RetM ret;
         size_t row_index;
@@ -49,7 +49,7 @@ template<typename T>
 struct ktm::detail::matrix_implement::determinant<2, T>
 {
     using M = mat<2, 2, T>;
-    static CHTHOLLY_INLINE T call(const M& m) noexcept
+    static KTM_INLINE T call(const M& m) noexcept
     {
         return m[0][0] * m[1][1] - m[1][0] * m[0][1];
     }
@@ -59,7 +59,7 @@ template<typename T>
 struct ktm::detail::matrix_implement::determinant<3, T>
 {
     using M = mat<3, 3, T>;
-    static CHTHOLLY_INLINE T call(const M& m) noexcept
+    static KTM_INLINE T call(const M& m) noexcept
     {
         return m[0][0] * (m[1][1] * m[2][2] - m[2][1] * m[1][2]) +
                m[1][0] * (m[2][1] * m[0][2] - m[0][1] * m[2][2]) +
@@ -71,7 +71,7 @@ template<typename T>
 struct ktm::detail::matrix_implement::determinant<4, T>
 {
     using M = mat<4, 4, T>;
-    static CHTHOLLY_INLINE T call(const M& m) noexcept
+    static KTM_INLINE T call(const M& m) noexcept
     {
         T d00 = m[2][2] * m[3][3] - m[3][2] * m[2][3];
         T d01 = m[3][2] * m[1][3] - m[1][2] * m[3][3];
@@ -94,7 +94,7 @@ struct ktm::detail::matrix_implement::inverse<2, T>
 {
     static_assert(std::is_floating_point_v<T>);
     using M = mat<2, 2, T>;
-    static CHTHOLLY_INLINE M call(const M& m) noexcept
+    static KTM_INLINE M call(const M& m) noexcept
     {
         T one_over_det = one<T> / determinant<2, T>::call(m);
         M ret;
@@ -111,7 +111,7 @@ struct ktm::detail::matrix_implement::inverse<3, T>
 {
     static_assert(std::is_floating_point_v<T>);
     using M = mat<3, 3, T>;
-    static CHTHOLLY_INLINE M call(const M& m) noexcept
+    static KTM_INLINE M call(const M& m) noexcept
     {
         T one_over_det = one<T> / determinant<3, T>::call(m);
         M ret;
@@ -133,7 +133,7 @@ struct ktm::detail::matrix_implement::inverse<4, T>
 {
     static_assert(std::is_floating_point_v<T>);
     using M = mat<4, 4, T>;
-    static CHTHOLLY_INLINE M call(const M& m) noexcept
+    static KTM_INLINE M call(const M& m) noexcept
     {
         T one_over_det = one<T> / determinant<4, T>::call(m);
         M ret;
@@ -194,7 +194,7 @@ struct ktm::detail::matrix_implement::factor_lu
 {
     static_assert(std::is_floating_point_v<T>);
     using M = mat<N, N, T>;
-    static CHTHOLLY_NOINLINE std::tuple<M, M> call(const M& m) noexcept
+    static KTM_NOINLINE std::tuple<M, M> call(const M& m) noexcept
     {
         M l = M::from_eye(), u { };
         // 求矩阵lu分解
@@ -242,7 +242,7 @@ struct ktm::detail::matrix_implement::factor_qr
 {
     static_assert(std::is_floating_point_v<T>);
     using M = mat<N, N, T>;
-    static CHTHOLLY_NOINLINE std::tuple<M, M> call(const M& m) noexcept
+    static KTM_NOINLINE std::tuple<M, M> call(const M& m) noexcept
     {
         // householder变换求矩阵qr分解
         M q = M::from_eye(), r { m };
@@ -293,7 +293,7 @@ struct ktm::detail::matrix_implement::eigen_qr_it
 {
     using M = mat<N, N, T>;
     using E = vec<N, T>;
-    static CHTHOLLY_NOINLINE std::tuple<E, M> call(const M& m) noexcept
+    static KTM_NOINLINE std::tuple<E, M> call(const M& m) noexcept
     {
         // qr迭代法求矩阵特征向量和特征值
         M a { m }, eigen_vec = M::from_eye();
@@ -327,7 +327,7 @@ struct ktm::detail::matrix_implement::eigen_jacobi_it
 {
     using M = mat<N, N, T>;
     using E = vec<N, T>;
-    static CHTHOLLY_NOINLINE std::tuple<E, M> call(const M& m) noexcept
+    static KTM_NOINLINE std::tuple<E, M> call(const M& m) noexcept
     {
         // jacobi迭代求矩阵特征向量和特征值(矩阵必须为对称矩阵)
         M a { m }, eigen_vec = M::from_eye();
@@ -434,7 +434,7 @@ struct ktm::detail::matrix_implement::factor_svd
     static_assert(std::is_floating_point_v<T>);
     using M = mat<N, N, T>;
 
-    static CHTHOLLY_NOINLINE std::tuple<M, M, M> call(const M& m)
+    static KTM_NOINLINE std::tuple<M, M, M> call(const M& m)
     {
         // 求矩阵svd分解(通过jacobi迭代法找矩阵特征向量和特征值)
         std::tuple<vec<N, T>, M> ata_eigen = eigen_jacobi_it<N, T>::call(transpose<N, N, T>::call(m) * m);
@@ -460,7 +460,7 @@ struct ktm::detail::matrix_implement::factor_svd
 //     // ref: https://lucidar.me/en/mathematics/singular-value-decomposition-of-a-2x2-matrix/
 //     static_assert(std::is_floating_point_v<T>);
 //     using M = mat<2, 2, T>;
-//     static CHTHOLLY_NOINLINE std::tuple<M, M, M> call(const M& m)
+//     static KTM_NOINLINE std::tuple<M, M, M> call(const M& m)
 //     {
 //         T a = m[0][0], c = m[0][1], b = m[1][0], d = m[1][1];
 //         T a2 = ktm::pow2(a), b2 = ktm::pow2(b), c2 = ktm::pow2(c), d2 = ktm::pow2(d);
