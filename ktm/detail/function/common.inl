@@ -4,6 +4,7 @@
 #include "common_fwd.h"
 #include "../../setup.h"
 #include "../../type/basic.h"
+#include "../../function/arithmetic.h"
 
 template<size_t StepN, size_t N, typename T>
 struct ktm::detail::common_implement::elem_move
