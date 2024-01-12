@@ -1,11 +1,6 @@
 #ifndef _KTM_SETUP_H_
 #define _KTM_SETUP_H_
 
-// debug state
-#ifndef NDEBUG
-	#define KTM_DEBUG_ENABLE
-#endif
-
 // c++ compiler config
 #if defined(__clang__) && defined(__GNUC__)
 	#define KTM_COMPILER_CLANG
@@ -15,6 +10,21 @@
 	#define KTM_COMPILER_MSVC
 #else
 	#error "ktm only support clang++, g++ and visual c++"
+#endif
+
+#if defined(KTM_COMPILER_CLANG) || defined(KTM_COMPILER_GCC)
+	#define KTM_CPP_STANDARD __cplusplus
+#elif defined(KTM_COMPILER_MSVC)
+	#define KTM_CPP_STANDARD _MSVC_LANG
+#endif
+
+#if KTM_CPP_STANDARD < 201703L
+	#error "ktm only support cpp's version > c++17"
+#endif
+
+// debug state
+#ifndef NDEBUG
+	#define KTM_DEBUG_ENABLE
 #endif
 
 // function Function config

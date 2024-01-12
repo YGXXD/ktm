@@ -53,7 +53,7 @@ struct ktm::detail::quat_calc_implement::mul<float>
     static KTM_INLINE Q call(const Q& x, const Q& y) noexcept
     {
         Q ret;
-        ret.vector.st = intrin::qt::fq_mul_fq(x.vector.st, y.vector.st);
+        ret.vector.st = x86::qt::fq_mul_fq(x.vector.st, y.vector.st);
         return ret;
     }
 };
@@ -64,7 +64,7 @@ struct ktm::detail::quat_calc_implement::mul_to_self<float>
     using Q = quat<float>;
     static KTM_INLINE void call(Q& x, const Q& y) noexcept
     {
-        x.vector.st = intrin::qt::fq_mul_fq(x.vector.st, y.vector.st);
+        x.vector.st = x86::qt::fq_mul_fq(x.vector.st, y.vector.st);
     }
 };
 
@@ -76,7 +76,7 @@ struct ktm::detail::quat_calc_implement::act<float>
     {
         vec<3, float> ret;
         __m128 qi = _mm_mul_ps(q.vector.st, _mm_set_ps(one<float>, -one<float>, -one<float>, -one<float>));
-        ret.st = intrin::qt::fq_mul_fq(q.vector.st, intrin::qt::fv3_mul_fq(v.st, qi));
+        ret.st = x86::qt::fq_mul_fq(q.vector.st, x86::qt::fv3_mul_fq(v.st, qi));
         return ret;
     }
 };

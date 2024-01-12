@@ -376,7 +376,7 @@ private:
     static KTM_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
         ColV ret;
-        ret.st = intrin::ext::add_ps_all(_mm_mul_ps(m[Ns].st, _mm_set1_ps(v[Ns]))...);
+        ret.st = x86::ext::add_ps_all(_mm_mul_ps(m[Ns].st, _mm_set1_ps(v[Ns]))...);
         return ret; 
     }
 };
@@ -396,7 +396,7 @@ private:
     static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = intrin::geo::fv3_dot1(v.st, m[Ns].st)), ...);
+        ((ret[Ns] = x86::geo::fv3_dot1(v.st, m[Ns].st)), ...);
         return ret;
     }
 };
@@ -416,7 +416,7 @@ private:
     static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = intrin::geo::fv4_dot1(v.st, m[Ns].st)), ...);
+        ((ret[Ns] = x86::geo::fv4_dot1(v.st, m[Ns].st)), ...);
         return ret;
     }
 };
@@ -519,7 +519,7 @@ private:
     static KTM_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
         ColV ret; 
-        ret.st = intrin::ext::add_epi32_all(_mm_mullo_epi32(m[Ns].st, _mm_set1_epi32(v[Ns]))...);
+        ret.st = x86::ext::add_epi32_all(_mm_mullo_epi32(m[Ns].st, _mm_set1_epi32(v[Ns]))...);
         return ret; 
     }
 };
@@ -539,7 +539,7 @@ private:
     static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = intrin::geo::sv3_dot1(v.st, m[Ns].st)), ...);
+        ((ret[Ns] = x86::geo::sv3_dot1(v.st, m[Ns].st)), ...);
         return ret;
     }
 };
@@ -559,7 +559,7 @@ private:
     static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = intrin::geo::sv4_dot1(v.st, m[Ns].st)), ...);
+        ((ret[Ns] = x86::geo::sv4_dot1(v.st, m[Ns].st)), ...);
         return ret;
     }
 };

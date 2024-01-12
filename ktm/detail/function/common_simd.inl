@@ -808,7 +808,7 @@ struct ktm::detail::common_implement::abs<N, std::enable_if_t<N == 3 || N == 4, 
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = intrin::ext::abs_ps(x.st);
+        ret.st = x86::ext::abs_ps(x.st);
         return ret;
     }
 };
@@ -844,7 +844,7 @@ struct ktm::detail::common_implement::clamp<N, std::enable_if_t<N == 3 || N == 4
     static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
         V ret;
-        ret.st = intrin::ext::clamp_ps(v.st, min.st, max.st);
+        ret.st = x86::ext::clamp_ps(v.st, min.st, max.st);
         return ret; 
     }
 };
@@ -856,7 +856,7 @@ struct ktm::detail::common_implement::floor<N, std::enable_if_t<N == 3 || N == 4
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = intrin::ext::floor_ps(x.st);
+        ret.st = x86::ext::floor_ps(x.st);
         return ret;
     }
 };
@@ -868,7 +868,7 @@ struct ktm::detail::common_implement::ceil<N, std::enable_if_t<N == 3 || N == 4,
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = intrin::ext::ceil_ps(x.st);
+        ret.st = x86::ext::ceil_ps(x.st);
         return ret;
     }
 };
@@ -880,7 +880,7 @@ struct ktm::detail::common_implement::round<N, std::enable_if_t<N == 3 || N == 4
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = intrin::ext::round_ps(x.st);
+        ret.st = x86::ext::round_ps(x.st);
         return ret;
     }
 };
@@ -917,7 +917,7 @@ struct ktm::detail::common_implement::recip<N, std::enable_if_t<N == 3 || N == 4
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = intrin::ext::recip_ps(x.st);
+        ret.st = x86::ext::recip_ps(x.st);
         return ret;
     }
 };
@@ -943,7 +943,7 @@ struct ktm::detail::common_implement::smoothstep<N, std::enable_if_t<N == 3 || N
     {
         V ret;
         __m128 tmp = _mm_div_ps(_mm_sub_ps(x.st, edge0.st), _mm_sub_ps(edge1.st, edge0.st));
-        tmp = intrin::ext::clamp_ps(tmp, _mm_setzero_ps(), _mm_set1_ps(one<float>));
+        tmp = x86::ext::clamp_ps(tmp, _mm_setzero_ps(), _mm_set1_ps(one<float>));
         ret.st = _mm_mul_ps(_mm_mul_ps(tmp, tmp), _mm_sub_ps(_mm_set1_ps(3.f), _mm_mul_ps(_mm_set1_ps(2.f), tmp)));
         return ret;
     }
@@ -956,7 +956,7 @@ struct ktm::detail::common_implement::fract<N, std::enable_if_t<N == 3 || N == 4
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        __m128 floor = intrin::ext::floor_ps(x.st);
+        __m128 floor = x86::ext::floor_ps(x.st);
         ret.st = _mm_sub_ps(x.st, floor);
         return ret;
     }
@@ -1026,7 +1026,7 @@ struct ktm::detail::common_implement::abs<N, std::enable_if_t<N == 3 || N == 4, 
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = intrin::ext::abs_epi32(x.st);
+        ret.st = x86::ext::abs_epi32(x.st);
         return ret;
     }
 };
@@ -1114,7 +1114,7 @@ struct ktm::detail::common_implement::clamp<N, std::enable_if_t<N == 3 || N == 4
     static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
         V ret;
-        ret.st = intrin::ext::clamp_epi32(v.st, min.st, max.st);
+        ret.st = x86::ext::clamp_epi32(v.st, min.st, max.st);
         return ret; 
     }
 };

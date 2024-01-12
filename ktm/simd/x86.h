@@ -284,7 +284,7 @@ KTM_FUNC __m128 fv3_mul_fq(__m128 v, __m128 q) noexcept
     __m128 add_1 = _mm_mul_ps(_mm_shuffle_ps(v, v, _MM_SHUFFLE(1, 1, 1, 1)), mul_y); 
     __m128 add_2 = _mm_mul_ps(_mm_shuffle_ps(v, v, _MM_SHUFFLE(2, 2, 2, 2)), mul_z); 
 
-    return intrin::ext::add_ps_all(add_0, add_1, add_2);
+    return x86::ext::add_ps_all(add_0, add_1, add_2);
 }
 
 KTM_FUNC __m128 fq_mul_fq(__m128 x, __m128 y) noexcept

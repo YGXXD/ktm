@@ -769,7 +769,7 @@ struct ktm::detail::vec_calc_implement::opposite<N, std::enable_if_t<N == 3 || N
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-	    ret.st = intrin::ext::neg_ps(x.st);
+	    ret.st = x86::ext::neg_ps(x.st);
         return ret;
     }
 };
@@ -916,7 +916,7 @@ struct ktm::detail::vec_calc_implement::opposite<N, std::enable_if_t<N == 3 || N
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = intrin::ext::neg_epi32(x.st);
+        ret.st = x86::ext::neg_epi32(x.st);
         return ret;
     }
 };
