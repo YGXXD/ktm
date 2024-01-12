@@ -1,5 +1,5 @@
-#ifndef _SETUP_ACSI_H_
-#define _SETUP_ACSI_H_
+#ifndef _KTM_INTRIN_H_
+#define _KTM_INTRIN_H_
 
 #include "../setup.h"
 
@@ -41,5 +41,8 @@
 		#include <xmmintrin.h>
 	#endif
 #endif
+
+#include "neon.h"
+#include "x86.h"
 
 #endif

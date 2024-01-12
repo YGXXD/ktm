@@ -2,7 +2,7 @@
 #define _KTM_QUAT_CALC_SIMD_INL_
 
 #include "quat_calc_fwd.h"
-#include "../../setup.h"
+#include "../../simd/intrin.h"
 #include "../../type/basic.h"
 
 #if defined(KTM_SIMD_NEON)

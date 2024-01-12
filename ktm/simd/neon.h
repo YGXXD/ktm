@@ -1,7 +1,7 @@
-#ifndef _ACSI_NEON_H_ 
-#define _ACSI_NEON_H_
+#ifndef _KTM_NEON_H_ 
+#define _KTM_NEON_H_
 
-#include "SetupAcsi.h"
+#include "intrin.h"
 #include <cstddef>
 
 #if defined(KTM_SIMD_NEON)

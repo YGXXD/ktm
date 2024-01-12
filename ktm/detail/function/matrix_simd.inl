@@ -2,7 +2,7 @@
 #define _KTM_MATRIX_SIMD_INL_
 
 #include "matrix_fwd.h"
-#include "../../setup.h"
+#include "../../simd/intrin.h"
 #include "../../type/basic.h"
 #include "../../type/mat_fwd.h"
 

@@ -1,7 +1,7 @@
-#ifndef _ACSI_INTRIN_H_
-#define _ACSI_INTRIN_H_
+#ifndef _KTM_X86_H_
+#define _KTM_X86_H_
 
-#include "SetupAcsi.h"
+#include "intrin.h"
 #include <cstddef>
 
 #if defined(KTM_SIMD_SSE)

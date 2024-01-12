@@ -2,7 +2,7 @@
 #define _KTM_COMMON_SIMD_INL_
 
 #include "common_fwd.h"
-#include "../../setup.h"
+#include "../../simd/intrin.h"
 #include "../../type/basic.h"
 
 #if defined(KTM_SIMD_NEON)

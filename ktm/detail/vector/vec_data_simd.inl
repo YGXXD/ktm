@@ -2,7 +2,7 @@
 #define _KTM_VEC_DATA_SIMD_INL_
 
 #include "vec_data_fwd.h"
-#include "../../setup.h"
+#include "../../simd/intrin.h"
 
 #if defined(KTM_SIMD_NEON)
 
