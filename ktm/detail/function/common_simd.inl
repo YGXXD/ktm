@@ -5,7 +5,7 @@
 #include "../../simd/intrin.h"
 #include "../../type/basic.h"
 
-#if defined(KTM_SIMD_NEON)
+#if defined(KTM_SIMD_ARM)
 
 template<size_t L>
 struct ktm::detail::common_implement::elem_move<L, 2, float>
@@ -426,7 +426,7 @@ struct ktm::detail::common_implement::clamp<2, float>
     static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
         V ret;
-        ret.st = neon::ext::clamp_f32(v.st, min.st, max.st);
+        ret.st = arm::ext::clamp_f32(v.st, min.st, max.st);
         return ret;
     }
 };
@@ -438,7 +438,7 @@ struct ktm::detail::common_implement::clamp<N, std::enable_if_t<N == 3 || N == 4
     static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
         V ret;
-        ret.st = neon::ext::clampq_f32(v.st, min.st, max.st);
+        ret.st = arm::ext::clampq_f32(v.st, min.st, max.st);
         return ret;
     }
 };
@@ -450,7 +450,7 @@ struct ktm::detail::common_implement::clamp<2, int>
     static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
         V ret;
-        ret.st = neon::ext::clamp_s32(v.st, min.st, max.st);
+        ret.st = arm::ext::clamp_s32(v.st, min.st, max.st);
         return ret;
     }
 };
@@ -462,7 +462,7 @@ struct ktm::detail::common_implement::clamp<N, std::enable_if_t<N == 3 || N == 4
     static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
         V ret;
-        ret.st = neon::ext::clampq_s32(v.st, min.st, max.st);
+        ret.st = arm::ext::clampq_s32(v.st, min.st, max.st);
         return ret;
     }
 };
@@ -596,7 +596,7 @@ struct ktm::detail::common_implement::recip<2, float>
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = neon::ext::recip_f32(x.st);
+        ret.st = arm::ext::recip_f32(x.st);
         return ret;
     }
 };
@@ -608,7 +608,7 @@ struct ktm::detail::common_implement::recip<N, std::enable_if_t<N == 3 || N == 4
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = neon::ext::recipq_f32(x.st);
+        ret.st = arm::ext::recipq_f32(x.st);
         return ret;
     }
 };
@@ -649,7 +649,7 @@ struct ktm::detail::common_implement::smoothstep<2, float>
     {
         V ret;
         float32x2_t tmp = vdiv_f32(vsub_f32(x.st, edge0.st), vsub_f32(edge1.st, edge0.st));
-        tmp = neon::ext::clamp_f32(tmp, vdup_n_f32(zero<float>), vdup_n_f32(one<float>));
+        tmp = arm::ext::clamp_f32(tmp, vdup_n_f32(zero<float>), vdup_n_f32(one<float>));
         ret.st = vmul_f32(vmul_f32(tmp, tmp), vsub_f32(vdup_n_f32(3.f), vmul_f32(vdup_n_f32(2.f), tmp)));
         return ret;
     }
@@ -664,7 +664,7 @@ struct ktm::detail::common_implement::smoothstep<N, std::enable_if_t<N == 3 || N
     {
         V ret;
         float32x4_t tmp = vdivq_f32(vsubq_f32(x.st, edge0.st), vsubq_f32(edge1.st, edge0.st));
-        tmp = neon::ext::clampq_f32(tmp, vdupq_n_f32(zero<float>), vdupq_n_f32(one<float>));
+        tmp = arm::ext::clampq_f32(tmp, vdupq_n_f32(zero<float>), vdupq_n_f32(one<float>));
         ret.st = vmulq_f32(vmulq_f32(tmp, tmp), vsubq_f32(vdupq_n_f32(3.f), vmulq_f32(vdupq_n_f32(2.f), tmp)));
         return ret;
     }
@@ -962,7 +962,7 @@ struct ktm::detail::common_implement::fract<N, std::enable_if_t<N == 3 || N == 4
     }
 };
 
-#if KTM_SIMD_SSE & KTM_SIMD_SSE2_FLAG
+#if KTM_SIMD_X86 & KTM_SIMD_SSE2_FLAG
 
 template<size_t L>
 struct ktm::detail::common_implement::elem_move<L, 3, int>
@@ -1031,9 +1031,9 @@ struct ktm::detail::common_implement::abs<N, std::enable_if_t<N == 3 || N == 4, 
     }
 };
 
-#endif // KTM_SIMD_SSE & KTM_SIMD_SSE2_FLAG
+#endif // KTM_SIMD_X86 & KTM_SIMD_SSE2_FLAG
 
-#if KTM_SIMD_SSE & KTM_SIMD_SSE4_1_FLAG
+#if KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
 
 template<>
 struct ktm::detail::common_implement::reduce_min<3, int>
@@ -1119,7 +1119,7 @@ struct ktm::detail::common_implement::clamp<N, std::enable_if_t<N == 3 || N == 4
     }
 };
 
-#endif // KTM_SIMD_SSE & KTM_SIMD_SSE4_1_FLAG
+#endif // KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
 
 #endif
 

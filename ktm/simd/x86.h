@@ -6,7 +6,7 @@
 
 #if defined(KTM_SIMD_SSE)
 
-namespace intrin
+namespace x86
 {
 namespace ext
 {
@@ -90,7 +90,7 @@ KTM_FUNC __m128 recip_ps(__m128 x) noexcept
 
 KTM_FUNC __m128 round_ps(__m128 x) noexcept
 {
-#if KTM_SIMD_SSE & KTM_SIMD_SSE4_1_FLAG
+#if KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
 	return _mm_round_ps(x, _MM_FROUND_TO_NEAREST_INT);
 #else
 	constexpr union { unsigned int i; float f; } mask = { 0x80000000 };
@@ -103,7 +103,7 @@ KTM_FUNC __m128 round_ps(__m128 x) noexcept
 
 KTM_FUNC __m128 floor_ps(__m128 x) noexcept
 {
-#if KTM_SIMD_SSE & KTM_SIMD_SSE4_1_FLAG
+#if KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
 	return _mm_floor_ps(x);
 #else
 	__m128 rnd = round_ps(x);
@@ -116,7 +116,7 @@ KTM_FUNC __m128 floor_ps(__m128 x) noexcept
 
 KTM_FUNC __m128 ceil_ps(__m128 x) noexcept
 {
-#if KTM_SIMD_SSE & KTM_SIMD_SSE4_1_FLAG
+#if KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
 	return _mm_ceil_ps(x);
 #else
 	__m128 rnd = round_ps(x);
@@ -127,7 +127,7 @@ KTM_FUNC __m128 ceil_ps(__m128 x) noexcept
 #endif
 }
 
-#if KTM_SIMD_SSE & KTM_SIMD_SSE2_FLAG
+#if KTM_SIMD_X86 & KTM_SIMD_SSE2_FLAG
 
 KTM_FUNC __m128i neg_epi32(__m128i x) noexcept
 {
@@ -148,7 +148,7 @@ KTM_FUNC __m128i add_epi32_all<__m128i>(__m128i arg) noexcept
 
 KTM_FUNC __m128i abs_epi32(__m128i x) noexcept
 {
-#if KTM_SIMD_SSE & KTM_SIMD_SSE3_FLAG
+#if KTM_SIMD_X86 & KTM_SIMD_SSE3_FLAG
 	return _mm_abs_epi32(x);
 #else
 	__m128i tmp = _mm_srai_epi32(x, 31);
@@ -159,7 +159,7 @@ KTM_FUNC __m128i abs_epi32(__m128i x) noexcept
 
 #endif
 
-#if KTM_SIMD_SSE & KTM_SIMD_SSE4_1_FLAG
+#if KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
 
 KTM_FUNC __m128i clamp_epi32(__m128i x, __m128i min, __m128i max) noexcept
 {
@@ -186,7 +186,7 @@ namespace geo
 KTM_FUNC __m128 fv4_dot(__m128 x, __m128 y) noexcept
 {
 	__m128 mul = _mm_mul_ps(x, y);
-#if KTM_SIMD_SSE & KTM_SIMD_SSE3_FLAG
+#if KTM_SIMD_X86 & KTM_SIMD_SSE3_FLAG
 	__m128 add_0 = _mm_hadd_ps(mul, mul);;
 	__m128 add_1 = _mm_hadd_ps(add_0, add_0);;
 #else
@@ -209,7 +209,7 @@ KTM_FUNC float fv4_dot1(__m128 x, __m128 y) noexcept
 	return _mm_cvtss_f32(fv4_dot(x, y)); 
 }
 
-#if KTM_SIMD_SSE & KTM_SIMD_SSE4_1_FLAG
+#if KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
 
 KTM_FUNC __m128i sv4_dot(__m128i x, __m128i y) noexcept
 {

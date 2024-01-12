@@ -6,7 +6,7 @@
 #include "../../type/basic.h"
 #include "../../type/mat_fwd.h"
 
-#if defined(KTM_SIMD_NEON)
+#if defined(KTM_SIMD_ARM)
 
 template<>
 struct ktm::detail::matrix_implement::transpose<2, 2, float>
@@ -16,7 +16,7 @@ struct ktm::detail::matrix_implement::transpose<2, 2, float>
     static KTM_INLINE RetM call(const M& m) noexcept
     {
         RetM ret;
-        neon::mt::fmt2_tp(&ret[0].st, &m[0].st);
+        arm::mt::fmt2_tp(&ret[0].st, &m[0].st);
         return ret;
     }
 };
@@ -29,7 +29,7 @@ struct ktm::detail::matrix_implement::transpose<3, 3, float>
     static KTM_INLINE RetM call(const M& m) noexcept
     {
         RetM ret;
-        neon::mt::fmt3_tp(&ret[0].st, &m[0].st);
+        arm::mt::fmt3_tp(&ret[0].st, &m[0].st);
         return ret;
     }
 };
@@ -42,7 +42,7 @@ struct ktm::detail::matrix_implement::transpose<4, 4, float>
     static KTM_INLINE RetM call(const M& m) noexcept
     {
         RetM ret;
-        neon::mt::fmt4_tp(&ret[0].st, &m[0].st);
+        arm::mt::fmt4_tp(&ret[0].st, &m[0].st);
         return ret;
     }
 };
@@ -55,7 +55,7 @@ struct ktm::detail::matrix_implement::transpose<2, 2, int>
     static KTM_INLINE RetM call(const M& m) noexcept
     {
         RetM ret;
-        neon::mt::fmt2_tp(reinterpret_cast<float32x2_t*>(&ret[0].st), reinterpret_cast<const float32x2_t*>(&m[0].st));
+        arm::mt::fmt2_tp(reinterpret_cast<float32x2_t*>(&ret[0].st), reinterpret_cast<const float32x2_t*>(&m[0].st));
         return ret;
     }
 };
@@ -68,7 +68,7 @@ struct ktm::detail::matrix_implement::transpose<3, 3, int>
     static KTM_INLINE RetM call(const M& m) noexcept
     {
         RetM ret;
-        neon::mt::fmt3_tp(reinterpret_cast<float32x4_t*>(&ret[0].st), reinterpret_cast<const float32x4_t*>(&m[0].st));
+        arm::mt::fmt3_tp(reinterpret_cast<float32x4_t*>(&ret[0].st), reinterpret_cast<const float32x4_t*>(&m[0].st));
         return ret; 
     }
 };
@@ -81,7 +81,7 @@ struct ktm::detail::matrix_implement::transpose<4, 4, int>
     static KTM_INLINE RetM call(const M& m) noexcept
     {
         RetM ret;
-        neon::mt::fmt4_tp(reinterpret_cast<float32x4_t*>(&ret[0].st), reinterpret_cast<const float32x4_t*>(&m[0].st));
+        arm::mt::fmt4_tp(reinterpret_cast<float32x4_t*>(&ret[0].st), reinterpret_cast<const float32x4_t*>(&m[0].st));
         return ret; 
     }
 };
@@ -98,7 +98,7 @@ struct ktm::detail::matrix_implement::determinant<3, float>
         float32x4_t mul_00 = vmulq_f32(neon_shuffleq_f32(c_1, c_1, 3, 0, 2, 1), neon_shuffleq_f32(c_2, c_2, 3, 1, 0, 2));
         float32x4_t mul_01 = vmulq_f32(neon_shuffleq_f32(c_1, c_1, 3, 1, 0, 2), neon_shuffleq_f32(c_2, c_2, 3, 0, 2, 1));
         float32x4_t sub_0 = vsubq_f32(mul_00, mul_01);  
-        return neon::geo::fv3_dot1(c_0, sub_0);
+        return arm::geo::fv3_dot1(c_0, sub_0);
     }
 };
 
@@ -155,7 +155,7 @@ struct ktm::detail::matrix_implement::determinant<3, int>
         int32x4_t mul_00 = vmulq_s32(neon_shuffleq_s32(c_1, c_1, 3, 0, 2, 1), neon_shuffleq_s32(c_2, c_2, 3, 1, 0, 2));
         int32x4_t mul_01 = vmulq_s32(neon_shuffleq_s32(c_1, c_1, 3, 1, 0, 2), neon_shuffleq_s32(c_2, c_2, 3, 0, 2, 1));
         int32x4_t sub_0 = vsubq_s32(mul_00, mul_01);  
-        return neon::geo::sv3_dot1(c_0, sub_0);
+        return arm::geo::sv3_dot1(c_0, sub_0);
     }
 };
 
@@ -388,7 +388,7 @@ struct ktm::detail::matrix_implement::inverse<4, float>
         float32x4_t i_tmp_0 = neon_shuffleq_f32(inv_0, inv_1, 0, 0, 0, 0);
         float32x4_t i_tmp_1 = neon_shuffleq_f32(inv_2, inv_3, 0, 0, 0, 0);
         float32x4_t i_row_0 = neon_shuffleq_f32(i_tmp_0, i_tmp_1, 3, 1, 3, 1);
-        float32x4_t i_dot_0 = neon::geo::fv4_dot(c_0, i_row_0);
+        float32x4_t i_dot_0 = arm::geo::fv4_dot(c_0, i_row_0);
         float32x4_t one_over_det = vdivq_f32(vdupq_n_f32(one<float>), i_dot_0);
         
         M ret;
@@ -707,7 +707,7 @@ struct ktm::detail::matrix_implement::inverse<4, float>
     }
 };
 
-#if KTM_SIMD_SSE & KTM_SIMD_SSE4_1_FLAG
+#if KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
 
 template<>
 struct ktm::detail::matrix_implement::determinant<3, int>
@@ -768,7 +768,7 @@ struct ktm::detail::matrix_implement::determinant<4, int>
     }
 };
 
-#endif // KTM_SIMD_SSE & KTM_SIMD_SSE2_FLAG 
+#endif // KTM_SIMD_X86 & KTM_SIMD_SSE2_FLAG 
 
 #endif
 

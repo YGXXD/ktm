@@ -4,7 +4,7 @@
 #include "vec_data_fwd.h"
 #include "../../simd/intrin.h"
 
-#if defined(KTM_SIMD_NEON)
+#if defined(KTM_SIMD_ARM)
 
 template<>
 struct ktm::detail::vec_data_implement::vec_storage<2, float>
@@ -240,7 +240,7 @@ struct ktm::detail::vec_data_implement::vec_swizzle<2, 2, int, S0, S1>
     }
 };
 
-#if KTM_SIMD_SSE & KTM_SIMD_SSE2_FLAG 
+#if KTM_SIMD_X86 & KTM_SIMD_SSE2_FLAG 
 
 template<>
 struct ktm::detail::vec_data_implement::vec_storage<3, int>
@@ -294,7 +294,7 @@ struct ktm::detail::vec_data_implement::vec_swizzle<4, 4, int, S0, S1, S2, S3>
     }
 };
 
-#endif // KTM_SIMD_SSE & KTM_SIMD_SSE2_FLAG 
+#endif // KTM_SIMD_X86 & KTM_SIMD_SSE2_FLAG 
 
 #endif
 

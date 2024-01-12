@@ -4,7 +4,7 @@
 #include "vec_calc_fwd.h"
 #include "../../simd/intrin.h"
 
-#if defined(KTM_SIMD_NEON)
+#if defined(KTM_SIMD_ARM)
 
 template<>
 struct ktm::detail::vec_calc_implement::add<2, float>
@@ -863,7 +863,7 @@ struct ktm::detail::vec_calc_implement::div_scalar_to_self<N, std::enable_if_t<N
     }
 };
 
-#if KTM_SIMD_SSE & KTM_SIMD_SSE2_FLAG
+#if KTM_SIMD_X86 & KTM_SIMD_SSE2_FLAG
 
 template<size_t N>
 struct ktm::detail::vec_calc_implement::add<N, std::enable_if_t<N == 3 || N == 4, int>>
@@ -965,9 +965,9 @@ struct ktm::detail::vec_calc_implement::minus_scalar_to_self<N, std::enable_if_t
     }
 };
 
-#endif // KTM_SIMD_SSE & KTM_SIMD_SSE2_FLAG
+#endif // KTM_SIMD_X86 & KTM_SIMD_SSE2_FLAG
 
-#if KTM_SIMD_SSE & KTM_SIMD_SSE4_1_FLAG
+#if KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
 template<size_t N>
 struct ktm::detail::vec_calc_implement::mul<N, std::enable_if_t<N == 3 || N == 4, int>>
 {
@@ -1012,7 +1012,7 @@ struct ktm::detail::vec_calc_implement::mul_scalar_to_self<N, std::enable_if_t<N
     }
 };
 
-#endif // KTM_SIMD_SSE & KTM_SIMD_SSE4_1_FLAG
+#endif // KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
 
 #endif
 

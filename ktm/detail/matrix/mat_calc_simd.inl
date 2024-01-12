@@ -4,7 +4,7 @@
 #include "mat_calc_fwd.h"
 #include "../../simd/intrin.h"
 
-#if defined(KTM_SIMD_NEON)
+#if defined(KTM_SIMD_ARM)
 
 template<size_t Row>
 struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, 2, float>
@@ -21,7 +21,7 @@ private:
     static KTM_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
         ColV ret;
-        ret.st = neon::ext::add_f32_all(vmul_f32(m[Ns].st, vdup_n_f32(v[Ns]))...);
+        ret.st = arm::ext::add_f32_all(vmul_f32(m[Ns].st, vdup_n_f32(v[Ns]))...);
         return ret; 
     }
 };
@@ -41,7 +41,7 @@ private:
     static KTM_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
         ColV ret;
-        ret.st = neon::ext::addq_f32_all(vmulq_f32(m[Ns].st, vdupq_n_f32(v[Ns]))...);
+        ret.st = arm::ext::addq_f32_all(vmulq_f32(m[Ns].st, vdupq_n_f32(v[Ns]))...);
         return ret; 
     }
 };
@@ -61,7 +61,7 @@ private:
     static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = neon::geo::fv2_dot1(v.st, m[Ns].st)), ...);
+        ((ret[Ns] = arm::geo::fv2_dot1(v.st, m[Ns].st)), ...);
         return ret;
     }
 };
@@ -81,7 +81,7 @@ private:
     static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = neon::geo::fv3_dot1(v.st, m[Ns].st)), ...);
+        ((ret[Ns] = arm::geo::fv3_dot1(v.st, m[Ns].st)), ...);
         return ret;
     }
 };
@@ -101,7 +101,7 @@ private:
     static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = neon::geo::fv4_dot1(v.st, m[Ns].st)), ...);
+        ((ret[Ns] = arm::geo::fv4_dot1(v.st, m[Ns].st)), ...);
         return ret;
     }
 };
@@ -197,7 +197,7 @@ private:
     static KTM_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
         ColV ret;
-        ret.st = neon::ext::add_s32_all(vmul_s32(m[Ns].st, vdup_n_s32(v[Ns]))...);
+        ret.st = arm::ext::add_s32_all(vmul_s32(m[Ns].st, vdup_n_s32(v[Ns]))...);
         return ret; 
     }
 };
@@ -217,7 +217,7 @@ private:
     static KTM_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {   
         ColV ret;
-        ret.st = neon::ext::addq_s32_all(vmulq_s32(m[Ns].st, vdupq_n_s32(v[Ns]))...);
+        ret.st = arm::ext::addq_s32_all(vmulq_s32(m[Ns].st, vdupq_n_s32(v[Ns]))...);
         return ret; 
     }
 };
@@ -237,7 +237,7 @@ private:
     static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = neon::geo::sv2_dot1(v.st, m[Ns].st)), ...);
+        ((ret[Ns] = arm::geo::sv2_dot1(v.st, m[Ns].st)), ...);
         return ret;
     }
 };
@@ -257,7 +257,7 @@ private:
     static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = neon::geo::sv3_dot1(v.st, m[Ns].st)), ...);
+        ((ret[Ns] = arm::geo::sv3_dot1(v.st, m[Ns].st)), ...);
         return ret;
     }
 };
@@ -277,7 +277,7 @@ private:
     static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = neon::geo::sv4_dot1(v.st, m[Ns].st)), ...);
+        ((ret[Ns] = arm::geo::sv4_dot1(v.st, m[Ns].st)), ...);
         return ret;
     }
 };
@@ -459,7 +459,7 @@ private:
     }
 };
 
-#if KTM_SIMD_SSE & KTM_SIMD_SSE2_FLAG
+#if KTM_SIMD_X86 & KTM_SIMD_SSE2_FLAG
 
 template<size_t Row, size_t Col>
 struct ktm::detail::mat_opt_implement::add<Row, Col, std::enable_if_t<Col == 3 || Col == 4, int>>
@@ -499,9 +499,9 @@ private:
     }
 };
 
-#endif // KTM_SIMD_SSE & KTM_SIMD_SSE2_FLAG
+#endif // KTM_SIMD_X86 & KTM_SIMD_SSE2_FLAG
 
-#if KTM_SIMD_SSE & KTM_SIMD_SSE4_1_FLAG
+#if KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
 
 template<size_t Row, size_t Col>
 struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, std::enable_if_t<Col == 3 || Col == 4, int>>
@@ -564,7 +564,7 @@ private:
     }
 };
 
-#endif // KTM_SIMD_SSE & KTM_SIMD_SSE4_1_FLAG
+#endif // KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
 
 #endif
 

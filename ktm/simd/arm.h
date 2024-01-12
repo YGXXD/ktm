@@ -1,10 +1,10 @@
-#ifndef _KTM_NEON_H_ 
-#define _KTM_NEON_H_
+#ifndef _KTM_ARM_H_ 
+#define _KTM_ARM_H_
 
 #include "intrin.h"
 #include <cstddef>
 
-#if defined(KTM_SIMD_NEON)
+#if defined(KTM_SIMD_ARM)
 
 #if defined(KTM_COMPILER_CLANG)
 
@@ -29,7 +29,7 @@
 
 #endif
 
-namespace neon
+namespace arm
 {
 namespace ext 
 {
@@ -324,7 +324,7 @@ KTM_FUNC float32x4_t fv3_mul_fq(float32x4_t v, float32x4_t q) noexcept
     float32x4_t add_1 = vmulq_f32(vdupq_laneq_f32(v, 1), mul_y); 
     float32x4_t add_2 = vmulq_f32(vdupq_laneq_f32(v, 2), mul_z); 
 
-    return neon::ext::addq_f32_all(add_0, add_1, add_2); 
+    return arm::ext::addq_f32_all(add_0, add_1, add_2); 
 }
 
 KTM_FUNC float32x4_t fq_mul_fq(float32x4_t x, float32x4_t y) noexcept

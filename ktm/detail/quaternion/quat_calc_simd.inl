@@ -5,7 +5,7 @@
 #include "../../simd/intrin.h"
 #include "../../type/basic.h"
 
-#if defined(KTM_SIMD_NEON)
+#if defined(KTM_SIMD_ARM)
 
 template<>
 struct ktm::detail::quat_calc_implement::mul<float>
@@ -14,7 +14,7 @@ struct ktm::detail::quat_calc_implement::mul<float>
     static KTM_INLINE Q call(const Q& x, const Q& y) noexcept
     {
         Q ret;
-        ret.vector.st = neon::qt::fq_mul_fq(x.vector.st, y.vector.st);
+        ret.vector.st = arm::qt::fq_mul_fq(x.vector.st, y.vector.st);
         return ret;
     }
 };
@@ -25,7 +25,7 @@ struct ktm::detail::quat_calc_implement::mul_to_self<float>
     using Q = quat<float>;
     static KTM_INLINE void call(Q& x, const Q& y) noexcept
     {
-        x.vector.st = neon::qt::fq_mul_fq(x.vector.st, y.vector.st);
+        x.vector.st = arm::qt::fq_mul_fq(x.vector.st, y.vector.st);
     }
 };
 
@@ -39,7 +39,7 @@ struct ktm::detail::quat_calc_implement::act<float>
         // q * quat(v,0) * qc
         vec<3, float> ret;
         float32x4_t qi = vmulq_f32(q.vector.st, vsetq_lane_f32(one<float>, vdupq_n_f32(-one<float>), 3));
-        ret.st = neon::qt::fq_mul_fq(q.vector.st, neon::qt::fv3_mul_fq(v.st, qi));
+        ret.st = arm::qt::fq_mul_fq(q.vector.st, arm::qt::fv3_mul_fq(v.st, qi));
         return ret;
     }
 };
