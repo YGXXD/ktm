@@ -33,7 +33,7 @@ namespace neon
 {
 namespace ext 
 {
-KTM_FUNC unsigned int maskq_u32(uint32x4_t x)
+KTM_FUNC unsigned int maskq_u32(uint32x4_t x) noexcept
 {
 	constexpr union { unsigned int u[4]; uint32x4_t n; } mask = { 1, 2, 4, 8 };
     uint32x4_t tmp = vandq_u32(x, mask.n);

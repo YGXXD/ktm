@@ -14,7 +14,7 @@
 #elif defined(_MSC_VER)
 	#define KTM_COMPILER_MSVC
 #else
-	#error "Chtholly Engine don't support unkown c++ compiler, it's only support clang++, g++ and visual c++"
+	#error "ktm only support clang++, g++ and visual c++"
 #endif
 
 // function Function config
@@ -29,31 +29,7 @@
 #elif defined(KTM_COMPILER_MSVC)
 	#define KTM_INLINE __forceinline
 	#define KTM_NOINLINE __declspec(noinline)
-	#define KTM_NOTHROW __declspec(nothrow)
 	#define KTM_FUNC __forceinline __declspec(nothrow)
-#endif
-
-
-
-// build engine config
-#if defined(KTM_COMPILER_CLANG)
-	#define KTM_ENGINE_API __attribute__ ((visibility("default")))
-#elif defined(KTM_COMPILER_GCC)
-	#if defined(KTM_PLATFORM_WINDOWS)
-		#ifdef KTM_BUILD_DLL 
-			#define KTM_ENGINE_API __attribute__((dllexport))
-		#else
-			#define KTM_ENGINE_API __attribute__((dllimport))
-		#endif	
-	#else
-		#define KTM_ENGINE_API __attribute__ ((visibility("default")))	
-	#endif
-#elif defined(KTM_COMPILER_MSVC)
-	#ifdef KTM_BUILD_DLL 
-		#define KTM_ENGINE_API __declspec(dllexport) 
-	#else
-		#define KTM_ENGINE_API __declspec(dllimport) 
-	#endif
 #endif
 
 #endif

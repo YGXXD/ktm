@@ -2,6 +2,7 @@
 #define _STD_TYPE_TRAITS_EXT_H_
 
 #include <type_traits>
+#include <cstddef>
 
 namespace std
 {

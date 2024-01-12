@@ -1,7 +1,7 @@
 #ifndef _KTM_VEC_FWD_H_
 #define _KTM_VEC_FWD_H_
 
-#include <cstdint>
+#include <cstddef>
 #include <type_traits>
 
 namespace ktm 
