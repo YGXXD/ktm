@@ -362,7 +362,7 @@ private:
     }
 };
 
-#elif defined(KTM_SIMD_SSE)
+#elif defined(KTM_SIMD_X86)
 
 template<size_t Row, size_t Col>
 struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, std::enable_if_t<Col == 3 || Col == 4, float>>
@@ -372,7 +372,7 @@ struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, std::enable_if_t<Co
     using RowV = vec<Row, float>;
     static KTM_INLINE ColV call(const M& m, const RowV& v) noexcept
     {
-        return call(m, v, std::make_index_sequence<Row>());
+        return call(m, v, std::make_index_sequence<Row - 1>());
     }
 private:
 
@@ -380,7 +380,8 @@ private:
     static KTM_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
         ColV ret;
-        ret.st = x86::ext::add_ps_all(_mm_mul_ps(m[Ns].st, _mm_set1_ps(v[Ns]))...);
+        ret.st = _mm_mul_ps(m[0].st, _mm_set1_ps(v[0]));
+        ((ret.st = _mm_add_ps(ret.st, _mm_mul_ps(m[Ns + 1].st, _mm_set1_ps(v[Ns + 1])))), ...);
         return ret; 
     }
 };
@@ -515,15 +516,16 @@ struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, std::enable_if_t<Co
     using RowV = vec<Row, int>;
     static KTM_INLINE ColV call(const M& m, const RowV& v) noexcept
     {
-        return call(m, v, std::make_index_sequence<Row>());
+        return call(m, v, std::make_index_sequence<Row - 1>());
     }
 private:
 
     template<size_t ...Ns>
     static KTM_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
-        ColV ret; 
-        ret.st = x86::ext::add_epi32_all(_mm_mullo_epi32(m[Ns].st, _mm_set1_epi32(v[Ns]))...);
+        ColV ret;
+        ret.st = _mm_mullo_epi32(m[0].st, _mm_set1_ps(v[0]));
+        ((ret.st = _mm_add_epi32(ret.st, _mm_mullo_epi32(m[Ns + 1].st, _mm_set1_ps(v[Ns + 1])))), ...);
         return ret; 
     }
 };

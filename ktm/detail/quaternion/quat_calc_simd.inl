@@ -44,7 +44,7 @@ struct ktm::detail::quat_calc_implement::act<float>
     }
 };
 
-#elif defined(KTM_SIMD_SSE) 
+#elif defined(KTM_SIMD_X86) 
 
 template<>
 struct ktm::detail::quat_calc_implement::mul<float>

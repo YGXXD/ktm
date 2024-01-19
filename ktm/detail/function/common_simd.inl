@@ -696,7 +696,7 @@ struct ktm::detail::common_implement::fract<N, std::enable_if_t<N == 3 || N == 4
     }
 };
 
-#elif defined(KTM_SIMD_SSE)
+#elif defined(KTM_SIMD_X86)
 
 template<size_t L>
 struct ktm::detail::common_implement::elem_move<L, 3, float>

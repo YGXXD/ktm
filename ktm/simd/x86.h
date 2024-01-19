@@ -4,7 +4,7 @@
 #include "intrin.h"
 #include <cstddef>
 
-#if defined(KTM_SIMD_SSE)
+#if defined(KTM_SIMD_X86)
 
 namespace x86
 {
@@ -30,30 +30,6 @@ KTM_FUNC __m128 neg_ps(__m128 x) noexcept
 	return ret;
 }
 
-template<typename SimdT, typename ...SimdTs>
-KTM_FUNC __m128 add_ps_all(SimdT arg, SimdTs... args) noexcept
-{
-	return _mm_add_ps(arg, add_ps_all(args...));
-}
-
-template<>
-KTM_FUNC __m128 add_ps_all<__m128>(__m128 arg) noexcept
-{
-	return arg;
-}
-
-template<typename SimdT, typename ...SimdTs>
-KTM_FUNC __m128 mul_ps_all(SimdT arg, SimdTs... args) noexcept
-{
-	return _mm_mul_ps(arg, mul_ps_all(args...));
-}
-
-template<>
-KTM_FUNC __m128 mul_ps_all<__m128>(__m128 arg) noexcept
-{
-	return arg;
-}
-
 KTM_FUNC __m128 fast_rsqrt_ps(__m128 x) noexcept
 {
 	return _mm_rsqrt_ps(x);
@@ -61,12 +37,13 @@ KTM_FUNC __m128 fast_rsqrt_ps(__m128 x) noexcept
 
 KTM_FUNC __m128 rsqrt_ps(__m128 x) noexcept
 {
+	constexpr union { unsigned int i; float f; } inf = { 0x7F800000 };
 	__m128 r = fast_rsqrt_ps(x);
-	__m128 mask = _mm_cmpeq_ps(r, _mm_set1_ps(1e50f));
+	__m128 mask = _mm_cmpeq_ps(r, _mm_set1_ps(inf.f));
 	__m128 x_mask = _mm_andnot_ps(mask, x);
-	__m128 neg_inf_mask = _mm_and_ps(mask, _mm_set1_ps(-1e50f));
+	__m128 neg_inf_mask = _mm_and_ps(mask, _mm_set1_ps(-inf.f));
 	mask = _mm_or_ps(x_mask, neg_inf_mask);
-	__m128 mul = mul_ps_all(_mm_set1_ps(0.5f), mask, r, r);
+	__m128 mul = _mm_mul_ps(_mm_mul_ps(_mm_set1_ps(0.5f), mask), _mm_mul_ps(r, r));
 	__m128 sub = _mm_sub_ps(_mm_set1_ps(1.5f), mul);
 	return _mm_mul_ps(r, sub);
 }
@@ -78,10 +55,11 @@ KTM_FUNC __m128 fast_recip_ps(__m128 x) noexcept
 
 KTM_FUNC __m128 recip_ps(__m128 x) noexcept
 {
+	constexpr union { unsigned int i; float f; } inf = { 0x7F800000 };
 	__m128 r = fast_recip_ps(x);
 	__m128 mask = _mm_cmpeq_ps(x, _mm_setzero_ps());
 	__m128 x_mask = _mm_andnot_ps(mask, x);
-	__m128 neg_inf_mask = _mm_and_ps(mask, _mm_set1_ps(-1e50f));
+	__m128 neg_inf_mask = _mm_and_ps(mask, _mm_set1_ps(-inf.f));
 	mask = _mm_or_ps(x_mask, neg_inf_mask);
 	__m128 mul = _mm_mul_ps(mask, r);
 	__m128 sub = _mm_sub_ps(_mm_set1_ps(2.f), mul);
@@ -134,18 +112,6 @@ KTM_FUNC __m128i neg_epi32(__m128i x) noexcept
 	return _mm_sub_epi32(_mm_setzero_si128(), x);
 }
 
-template<typename SimdT, typename ...SimdTs>
-KTM_FUNC __m128i add_epi32_all(SimdT arg, SimdTs... args) noexcept
-{
-	return _mm_add_epi32(arg, add_epi32_all(args...));
-}
-
-template<>
-KTM_FUNC __m128i add_epi32_all<__m128i>(__m128i arg) noexcept
-{
-	return arg;
-}
-
 KTM_FUNC __m128i abs_epi32(__m128i x) noexcept
 {
 #if KTM_SIMD_X86 & KTM_SIMD_SSE3_FLAG
@@ -164,18 +130,6 @@ KTM_FUNC __m128i abs_epi32(__m128i x) noexcept
 KTM_FUNC __m128i clamp_epi32(__m128i x, __m128i min, __m128i max) noexcept
 {
 	return _mm_min_epi32(_mm_max_epi32(x, min), max);
-}
-
-template<typename SimdT, typename ...SimdTs>
-KTM_FUNC __m128i mullo_epi32_all(SimdT arg, SimdTs... args) noexcept
-{
-	return _mm_mullo_epi32(arg, mullo_epi32_all(args...));
-}
-
-template<>
-KTM_FUNC __m128i mullo_epi32_all<__m128i>(__m128i arg) noexcept
-{
-	return arg;
 }
 
 #endif	
@@ -284,7 +238,7 @@ KTM_FUNC __m128 fv3_mul_fq(__m128 v, __m128 q) noexcept
     __m128 add_1 = _mm_mul_ps(_mm_shuffle_ps(v, v, _MM_SHUFFLE(1, 1, 1, 1)), mul_y); 
     __m128 add_2 = _mm_mul_ps(_mm_shuffle_ps(v, v, _MM_SHUFFLE(2, 2, 2, 2)), mul_z); 
 
-    return x86::ext::add_ps_all(add_0, add_1, add_2);
+    return _mm_add_ps(add_0, _mm_add_ps(add_1, add_2));
 }
 
 KTM_FUNC __m128 fq_mul_fq(__m128 x, __m128 y) noexcept

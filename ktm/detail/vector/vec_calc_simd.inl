@@ -672,7 +672,7 @@ struct ktm::detail::vec_calc_implement::mul_scalar_to_self<N, std::enable_if_t<N
     }
 };
 
-#elif defined(KTM_SIMD_SSE)
+#elif defined(KTM_SIMD_X86)
 
 template<size_t N>
 struct ktm::detail::vec_calc_implement::add<N, std::enable_if_t<N == 3 || N == 4, float>>

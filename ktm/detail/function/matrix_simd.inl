@@ -400,7 +400,7 @@ struct ktm::detail::matrix_implement::inverse<4, float>
     }
 };
 
-#elif defined(KTM_SIMD_SSE)
+#elif defined(KTM_SIMD_X86)
 
 template<>
 struct ktm::detail::matrix_implement::transpose<2, 2, float>

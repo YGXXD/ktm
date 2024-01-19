@@ -148,7 +148,7 @@ struct ktm::detail::vec_data_implement::vec_swizzle<4, 4, int, S0, S1, S2, S3>
     }
 };
 
-#elif defined(KTM_SIMD_SSE)
+#elif defined(KTM_SIMD_X86)
 
 template<>
 struct ktm::detail::vec_data_implement::vec_storage<2, float>
