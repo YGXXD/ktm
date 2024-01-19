@@ -14,14 +14,15 @@ struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, 2, float>
     using RowV = vec<Row, float>;
     static KTM_INLINE ColV call(const M& m, const RowV& v) noexcept
     {
-        return call(m, v, std::make_index_sequence<Row>());
+        return call(m, v, std::make_index_sequence<Row - 1>());
     }
 private:
     template<size_t ...Ns>
     static KTM_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
         ColV ret;
-        ret.st = arm::ext::add_f32_all(vmul_f32(m[Ns].st, vdup_n_f32(v[Ns]))...);
+        ret.st = vmul_f32(m[0].st, vdup_n_f32(v[0]));
+        ((ret.st = vfma_f32(ret.st, m[Ns + 1].st, vdup_n_f32(v[Ns + 1]))), ...);
         return ret; 
     }
 };
@@ -34,14 +35,15 @@ struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, std::enable_if_t<Co
     using RowV = vec<Row, float>;
     static KTM_INLINE ColV call(const M& m, const RowV& v) noexcept
     {
-        return call(m, v, std::make_index_sequence<Row>());
+        return call(m, v, std::make_index_sequence<Row - 1>());
     }
 private:
     template<size_t ...Ns>
     static KTM_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
         ColV ret;
-        ret.st = arm::ext::addq_f32_all(vmulq_f32(m[Ns].st, vdupq_n_f32(v[Ns]))...);
+        ret.st = vmulq_f32(m[0].st, vdupq_n_f32(v[0]));
+        ((ret.st = vfmaq_f32(ret.st, m[Ns + 1].st, vdupq_n_f32(v[Ns + 1]))), ...);
         return ret; 
     }
 };
@@ -197,7 +199,8 @@ private:
     static KTM_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {
         ColV ret;
-        ret.st = arm::ext::add_s32_all(vmul_s32(m[Ns].st, vdup_n_s32(v[Ns]))...);
+        ret.st = vmul_s32(m[0].st, vdup_n_s32(v[0]));
+        ((ret.st = vmla_s32(ret.st, m[Ns + 1].st, vdup_n_s32(v[Ns + 1]))), ...);
         return ret; 
     }
 };
@@ -217,7 +220,8 @@ private:
     static KTM_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
     {   
         ColV ret;
-        ret.st = arm::ext::addq_s32_all(vmulq_s32(m[Ns].st, vdupq_n_s32(v[Ns]))...);
+        ret.st = vmulq_s32(m[0].st, vdupq_n_s32(v[0]));
+        ((ret.st = vmlaq_s32(ret.st, m[Ns + 1].st, vdupq_n_s32(v[Ns + 1]))), ...);
         return ret; 
     }
 };

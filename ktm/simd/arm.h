@@ -8,17 +8,39 @@
 
 #if defined(KTM_COMPILER_CLANG)
 
+#if defined(__ORDER_LITTLE_ENDIAN__)
+
 #define neon_shuffle_s32(a, b, s1, s0) neon_shuffle_f32(a, b, s1, s0)
 #define neon_shuffleq_s32(a, b, s3, s2, s1, s0) neon_shuffleq_f32(a, b, s3, s2, s1, s0)
 #define neon_shuffle_f32(a, b, s1, s0) __builtin_shufflevector(a, b, s0, (s1) + 2)
 #define neon_shuffleq_f32(a, b, s3, s2, s1, s0) __builtin_shufflevector(a, b, s0, s1, (s2) + 4, (s3) + 4)
 
+#else
+
+#define neon_shuffle_s32(a, b, s1, s0) neon_shuffle_f32(a, b, s1, s0)
+#define neon_shuffleq_s32(a, b, s3, s2, s1, s0) neon_shuffleq_f32(a, b, s3, s2, s1, s0)
+#define neon_shuffle_f32(a, b, s1, s0) __builtin_shufflevector(b, a, 1 - (s1), 3 - (s0))
+#define neon_shuffleq_f32(a, b, s3, s2, s1, s0) __builtin_shufflevector(b, a, 3 - (s3), 3 - (s2), 7 - (s1), 7 - (s0))
+
+#endif
+
 #elif defined(KTM_COMPILER_GCC)
+
+#if defined(__ORDER_LITTLE_ENDIAN__)
 
 #define neon_shuffle_s32(a, b, s1, s0) neon_shuffle_f32(a, b, s1, s0)
 #define neon_shuffleq_s32(a, b, s3, s2, s1, s0) neon_shuffleq_f32(a, b, s3, s2, s1, s0)
 #define neon_shuffle_f32(a, b, s1, s0) __builtin_shuffle(a, b, uint32x2_t{ s0, (s1) + 2 })
 #define neon_shuffleq_f32(a, b, s3, s2, s1, s0) __builtin_shuffle(a, b, uint32x4_t{ s0, s1, (s2) + 4, (s3) + 4 })
+
+#else
+
+#define neon_shuffle_s32(a, b, s1, s0) neon_shuffle_f32(a, b, s1, s0)
+#define neon_shuffleq_s32(a, b, s3, s2, s1, s0) neon_shuffleq_f32(a, b, s3, s2, s1, s0)
+#define neon_shuffle_f32(a, b, s1, s0) __builtin_shuffle(b, a, uint32x2_t{ 1 - (s1), 3 - (s0) })
+#define neon_shuffleq_f32(a, b, s3, s2, s1, s0) __builtin_shuffle(b, a, uint32x4_t{ 3 - (s3), 3 - (s2), 7 - (s1), 7 - (s0) })
+
+#endif
 
 #else 
 
@@ -28,6 +50,23 @@
 #define neon_shuffleq_f32(a, b, s3, s2, s1, s0) vcopyq_laneq_f32(vcopyq_laneq_f32(vcopyq_laneq_f32(vmovq_n_f32(vgetq_lane_f32(a, s0)), 1, a, s1), 2, b, s2), 3, b, s3)
 
 #endif
+
+#define neon_copy_lane_f32(dst, dst_lane, src, src_lane) vset_lane_f32(vget_lane_f32(src, src_lane), dst, dst_lane)
+#define neon_copy_laneq_f32(dst, dst_lane, src, src_lane) vset_lane_f32(vget_laneq_f32(src, src_lane), dst, dst_lane)
+#define neon_copyq_lane_f32(dst, dst_lane, src, src_lane) vset_laneq_f32(vget_lane_f32(src, src_lane), dst, dst_lane)
+#define neon_copyq_laneq_f32(dst, dst_lane, src, src_lane) vset_laneq_f32(vget_laneq_f32(src, src_lane), dst, dst_lane)
+#define neon_copy_lane_s32(dst, dst_lane, src, src_lane) vset_lane_s32(vget_lane_s32(src, src_lane), dst, dst_lane)
+#define neon_copy_laneq_s32(dst, dst_lane, src, src_lane) vset_lane_s32(vget_laneq_s32(src, src_lane), dst, dst_lane)
+#define neon_copyq_lane_s32(dst, dst_lane, src, src_lane) vset_laneq_s32(vget_lane_s32(src, src_lane), dst, dst_lane)
+#define neon_copyq_laneq_s32(dst, dst_lane, src, src_lane) vset_laneq_s32(vget_laneq_s32(src, src_lane), dst, dst_lane)
+#define neon_dup_lane_f32(a, lane) vdup_n_f32(vget_lane_f32(a, lane))
+#define neon_dupq_lane_f32(a, lane) vdupq_n_f32(vget_lane_f32(a, lane))
+#define neon_dup_laneq_f32(a, lane) vdup_n_f32(vget_laneq_f32(a, lane))
+#define neon_dupq_laneq_f32(a, lane) vdupq_n_f32(vget_laneq_f32(a, lane))
+#define neon_dup_lane_s32(a, lane) vdup_n_s32(vget_lane_s32(a, lane))
+#define neon_dupq_lane_s32(a, lane) vdupq_n_s32(vget_lane_s32(a, lane))
+#define neon_dup_laneq_s32(a, lane) vdup_n_s32(vget_laneq_s32(a, lane))
+#define neon_dupq_laneq_s32(a, lane) vdupq_n_s32(vget_laneq_s32(a, lane))
 
 namespace arm
 {
@@ -44,6 +83,55 @@ KTM_FUNC unsigned int maskq_u32(uint32x4_t x) noexcept
     return vget_lane_u32(l, 0); 
 }
 
+KTM_FUNC int32x2_t madd_s32(int32x2_t x, int32x2_t y, int32x2_t a) noexcept
+{
+	return vmla_s32(a, x, y);
+}
+
+KTM_FUNC int32x4_t maddq_s32(int32x4_t x, int32x4_t y, int32x4_t a) noexcept
+{
+	return vmlaq_s32(a, x, y);
+}
+
+KTM_FUNC int addv_s32(int32x2_t x) noexcept
+{
+	int32x2_t r = vadd_s32(x, vrev64_s32(x));
+	return vget_lane_s32(r, 0);
+}
+
+KTM_FUNC int addvq_s32(int32x4_t x) noexcept
+{
+	int32x4_t r = vaddq_s32(x, vrev64q_s32(x));
+  	r = vaddq_s32(r, vextq_s32(r, r, 2));
+  	return vgetq_lane_s32(r, 0);
+}
+
+KTM_FUNC int minv_s32(int32x2_t x) noexcept
+{	
+  	int32x2_t r = vpmin_s32(x, x);
+  	return vget_lane_s32(r, 0);
+}
+
+KTM_FUNC int minvq_s32(int32x4_t x) noexcept
+{
+  	int32x2_t r = vpmin_s32(vget_low_s32(x), vget_high_s32(x));
+  	r = vpmin_s32(r, r);
+  	return vget_lane_s32(r, 0);
+}
+
+KTM_FUNC int maxv_s32(int32x2_t x) noexcept
+{	
+  	int32x2_t r = vpmax_s32(x, x);
+  	return vget_lane_s32(r, 0);
+}
+
+KTM_FUNC int maxvq_s32(int32x4_t x) noexcept
+{
+  	int32x2_t r = vpmax_s32(vget_low_s32(x), vget_high_s32(x));
+  	r = vpmax_s32(r, r);
+  	return vget_lane_s32(r, 0);
+}
+
 KTM_FUNC int32x2_t clamp_s32(int32x2_t x, int32x2_t min, int32x2_t max) noexcept
 {
 	return vmin_s32(vmax_s32(x, min), max);
@@ -54,52 +142,53 @@ KTM_FUNC int32x4_t clampq_s32(int32x4_t x, int32x4_t min, int32x4_t max) noexcep
 	return vminq_s32(vmaxq_s32(x, min), max);
 }
 
-template<typename SimdT, typename ...SimdTs>
-KTM_FUNC int32x2_t add_s32_all(SimdT arg, SimdTs... args) noexcept
+KTM_FUNC float32x2_t madd_f32(float32x2_t x, float32x2_t y, float32x2_t a) noexcept
 {
-	return vadd_s32(arg, add_s32_all(args...));
+	return vmla_f32(a, x, y);
 }
 
-template<>
-KTM_FUNC int32x2_t add_s32_all<int32x2_t>(int32x2_t arg) noexcept
+KTM_FUNC float32x4_t maddq_f32(float32x4_t x, float32x4_t y, float32x4_t a) noexcept
 {
-	return arg;
+	return vmlaq_f32(a, x, y);
 }
 
-template<typename SimdT, typename ...SimdTs>
-KTM_FUNC int32x2_t mul_s32_all(SimdT arg, SimdTs... args) noexcept
+KTM_FUNC float addv_f32(float32x2_t x) noexcept
 {
-	return vmul_s32(arg, mul_s32_all(args...));
+	float32x2_t r = vadd_f32(x, vrev64_f32(x));
+	return vget_lane_f32(r, 0);
 }
 
-template<>
-KTM_FUNC int32x2_t mul_s32_all<int32x2_t>(int32x2_t arg) noexcept
+KTM_FUNC float addvq_f32(float32x4_t x) noexcept
 {
-	return arg;
+	float32x4_t r = vaddq_f32(x, vrev64q_f32(x));
+  	r = vaddq_f32(r, vextq_f32(r, r, 2));
+  	return vgetq_lane_f32(r, 0);
 }
 
-template<typename SimdT, typename ...SimdTs>
-KTM_FUNC int32x4_t addq_s32_all(SimdT arg, SimdTs... args) noexcept
-{
-	return vaddq_s32(arg, addq_s32_all(args...));
+KTM_FUNC float minv_f32(float32x2_t x) noexcept
+{	
+  	float32x2_t r = vpmin_f32(x, x);
+  	return vget_lane_f32(r, 0);
 }
 
-template<>
-KTM_FUNC int32x4_t addq_s32_all<int32x4_t>(int32x4_t arg) noexcept
+KTM_FUNC float minvq_f32(float32x4_t x) noexcept
 {
-	return arg;
+  	float32x2_t r = vpmin_f32(vget_low_f32(x), vget_high_f32(x));
+  	r = vpmin_f32(r, r);
+  	return vget_lane_f32(r, 0);
 }
 
-template<typename SimdT, typename ...SimdTs>
-KTM_FUNC int32x4_t mulq_s32_all(SimdT arg, SimdTs... args) noexcept
-{
-	return vmulq_s32(arg, mulq_s32_all(args...));
+KTM_FUNC float maxv_f32(float32x2_t x) noexcept
+{	
+  	float32x2_t r = vpmax_f32(x, x);
+  	return vget_lane_f32(r, 0);
 }
 
-template<>
-KTM_FUNC int32x4_t mulq_s32_all<int32x4_t>(int32x4_t arg) noexcept
+KTM_FUNC float maxvq_f32(float32x4_t x) noexcept
 {
-	return arg;
+  	float32x2_t r = vpmax_f32(vget_low_f32(x), vget_high_f32(x));
+  	r = vpmax_f32(r, r);
+  	return vget_lane_f32(r, 0);
 }
 
 KTM_FUNC float32x2_t clamp_f32(float32x2_t x, float32x2_t min, float32x2_t max) noexcept
@@ -110,54 +199,6 @@ KTM_FUNC float32x2_t clamp_f32(float32x2_t x, float32x2_t min, float32x2_t max) 
 KTM_FUNC float32x4_t clampq_f32(float32x4_t x, float32x4_t min, float32x4_t max) noexcept
 {
 	return vminq_f32(vmaxq_f32(x, min), max);
-}
-
-template<typename SimdT, typename ...SimdTs>
-KTM_FUNC float32x2_t add_f32_all(SimdT arg, SimdTs... args) noexcept
-{
-	return vadd_f32(arg, add_f32_all(args...));
-}
-
-template<>
-KTM_FUNC float32x2_t add_f32_all<float32x2_t>(float32x2_t arg) noexcept
-{
-	return arg;
-}
-
-template<typename SimdT, typename ...SimdTs>
-KTM_FUNC float32x2_t mul_f32_all(SimdT arg, SimdTs... args) noexcept
-{
-	return vmul_f32(arg, mul_f32_all(args...));
-}
-
-template<>
-KTM_FUNC float32x2_t mul_f32_all<float32x2_t>(float32x2_t arg) noexcept
-{
-	return arg;
-}
-
-template<typename SimdT, typename ...SimdTs>
-KTM_FUNC float32x4_t addq_f32_all(SimdT arg, SimdTs... args) noexcept
-{
-	return vaddq_f32(arg, addq_f32_all(args...));
-}
-
-template<>
-KTM_FUNC float32x4_t addq_f32_all<float32x4_t>(float32x4_t arg) noexcept
-{
-	return arg;
-}
-
-template<typename SimdT, typename ...SimdTs>
-KTM_FUNC float32x4_t mulq_f32_all(SimdT arg, SimdTs... args) noexcept
-{
-	return vmulq_f32(arg, mulq_f32_all(args...));
-}
-
-template<>
-KTM_FUNC float32x4_t mulq_f32_all<float32x4_t>(float32x4_t arg) noexcept
-{
-	return arg;
 }
 
 KTM_FUNC float32x2_t fast_rsqrt_f32(float32x2_t x) noexcept
@@ -215,14 +256,17 @@ namespace geo
 KTM_FUNC int32x2_t sv2_dot(int32x2_t x, int32x2_t y) noexcept
 {
 	int32x2_t mul = vmul_s32(x, y);
-	return vpadd_s32(mul, mul);
+	//return vpadd_s32(mul, mul);
+	return vadd_s32(mul, vrev64_s32(mul));
 }
 
 KTM_FUNC int32x4_t sv4_dot(int32x4_t x, int32x4_t y) noexcept
 {
 	int32x4_t mul = vmulq_s32(x, y);
-    int32x4_t add_0 = vpaddq_s32(mul, mul);
-    int32x4_t add_1 = vpaddq_s32(add_0, add_0);
+    // int32x4_t add_0 = vpaddq_s32(mul, mul);
+    // int32x4_t add_1 = vpaddq_s32(add_0, add_0);
+	int32x4_t add_0 = vaddq_s32(mul, vrev64q_s32(mul));
+  	int32x4_t add_1 = vaddq_s32(add_0, vextq_s32(add_0, add_0, 2));
 	return add_1;
 }
 
@@ -245,14 +289,17 @@ KTM_FUNC int sv4_dot1(int32x4_t x, int32x4_t y) noexcept
 KTM_FUNC float32x2_t fv2_dot(float32x2_t x, float32x2_t y) noexcept
 {
 	float32x2_t mul = vmul_f32(x, y);
-	return vpadd_f32(mul, mul);
+	//return vpadd_f32(mul, mul);
+	return vadd_f32(mul, vrev64_f32(mul));
 }
 
 KTM_FUNC float32x4_t fv4_dot(float32x4_t x, float32x4_t y) noexcept
 {
 	float32x4_t mul = vmulq_f32(x, y);
-    float32x4_t add_0 = vpaddq_f32(mul, mul);
-    float32x4_t add_1 = vpaddq_f32(add_0, add_0);
+    // float32x4_t add_0 = vpaddq_f32(mul, mul);
+    // float32x4_t add_1 = vpaddq_f32(add_0, add_0);
+	float32x4_t add_0 = vaddq_f32(mul, vrev64q_f32(mul));
+  	float32x4_t add_1 = vaddq_f32(add_0, vextq_f32(add_0, add_0, 2));
 	return add_1;
 }
 
@@ -324,7 +371,7 @@ KTM_FUNC float32x4_t fv3_mul_fq(float32x4_t v, float32x4_t q) noexcept
     float32x4_t add_1 = vmulq_f32(vdupq_laneq_f32(v, 1), mul_y); 
     float32x4_t add_2 = vmulq_f32(vdupq_laneq_f32(v, 2), mul_z); 
 
-    return arm::ext::addq_f32_all(add_0, add_1, add_2); 
+    return vaddq_f32(add_0, vaddq_f32(add_1, add_2)); 
 }
 
 KTM_FUNC float32x4_t fq_mul_fq(float32x4_t x, float32x4_t y) noexcept
