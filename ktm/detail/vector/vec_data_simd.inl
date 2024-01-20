@@ -168,19 +168,6 @@ struct ktm::detail::vec_data_implement::vec_storage<4, float>
     typedef __m128 type;
 };
 
-template<size_t S0, size_t S1>
-struct ktm::detail::vec_data_implement::vec_swizzle<2, 2, float, S0, S1>
-{
-    using V = vec<2, float>;
-    using RetV = vec<2, float>;
-    static KTM_INLINE RetV call(const V& v) noexcept
-    {
-        RetV ret;
-        ret.st = _mm_shuffle_pi16(v.st, _MM_SHUFFLE(2 * S1 + 1, 2 * S1, 2 * S0 + 1, 2 * S0));
-        return ret;
-    }
-};
-
 template<size_t IN, size_t S0, size_t S1>
 struct ktm::detail::vec_data_implement::vec_swizzle<2, IN, std::enable_if_t<IN == 3 || IN == 4, float>, S0, S1>
 {
@@ -227,6 +214,22 @@ struct ktm::detail::vec_data_implement::vec_storage<2, int>
     typedef __m64 type;
 };
 
+#if KTM_SIMD_X86 & KTM_SIMD_SSE2_FLAG 
+
+template<size_t S0, size_t S1>
+struct ktm::detail::vec_data_implement::vec_swizzle<2, 2, float, S0, S1>
+{
+    using V = vec<2, float>;
+    using RetV = vec<2, float>;
+    static KTM_INLINE RetV call(const V& v) noexcept
+    {
+        RetV ret;
+        __m128i tmp = _mm_loadl_epi64(reinterpret_cast<const __m128i*>(&v.st));
+        _mm_storel_epi64(reinterpret_cast<__m128i*>(&ret.st), _mm_shuffle_epi32(tmp, _MM_SHUFFLE(3, 2, S1, S0)));
+        return ret;
+    }
+};
+
 template<size_t S0, size_t S1>
 struct ktm::detail::vec_data_implement::vec_swizzle<2, 2, int, S0, S1>
 {
@@ -235,12 +238,11 @@ struct ktm::detail::vec_data_implement::vec_swizzle<2, 2, int, S0, S1>
     static KTM_INLINE RetV call(const V& v) noexcept
     {
         RetV ret;
-        ret.st = _mm_shuffle_pi16(v.st, _MM_SHUFFLE(2 * S1 + 1, 2 * S1, 2 * S0 + 1, 2 * S0));
+        __m128i tmp = _mm_loadl_epi64(reinterpret_cast<const __m128i*>(&v.st));
+        _mm_storel_epi64(reinterpret_cast<__m128i*>(&ret.st), _mm_shuffle_epi32(tmp, _MM_SHUFFLE(3, 2, S1, S0)));
         return ret;
     }
 };
-
-#if KTM_SIMD_X86 & KTM_SIMD_SSE2_FLAG 
 
 template<>
 struct ktm::detail::vec_data_implement::vec_storage<3, int>
@@ -263,7 +265,7 @@ struct ktm::detail::vec_data_implement::vec_swizzle<2, IN, std::enable_if_t<IN =
     {
         RetV ret;
         __m128i tmp = _mm_shuffle_epi32(v.st, _MM_SHUFFLE(3, 2, S1, S0));
-        _mm_storeu_si64(&ret.st, tmp);
+        _mm_storel_epi64(reinterpret_cast<__m128i*>(&ret.st), tmp);
         return ret;
     }
 };
