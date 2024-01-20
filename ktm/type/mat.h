@@ -11,10 +11,14 @@
 
 namespace ktm
 {
+
+template<class Child>
+using mat_father_type = single_extends_t<template_list<iarray, imat_data, imat_make, imat_array, imat_calc>, Child>;
+
 template<size_t Row, size_t Col, typename T>
-struct mat<Row, Col, T> : single_extends_t<template_list<iarray, imat_data, imat_make, imat_array, imat_calc>, mat<Row, Col, T>>
+struct mat<Row, Col, T> : mat_father_type<mat<Row, Col, T>>
 {
-    using fater_type = single_extends_t<template_list<iarray, imat_data, imat_make, imat_array, imat_calc>, mat<Row, Col, T>>;
+    using fater_type = mat_father_type<mat<Row, Col, T>>;
     using fater_type::fater_type;
 };
 }

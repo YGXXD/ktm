@@ -12,10 +12,14 @@
 
 namespace ktm
 {
+
+template<class Child>
+using quat_father_type = single_extends_t<template_list<iarray, iquat_data, iquat_make, iquat_array, iquat_calc>, Child>;
+
 template<typename T>
-struct quat<T> : single_extends_t<template_list<iarray, iquat_data, iquat_make, iquat_array, iquat_calc>, quat<T>>
+struct quat<T> : quat_father_type<quat<T>>
 {
-    using fater_type = single_extends_t<template_list<iarray, iquat_data, iquat_make, iquat_array, iquat_calc>, quat<T>>;
+    using fater_type = quat_father_type<quat<T>>;
     using fater_type::fater_type;
 };
 }

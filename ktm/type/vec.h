@@ -11,10 +11,13 @@
 namespace ktm
 {
 
+template<class Child>
+using vec_fater_type = single_extends_t<template_list<iarray, ivec_data, ivec_array, ivec_calc>, Child>;
+
 template<size_t N, typename T>
-struct vec<N, T> : single_extends_t<template_list<iarray, ivec_data, ivec_array, ivec_calc>, vec<N, T>> 
+struct vec<N, T> : vec_fater_type<vec<N, T>>
 {
-    using fater_type = single_extends_t<template_list<iarray, ivec_data, ivec_array, ivec_calc>, vec<N, T>>; 
+    using fater_type = vec_fater_type<vec<N, T>>;
     using fater_type::fater_type;
 };
 

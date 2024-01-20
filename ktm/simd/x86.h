@@ -193,8 +193,13 @@ namespace mt
 {
 KTM_FUNC void fmt2_tp(__m64 out[2], const __m64 in[2]) noexcept
 {
-	out[0] = _mm_unpacklo_pi32(in[0], in[1]);
-	out[1] = _mm_unpackhi_pi32(in[0], in[1]); 
+#if KTM_SIMD_X86 & KTM_SIMD_SSE2_FLAG
+	__m128i tmp = _mm_load_si128(reinterpret_cast<const __m128i*>(in));
+	_mm_store_si128(reinterpret_cast<__m128i*>(out), _mm_shuffle_epi32(tmp, _MM_SHUFFLE(3, 1, 2, 0)));
+#else
+	__m128 tmp = _mm_load_ps(reinterpret_cast<const float*>(in));
+	_mm_store_ps(reinterpret_cast<float*>(out), _mm_shuffle_ps(tmp, tmp, _MM_SHUFFLE(3, 1, 2, 0)));
+#endif
 }
 
 KTM_FUNC void fmt3_tp(__m128 out[3], const __m128 in[3]) noexcept
