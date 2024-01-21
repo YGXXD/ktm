@@ -60,8 +60,7 @@ struct iquat_make<Father, quat<T>> : Father
 
     static KTM_INLINE quat<T> from_matrix(const mat<4, 4, T>& m) noexcept
     {
-        const mat<3, 3, T>* m33_ptr = reinterpret_cast<const mat<3, 3, T>*>(&m);
-        return from_matrix(*m33_ptr);
+        return from_matrix(reinterpret_cast<const mat<3, 3, T>&>(m));
     }
 
     static KTM_NOINLINE quat<T> from_matrix(const mat<3, 3, T>& m) noexcept
