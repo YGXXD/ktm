@@ -48,45 +48,6 @@ struct ktm::detail::matrix_implement::transpose<4, 4, float>
 };
 
 template<>
-struct ktm::detail::matrix_implement::transpose<2, 2, int>
-{
-    using M = mat<2, 2, int>;
-    using RetM = M;
-    static KTM_INLINE RetM call(const M& m) noexcept
-    {
-        RetM ret;
-        arm::mt::fmt2_tp(reinterpret_cast<float32x2_t*>(&ret[0].st), reinterpret_cast<const float32x2_t*>(&m[0].st));
-        return ret;
-    }
-};
-
-template<>
-struct ktm::detail::matrix_implement::transpose<3, 3, int>
-{
-    using M = mat<3, 3, int>;
-    using RetM = M;
-    static KTM_INLINE RetM call(const M& m) noexcept
-    {
-        RetM ret;
-        arm::mt::fmt3_tp(reinterpret_cast<float32x4_t*>(&ret[0].st), reinterpret_cast<const float32x4_t*>(&m[0].st));
-        return ret; 
-    }
-};
-
-template<>
-struct ktm::detail::matrix_implement::transpose<4, 4, int>
-{
-    using M = mat<4, 4, int>;
-    using RetM = M;
-    static KTM_INLINE RetM call(const M& m) noexcept
-    {
-        RetM ret;
-        arm::mt::fmt4_tp(reinterpret_cast<float32x4_t*>(&ret[0].st), reinterpret_cast<const float32x4_t*>(&m[0].st));
-        return ret; 
-    }
-};
-
-template<>
 struct ktm::detail::matrix_implement::determinant<3, float>
 {
     using M = mat<3, 3, float>;
@@ -769,6 +730,24 @@ struct ktm::detail::matrix_implement::determinant<4, int>
 };
 
 #endif // KTM_SIMD_X86 & KTM_SIMD_SSE2_FLAG 
+
+#endif
+
+#if defined(KTM_SIMD_ARM) || defined(KTM_SIMD_X86)
+
+template<size_t N, typename T>
+struct ktm::detail::matrix_implement::transpose<N, N, T, std::enable_if_t<sizeof(T) == sizeof(float) && !std::is_same_v<T, float> && N >= 2 && N <=4>>
+{
+    using M = mat<N, N, T>;
+    using RetM = M;
+    using FM = mat<N, N, float>;
+    using FRetM = FM;
+    static KTM_INLINE RetM call(const M& m) noexcept
+    {
+        FRetM ret = transpose<N, N, float>::call(reinterpret_cast<const FM&>(m));
+        return *reinterpret_cast<RetM*>(&ret);
+    }
+};
 
 #endif
 

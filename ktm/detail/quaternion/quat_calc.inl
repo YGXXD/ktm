@@ -5,7 +5,7 @@
 #include "../../setup.h"
 #include "../../function/geometric.h"
 
-template<typename T>
+template<typename T, typename Void>
 struct ktm::detail::quat_calc_implement::mul
 {
     using Q = quat<T>;
@@ -20,7 +20,7 @@ struct ktm::detail::quat_calc_implement::mul
     }
 };
 
-template<typename T>
+template<typename T, typename Void>
 struct ktm::detail::quat_calc_implement::mul_to_self
 {
     using Q = quat<T>;
@@ -34,7 +34,7 @@ struct ktm::detail::quat_calc_implement::mul_to_self
     }
 };
 
-template<typename T>
+template<typename T, typename Void>
 struct ktm::detail::quat_calc_implement::act
 {
     using Q = quat<T>;

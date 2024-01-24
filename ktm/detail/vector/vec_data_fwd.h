@@ -2,6 +2,7 @@
 #define _KTM_VEC_DATA_FWD_H_
 
 #include <cstddef>
+#include <type_traits>
 
 namespace ktm
 {
@@ -9,10 +10,10 @@ namespace detail
 {
 namespace vec_data_implement
 {
-    template<size_t N, typename T>
+    template<size_t N, typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     struct vec_storage;
 
-    template<size_t ON, size_t IN, typename T, size_t ...E>
+    template<size_t ON, size_t IN, typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && ON <= IN>>
     struct vec_swizzle; 
 };
 }

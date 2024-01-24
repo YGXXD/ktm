@@ -5,7 +5,7 @@
 #include "../../setup.h"
 #include "../../type/basic.h"
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::vec_calc_implement::add
 {
     using V = vec<N, T>;
@@ -23,7 +23,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::vec_calc_implement::add_to_self
 {
     using V = vec<N, T>;
@@ -39,7 +39,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::vec_calc_implement::minus
 {
     using V = vec<N, T>;
@@ -57,7 +57,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::vec_calc_implement::minus_to_self
 {
     using V = vec<N, T>;
@@ -73,7 +73,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::vec_calc_implement::mul
 {
     using V = vec<N, T>;
@@ -91,7 +91,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::vec_calc_implement::mul_to_self
 {
     using V = vec<N, T>;
@@ -107,7 +107,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::vec_calc_implement::div
 {
     using V = vec<N, T>;
@@ -125,7 +125,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::vec_calc_implement::div_to_self
 {
     using V = vec<N, T>;
@@ -141,7 +141,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::vec_calc_implement::opposite
 {
     using V = vec<N, T>;
@@ -159,7 +159,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::vec_calc_implement::add_scalar
 {
     using V = vec<N, T>;
@@ -177,7 +177,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::vec_calc_implement::add_scalar_to_self
 {
     using V = vec<N, T>;
@@ -193,7 +193,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::vec_calc_implement::minus_scalar
 {
     using V = vec<N, T>;
@@ -211,7 +211,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::vec_calc_implement::minus_scalar_to_self
 {
     using V = vec<N, T>;
@@ -227,7 +227,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::vec_calc_implement::mul_scalar
 {
     using V = vec<N, T>;
@@ -245,7 +245,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::vec_calc_implement::mul_scalar_to_self
 {
     using V = vec<N, T>;
@@ -261,7 +261,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::vec_calc_implement::div_scalar
 {
     using V = vec<N, T>;
@@ -282,7 +282,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::vec_calc_implement::div_scalar_to_self
 {
     using V = vec<N, T>;

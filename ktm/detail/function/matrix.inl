@@ -8,7 +8,7 @@
 #include "../../function/arithmetic.h"
 #include "../../function/common.h"
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::matrix_implement::trace
 {
     using M = mat<N, N, T>;
@@ -24,7 +24,7 @@ private:
     }
 };
 
-template<size_t Row, size_t Col, typename T>
+template<size_t Row, size_t Col, typename T, typename Void>
 struct ktm::detail::matrix_implement::transpose
 {
 	using M = mat<Row, Col, T>;
@@ -92,7 +92,6 @@ struct ktm::detail::matrix_implement::determinant<4, T>
 template<typename T>
 struct ktm::detail::matrix_implement::inverse<2, T>
 {
-    static_assert(std::is_floating_point_v<T>);
     using M = mat<2, 2, T>;
     static KTM_INLINE M call(const M& m) noexcept
     {
@@ -109,7 +108,6 @@ struct ktm::detail::matrix_implement::inverse<2, T>
 template<typename T>
 struct ktm::detail::matrix_implement::inverse<3, T>
 {
-    static_assert(std::is_floating_point_v<T>);
     using M = mat<3, 3, T>;
     static KTM_INLINE M call(const M& m) noexcept
     {
@@ -131,7 +129,6 @@ struct ktm::detail::matrix_implement::inverse<3, T>
 template<typename T>
 struct ktm::detail::matrix_implement::inverse<4, T>
 {
-    static_assert(std::is_floating_point_v<T>);
     using M = mat<4, 4, T>;
     static KTM_INLINE M call(const M& m) noexcept
     {
@@ -189,10 +186,9 @@ struct ktm::detail::matrix_implement::inverse<4, T>
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::matrix_implement::factor_lu
 {
-    static_assert(std::is_floating_point_v<T>);
     using M = mat<N, N, T>;
     static KTM_NOINLINE std::tuple<M, M> call(const M& m) noexcept
     {
@@ -237,10 +233,9 @@ struct ktm::detail::matrix_implement::factor_lu
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::matrix_implement::factor_qr
 {
-    static_assert(std::is_floating_point_v<T>);
     using M = mat<N, N, T>;
     static KTM_NOINLINE std::tuple<M, M> call(const M& m) noexcept
     {
@@ -288,7 +283,7 @@ struct ktm::detail::matrix_implement::factor_qr
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::matrix_implement::eigen_qr_it
 {
     using M = mat<N, N, T>;
@@ -322,7 +317,7 @@ struct ktm::detail::matrix_implement::eigen_qr_it
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::matrix_implement::eigen_jacobi_it
 {
     using M = mat<N, N, T>;
@@ -428,12 +423,10 @@ struct ktm::detail::matrix_implement::eigen_jacobi_it
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::matrix_implement::factor_svd
 {
-    static_assert(std::is_floating_point_v<T>);
     using M = mat<N, N, T>;
-
     static KTM_NOINLINE std::tuple<M, M, M> call(const M& m)
     {
         // 求矩阵svd分解(通过jacobi迭代法找矩阵特征向量和特征值)
@@ -458,7 +451,6 @@ struct ktm::detail::matrix_implement::factor_svd
 // struct ktm::detail::matrix_implement::factor_svd<2, T>
 // {
 //     // ref: https://lucidar.me/en/mathematics/singular-value-decomposition-of-a-2x2-matrix/
-//     static_assert(std::is_floating_point_v<T>);
 //     using M = mat<2, 2, T>;
 //     static KTM_NOINLINE std::tuple<M, M, M> call(const M& m)
 //     {

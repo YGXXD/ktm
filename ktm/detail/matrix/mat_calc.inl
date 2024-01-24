@@ -5,7 +5,7 @@
 #include "../../setup.h"
 #include "../../function/common.h"
 
-template<size_t Row, size_t Col, typename T>
+template<size_t Row, size_t Col, typename T, typename Void>
 struct ktm::detail::mat_opt_implement::mat_mul_vec
 {
 	using M = mat<Row, Col, T>;
@@ -25,7 +25,7 @@ private:
     }
 };
 
-template<size_t Row, size_t Col, typename T>
+template<size_t Row, size_t Col, typename T, typename Void>
 struct ktm::detail::mat_opt_implement::vec_mul_mat
 {
     using M = mat<Row, Col, T>;
@@ -45,7 +45,7 @@ private:
     }
 };
 
-template<size_t Row, size_t Col, typename T>
+template<size_t Row, size_t Col, typename T, typename Void>
 struct ktm::detail::mat_opt_implement::mat_mul_mat
 {
     using M = mat<Row, Col, T>;
@@ -69,7 +69,7 @@ private:
     }
 };
 
-template<size_t Row, size_t Col, typename T>
+template<size_t Row, size_t Col, typename T, typename Void>
 struct ktm::detail::mat_opt_implement::add
 {
 	using M = mat<Row, Col, T>;
@@ -87,7 +87,7 @@ private:
     }
 };
 
-template<size_t Row, size_t Col, typename T>
+template<size_t Row, size_t Col, typename T, typename Void>
 struct ktm::detail::mat_opt_implement::minus
 {
 	using M = mat<Row, Col, T>;

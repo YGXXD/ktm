@@ -6,7 +6,7 @@
 #include "../../type/basic.h"
 #include "../../function/arithmetic.h"
 
-template<size_t StepN, size_t N, typename T>
+template<size_t StepN, size_t N, typename T, typename Void>
 struct ktm::detail::common_implement::elem_move
 {
     static_assert(StepN > 0 && StepN < N);
@@ -25,7 +25,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::common_implement::reduce_add
 {
     using V = vec<N, T>;
@@ -41,7 +41,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::common_implement::reduce_min
 {
     using V = vec<N, T>;
@@ -64,7 +64,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::common_implement::reduce_max
 {
     using V = vec<N, T>;
@@ -87,7 +87,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::common_implement::abs
 {
     using V = vec<N, T>;
@@ -108,7 +108,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::common_implement::min
 {
     using V = vec<N, T>;
@@ -126,7 +126,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::common_implement::max
 {
     using V = vec<N, T>;
@@ -144,7 +144,7 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::common_implement::clamp
 {
     using V = vec<N, T>;
@@ -162,11 +162,10 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::common_implement::floor
 {
     using V = vec<N, T>;
-    static_assert(std::is_floating_point_v<T>);
     static KTM_INLINE V call(const V& x) noexcept
     {
         return call(x, std::make_index_sequence<N>());
@@ -181,11 +180,10 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::common_implement::ceil
 {
     using V = vec<N, T>;
-    static_assert(std::is_floating_point_v<T>);
     static KTM_INLINE V call(const V& x) noexcept
     {
         return call(x, std::make_index_sequence<N>());
@@ -200,11 +198,10 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::common_implement::round
 {
     using V = vec<N, T>;
-    static_assert(std::is_floating_point_v<T>);
     static KTM_INLINE V call(const V& x) noexcept
     {
         return call(x, std::make_index_sequence<N>());
@@ -219,11 +216,10 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::common_implement::lerp
 {
     using V = vec<N, T>;
-    static_assert(std::is_floating_point_v<T>);
     static KTM_INLINE V call(const V& x, const V& y, T t) noexcept
     {
         return call(x, y, t, std::make_index_sequence<N>());
@@ -238,11 +234,10 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::common_implement::mix
 {
     using V = vec<N, T>;
-    static_assert(std::is_floating_point_v<T>);
     static KTM_INLINE V call(const V& x, const V& y, const V& t) noexcept
     {
         return call(x, y, t, std::make_index_sequence<N>());
@@ -257,11 +252,10 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::common_implement::recip
 {
     using V = vec<N, T>;
-    static_assert(std::is_floating_point_v<T>);
     static KTM_INLINE V call(const V& x) noexcept
     {
         return call(x, std::make_index_sequence<N>());
@@ -276,11 +270,10 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::common_implement::step
 {
     using V = vec<N, T>;
-    static_assert(std::is_floating_point_v<T>);
     static KTM_INLINE V call(const V& edge, const V& x) noexcept
     {
         return call(edge, x, std::make_index_sequence<N>());
@@ -295,11 +288,10 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::common_implement::smoothstep
 {
     using V = vec<N, T>;
-    static_assert(std::is_floating_point_v<T>);
     static KTM_INLINE V call(const V& edge0, const V& edge1, const V& x) noexcept
     {
         return call(edge0, edge1, x, std::make_index_sequence<N>());
@@ -314,11 +306,10 @@ private:
     }
 };
 
-template<size_t N, typename T>
+template<size_t N, typename T, typename Void>
 struct ktm::detail::common_implement::fract
 {
     using V = vec<N, T>;
-    static_assert(std::is_floating_point_v<T>);
     static KTM_INLINE V call(const V& x) noexcept
     {
         return call(x, std::make_index_sequence<N>());

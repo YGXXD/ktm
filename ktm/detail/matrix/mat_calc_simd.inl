@@ -28,7 +28,7 @@ private:
 };
 
 template<size_t Row, size_t Col>
-struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, std::enable_if_t<Col == 3 || Col == 4, float>>
+struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, float, std::enable_if_t<Col == 3 || Col == 4>>
 {
     using M = mat<Row, Col, float>;
     using ColV = vec<Col, float>;
@@ -128,7 +128,7 @@ private:
 };
 
 template<size_t Row, size_t Col>
-struct ktm::detail::mat_opt_implement::add<Row, Col, std::enable_if_t<Col == 3 || Col == 4, float>>
+struct ktm::detail::mat_opt_implement::add<Row, Col, float, std::enable_if_t<Col == 3 || Col == 4>>
 {
     using M = mat<Row, Col, float>;
     using ColV = vec<Col, float>;
@@ -166,7 +166,7 @@ private:
 };
 
 template<size_t Row, size_t Col>
-struct ktm::detail::mat_opt_implement::minus<Row, Col, std::enable_if_t<Col == 3 || Col == 4, float>>
+struct ktm::detail::mat_opt_implement::minus<Row, Col, float, std::enable_if_t<Col == 3 || Col == 4>>
 {
     using M = mat<Row, Col, float>;
     using ColV = vec<Col, float>;
@@ -206,7 +206,7 @@ private:
 };
 
 template<size_t Row, size_t Col>
-struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, std::enable_if_t<Col == 3 || Col == 4, int>>
+struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, int, std::enable_if_t<Col == 3 || Col == 4>>
 {
     using M = mat<Row, Col, int>;
     using ColV = vec<Col, int>;
@@ -306,7 +306,7 @@ private:
 };
 
 template<size_t Row, size_t Col>
-struct ktm::detail::mat_opt_implement::add<Row, Col, std::enable_if_t<Col == 3 || Col == 4, int>>
+struct ktm::detail::mat_opt_implement::add<Row, Col, int, std::enable_if_t<Col == 3 || Col == 4>>
 {
     using M = mat<Row, Col, int>;
     using ColV = vec<Col, int>;
@@ -344,7 +344,7 @@ private:
 };
 
 template<size_t Row, size_t Col>
-struct ktm::detail::mat_opt_implement::minus<Row, Col, std::enable_if_t<Col == 3 || Col == 4, int>>
+struct ktm::detail::mat_opt_implement::minus<Row, Col, int, std::enable_if_t<Col == 3 || Col == 4>>
 {
     using M = mat<Row, Col, int>;
     using ColV = vec<Col, int>;
@@ -365,7 +365,7 @@ private:
 #elif defined(KTM_SIMD_X86)
 
 template<size_t Row, size_t Col>
-struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, std::enable_if_t<Col == 3 || Col == 4, float>>
+struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, float, std::enable_if_t<Col == 3 || Col == 4>>
 {
     using M = mat<Row, Col, float>;
     using ColV = vec<Col, float>;
@@ -427,7 +427,7 @@ private:
 };
 
 template<size_t Row, size_t Col>
-struct ktm::detail::mat_opt_implement::add<Row, Col, std::enable_if_t<Col == 3 || Col == 4, float>>
+struct ktm::detail::mat_opt_implement::add<Row, Col, float, std::enable_if_t<Col == 3 || Col == 4>>
 {
     using M = mat<Row, Col, float>;
     using ColV = vec<Col, float>;
@@ -446,7 +446,7 @@ private:
 };
 
 template<size_t Row, size_t Col>
-struct ktm::detail::mat_opt_implement::minus<Row, Col, std::enable_if_t<Col == 3 || Col == 4, float>>
+struct ktm::detail::mat_opt_implement::minus<Row, Col, float, std::enable_if_t<Col == 3 || Col == 4>>
 {
     using M = mat<Row, Col, float>;
     using ColV = vec<Col, float>;
@@ -467,7 +467,7 @@ private:
 #if KTM_SIMD_X86 & KTM_SIMD_SSE2_FLAG
 
 template<size_t Row, size_t Col>
-struct ktm::detail::mat_opt_implement::add<Row, Col, std::enable_if_t<Col == 3 || Col == 4, int>>
+struct ktm::detail::mat_opt_implement::add<Row, Col, int, std::enable_if_t<Col == 3 || Col == 4>>
 {
     using M = mat<Row, Col, int>;
     using ColV = vec<Col, int>;
@@ -486,7 +486,7 @@ private:
 };
 
 template<size_t Row, size_t Col>
-struct ktm::detail::mat_opt_implement::minus<Row, Col, std::enable_if_t<Col == 3 || Col == 4, int>>
+struct ktm::detail::mat_opt_implement::minus<Row, Col, int, std::enable_if_t<Col == 3 || Col == 4>>
 {
     using M = mat<Row, Col, int>;
     using ColV = vec<Col, int>;
@@ -509,7 +509,7 @@ private:
 #if KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
 
 template<size_t Row, size_t Col>
-struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, std::enable_if_t<Col == 3 || Col == 4, int>>
+struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, int, std::enable_if_t<Col == 3 || Col == 4>>
 {
     using M = mat<Row, Col, int>;
     using ColV = vec<Col, int>;

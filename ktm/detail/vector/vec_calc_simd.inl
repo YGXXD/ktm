@@ -19,7 +19,7 @@ struct ktm::detail::vec_calc_implement::add<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::add<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::add<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -41,7 +41,7 @@ struct ktm::detail::vec_calc_implement::add_to_self<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::add_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::add_to_self<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE void call(V& x, const V& y) noexcept
@@ -63,7 +63,7 @@ struct ktm::detail::vec_calc_implement::minus<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::minus<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::minus<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -85,7 +85,7 @@ struct ktm::detail::vec_calc_implement::minus_to_self<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::minus_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::minus_to_self<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE void call(V& x, const V& y) noexcept
@@ -107,7 +107,7 @@ struct ktm::detail::vec_calc_implement::mul<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::mul<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::mul<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -129,7 +129,7 @@ struct ktm::detail::vec_calc_implement::mul_to_self<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::mul_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::mul_to_self<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE void call(V& x, const V& y) noexcept
@@ -151,7 +151,7 @@ struct ktm::detail::vec_calc_implement::div<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::div<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::div<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -173,7 +173,7 @@ struct ktm::detail::vec_calc_implement::div_to_self<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::div_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::div_to_self<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE void call(V& x, const V& y) noexcept
@@ -195,7 +195,7 @@ struct ktm::detail::vec_calc_implement::opposite<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::opposite<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::opposite<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -220,7 +220,7 @@ struct ktm::detail::vec_calc_implement::add_scalar<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::add_scalar<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::add_scalar<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, float scalar) noexcept
@@ -243,7 +243,7 @@ struct ktm::detail::vec_calc_implement::add_scalar_to_self<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::add_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::add_scalar_to_self<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE void call(V& x, float scalar) noexcept
@@ -265,7 +265,7 @@ struct ktm::detail::vec_calc_implement::minus_scalar<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::minus_scalar<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::minus_scalar<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, float scalar) noexcept
@@ -287,7 +287,7 @@ struct ktm::detail::vec_calc_implement::minus_scalar_to_self<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::minus_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::minus_scalar_to_self<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE void call(V& x, float scalar) noexcept
@@ -309,7 +309,7 @@ struct ktm::detail::vec_calc_implement::mul_scalar<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::mul_scalar<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::mul_scalar<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, float scalar) noexcept
@@ -331,7 +331,7 @@ struct ktm::detail::vec_calc_implement::mul_scalar_to_self<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::mul_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::mul_scalar_to_self<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE void call(V& x, float scalar) noexcept
@@ -353,7 +353,7 @@ struct ktm::detail::vec_calc_implement::div_scalar<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::div_scalar<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::div_scalar<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, float scalar) noexcept
@@ -375,7 +375,7 @@ struct ktm::detail::vec_calc_implement::div_scalar_to_self<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::div_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::div_scalar_to_self<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE void call(V& x, float scalar) noexcept
@@ -397,7 +397,7 @@ struct ktm::detail::vec_calc_implement::add<2, int>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::add<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::add<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -419,7 +419,7 @@ struct ktm::detail::vec_calc_implement::add_to_self<2, int>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::add_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::add_to_self<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE void call(V& x, const V& y) noexcept
@@ -441,7 +441,7 @@ struct ktm::detail::vec_calc_implement::minus<2, int>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::minus<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::minus<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -463,7 +463,7 @@ struct ktm::detail::vec_calc_implement::minus_to_self<2, int>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::minus_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::minus_to_self<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE void call(V& x, const V& y) noexcept
@@ -485,7 +485,7 @@ struct ktm::detail::vec_calc_implement::mul<2, int>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::mul<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::mul<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -507,7 +507,7 @@ struct ktm::detail::vec_calc_implement::mul_to_self<2, int>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::mul_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::mul_to_self<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE void call(V& x, const V& y) noexcept
@@ -529,7 +529,7 @@ struct ktm::detail::vec_calc_implement::opposite<2, int>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::opposite<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::opposite<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -553,7 +553,7 @@ struct ktm::detail::vec_calc_implement::add_scalar<2, int>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::add_scalar<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::add_scalar<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE V call(const V& x, int scalar) noexcept
@@ -575,7 +575,7 @@ struct ktm::detail::vec_calc_implement::add_scalar_to_self<2, int>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::add_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::add_scalar_to_self<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE void call(V& x, int scalar) noexcept
@@ -597,7 +597,7 @@ struct ktm::detail::vec_calc_implement::minus_scalar<2, int>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::minus_scalar<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::minus_scalar<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE V call(const V& x, int scalar) noexcept
@@ -619,7 +619,7 @@ struct ktm::detail::vec_calc_implement::minus_scalar_to_self<2, int>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::minus_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::minus_scalar_to_self<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE void call(V& x, int scalar) noexcept
@@ -641,7 +641,7 @@ struct ktm::detail::vec_calc_implement::mul_scalar<2, int>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::mul_scalar<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::mul_scalar<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE V call(const V& x, int scalar) noexcept
@@ -663,7 +663,7 @@ struct ktm::detail::vec_calc_implement::mul_scalar_to_self<2, int>
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::mul_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::mul_scalar_to_self<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE void call(V& x, int scalar) noexcept
@@ -675,7 +675,7 @@ struct ktm::detail::vec_calc_implement::mul_scalar_to_self<N, std::enable_if_t<N
 #elif defined(KTM_SIMD_X86)
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::add<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::add<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -687,7 +687,7 @@ struct ktm::detail::vec_calc_implement::add<N, std::enable_if_t<N == 3 || N == 4
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::add_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::add_to_self<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE void call(V& x, const V& y) noexcept
@@ -697,7 +697,7 @@ struct ktm::detail::vec_calc_implement::add_to_self<N, std::enable_if_t<N == 3 |
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::minus<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::minus<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -709,7 +709,7 @@ struct ktm::detail::vec_calc_implement::minus<N, std::enable_if_t<N == 3 || N ==
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::minus_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::minus_to_self<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE void call(V& x, const V& y) noexcept
@@ -719,7 +719,7 @@ struct ktm::detail::vec_calc_implement::minus_to_self<N, std::enable_if_t<N == 3
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::mul<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::mul<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -731,7 +731,7 @@ struct ktm::detail::vec_calc_implement::mul<N, std::enable_if_t<N == 3 || N == 4
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::mul_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::mul_to_self<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE void call(V& x, const V& y) noexcept
@@ -741,7 +741,7 @@ struct ktm::detail::vec_calc_implement::mul_to_self<N, std::enable_if_t<N == 3 |
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::div<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::div<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -753,7 +753,7 @@ struct ktm::detail::vec_calc_implement::div<N, std::enable_if_t<N == 3 || N == 4
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::div_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::div_to_self<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE void call(V& x, const V& y) noexcept
@@ -763,7 +763,7 @@ struct ktm::detail::vec_calc_implement::div_to_self<N, std::enable_if_t<N == 3 |
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::opposite<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::opposite<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -775,7 +775,7 @@ struct ktm::detail::vec_calc_implement::opposite<N, std::enable_if_t<N == 3 || N
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::add_scalar<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::add_scalar<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, float scalar) noexcept
@@ -788,7 +788,7 @@ struct ktm::detail::vec_calc_implement::add_scalar<N, std::enable_if_t<N == 3 ||
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::add_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::add_scalar_to_self<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE void call(V& x, float scalar) noexcept
@@ -798,7 +798,7 @@ struct ktm::detail::vec_calc_implement::add_scalar_to_self<N, std::enable_if_t<N
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::minus_scalar<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::minus_scalar<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, float scalar) noexcept
@@ -809,7 +809,7 @@ struct ktm::detail::vec_calc_implement::minus_scalar<N, std::enable_if_t<N == 3 
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::minus_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::minus_scalar_to_self<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE void call(V& x, float scalar) noexcept
@@ -820,7 +820,7 @@ struct ktm::detail::vec_calc_implement::minus_scalar_to_self<N, std::enable_if_t
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::mul_scalar<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::mul_scalar<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, float scalar) noexcept
@@ -832,7 +832,7 @@ struct ktm::detail::vec_calc_implement::mul_scalar<N, std::enable_if_t<N == 3 ||
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::mul_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::mul_scalar_to_self<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE void call(V& x, float scalar) noexcept
@@ -842,7 +842,7 @@ struct ktm::detail::vec_calc_implement::mul_scalar_to_self<N, std::enable_if_t<N
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::div_scalar<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::div_scalar<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, float scalar) noexcept
@@ -854,7 +854,7 @@ struct ktm::detail::vec_calc_implement::div_scalar<N, std::enable_if_t<N == 3 ||
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::div_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::vec_calc_implement::div_scalar_to_self<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE void call(V& x, float scalar) noexcept
@@ -866,7 +866,7 @@ struct ktm::detail::vec_calc_implement::div_scalar_to_self<N, std::enable_if_t<N
 #if KTM_SIMD_X86 & KTM_SIMD_SSE2_FLAG
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::add<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::add<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -878,7 +878,7 @@ struct ktm::detail::vec_calc_implement::add<N, std::enable_if_t<N == 3 || N == 4
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::add_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::add_to_self<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE void call(V& x, const V& y) noexcept
@@ -888,7 +888,7 @@ struct ktm::detail::vec_calc_implement::add_to_self<N, std::enable_if_t<N == 3 |
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::minus<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::minus<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -900,7 +900,7 @@ struct ktm::detail::vec_calc_implement::minus<N, std::enable_if_t<N == 3 || N ==
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::minus_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::minus_to_self<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE void call(V& x, const V& y) noexcept
@@ -910,7 +910,7 @@ struct ktm::detail::vec_calc_implement::minus_to_self<N, std::enable_if_t<N == 3
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::opposite<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::opposite<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -922,7 +922,7 @@ struct ktm::detail::vec_calc_implement::opposite<N, std::enable_if_t<N == 3 || N
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::add_scalar<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::add_scalar<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE V call(const V& x, int scalar) noexcept
@@ -934,7 +934,7 @@ struct ktm::detail::vec_calc_implement::add_scalar<N, std::enable_if_t<N == 3 ||
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::add_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::add_scalar_to_self<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE void call(V& x, int scalar) noexcept
@@ -944,7 +944,7 @@ struct ktm::detail::vec_calc_implement::add_scalar_to_self<N, std::enable_if_t<N
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::minus_scalar<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::minus_scalar<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE V call(const V& x, int scalar) noexcept
@@ -956,7 +956,7 @@ struct ktm::detail::vec_calc_implement::minus_scalar<N, std::enable_if_t<N == 3 
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::minus_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::minus_scalar_to_self<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE void call(V& x, int scalar) noexcept
@@ -969,7 +969,7 @@ struct ktm::detail::vec_calc_implement::minus_scalar_to_self<N, std::enable_if_t
 
 #if KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
 template<size_t N>
-struct ktm::detail::vec_calc_implement::mul<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::mul<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -981,7 +981,7 @@ struct ktm::detail::vec_calc_implement::mul<N, std::enable_if_t<N == 3 || N == 4
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::mul_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::mul_to_self<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE void call(V& x, const V& y) noexcept
@@ -991,7 +991,7 @@ struct ktm::detail::vec_calc_implement::mul_to_self<N, std::enable_if_t<N == 3 |
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::mul_scalar<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::mul_scalar<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE V call(const V& x, int scalar) noexcept
@@ -1003,7 +1003,7 @@ struct ktm::detail::vec_calc_implement::mul_scalar<N, std::enable_if_t<N == 3 ||
 };
 
 template<size_t N>
-struct ktm::detail::vec_calc_implement::mul_scalar_to_self<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::vec_calc_implement::mul_scalar_to_self<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE void call(V& x, int scalar) noexcept

@@ -288,7 +288,7 @@ struct ktm::detail::common_implement::abs<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::abs<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::abs<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -312,7 +312,7 @@ struct ktm::detail::common_implement::abs<2, int>
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::abs<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::common_implement::abs<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -336,7 +336,7 @@ struct ktm::detail::common_implement::min<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::min<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::min<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -360,7 +360,7 @@ struct ktm::detail::common_implement::min<2, int>
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::min<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::common_implement::min<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -384,7 +384,7 @@ struct ktm::detail::common_implement::max<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::max<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::max<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -408,7 +408,7 @@ struct ktm::detail::common_implement::max<2, int>
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::max<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::common_implement::max<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -432,7 +432,7 @@ struct ktm::detail::common_implement::clamp<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::clamp<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::clamp<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
@@ -456,7 +456,7 @@ struct ktm::detail::common_implement::clamp<2, int>
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::clamp<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::common_implement::clamp<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
@@ -480,7 +480,7 @@ struct ktm::detail::common_implement::floor<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::floor<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::floor<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -504,7 +504,7 @@ struct ktm::detail::common_implement::ceil<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::ceil<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::ceil<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -528,7 +528,7 @@ struct ktm::detail::common_implement::round<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::round<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::round<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -553,7 +553,7 @@ struct ktm::detail::common_implement::lerp<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::lerp<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::lerp<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, const V& y, float t) noexcept
@@ -578,7 +578,7 @@ struct ktm::detail::common_implement::mix<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::mix<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::mix<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, const V& y, const V& t) noexcept
@@ -602,7 +602,7 @@ struct ktm::detail::common_implement::recip<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::recip<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::recip<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -628,7 +628,7 @@ struct ktm::detail::common_implement::step<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::step<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::step<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& edge, const V& x) noexcept
@@ -657,7 +657,7 @@ struct ktm::detail::common_implement::smoothstep<2, float>
 
 
 template<size_t N>
-struct ktm::detail::common_implement::smoothstep<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::smoothstep<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& edge0, const V& edge1, const V& x) noexcept
@@ -684,7 +684,7 @@ struct ktm::detail::common_implement::fract<2, float>
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::fract<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::fract<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -802,7 +802,7 @@ struct ktm::detail::common_implement::reduce_max<4, float>
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::abs<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::abs<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -814,7 +814,7 @@ struct ktm::detail::common_implement::abs<N, std::enable_if_t<N == 3 || N == 4, 
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::min<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::min<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -826,7 +826,7 @@ struct ktm::detail::common_implement::min<N, std::enable_if_t<N == 3 || N == 4, 
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::max<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::max<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -838,7 +838,7 @@ struct ktm::detail::common_implement::max<N, std::enable_if_t<N == 3 || N == 4, 
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::clamp<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::clamp<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
@@ -850,7 +850,7 @@ struct ktm::detail::common_implement::clamp<N, std::enable_if_t<N == 3 || N == 4
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::floor<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::floor<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -862,7 +862,7 @@ struct ktm::detail::common_implement::floor<N, std::enable_if_t<N == 3 || N == 4
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::ceil<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::ceil<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -874,7 +874,7 @@ struct ktm::detail::common_implement::ceil<N, std::enable_if_t<N == 3 || N == 4,
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::round<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::round<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -886,7 +886,7 @@ struct ktm::detail::common_implement::round<N, std::enable_if_t<N == 3 || N == 4
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::lerp<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::lerp<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, const V& y, float t) noexcept
@@ -899,7 +899,7 @@ struct ktm::detail::common_implement::lerp<N, std::enable_if_t<N == 3 || N == 4,
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::mix<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::mix<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x, const V& y, const V& t) noexcept
@@ -911,7 +911,7 @@ struct ktm::detail::common_implement::mix<N, std::enable_if_t<N == 3 || N == 4, 
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::recip<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::recip<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -923,7 +923,7 @@ struct ktm::detail::common_implement::recip<N, std::enable_if_t<N == 3 || N == 4
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::step<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::step<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& edge, const V& x) noexcept
@@ -936,7 +936,7 @@ struct ktm::detail::common_implement::step<N, std::enable_if_t<N == 3 || N == 4,
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::smoothstep<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::smoothstep<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& edge0, const V& edge1, const V& x) noexcept
@@ -950,7 +950,7 @@ struct ktm::detail::common_implement::smoothstep<N, std::enable_if_t<N == 3 || N
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::fract<N, std::enable_if_t<N == 3 || N == 4, float>>
+struct ktm::detail::common_implement::fract<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -1020,7 +1020,7 @@ struct ktm::detail::common_implement::reduce_add<4, int>
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::abs<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::common_implement::abs<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -1084,7 +1084,7 @@ struct ktm::detail::common_implement::reduce_max<4, int>
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::min<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::common_implement::min<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -1096,7 +1096,7 @@ struct ktm::detail::common_implement::min<N, std::enable_if_t<N == 3 || N == 4, 
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::max<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::common_implement::max<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -1108,7 +1108,7 @@ struct ktm::detail::common_implement::max<N, std::enable_if_t<N == 3 || N == 4, 
 };
 
 template<size_t N>
-struct ktm::detail::common_implement::clamp<N, std::enable_if_t<N == 3 || N == 4, int>>
+struct ktm::detail::common_implement::clamp<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
     static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
