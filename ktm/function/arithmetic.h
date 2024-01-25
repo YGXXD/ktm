@@ -247,47 +247,9 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> rsqrt(T x) noexcept
 }
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_exist_same_vs<float, double, T>, T> fast_rsqrt(T x) noexcept
-{
-    using integral_type = std::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
-    integral_type i = *reinterpret_cast<const integral_type*>(&x);
-
-    // 雷神三算法: u = 0.0450465
-    if constexpr(std::is_same_v<integral_type, unsigned int>)
-    {
-        i = 0x5f3759df - (i >> 1);
-    }
-    else // std::is_same_v<integral_type, unsigned long long> 
-    {
-        i = 0x5fe6eb3bfb58d152 - (i >> 1);
-    }
-    T ret = *reinterpret_cast<T*>(&i); 
-    return ret * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * ret * ret));
-}
-
-template<typename T>
 KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> recip(T x) noexcept
 {
     return one<T> / x;
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_exist_same_vs<float, double, T>, T> fast_recip(T x) noexcept
-{
-    using integral_type = std::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
-    integral_type i = *reinterpret_cast<const integral_type*>(&x);
-
-    // u = 0.0450465
-    if constexpr(std::is_same_v<integral_type, unsigned int>)
-    {
-        i = 0x7ef477d5 - i;
-    }
-    else // std::is_same_v<integral_type, unsigned long long> 
-    {
-        i = 0x7fde8efaa4766c6e - i;
-    }
-    T ret = *reinterpret_cast<T*>(&i); 
-    return ret * (static_cast<T>(2) - x * ret);
 }
 
 template<typename T>
@@ -313,6 +275,37 @@ template<typename T>
 KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> fract(T x) noexcept
 {
     return x - ktm::floor(x);
+}
+
+namespace fast
+{
+template<typename T>
+KTM_INLINE std::enable_if_t<std::is_exist_same_vs<float, double, T>, T> rsqrt(T x) noexcept
+{
+    using integral_type = std::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
+    integral_type i = *reinterpret_cast<const integral_type*>(&x);
+    // 雷神三算法: u = 0.0450465
+    if constexpr(std::is_same_v<integral_type, unsigned int>)
+        i = 0x5f3759df - (i >> 1);
+    else
+        i = 0x5fe6eb3bfb58d152 - (i >> 1);
+    T ret = *reinterpret_cast<T*>(&i); 
+    return ret * (static_cast<T>(1.5) - (static_cast<T>(0.5) * x * ret * ret));
+}
+
+template<typename T>
+KTM_INLINE std::enable_if_t<std::is_exist_same_vs<float, double, T>, T> recip(T x) noexcept
+{
+    using integral_type = std::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
+    integral_type i = *reinterpret_cast<const integral_type*>(&x);
+    // u = 0.0450465
+    if constexpr(std::is_same_v<integral_type, unsigned int>)
+        i = 0x7ef477d5 - i;
+    else
+        i = 0x7fde8efaa4766c6e - i;
+    T ret = *reinterpret_cast<T*>(&i); 
+    return ret * (static_cast<T>(2) - x * ret);
+}
 }
 
 }

@@ -166,7 +166,7 @@ KTM_FUNC float fv3_rmin(__m128 x) noexcept
 KTM_FUNC float fv4_rmin(__m128 x) noexcept
 {
 	__m128 ret = _mm_min_ps(x, _mm_shuffle_ps(x, x, _MM_SHUFFLE(1, 0, 3, 2)));
-	ret = _mm_min_ss(ret, _mm_shuffle_ps(ret, ret, 1))	
+	ret = _mm_min_ss(ret, _mm_shuffle_ps(ret, ret, 1));
 	return _mm_cvtss_f32(ret); 	
 }
 
@@ -180,7 +180,7 @@ KTM_FUNC float fv3_rmax(__m128 x) noexcept
 KTM_FUNC float fv4_rmax(__m128 x) noexcept
 {
 	__m128 ret = _mm_max_ps(x, _mm_shuffle_ps(x, x, _MM_SHUFFLE(1, 0, 3, 2)));
-	ret = _mm_max_ss(ret, _mm_shuffle_ps(ret, ret, 1))	
+	ret = _mm_max_ss(ret, _mm_shuffle_ps(ret, ret, 1));
 	return _mm_cvtss_f32(ret); 
 }
 
@@ -242,7 +242,7 @@ KTM_FUNC int sv3_rmin(__m128i x) noexcept
 KTM_FUNC int sv4_rmin(__m128i x) noexcept
 {
 	__m128i ret = _mm_min_epi32(x, _mm_shuffle_epi32(x, _MM_SHUFFLE(1, 0, 3, 2)));
-	ret = _mm_min_epi32(ret, _mm_shuffle_epi32(ret, 1))	
+	ret = _mm_min_epi32(ret, _mm_shuffle_epi32(ret, 1));
 	return _mm_cvtss_f32(ret); 	
 }
 
@@ -256,7 +256,7 @@ KTM_FUNC int sv3_rmax(__m128i x) noexcept
 KTM_FUNC int sv4_rmax(__m128i x) noexcept
 {
 	__m128i ret = _mm_max_epi32(x, _mm_shuffle_epi32(x, _MM_SHUFFLE(1, 0, 3, 2)));
-	ret = _mm_max_epi32(ret, _mm_shuffle_epi32(ret, 1))	
+	ret = _mm_max_epi32(ret, _mm_shuffle_epi32(ret, 1));
 	return _mm_cvtss_f32(ret); 
 }
 
