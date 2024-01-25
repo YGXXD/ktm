@@ -330,7 +330,7 @@ struct ktm::detail::common_implement::min<2, float>
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
-        ret.st = vmin_f32(x.st, y.st);
+        ret.st = vminnm_f32(x.st, y.st);
         return ret;
     }
 };
@@ -342,7 +342,7 @@ struct ktm::detail::common_implement::min<N, float, std::enable_if_t<N == 3 || N
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
-        ret.st = vminq_f32(x.st, y.st);
+        ret.st = vminnmq_f32(x.st, y.st);
         return ret;
     }
 };
@@ -378,7 +378,7 @@ struct ktm::detail::common_implement::max<2, float>
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
-        ret.st = vmax_f32(x.st, y.st);
+        ret.st = vmaxnm_f32(x.st, y.st);
         return ret;
     }
 };
@@ -390,7 +390,7 @@ struct ktm::detail::common_implement::max<N, float, std::enable_if_t<N == 3 || N
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
-        ret.st = vmaxq_f32(x.st, y.st);
+        ret.st = vmaxnmq_f32(x.st, y.st);
         return ret;
     }
 };
