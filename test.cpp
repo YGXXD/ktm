@@ -31,6 +31,18 @@ static void VecTest()
     std::cout << "round: " << ktm::round(t3) << std::endl;
 }
 
+static void GeoTest()
+{
+    ktm::fvec3 a = { 1.f, 2.f, 3.f };
+    ktm::fvec3 b = { 7.f, 2.f, -3.f }; 
+    std::cout << "dot: " << ktm::dot(a, b) << std::endl;
+    std::cout << "length: " << ktm::length(a) << " " << ktm::length(b) << std::endl;
+    std::cout << "project: " << ktm::project(a, b) << std::endl;
+    std::cout << "normalize: " << ktm::normalize(b) << std::endl;
+    std::cout << "reflect: " << ktm::reflect(a, b) << std::endl; 
+    std::cout << "refract: " << ktm::refract(a, b, 1.3) << std::endl; 
+}
+
 static void MatTest()
 {
     std::cout << "mat_mul_vec test:" << std::endl;
@@ -131,6 +143,7 @@ static void QuatTest()
 int main(int argc, char* argv[])
 {
     VecTest();
+    GeoTest();
     MatTest();
     QuatTest();
     return 0;

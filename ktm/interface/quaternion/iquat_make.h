@@ -43,7 +43,7 @@ struct iquat_make<Father, quat<T>> : Father
         
         vec<3, T> half = from + to;
         
-        if (equal_zero(length_squared(half))) 
+        if (equal_zero(dot(half, half))) 
         {
             vec<3, T> abs_from = abs(from);
             if (abs_from.x <= abs_from.y && abs_from.x <= abs_from.z)

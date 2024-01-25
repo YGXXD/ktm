@@ -111,7 +111,9 @@ struct ktm::detail::common_implement::reduce_add<3, float>
     using V = vec<3, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return vaddvq_f32(vsetq_lane_f32(zero<float>, x.st, 3)); 
+        float32x4_t ret = vaddq_f32(vdupq_laneq_f32(x.st, 1), x.st);
+        ret = vaddq_f32(vdupq_laneq_f32(x.st, 2), ret); 
+        return vgetq_lane_f32(ret, 0); 
     }
 };
 
@@ -141,7 +143,9 @@ struct ktm::detail::common_implement::reduce_add<3, int>
     using V = vec<3, int>;
     static KTM_INLINE int call(const V& x) noexcept
     {
-        return vaddvq_s32(vsetq_lane_s32(zero<int>, x.st, 3)); 
+        int32x4_t ret = vaddq_s32(vdupq_laneq_s32(x.st, 1), x.st);
+        ret = vaddq_s32(vdupq_laneq_s32(x.st, 2), ret); 
+        return vgetq_lane_s32(ret, 0); 
     }
 };
 

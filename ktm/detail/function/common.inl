@@ -9,7 +9,6 @@
 template<size_t StepN, size_t N, typename T, typename Void>
 struct ktm::detail::common_implement::elem_move
 {
-    static_assert(StepN > 0 && StepN < N);
 	using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
