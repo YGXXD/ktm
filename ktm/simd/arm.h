@@ -83,55 +83,6 @@ KTM_FUNC unsigned int maskq_u32(uint32x4_t x) noexcept
     return vget_lane_u32(l, 0); 
 }
 
-KTM_FUNC int32x2_t madd_s32(int32x2_t x, int32x2_t y, int32x2_t a) noexcept
-{
-	return vmla_s32(a, x, y);
-}
-
-KTM_FUNC int32x4_t maddq_s32(int32x4_t x, int32x4_t y, int32x4_t a) noexcept
-{
-	return vmlaq_s32(a, x, y);
-}
-
-KTM_FUNC int addv_s32(int32x2_t x) noexcept
-{
-	int32x2_t r = vadd_s32(x, vrev64_s32(x));
-	return vget_lane_s32(r, 0);
-}
-
-KTM_FUNC int addvq_s32(int32x4_t x) noexcept
-{
-	int32x4_t r = vaddq_s32(x, vrev64q_s32(x));
-  	r = vaddq_s32(r, vextq_s32(r, r, 2));
-  	return vgetq_lane_s32(r, 0);
-}
-
-KTM_FUNC int minv_s32(int32x2_t x) noexcept
-{	
-  	int32x2_t r = vpmin_s32(x, x);
-  	return vget_lane_s32(r, 0);
-}
-
-KTM_FUNC int minvq_s32(int32x4_t x) noexcept
-{
-  	int32x2_t r = vpmin_s32(vget_low_s32(x), vget_high_s32(x));
-  	r = vpmin_s32(r, r);
-  	return vget_lane_s32(r, 0);
-}
-
-KTM_FUNC int maxv_s32(int32x2_t x) noexcept
-{	
-  	int32x2_t r = vpmax_s32(x, x);
-  	return vget_lane_s32(r, 0);
-}
-
-KTM_FUNC int maxvq_s32(int32x4_t x) noexcept
-{
-  	int32x2_t r = vpmax_s32(vget_low_s32(x), vget_high_s32(x));
-  	r = vpmax_s32(r, r);
-  	return vget_lane_s32(r, 0);
-}
-
 KTM_FUNC int32x2_t clamp_s32(int32x2_t x, int32x2_t min, int32x2_t max) noexcept
 {
 	return vmin_s32(vmax_s32(x, min), max);
@@ -140,55 +91,6 @@ KTM_FUNC int32x2_t clamp_s32(int32x2_t x, int32x2_t min, int32x2_t max) noexcept
 KTM_FUNC int32x4_t clampq_s32(int32x4_t x, int32x4_t min, int32x4_t max) noexcept
 {
 	return vminq_s32(vmaxq_s32(x, min), max);
-}
-
-KTM_FUNC float32x2_t madd_f32(float32x2_t x, float32x2_t y, float32x2_t a) noexcept
-{
-	return vmla_f32(a, x, y);
-}
-
-KTM_FUNC float32x4_t maddq_f32(float32x4_t x, float32x4_t y, float32x4_t a) noexcept
-{
-	return vmlaq_f32(a, x, y);
-}
-
-KTM_FUNC float addv_f32(float32x2_t x) noexcept
-{
-	float32x2_t r = vadd_f32(x, vrev64_f32(x));
-	return vget_lane_f32(r, 0);
-}
-
-KTM_FUNC float addvq_f32(float32x4_t x) noexcept
-{
-	float32x4_t r = vaddq_f32(x, vrev64q_f32(x));
-  	r = vaddq_f32(r, vextq_f32(r, r, 2));
-  	return vgetq_lane_f32(r, 0);
-}
-
-KTM_FUNC float minv_f32(float32x2_t x) noexcept
-{	
-  	float32x2_t r = vpmin_f32(x, x);
-  	return vget_lane_f32(r, 0);
-}
-
-KTM_FUNC float minvq_f32(float32x4_t x) noexcept
-{
-  	float32x2_t r = vpmin_f32(vget_low_f32(x), vget_high_f32(x));
-  	r = vpmin_f32(r, r);
-  	return vget_lane_f32(r, 0);
-}
-
-KTM_FUNC float maxv_f32(float32x2_t x) noexcept
-{	
-  	float32x2_t r = vpmax_f32(x, x);
-  	return vget_lane_f32(r, 0);
-}
-
-KTM_FUNC float maxvq_f32(float32x4_t x) noexcept
-{
-  	float32x2_t r = vpmax_f32(vget_low_f32(x), vget_high_f32(x));
-  	r = vpmax_f32(r, r);
-  	return vget_lane_f32(r, 0);
 }
 
 KTM_FUNC float32x2_t clamp_f32(float32x2_t x, float32x2_t min, float32x2_t max) noexcept
@@ -253,70 +155,258 @@ KTM_FUNC float32x4_t recipq_f32(float32x4_t x) noexcept
 
 namespace geo
 {
-KTM_FUNC int32x2_t sv2_dot(int32x2_t x, int32x2_t y) noexcept
+KTM_FUNC int sv2_radd(int32x2_t x) noexcept
 {
-	int32x2_t mul = vmul_s32(x, y);
-	//return vpadd_s32(mul, mul);
-	return vadd_s32(mul, vrev64_s32(mul));
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+	return vaddv_s32(x);
+#else
+	int32x2_t r = vadd_s32(x, vrev64_s32(x));
+	return vget_lane_s32(r, 0);
+#endif
+}
+
+KTM_FUNC int sv3_radd(int32x4_t x)noexcept
+{
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+	int32x4_t ret = vaddq_s32(vdupq_laneq_s32(x, 1), x);
+	ret = vaddq_s32(vdupq_laneq_s32(x, 2), ret);	
+#else
+	int32x4_t ret = vaddq_s32(vmovq_n_s32(vgetq_lane_s32(x, 1)), x);
+	ret = vaddq_s32(vmovq_n_s32(vgetq_lane_s32(x, 2)), ret);
+#endif
+	return vgetq_lane_s32(ret, 0); 
+}
+
+KTM_FUNC int sv4_radd(int32x4_t x) noexcept
+{
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+	return vaddvq_s32(x);
+#else
+	int32x4_t r = vaddq_s32(x, vrev64q_s32(x));
+  	r = vaddq_s32(r, vextq_s32(r, r, 2));
+  	return vgetq_lane_s32(r, 0);
+#endif
+}
+
+KTM_FUNC int sv2_rmin(int32x2_t x) noexcept
+{	
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+	return vminv_s32(x);
+#else
+  	int32x2_t r = vpmin_s32(x, x);
+  	return vget_lane_s32(r, 0);
+#endif
+}
+
+KTM_FUNC int sv3_rmin(int32x4_t x) noexcept
+{
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+	int32x4_t ret = vminq_s32(vdupq_laneq_s32(x, 1), x);
+	ret = vminq_s32(vdupq_laneq_s32(x, 2), ret); 
+#else
+	int32x4_t ret = vminq_s32(vmovq_n_s32(vgetq_lane_s32(x, 1)), x);
+	ret = vminq_s32(vmovq_n_s32(vgetq_lane_s32(x, 2)), ret);
+#endif
+	return vgetq_lane_s32(ret, 0);
+}
+
+KTM_FUNC int sv4_rmin(int32x4_t x) noexcept
+{
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+	return vminvq_s32(x);
+#else
+  	int32x2_t r = vpmin_s32(vget_low_s32(x), vget_high_s32(x));
+  	r = vpmin_s32(r, r);
+  	return vget_lane_s32(r, 0);
+#endif
+}
+
+KTM_FUNC int sv2_rmax(int32x2_t x) noexcept
+{	
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+	return vmaxv_s32(x);
+#else
+  	int32x2_t r = vpmax_s32(x, x);
+  	return vget_lane_s32(r, 0);
+#endif
+}
+
+KTM_FUNC int sv3_rmax(int32x4_t x) noexcept
+{
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+	int32x4_t ret = vmaxq_s32(vdupq_laneq_s32(x, 1), x);
+	ret = vmaxq_s32(vdupq_laneq_s32(x, 2), ret); 
+#else
+	int32x4_t ret = vmaxq_s32(vmovq_n_s32(vgetq_lane_s32(x, 1)), x);
+	ret = vmaxq_s32(vmovq_n_s32(vgetq_lane_s32(x, 2)), ret);
+#endif
+	return vgetq_lane_s32(ret, 0);
+}
+
+KTM_FUNC int sv4_rmax(int32x4_t x) noexcept
+{
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+	return vmaxvq_s32(x);
+#else
+  	int32x2_t r = vpmax_s32(vget_low_s32(x), vget_high_s32(x));
+  	r = vpmax_s32(r, r);
+  	return vget_lane_s32(r, 0);
+#endif
 }
 
 KTM_FUNC int32x4_t sv4_dot(int32x4_t x, int32x4_t y) noexcept
 {
 	int32x4_t mul = vmulq_s32(x, y);
-    // int32x4_t add_0 = vpaddq_s32(mul, mul);
-    // int32x4_t add_1 = vpaddq_s32(add_0, add_0);
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+    int32x4_t add_0 = vpaddq_s32(mul, mul);
+    int32x4_t add_1 = vpaddq_s32(add_0, add_0);
+#else
 	int32x4_t add_0 = vaddq_s32(mul, vrev64q_s32(mul));
   	int32x4_t add_1 = vaddq_s32(add_0, vextq_s32(add_0, add_0, 2));
+#endif
 	return add_1;
 }
 
 KTM_FUNC int sv2_dot1(int32x2_t x, int32x2_t y) noexcept
 {
-	return vget_lane_s32(sv2_dot(x, y), 0);
+	return sv2_radd(vmul_s32(x, y));
 }
 
 KTM_FUNC int sv3_dot1(int32x4_t x, int32x4_t y) noexcept
 {
-	int32x4_t m_x = vsetq_lane_s32(0, x, 3);
-	return vgetq_lane_s32(sv4_dot(m_x, y), 0);	
+	return sv3_radd(vmulq_s32(x, y));	
 }
 
 KTM_FUNC int sv4_dot1(int32x4_t x, int32x4_t y) noexcept
 {
-	return vgetq_lane_s32(sv4_dot(x, y), 0);
+	return sv4_radd(vmulq_s32(x, y));	
 }
 
-KTM_FUNC float32x2_t fv2_dot(float32x2_t x, float32x2_t y) noexcept
+KTM_FUNC float fv2_radd(float32x2_t x) noexcept
 {
-	float32x2_t mul = vmul_f32(x, y);
-	//return vpadd_f32(mul, mul);
-	return vadd_f32(mul, vrev64_f32(mul));
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+	return vaddv_f32(x);
+#else
+	float32x2_t r = vadd_f32(x, vrev64_f32(x));
+	return vget_lane_f32(r, 0);
+#endif
+}
+
+KTM_FUNC float fv3_radd(float32x4_t x) noexcept
+{
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+	float32x4_t ret = vaddq_f32(vdupq_laneq_f32(x, 1), x);
+	ret = vaddq_f32(vdupq_laneq_f32(x, 2), ret); 
+#else
+	float32x4_t ret = vaddq_f32(vmovq_n_f32(vgetq_lane_f32(x, 1)), x);
+	ret = vaddq_f32(vmovq_n_f32(vgetq_lane_f32(x, 2)), ret); 
+#endif
+	return vgetq_lane_f32(ret, 0);
+}
+
+KTM_FUNC float fv4_radd(float32x4_t x) noexcept
+{
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+	return vaddvq_f32(x);
+#else
+	float32x4_t r = vaddq_f32(x, vrev64q_f32(x));
+  	r = vaddq_f32(r, vextq_f32(r, r, 2));
+  	return vgetq_lane_f32(r, 0);
+#endif
+}
+
+KTM_FUNC float fv2_rmin(float32x2_t x) noexcept
+{	
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+	return vminv_f32(x);
+#else
+  	float32x2_t r = vpmin_f32(x, x);
+  	return vget_lane_f32(r, 0);
+#endif
+}
+
+KTM_FUNC float fv3_rmin(float32x4_t x) noexcept
+{
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG	
+	float32x4_t ret = vminq_f32(vdupq_laneq_f32(x, 1), x);
+	ret = vminq_f32(vdupq_laneq_f32(x, 2), ret); 
+#else
+	float32x4_t ret = vminq_f32(vmovq_n_f32(vgetq_lane_f32(x, 1)), x);
+	ret = vminq_f32(vmovq_n_f32(vgetq_lane_f32(x, 2)), ret); 
+#endif
+	return vgetq_lane_f32(ret, 0);
+}
+
+KTM_FUNC float fv4_rmin(float32x4_t x) noexcept
+{
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+	return vminvq_f32(x);
+#else
+  	float32x2_t r = vpmin_f32(vget_low_f32(x), vget_high_f32(x));
+  	r = vpmin_f32(r, r);
+  	return vget_lane_f32(r, 0);
+#endif
+}
+
+KTM_FUNC float fv2_rmax(float32x2_t x) noexcept
+{	
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+	return vmaxv_f32(x);
+#else
+  	float32x2_t r = vpmax_f32(x, x);
+  	return vget_lane_f32(r, 0);
+#endif
+}
+
+KTM_FUNC float fv3_rmax(float32x4_t x) noexcept
+{
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+	float32x4_t ret = vmaxq_f32(vdupq_laneq_f32(x, 1), x);
+	ret = vmaxq_f32(vdupq_laneq_f32(x, 2), ret); 
+#else
+	float32x4_t ret = vmaxq_f32(vmovq_n_f32(vgetq_lane_f32(x, 1)), x);
+	ret = vmaxq_f32(vmovq_n_f32(vgetq_lane_f32(x, 2)), ret); 
+#endif
+	return vgetq_lane_f32(ret, 0);
+}
+
+KTM_FUNC float fv4_rmax(float32x4_t x) noexcept
+{
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+	return vmaxvq_f32(x);
+#else
+  	float32x2_t r = vpmax_f32(vget_low_f32(x), vget_high_f32(x));
+  	r = vpmax_f32(r, r);
+  	return vget_lane_f32(r, 0);
+#endif
 }
 
 KTM_FUNC float32x4_t fv4_dot(float32x4_t x, float32x4_t y) noexcept
 {
-	float32x4_t mul = vmulq_f32(x, y);
-    // float32x4_t add_0 = vpaddq_f32(mul, mul);
-    // float32x4_t add_1 = vpaddq_f32(add_0, add_0);
+	float32x4_t mul = vmulq_f32(x, y);   
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+	float32x4_t add_0 = vpaddq_f32(mul, mul);
+    float32x4_t add_1 = vpaddq_f32(add_0, add_0);
+#else
 	float32x4_t add_0 = vaddq_f32(mul, vrev64q_f32(mul));
   	float32x4_t add_1 = vaddq_f32(add_0, vextq_f32(add_0, add_0, 2));
+#endif
 	return add_1;
 }
 
 KTM_FUNC float fv2_dot1(float32x2_t x, float32x2_t y) noexcept
 {
-	return vget_lane_f32(fv2_dot(x, y), 0);
+	return fv2_radd(vmul_f32(x, y));
 }
 
 KTM_FUNC float fv3_dot1(float32x4_t x, float32x4_t y) noexcept
 {
-	float32x4_t m_x = vsetq_lane_f32(0.f, x, 3);
-	return vgetq_lane_f32(fv4_dot(m_x, y), 0);
+	return fv3_radd(vmulq_f32(x, y));
 }
 
 KTM_FUNC float fv4_dot1(float32x4_t x, float32x4_t y) noexcept
 {
-	return vgetq_lane_f32(fv4_dot(x, y), 0);
+	return fv4_radd(vmulq_f32(x, y));
 }
 }
 
