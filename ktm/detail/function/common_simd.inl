@@ -735,9 +735,7 @@ struct ktm::detail::common_implement::reduce_add<3, float>
     using V = vec<3, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        __m128 sum_0 = _mm_add_ss(x.st, _mm_shuffle_ps(x.st, x.st, _MM_SHUFFLE(0, 3, 2, 1)));
-        __m128 sum_1 = _mm_add_ss(sum_0, _mm_shuffle_ps(x.st, x.st, _MM_SHUFFLE(1, 0, 3, 2)));
-        return _mm_cvtss_f32(sum_1); 
+        return x86::geo::fv3_radd(x.st);
     }
 };
 
@@ -747,9 +745,7 @@ struct ktm::detail::common_implement::reduce_add<4, float>
     using V = vec<4, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        __m128 sum_0 = _mm_add_ps(x.st, _mm_shuffle_ps(x.st, x.st, _MM_SHUFFLE(1, 0, 3, 2)));
-        __m128 sum_1 = _mm_add_ss(sum_0, _mm_shuffle_ps(sum_0, sum_0, _MM_SHUFFLE(0, 3, 2, 1)));
-        return _mm_cvtss_f32(sum_1); 
+        return x86::geo::fv4_radd(x.st);
     }
 };
 
@@ -759,9 +755,7 @@ struct ktm::detail::common_implement::reduce_min<3, float>
     using V = vec<3, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        __m128 min_0 = _mm_min_ss(x.st, _mm_shuffle_ps(x.st, x.st, _MM_SHUFFLE(0, 3, 2, 1)));
-        __m128 min_1 = _mm_min_ss(min_0, _mm_shuffle_ps(x.st, x.st, _MM_SHUFFLE(1, 0, 3, 2)));
-        return _mm_cvtss_f32(min_1); 
+        return x86::geo::fv3_rmin(x.st);
     }
 };
 
@@ -771,9 +765,7 @@ struct ktm::detail::common_implement::reduce_min<4, float>
     using V = vec<4, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        __m128 min_0 = _mm_min_ps(x.st, _mm_shuffle_ps(x.st, x.st, _MM_SHUFFLE(1, 0, 3, 2)));
-        __m128 min_1 = _mm_min_ss(min_0, _mm_shuffle_ps(min_0, min_0, _MM_SHUFFLE(0, 3, 2, 1)));
-        return _mm_cvtss_f32(min_1); 
+        return x86::geo::fv4_rmin(x.st);
     }
 };
 
@@ -783,9 +775,7 @@ struct ktm::detail::common_implement::reduce_max<3, float>
     using V = vec<3, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        __m128 max_0 = _mm_max_ss(x.st, _mm_shuffle_ps(x.st, x.st, _MM_SHUFFLE(0, 3, 2, 1)));
-        __m128 max_1 = _mm_max_ss(max_0, _mm_shuffle_ps(x.st, x.st, _MM_SHUFFLE(1, 0, 3, 2)));
-        return _mm_cvtss_f32(max_1); 
+        return x86::geo::fv3_rmax(x.st);
     }
 };
 
@@ -795,9 +785,7 @@ struct ktm::detail::common_implement::reduce_max<4, float>
     using V = vec<4, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        __m128 max_0 = _mm_max_ps(x.st, _mm_shuffle_ps(x.st, x.st, _MM_SHUFFLE(1, 0, 3, 2)));
-        __m128 max_1 = _mm_max_ss(max_0, _mm_shuffle_ps(max_0, max_0, _MM_SHUFFLE(0, 3, 2, 1)));
-        return _mm_cvtss_f32(max_1);  
+        return x86::geo::fv4_rmax(x.st);  
     }
 };
 
@@ -1001,9 +989,7 @@ struct ktm::detail::common_implement::reduce_add<3, int>
     using V = vec<3, int>;
     static KTM_INLINE int call(const V& x) noexcept
     {
-        __m128i sum_0 = _mm_add_epi32(x.st, _mm_shuffle_epi32(x.st, _MM_SHUFFLE(0, 3, 2, 1)));
-        __m128i sum_1 = _mm_add_epi32(sum_0, _mm_shuffle_epi32(x.st, _MM_SHUFFLE(1, 0, 3, 2)));
-        return _mm_cvtsi128_si32(sum_1); 
+        return x86::geo::sv3_radd(x.st);
     }
 };
 
@@ -1013,9 +999,7 @@ struct ktm::detail::common_implement::reduce_add<4, int>
     using V = vec<4, int>;
     static KTM_INLINE int call(const V& x) noexcept
     {
-        __m128i sum_0 = _mm_add_epi32(x.st, _mm_shuffle_epi32(x.st, _MM_SHUFFLE(1, 0, 3, 2)));
-        __m128i sum_1 = _mm_add_epi32(sum_0, _mm_shuffle_epi32(sum_0, _MM_SHUFFLE(0, 3, 2, 1)));
-        return _mm_cvtsi128_si32(sum_1); 
+        return x86::geo::sv4_radd(x.st);
     }
 };
 
@@ -1041,9 +1025,7 @@ struct ktm::detail::common_implement::reduce_min<3, int>
     using V = vec<3, int>;
     static KTM_INLINE int call(const V& x) noexcept
     {
-        __m128i min_0 = _mm_min_epi32(x.st, _mm_shuffle_epi32(x.st, _MM_SHUFFLE(0, 3, 2, 1)));
-        __m128i min_1 = _mm_min_epi32(min_0, _mm_shuffle_epi32(x.st, _MM_SHUFFLE(1, 0, 3, 2)));
-        return _mm_cvtsi128_si32(min_1); 
+        return x86::geo::sv3_rmin(x.st);
     }
 };
 
@@ -1053,9 +1035,7 @@ struct ktm::detail::common_implement::reduce_min<4, int>
     using V = vec<4, int>;
     static KTM_INLINE int call(const V& x) noexcept
     {
-        __m128i min_0 = _mm_min_epi32(x.st, _mm_shuffle_epi32(x.st, _MM_SHUFFLE(1, 0, 3, 2)));
-        __m128i min_1 = _mm_min_epi32(min_0, _mm_shuffle_epi32(min_0, _MM_SHUFFLE(0, 3, 2, 1)));
-        return _mm_cvtsi128_si32(min_1); 
+        return x86::geo::sv4_rmin(x.st);
     }
 };
 
@@ -1065,9 +1045,7 @@ struct ktm::detail::common_implement::reduce_max<3, int>
     using V = vec<3, int>;
     static KTM_INLINE int call(const V& x) noexcept
     {
-        __m128i max_0 = _mm_max_epi32(x.st, _mm_shuffle_epi32(x.st, _MM_SHUFFLE(0, 3, 2, 1)));
-        __m128i max_1 = _mm_max_epi32(max_0, _mm_shuffle_epi32(x.st, _MM_SHUFFLE(1, 0, 3, 2)));
-        return _mm_cvtsi128_si32(max_1); 
+        return x86::geo::sv3_rmax(x.st); 
     }
 };
 
@@ -1077,9 +1055,7 @@ struct ktm::detail::common_implement::reduce_max<4, int>
     using V = vec<4, int>;
     static KTM_INLINE int call(const V& x) noexcept
     {
-        __m128i max_0 = _mm_max_epi32(x.st, _mm_shuffle_epi32(x.st, _MM_SHUFFLE(1, 0, 3, 2)));
-        __m128i max_1 = _mm_max_epi32(max_0, _mm_shuffle_epi32(max_0, _MM_SHUFFLE(0, 3, 2, 1)));
-        return _mm_cvtsi128_si32(max_1); 
+        return x86::geo::sv4_rmax(x.st);
     }
 };
 
