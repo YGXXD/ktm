@@ -349,8 +349,8 @@ struct ktm::detail::matrix_implement::inverse<4, float>
         float32x4_t i_tmp_0 = neon_shuffleq_f32(inv_0, inv_1, 0, 0, 0, 0);
         float32x4_t i_tmp_1 = neon_shuffleq_f32(inv_2, inv_3, 0, 0, 0, 0);
         float32x4_t i_row_0 = neon_shuffleq_f32(i_tmp_0, i_tmp_1, 3, 1, 3, 1);
-        float32x4_t i_dot_0 = arm::geo::fv4_dot(c_0, i_row_0);
-        float32x4_t one_over_det = vdivq_f32(vdupq_n_f32(one<float>), i_dot_0);
+        float32x4_t i_dot = arm::geo::fv4_dot(c_0, i_row_0);
+        float32x4_t one_over_det = arm::ext::recipq_f32(i_dot);
         
         M ret;
         ret[0].st = vmulq_f32(inv_0, one_over_det);
@@ -657,7 +657,7 @@ struct ktm::detail::matrix_implement::inverse<4, float>
         __m128 i_tmp_1 = _mm_shuffle_ps(inv_2, inv_3, 0);
         __m128 i_row_0 = _mm_shuffle_ps(i_tmp_0, i_tmp_1,  _MM_SHUFFLE(3, 1, 3, 1));
         __m128 i_dot = x86::geo::fv4_dot(c_0, i_row_0);
-        __m128 one_over_det = _mm_div_ps(_mm_set1_ps(one<float>), i_dot);
+        __m128 one_over_det = x86::ext::recip_ps(i_dot);;
 
         M ret;
         ret[0].st = _mm_mul_ps(inv_0, one_over_det);

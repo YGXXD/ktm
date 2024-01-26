@@ -123,6 +123,21 @@ KTM_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> fr
     return detail::common_implement::fract<vec_traits_len<V>, vec_traits_base_t<V>>::call(x);
 }
 
+namespace fast
+{
+template<class V>
+KTM_INLINE std::enable_if_t<is_vector_v<V> && is_listing_type_base_v<type_list<float, double>, V>, V> rsqrt(const V& x) noexcept
+{
+    return detail::common_implement::fast_rsqrt<vec_traits_len<V>, vec_traits_base_t<V>>::call(x);
+}
+
+template<class V>
+KTM_INLINE std::enable_if_t<is_vector_v<V> && is_listing_type_base_v<type_list<float, double>, V>, V> recip(const V& x) noexcept
+{
+    return detail::common_implement::fast_recip<vec_traits_len<V>, vec_traits_base_t<V>>::call(x);
+}
+}
+
 }   
 
 #include "../detail/function/common.inl"

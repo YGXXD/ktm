@@ -145,7 +145,7 @@ struct ktm::detail::vec_calc_implement::div<2, float>
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
-        ret.st = vdiv_f32(x.st, y.st);
+        ret.st = arm::ext::div_f32(x.st, y.st);
         return ret; 
     }
 };
@@ -157,7 +157,7 @@ struct ktm::detail::vec_calc_implement::div<N, float, std::enable_if_t<N == 3 ||
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {   
         V ret;
-        ret.st = vdivq_f32(x.st, y.st);
+        ret.st = arm::ext::divq_f32(x.st, y.st);
         return ret;
     }
 };
@@ -168,7 +168,7 @@ struct ktm::detail::vec_calc_implement::div_to_self<2, float>
     using V = vec<2, float>;
     static KTM_INLINE void call(V& x, const V& y) noexcept
     {
-        x.st = vdiv_f32(x.st, y.st);
+        x.st = arm::ext::div_f32(x.st, y.st);
     }
 };
 
@@ -178,7 +178,7 @@ struct ktm::detail::vec_calc_implement::div_to_self<N, float, std::enable_if_t<N
     using V = vec<N, float>;
     static KTM_INLINE void call(V& x, const V& y) noexcept
     {
-        x.st = vdivq_f32(x.st, y.st);
+        x.st = arm::ext::divq_f32(x.st, y.st);
     }
 };
 
@@ -347,7 +347,7 @@ struct ktm::detail::vec_calc_implement::div_scalar<2, float>
     static KTM_INLINE V call(const V& x, float scalar) noexcept
     {   
         V ret;
-        ret.st = vdiv_f32(x.st, vdup_n_f32(scalar));
+        ret.st = arm::ext::div_f32(x.st, vdup_n_f32(scalar));
         return ret;
     }
 };
@@ -359,7 +359,7 @@ struct ktm::detail::vec_calc_implement::div_scalar<N, float, std::enable_if_t<N 
     static KTM_INLINE V call(const V& x, float scalar) noexcept
     {  
         V ret;
-        ret.st = vdivq_f32(x.st, vdupq_n_f32(scalar));
+        ret.st = arm::ext::divq_f32(x.st, vdupq_n_f32(scalar));
         return ret;
     }
 };
@@ -370,7 +370,7 @@ struct ktm::detail::vec_calc_implement::div_scalar_to_self<2, float>
     using V = vec<2, float>;
     static KTM_INLINE void call(V& x, float scalar) noexcept
     {
-        x.st = vdiv_f32(x.st, vdup_n_f32(scalar));
+        x.st = arm::ext::div_f32(x.st, vdup_n_f32(scalar));
     }
 };
 
@@ -380,7 +380,7 @@ struct ktm::detail::vec_calc_implement::div_scalar_to_self<N, float, std::enable
     using V = vec<N, float>;
     static KTM_INLINE void call(V& x, float scalar) noexcept
     {
-        x.st = vdivq_f32(x.st, vdupq_n_f32(scalar));
+        x.st = arm::ext::divq_f32(x.st, vdupq_n_f32(scalar));
     }
 };
 

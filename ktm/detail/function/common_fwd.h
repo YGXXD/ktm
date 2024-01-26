@@ -2,7 +2,7 @@
 #define _KTM_COMMON_FWD_H_
 
 #include <cstddef>
-#include <type_traits>
+#include "../../traits/type_traits_ext.h"
 
 namespace ktm
 {
@@ -67,6 +67,12 @@ struct smoothstep;
 
 template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
 struct fract;
+
+template<size_t N, typename T, typename = std::enable_if_t<std::is_exist_same_vs<float, double, T>>>
+struct fast_rsqrt;
+
+template<size_t N, typename T, typename = std::enable_if_t<std::is_exist_same_vs<float, double, T>>>
+struct fast_recip;
 
 }
 }

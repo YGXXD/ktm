@@ -151,6 +151,24 @@ KTM_FUNC float32x4_t recipq_f32(float32x4_t x) noexcept
 	return vmulq_f32(r, vrecpsq_f32(x, r));
 }
 
+KTM_FUNC float32x2_t div_f32(float32x2_t x, float32x2_t y) noexcept
+{
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+	return vdiv_f32(x, y);
+#else
+	return vmul_f32(x, recip_f32(y));
+#endif
+}
+
+KTM_FUNC float32x4_t divq_f32(float32x4_t x, float32x4_t y) noexcept
+{
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+	return vdivq_f32(x, y);
+#else
+	return vmulq_f32(x, recipq_f32(y));	
+#endif	
+}
+
 }
 
 namespace geo

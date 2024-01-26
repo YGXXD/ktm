@@ -440,7 +440,7 @@ struct ktm::detail::matrix_implement::factor_svd
         M s = M::from_diag(ata_eigen_value_ref);
         for(int i = 0; i < N; ++i)
         {
-            ata_eigen_value_ref[i] = one<T> / ata_eigen_value_ref[i];  
+            ata_eigen_value_ref[i] = ktm::recip(ata_eigen_value_ref[i]);  
         }
         M u = m * std::get<1>(ata_eigen) * M::from_diag(ata_eigen_value_ref);
         return { u, s, v };
