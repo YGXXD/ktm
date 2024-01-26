@@ -22,19 +22,21 @@ static void VecTest()
     std::cout << "equal: " << (t1 == t3) << ", " << (t1 == t4) << ", " << (t2 == (ktm::svec3)t1) << std::endl;
     std::cout << "value: " << t3 << "\nstep: " << ktm::step({-100.f, 200.f, 10.f}, t3) << std::endl;
     std::cout << "smoothstep: " << ktm::smoothstep({-100.f, 20.f, -200.f}, {100.f, 200.f, 200.f}, t3) << std::endl;
-    std::cout << "recip: " << ktm::recip(t3) << std::endl;
     std::cout << "lerp: " << ktm::lerp(t1, t3, 0.6f) << std::endl;
     std::cout << "mix: " << ktm::mix(t1, t3, {0.5f, 0.6f, 0.3f}) << std::endl; 
     std::cout << "fract: " << ktm::fract(t3) << std::endl;
     std::cout << "floor: " << ktm::floor(t3) << std::endl;
     std::cout << "ceil: " << ktm::ceil(t3) << std::endl;
     std::cout << "round: " << ktm::round(t3) << std::endl;
+    std::cout << "sqrt: " << ktm::sqrt(t5) << std::endl;
+    std::cout << "rsqrt: " << ktm::rsqrt(t5) << std::endl;
+    std::cout << "recip: " << ktm::recip(t3) << std::endl;
 }
 
 static void GeoTest()
 {
-    ktm::fvec3 a = { 1.f, 2.f, 3.f };
-    ktm::fvec3 b = { 7.f, 2.f, -3.f }; 
+    ktm::fvec3 a = { 1.1f, 2.5f, 3.8f };
+    ktm::fvec3 b = { 6.9f, 2.3f, -3.1f }; 
     std::cout << "dot: " << ktm::dot(a, b) << std::endl;
     std::cout << "length: " << ktm::length(a) << " " << ktm::length(b) << std::endl;
     std::cout << "project: " << ktm::project(a, b) << std::endl;

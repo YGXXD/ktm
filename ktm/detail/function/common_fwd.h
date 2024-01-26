@@ -45,13 +45,19 @@ template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_poin
 struct round;
 
 template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
+struct sqrt;
+
+template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
+struct rsqrt;
+
+template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
+struct recip;
+
+template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
 struct lerp;
 
 template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
 struct mix;
-
-template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
-struct recip;
 
 template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
 struct step;

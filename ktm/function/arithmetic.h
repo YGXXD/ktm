@@ -4,7 +4,7 @@
 #include <cmath>
 #include "../setup.h"
 #include "../type/basic.h"
-#include "../traits/type_traits_ext.h"
+#include "../traits/type_traits_math.h"
 
 namespace ktm
 {
@@ -280,7 +280,7 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> fract(T x) noexcept
 namespace fast
 {
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_exist_same_vs<float, double, T>, T> rsqrt(T x) noexcept
+KTM_INLINE std::enable_if_t<is_listing_type_v<type_list<float, double>, T>, T> rsqrt(T x) noexcept
 {
     using integral_type = std::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
     integral_type i = *reinterpret_cast<const integral_type*>(&x);
@@ -294,7 +294,7 @@ KTM_INLINE std::enable_if_t<std::is_exist_same_vs<float, double, T>, T> rsqrt(T 
 }
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_exist_same_vs<float, double, T>, T> recip(T x) noexcept
+KTM_INLINE std::enable_if_t<is_listing_type_v<type_list<float, double>, T>, T> recip(T x) noexcept
 {
     using integral_type = std::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
     integral_type i = *reinterpret_cast<const integral_type*>(&x);

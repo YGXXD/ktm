@@ -540,6 +540,78 @@ struct ktm::detail::common_implement::round<N, float, std::enable_if_t<N == 3 ||
 };
 
 template<>
+struct ktm::detail::common_implement::sqrt<2, float>
+{
+    using V = vec<2, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = vsqrt_f32(x.st);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::sqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = vsqrtq_f32(x.st);
+        return ret;
+    }
+};
+
+template<>
+struct ktm::detail::common_implement::rsqrt<2, float>
+{
+    using V = vec<2, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = arm::ext::rsqrt_f32(x.st);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::rsqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = arm::ext::rsqrtq_f32(x.st);
+        return ret;
+    }
+};
+
+template<>
+struct ktm::detail::common_implement::recip<2, float>
+{
+    using V = vec<2, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = arm::ext::recip_f32(x.st);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::recip<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = arm::ext::recipq_f32(x.st);
+        return ret;
+    }
+};
+
+template<>
 struct ktm::detail::common_implement::lerp<2, float>
 {
     using V = vec<2, float>;
@@ -585,30 +657,6 @@ struct ktm::detail::common_implement::mix<N, float, std::enable_if_t<N == 3 || N
     {
         V ret;
         ret.st = vaddq_f32(x.st, vmulq_f32(t.st, vsubq_f32(y.st, x.st)));
-        return ret;
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::recip<2, float>
-{
-    using V = vec<2, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = arm::ext::recip_f32(x.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::recip<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = arm::ext::recipq_f32(x.st);
         return ret;
     }
 };
@@ -874,6 +922,42 @@ struct ktm::detail::common_implement::round<N, float, std::enable_if_t<N == 3 ||
 };
 
 template<size_t N>
+struct ktm::detail::common_implement::sqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = _mm_sqrt_ps(x.st);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::rsqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = x86::ext::rsqrt_ps(x.st);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::recip<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = x86::ext::recip_ps(x.st);
+        return ret;
+    }
+};
+
+template<size_t N>
 struct ktm::detail::common_implement::lerp<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
@@ -894,18 +978,6 @@ struct ktm::detail::common_implement::mix<N, float, std::enable_if_t<N == 3 || N
     {
         V ret;
         ret.st = _mm_add_ps(x.st, _mm_mul_ps(t.st, _mm_sub_ps(y.st, x.st)));
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::recip<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = x86::ext::recip_ps(x.st);
         return ret;
     }
 };

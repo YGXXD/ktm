@@ -76,6 +76,24 @@ KTM_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> ro
 }
 
 template<class V>
+KTM_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> sqrt(const V& x) noexcept
+{
+    return detail::common_implement::sqrt<vec_traits_len<V>, vec_traits_base_t<V>>::call(x);
+}
+
+template<class V>
+KTM_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> rsqrt(const V& x) noexcept
+{
+    return detail::common_implement::rsqrt<vec_traits_len<V>, vec_traits_base_t<V>>::call(x);
+}
+
+template<class V>
+KTM_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> recip(const V& x) noexcept
+{
+    return detail::common_implement::recip<vec_traits_len<V>, vec_traits_base_t<V>>::call(x);
+}
+
+template<class V>
 KTM_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> lerp(const V& x, const V& y, vec_traits_base_t<V> t) noexcept
 {
     return detail::common_implement::lerp<vec_traits_len<V>, vec_traits_base_t<V>>::call(x, y, t);
@@ -86,12 +104,6 @@ KTM_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> mi
 {
     return detail::common_implement::mix<vec_traits_len<V>, vec_traits_base_t<V>>::call(x, y, t);
 }
-
-template<class V>
-KTM_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> recip(const V& x) noexcept
-{
-    return detail::common_implement::recip<vec_traits_len<V>, vec_traits_base_t<V>>::call(x);
-} 
 
 template<class V>
 KTM_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> step(const V& edge, const V& x) noexcept

@@ -37,7 +37,7 @@ KTM_FUNC __m128 fast_rsqrt_ps(__m128 x) noexcept
 
 KTM_FUNC __m128 rsqrt_ps(__m128 x) noexcept
 {
-	constexpr union { unsigned int i; float f; } inf = { 0x7F800000 };
+	constexpr union { unsigned int i; float f; } inf = { 0x7f800000 };
 	__m128 r = fast_rsqrt_ps(x);
 	__m128 mask = _mm_cmpeq_ps(r, _mm_set1_ps(inf.f));
 	__m128 x_mask = _mm_andnot_ps(mask, x);
@@ -55,7 +55,7 @@ KTM_FUNC __m128 fast_recip_ps(__m128 x) noexcept
 
 KTM_FUNC __m128 recip_ps(__m128 x) noexcept
 {
-	constexpr union { unsigned int i; float f; } inf = { 0x7F800000 };
+	constexpr union { unsigned int i; float f; } inf = { 0x7f800000 };
 	__m128 r = fast_recip_ps(x);
 	__m128 mask = _mm_cmpeq_ps(x, _mm_setzero_ps());
 	__m128 x_mask = _mm_andnot_ps(mask, x);
