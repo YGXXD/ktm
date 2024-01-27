@@ -47,8 +47,8 @@ struct ktm::detail::vec_data_implement::vec_swizzle<2, IN, float, std::enable_if
     static KTM_INLINE RetV call(const V& v) noexcept
     {
         RetV ret;
-        ret.st = vcopy_laneq_f32(ret.st, 0, v.st, S0);
-        ret.st = vcopy_laneq_f32(ret.st, 1, v.st, S1); 
+        ret.st = neon_copy_laneq_f32(ret.st, 0, v.st, S0);
+        ret.st = neon_copy_laneq_f32(ret.st, 1, v.st, S1); 
         return ret;
     }
 };

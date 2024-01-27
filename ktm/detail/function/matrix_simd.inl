@@ -4,7 +4,6 @@
 #include "matrix_fwd.h"
 #include "../../simd/intrin.h"
 #include "../../type/basic.h"
-#include "../../type/mat_fwd.h"
 
 #if defined(KTM_SIMD_ARM)
 

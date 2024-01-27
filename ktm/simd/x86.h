@@ -184,6 +184,14 @@ KTM_FUNC float fv4_rmax(__m128 x) noexcept
 	return _mm_cvtss_f32(ret); 
 }
 
+KTM_FUNC __m128 fv3_dot(__m128 x, __m128 y) noexcept
+{
+	__m128 mul = _mm_mul_ps(x, y);
+	__m128 add_0 = _mm_add_ps(_mm_shuffle_ps(mul, mul, _MM_SHUFFLE(0, 0, 0, 0)), _mm_shuffle_ps(mul, mul, _MM_SHUFFLE(1, 1, 1, 1)));
+	__m128 add_1 = _mm_add_ps(add_0, _mm_shuffle_ps(mul, mul, _MM_SHUFFLE(2, 2, 2, 2)));
+	return add_1;
+}
+
 KTM_FUNC __m128 fv4_dot(__m128 x, __m128 y) noexcept
 {
 	__m128 mul = _mm_mul_ps(x, y);

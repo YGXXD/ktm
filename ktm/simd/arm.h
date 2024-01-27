@@ -51,22 +51,45 @@
 
 #endif
 
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+
+#define neon_copy_lane_f32(dst, dst_lane, src, src_lane) vcopy_lane_f32(dst, dst_lane, src, src_lane)
+#define neon_copy_laneq_f32(dst, dst_lane, src, src_lane) vcopy_laneq_f32(dst, dst_lane, src, src_lane)
+#define neon_copyq_lane_f32(dst, dst_lane, src, src_lane) vcopyq_lane_f32(dst, dst_lane, src, src_lane)
+#define neon_copyq_laneq_f32(dst, dst_lane, src, src_lane) vcopyq_laneq_f32(dst, dst_lane, src, src_lane)
+#define neon_copy_lane_s32(dst, dst_lane, src, src_lane) vcopy_lane_s32(dst, dst_lane, src, src_lane)
+#define neon_copy_laneq_s32(dst, dst_lane, src, src_lane) vcopy_laneq_s32(dst, dst_lane, src, src_lane)
+#define neon_copyq_lane_s32(dst, dst_lane, src, src_lane) vcopyq_lane_s32(dst, dst_lane, src, src_lane)
+#define neon_copyq_laneq_s32(dst, dst_lane, src, src_lane) vcopyq_laneq_s32(dst, dst_lane, src, src_lane)
+#define neon_dup_lane_f32(a, lane) vdup_lane_f32(a, lane)
+#define neon_dupq_lane_f32(a, lane) vdupq_lane_f32(a, lane)
+#define neon_dup_laneq_f32(a, lane) vdup_laneq_f32(a, lane)
+#define neon_dupq_laneq_f32(a, lane) vdupq_laneq_f32(a, lane)
+#define neon_dup_lane_s32(a, lane) vdup_lane_s32(a, lane)
+#define neon_dupq_lane_s32(a, lane) vdupq_lane_s32(a, lane)
+#define neon_dup_laneq_s32(a, lane) vdup_laneq_s32(a, lane)
+#define neon_dupq_laneq_s32(a, lane) vdupq_laneq_s32(a, lane)
+
+#else
+
 #define neon_copy_lane_f32(dst, dst_lane, src, src_lane) vset_lane_f32(vget_lane_f32(src, src_lane), dst, dst_lane)
-#define neon_copy_laneq_f32(dst, dst_lane, src, src_lane) vset_lane_f32(vget_laneq_f32(src, src_lane), dst, dst_lane)
-#define neon_copyq_lane_f32(dst, dst_lane, src, src_lane) vset_laneq_f32(vget_lane_f32(src, src_lane), dst, dst_lane)
-#define neon_copyq_laneq_f32(dst, dst_lane, src, src_lane) vset_laneq_f32(vget_laneq_f32(src, src_lane), dst, dst_lane)
+#define neon_copy_laneq_f32(dst, dst_lane, src, src_lane) vset_lane_f32(vgetq_lane_f32(src, src_lane), dst, dst_lane)
+#define neon_copyq_lane_f32(dst, dst_lane, src, src_lane) vsetq_lane_f32(vget_lane_f32(src, src_lane), dst, dst_lane)
+#define neon_copyq_laneq_f32(dst, dst_lane, src, src_lane) vsetq_lane_f32(vgetq_lane_f32(src, src_lane), dst, dst_lane)
 #define neon_copy_lane_s32(dst, dst_lane, src, src_lane) vset_lane_s32(vget_lane_s32(src, src_lane), dst, dst_lane)
 #define neon_copy_laneq_s32(dst, dst_lane, src, src_lane) vset_lane_s32(vget_laneq_s32(src, src_lane), dst, dst_lane)
 #define neon_copyq_lane_s32(dst, dst_lane, src, src_lane) vset_laneq_s32(vget_lane_s32(src, src_lane), dst, dst_lane)
 #define neon_copyq_laneq_s32(dst, dst_lane, src, src_lane) vset_laneq_s32(vget_laneq_s32(src, src_lane), dst, dst_lane)
 #define neon_dup_lane_f32(a, lane) vdup_n_f32(vget_lane_f32(a, lane))
 #define neon_dupq_lane_f32(a, lane) vdupq_n_f32(vget_lane_f32(a, lane))
-#define neon_dup_laneq_f32(a, lane) vdup_n_f32(vget_laneq_f32(a, lane))
-#define neon_dupq_laneq_f32(a, lane) vdupq_n_f32(vget_laneq_f32(a, lane))
+#define neon_dup_laneq_f32(a, lane) vdup_n_f32(vgetq_lane_f32(a, lane))
+#define neon_dupq_laneq_f32(a, lane) vdupq_n_f32(vgetq_lane_f32(a, lane))
 #define neon_dup_lane_s32(a, lane) vdup_n_s32(vget_lane_s32(a, lane))
 #define neon_dupq_lane_s32(a, lane) vdupq_n_s32(vget_lane_s32(a, lane))
 #define neon_dup_laneq_s32(a, lane) vdup_n_s32(vget_laneq_s32(a, lane))
 #define neon_dupq_laneq_s32(a, lane) vdupq_n_s32(vget_laneq_s32(a, lane))
+
+#endif
 
 namespace arm
 {
@@ -399,6 +422,24 @@ KTM_FUNC float fv4_rmax(float32x4_t x) noexcept
 #endif
 }
 
+KTM_FUNC float32x2_t fv2_dot(float32x2_t x, float32x2_t y) noexcept
+{
+	float32x2_t mul = vmul_f32(x, y);
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+	return vpadd_f32(mul, mul);
+#else
+	return vadd_f32(mul, vrev64_f32(mul));
+#endif
+}
+
+KTM_FUNC float32x4_t fv3_dot(float32x4_t x, float32x4_t y) noexcept
+{
+	float32x4_t mul = vmulq_f32(x, y);
+	float32x4_t add_0 = vaddq_f32(neon_dupq_laneq_f32(mul, 0), neon_dupq_laneq_f32(mul, 1));
+	float32x4_t add_1 = vaddq_f32(add_0, neon_dupq_laneq_f32(mul, 2));
+	return add_1;
+}
+
 KTM_FUNC float32x4_t fv4_dot(float32x4_t x, float32x4_t y) noexcept
 {
 	float32x4_t mul = vmulq_f32(x, y);   
@@ -475,9 +516,9 @@ KTM_FUNC float32x4_t fv3_mul_fq(float32x4_t v, float32x4_t q) noexcept
     float32x4_t mul_y = neon_shuffleq_f32(q, q_opp, 1, 0, 3, 2); 
     float32x4_t mul_z = neon_shuffleq_f32(tmp_1, tmp_0, 2, 1, 0, 3);
 
-    float32x4_t add_0 = vmulq_f32(vdupq_laneq_f32(v, 0), mul_x); 
-    float32x4_t add_1 = vmulq_f32(vdupq_laneq_f32(v, 1), mul_y); 
-    float32x4_t add_2 = vmulq_f32(vdupq_laneq_f32(v, 2), mul_z); 
+    float32x4_t add_0 = vmulq_f32(neon_dupq_laneq_f32(v, 0), mul_x); 
+    float32x4_t add_1 = vmulq_f32(neon_dupq_laneq_f32(v, 1), mul_y); 
+    float32x4_t add_2 = vmulq_f32(neon_dupq_laneq_f32(v, 2), mul_z); 
 
     return vaddq_f32(add_0, vaddq_f32(add_1, add_2)); 
 }
@@ -485,7 +526,7 @@ KTM_FUNC float32x4_t fv3_mul_fq(float32x4_t v, float32x4_t q) noexcept
 KTM_FUNC float32x4_t fq_mul_fq(float32x4_t x, float32x4_t y) noexcept
 {
     float32x4_t add_012 = fv3_mul_fq(x, y);
-    float32x4_t add_3 = vmulq_f32(vdupq_laneq_f32(x, 3), y); 
+    float32x4_t add_3 = vmulq_f32(neon_dupq_laneq_f32(x, 3), y); 
     return vaddq_f32(add_012, add_3);
 }
 }
