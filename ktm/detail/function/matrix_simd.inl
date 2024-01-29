@@ -3,7 +3,6 @@
 
 #include "matrix_fwd.h"
 #include "../../simd/intrin.h"
-#include "../../type/basic.h"
 
 #if defined(KTM_SIMD_ARM)
 
@@ -261,8 +260,8 @@ struct ktm::detail::matrix_implement::inverse<4, float>
             fac_5 = vsubq_f32(mul_00, mul_01);
         }
 
-        float32x4_t sign_a = vsetq_lane_f32(-one<float>, vsetq_lane_f32(-one<float>, vdupq_n_f32(one<float>), 0), 2);
-        float32x4_t sign_b = vsetq_lane_f32(-one<float>, vsetq_lane_f32(-one<float>, vdupq_n_f32(one<float>), 1), 3);
+        float32x4_t sign_a = vsetq_lane_f32(-1.f, vsetq_lane_f32(-1.f, vdupq_n_f32(1.f), 0), 2);
+        float32x4_t sign_b = vsetq_lane_f32(-1.f, vsetq_lane_f32(-1.f, vdupq_n_f32(1.f), 1), 3);
 
         // v_0 = { m[1][0], m[0][0], m[0][0], m[0][0] }
         float32x4_t tmp_0 = neon_shuffleq_f32(c_1, c_0, 0, 0, 0, 0);
@@ -601,8 +600,8 @@ struct ktm::detail::matrix_implement::inverse<4, float>
             fac_5 = _mm_sub_ps(mul_00, mul_01);
         }
 
-        __m128 sign_a = _mm_set_ps(one<float>, -one<float>, one<float>, -one<float>);
-        __m128 sign_b = _mm_set_ps(-one<float>, one<float>, -one<float>, one<float>);
+        __m128 sign_a = _mm_set_ps(1.f, -1.f, 1.f, -1.f);
+        __m128 sign_b = _mm_set_ps(-1.f, 1.f, -1.f, 1.f);
 
         __m128 tmp_0 = _mm_shuffle_ps(c_1, c_0, 0);
         __m128 v_0 = _mm_shuffle_ps(tmp_0, tmp_0,  _MM_SHUFFLE(2, 2, 2, 0));

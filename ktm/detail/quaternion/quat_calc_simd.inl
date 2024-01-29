@@ -3,7 +3,6 @@
 
 #include "quat_calc_fwd.h"
 #include "../../simd/intrin.h"
-#include "../../type/basic.h"
 
 #if defined(KTM_SIMD_ARM)
 
@@ -38,7 +37,7 @@ struct ktm::detail::quat_calc_implement::act<float>
         // |q| = 1 => q-1 <==> qc
         // q * quat(v,0) * qc
         vec<3, float> ret;
-        float32x4_t qi = vmulq_f32(q.vector.st, vsetq_lane_f32(one<float>, vdupq_n_f32(-one<float>), 3));
+        float32x4_t qi = vmulq_f32(q.vector.st, vsetq_lane_f32(1.f, vdupq_n_f32(-1.f), 3));
         ret.st = arm::qt::fq_mul_fq(q.vector.st, arm::qt::fv3_mul_fq(v.st, qi));
         return ret;
     }
@@ -75,7 +74,7 @@ struct ktm::detail::quat_calc_implement::act<float>
     static KTM_INLINE vec<3, float> call(const Q& q, const vec<3, float>& v) noexcept
     {
         vec<3, float> ret;
-        __m128 qi = _mm_mul_ps(q.vector.st, _mm_set_ps(one<float>, -one<float>, -one<float>, -one<float>));
+        __m128 qi = _mm_mul_ps(q.vector.st, _mm_set_ps(1.f, -1.f, -1.f, -1.f));
         ret.st = x86::qt::fq_mul_fq(q.vector.st, x86::qt::fv3_mul_fq(v.st, qi));
         return ret;
     }
