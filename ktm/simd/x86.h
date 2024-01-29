@@ -71,9 +71,10 @@ KTM_FUNC __m128 round_ps(__m128 x) noexcept
 #if KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
 	return _mm_round_ps(x, _MM_FROUND_TO_NEAREST_INT);
 #else
-	constexpr union { unsigned int i; float f; } mask = { 0x80000000 };
-	__m128 tmp = _mm_and_ps(x, _mm_set1_ps(mask.f));
-	tmp = _mm_or_ps(tmp, _mm_set_ps1(8388608.f));
+	constexpr union { unsigned int i; float f; } mask1 = { 0x80000000 };
+	constexpr union { unsigned int i; float f; } mask2 = { 0x4b000000 };
+	__m128 tmp = _mm_and_ps(x, _mm_set1_ps(mask1.f));
+	tmp = _mm_or_ps(tmp, _mm_set1_ps(mask2.f));
     __m128 ret = _mm_sub_ps(_mm_add_ps(x, tmp), tmp);
 	return ret;
 #endif
@@ -84,9 +85,10 @@ KTM_FUNC __m128 floor_ps(__m128 x) noexcept
 #if KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
 	return _mm_floor_ps(x);
 #else
+	constexpr union { unsigned int i; float f; } mask = { 0x3f800000 };
 	__m128 rnd = round_ps(x);
 	__m128 tmp = _mm_cmplt_ps(x, rnd);
-	tmp = _mm_and_ps(tmp, _mm_set1_ps(1.f));
+	tmp = _mm_and_ps(tmp, _mm_set1_ps(mask.f));
 	__m128 ret = _mm_sub_ps(rnd, tmp);
 	return ret;
 #endif
@@ -97,9 +99,10 @@ KTM_FUNC __m128 ceil_ps(__m128 x) noexcept
 #if KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
 	return _mm_ceil_ps(x);
 #else
+	constexpr union { unsigned int i; float f; } mask = { 0x3f800000 };
 	__m128 rnd = round_ps(x);
 	__m128 tmp = _mm_cmpgt_ps(x, rnd);
-	tmp = _mm_and_ps(tmp, _mm_set1_ps(1.0f));
+	tmp = _mm_and_ps(tmp, _mm_set1_ps(mask.f));
 	__m128 ret = _mm_add_ps(rnd, tmp);
 	return ret;
 #endif
