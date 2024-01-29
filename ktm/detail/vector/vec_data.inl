@@ -36,10 +36,18 @@ public:
 template<size_t ON, size_t IN, typename T, typename Void>
 struct ktm::detail::vec_data_implement::vec_swizzle
 {
+private:
+    template<size_t ...E>
+    constexpr static KTM_INLINE bool enable_swizzle() noexcept
+    {
+        return (sizeof...(E) == ON) && ((E < IN) && ...);
+    }
+public:
     using V = vec<IN, T>;
     using RetV = vec<ON, T>;
+
     template<size_t ...E>
-    static KTM_INLINE std::enable_if_t<sizeof...(E) == ON && ((E < IN) && ...), RetV> call(const V& v) noexcept
+    static KTM_INLINE std::enable_if_t<enable_swizzle<E...>(), RetV> call(const V& v) noexcept
     {
         return RetV(v[E]...);
     }

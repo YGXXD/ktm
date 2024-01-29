@@ -154,7 +154,7 @@ KTM_FUNC float fv4_radd(__m128 x) noexcept
 	ret = _mm_hadd_ps(ret, ret);
 #else
 	__m128 ret = _mm_add_ps(x, _mm_shuffle_ps(x, x, _MM_SHUFFLE(1, 0, 3, 2)));
-	ret = _mm_add_ss(ret, _mm_shuffle_ps(ret, ret, 1))
+	ret = _mm_add_ss(ret, _mm_shuffle_ps(ret, ret, 1));
 #endif	
 	return _mm_cvtss_f32(ret); 
 }
@@ -220,9 +220,9 @@ KTM_FUNC float fv4_dot1(__m128 x, __m128 y) noexcept
 
 KTM_FUNC float fv3_length1(__m128 x) noexcept
 {
-	__m128 mul = _mm_mul_ps(x, y);
-	__m128 dot = _mm_add_ss(x, _mm_shuffle_ps(x, x, 1));
-	dot = _mm_add_ss(dot, _mm_shuffle_ps(x, x, 2));
+	__m128 mul = _mm_mul_ps(x, x);
+	__m128 dot = _mm_add_ss(x, _mm_shuffle_ps(mul, mul, 1));
+	dot = _mm_add_ss(dot, _mm_shuffle_ps(mul, mul, 2));
 	__m128 ret = _mm_sqrt_ps(dot);
     return _mm_cvtss_f32(ret);
 }
@@ -231,7 +231,7 @@ KTM_FUNC float fv4_length1(__m128 x) noexcept
 {
 	__m128 dot = fv4_dot(x, x);
 	__m128 ret = _mm_sqrt_ps(dot);
-    return _mm_cvtss_f32(ret, 0);
+    return _mm_cvtss_f32(ret);
 }
 
 #if KTM_SIMD_X86 & KTM_SIMD_SSE2_FLAG
@@ -250,9 +250,9 @@ KTM_FUNC int sv4_radd(__m128i x) noexcept
 	ret = _mm_hadd_epi32(ret, ret);
 #else
 	__m128i ret = _mm_add_epi32(x, _mm_shuffle_epi32(x, _MM_SHUFFLE(1, 0, 3, 2)));
-	ret = _mm_add_epi32(ret, _mm_shuffle_epi32(ret, 1))
+	ret = _mm_add_epi32(ret, _mm_shuffle_epi32(ret, 1));
 #endif	
-	return _mm_cvtss_f32(ret); 	
+	return _mm_cvtsi128_si32(ret); 	
 }
 
 #endif
@@ -270,7 +270,7 @@ KTM_FUNC int sv4_rmin(__m128i x) noexcept
 {
 	__m128i ret = _mm_min_epi32(x, _mm_shuffle_epi32(x, _MM_SHUFFLE(1, 0, 3, 2)));
 	ret = _mm_min_epi32(ret, _mm_shuffle_epi32(ret, 1));
-	return _mm_cvtss_f32(ret); 	
+	return _mm_cvtsi128_si32(ret); 	
 }
 
 KTM_FUNC int sv3_rmax(__m128i x) noexcept
@@ -284,7 +284,7 @@ KTM_FUNC int sv4_rmax(__m128i x) noexcept
 {
 	__m128i ret = _mm_max_epi32(x, _mm_shuffle_epi32(x, _MM_SHUFFLE(1, 0, 3, 2)));
 	ret = _mm_max_epi32(ret, _mm_shuffle_epi32(ret, 1));
-	return _mm_cvtss_f32(ret); 
+	return _mm_cvtsi128_si32(ret); 
 }
 
 KTM_FUNC __m128i sv4_dot(__m128i x, __m128i y) noexcept
