@@ -4,7 +4,7 @@
 #include "geometric_fwd.h"
 #include "../../simd/intrin.h"
 
-#if KTM_SIMD_ARM
+#if defined(KTM_SIMD_ARM)
 
 template<>
 struct ktm::detail::geometric_implement::dot<2, float>
@@ -389,6 +389,271 @@ struct ktm::detail::geometric_implement::fast_normalize<4, float>
         float32x4_t dot = arm::geo::fv4_dot(x.st, x.st);
         float32x4_t rsq = arm::ext::fast_rsqrtq_f32(dot);
         ret.st = vmulq_f32(rsq, x.st);
+        return ret;
+    }
+};
+
+#elif defined(KTM_SIMD_X86)
+
+template<>
+struct ktm::detail::geometric_implement::dot<3, float>
+{
+    using V = vec<3, float>;
+    static KTM_INLINE float call(const V& x, const V& y) noexcept
+    {
+        return x86::geo::fv3_dot1(x.st, y.st);
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::dot<4, float>
+{
+    using V = vec<4, float>;
+    static KTM_INLINE float call(const V& x, const V& y) noexcept
+    {
+        return x86::geo::fv4_dot1(x.st, y.st);
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::project<3, float>
+{
+    using V = vec<3, float>;
+    static KTM_INLINE V call(const V& x, const V& y) noexcept
+    {
+        V ret;
+        __m128 dot_xy = x86::geo::fv3_dot(x.st, y.st);
+        __m128 dot_yy = x86::geo::fv3_dot(y.st, y.st);
+        ret.st = _mm_mul_ps(_mm_div_ps(dot_xy, dot_yy), y.st);
+        return ret;
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::project<4, float>
+{
+    using V = vec<4, float>;
+    static KTM_INLINE V call(const V& x, const V& y) noexcept
+    {
+        V ret;
+        __m128 dot_xy = x86::geo::fv4_dot(x.st, y.st);
+        __m128 dot_yy = x86::geo::fv4_dot(y.st, y.st);
+        ret.st = _mm_mul_ps(_mm_div_ps(dot_xy, dot_yy), y.st);
+        return ret;
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::cross<3, float>
+{
+    using V = vec<3, float>;
+    static KTM_INLINE V call(const V& x, const V& y) noexcept
+    {
+        V ret;
+        __m128 s_x = _mm_shuffle_ps(x.st, x.st, _MM_SHUFFLE(3, 1, 0, 2));
+        __m128 s_y = _mm_shuffle_ps(y.st, y.st, _MM_SHUFFLE(3, 1, 0, 2));
+        __m128 s_r = _mm_sub_ps(_mm_mul_ps(s_x, y.st), _mm_mul_ps(x.st, s_y));
+        ret.st = _mm_shuffle_ps(s_r, s_r, _MM_SHUFFLE(3, 1, 0, 2));
+        return ret;
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::length<3, float>
+{
+    using V = vec<3, float>;
+    static KTM_INLINE float call(const V& x) noexcept
+    {
+        return x86::geo::fv3_length1(x.st);
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::length<4, float>
+{
+    using V = vec<4, float>;
+    static KTM_INLINE float call(const V& x) noexcept
+    {
+        return x86::geo::fv4_length1(x.st);
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::distance<3, float>
+{
+    using V = vec<3, float>;
+    static KTM_INLINE float call(const V& x, const V& y) noexcept
+    {
+        __m128 sub = _mm_sub_ps(x.st, y.st);
+        return x86::geo::fv3_length1(sub);
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::distance<4, float>
+{
+    using V = vec<4, float>;
+    static KTM_INLINE float call(const V& x, const V& y) noexcept
+    {
+        __m128 sub = _mm_sub_ps(x.st, y.st);
+        return x86::geo::fv4_length1(sub);
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::normalize<3, float>
+{
+    using V = vec<3, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        __m128 dot = x86::geo::fv3_dot(x.st, x.st);
+        __m128 rsq = x86::ext::rsqrt_ps(dot);
+        ret.st = _mm_mul_ps(rsq, x.st);
+        return ret;
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::normalize<4, float>
+{
+    using V = vec<4, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        __m128 dot = x86::geo::fv4_dot(x.st, x.st);
+        __m128 rsq = x86::ext::rsqrt_ps(dot);
+        ret.st = _mm_mul_ps(rsq, x.st);
+        return ret;
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::reflect<3, float>
+{
+    using V = vec<3, float>;
+    static KTM_INLINE V call(const V& x, const V& n) noexcept
+    {
+        V ret;
+        __m128 dot = x86::geo::fv3_dot(x.st, n.st);
+        __m128 mul_0 = _mm_mul_ps(n.st, dot);
+        __m128 mul_1 = _mm_mul_ps(mul_0, _mm_set1_ps(2.0f));
+        ret.st = _mm_sub_ps(x.st, mul_1);
+        return ret;
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::reflect<4, float>
+{
+    using V = vec<4, float>;
+    static KTM_INLINE V call(const V& x, const V& n) noexcept
+    {
+        V ret;
+        __m128 dot = x86::geo::fv4_dot(x.st, n.st);
+        __m128 mul_0 = _mm_mul_ps(n.st, dot);
+        __m128 mul_1 = _mm_mul_ps(mul_0, _mm_set1_ps(2.0f));
+        ret.st = _mm_sub_ps(x.st, mul_1);
+        return ret;
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::refract<3, float>
+{
+    using V = vec<3, float>;
+    static KTM_INLINE V call(const V& x, const V& n, float eta) noexcept
+    {
+        __m128 t_eta = _mm_set1_ps(eta);
+        __m128 one = _mm_set1_ps(1.f);
+        __m128 dot = x86::geo::fv3_dot(n.st, x.st);
+        __m128 eta2 = _mm_mul_ps(t_eta, t_eta);
+        __m128 one_minus_cos2 = _mm_sub_ps(one, _mm_mul_ps(dot, dot));
+        __m128 k = _mm_sub_ps(one, _mm_mul_ps(eta2, one_minus_cos2));
+        if(_mm_movemask_ps(_mm_cmpge_ps(k, _mm_setzero_ps())) == 0)
+            return V();
+        V ret;
+        __m128 sqrt_k = _mm_sqrt_ps(k);
+        __m128 fma = _mm_add_ps(sqrt_k, _mm_mul_ps(t_eta, dot));
+        ret.st = _mm_sub_ps(_mm_mul_ps(t_eta, x.st), _mm_mul_ps(fma, n.st));
+        return ret;
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::refract<4, float>
+{
+    using V = vec<3, float>;
+    static KTM_INLINE V call(const V& x, const V& n, float eta) noexcept
+    {
+        __m128 t_eta = _mm_set1_ps(eta);
+        __m128 one = _mm_set1_ps(1.f);
+        __m128 dot = x86::geo::fv4_dot(n.st, x.st);
+        __m128 eta2 = _mm_mul_ps(t_eta, t_eta);
+        __m128 one_minus_cos2 = _mm_sub_ps(one, _mm_mul_ps(dot, dot));
+        __m128 k = _mm_sub_ps(one, _mm_mul_ps(eta2, one_minus_cos2));
+        if(_mm_movemask_ps(_mm_cmpge_ps(k, _mm_setzero_ps())) == 0)
+            return V();
+        V ret;
+        __m128 sqrt_k = _mm_sqrt_ps(k);
+        __m128 fma = _mm_add_ps(sqrt_k, _mm_mul_ps(t_eta, dot));
+        ret.st = _mm_sub_ps(_mm_mul_ps(t_eta, x.st), _mm_mul_ps(fma, n.st));
+        return ret;
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::fast_project<3, float>
+{
+    using V = vec<3, float>;
+    static KTM_INLINE V call(const V& x, const V& y) noexcept
+    {
+        V ret;
+        __m128 dot_xy = x86::geo::fv3_dot(x.st, y.st);
+        __m128 dot_yy = x86::geo::fv3_dot(y.st, y.st);
+        ret.st = _mm_mul_ps(_mm_mul_ps(dot_xy, x86::ext::fast_recip_ps(dot_yy)), y.st);
+        return ret;
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::fast_project<4, float>
+{
+    using V = vec<4, float>;
+    static KTM_INLINE V call(const V& x, const V& y) noexcept
+    {
+        V ret;
+        __m128 dot_xy = x86::geo::fv4_dot(x.st, y.st);
+        __m128 dot_yy = x86::geo::fv4_dot(y.st, y.st);
+        ret.st = _mm_mul_ps(_mm_mul_ps(dot_xy, x86::ext::fast_recip_ps(dot_yy)), y.st);
+        return ret;
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::fast_normalize<3, float>
+{
+    using V = vec<3, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        __m128 dot = x86::geo::fv3_dot(x.st, x.st);
+        __m128 rsq = x86::ext::fast_rsqrt_ps(dot);
+        ret.st = _mm_mul_ps(rsq, x.st);
+        return ret;
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::fast_normalize<4, float>
+{
+    using V = vec<4, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        __m128 dot = x86::geo::fv4_dot(x.st, x.st);
+        __m128 rsq = x86::ext::fast_rsqrt_ps(dot);
+        ret.st = _mm_mul_ps(rsq, x.st);
         return ret;
     }
 };

@@ -215,6 +215,22 @@ KTM_FUNC float fv4_dot1(__m128 x, __m128 y) noexcept
 	return fv4_radd(_mm_mul_ps(x, y));  
 }
 
+KTM_FUNC float fv3_length1(__m128 x) noexcept
+{
+	__m128 mul = _mm_mul_ps(x, y);
+	__m128 dot = _mm_add_ss(x, _mm_shuffle_ps(x, x, 1));
+	dot = _mm_add_ss(dot, _mm_shuffle_ps(x, x, 2));
+	__m128 ret = _mm_sqrt_ps(dot);
+    return _mm_cvtss_f32(ret);
+}
+
+KTM_FUNC float fv4_length1(__m128 x) noexcept
+{
+	__m128 dot = fv4_dot(x, x);
+	__m128 ret = _mm_sqrt_ps(dot);
+    return _mm_cvtss_f32(ret, 0);
+}
+
 #if KTM_SIMD_X86 & KTM_SIMD_SSE2_FLAG
 
 KTM_FUNC int sv3_radd(__m128i x) noexcept
