@@ -61,8 +61,24 @@ KTM_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> re
 {
     return detail::geometric_implement::refract<vec_traits_len<V>, vec_traits_base_t<V>>::call(x, n, eta);
 }
+
+namespace fast
+{
+template<class V>
+KTM_INLINE std::enable_if_t<is_vector_v<V> && is_listing_type_base_v<type_list<float, double>, V>, V> project(const V& x, const V& y) noexcept
+{
+    return detail::geometric_implement::fast_project<vec_traits_len<V>, vec_traits_base_t<V>>::call(x, y);
+}
+
+template<class V>
+KTM_INLINE std::enable_if_t<is_vector_v<V> && is_listing_type_base_v<type_list<float, double>, V>, V> normalize(const V& x) noexcept
+{
+    return detail::geometric_implement::fast_normalize<vec_traits_len<V>, vec_traits_base_t<V>>::call(x);
+} 
+}
 }
 
 #include "../detail/function/geometric.inl"
+#include "../detail/function/geometric_simd.inl"
 
 #endif

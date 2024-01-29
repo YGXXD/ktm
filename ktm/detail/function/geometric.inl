@@ -92,8 +92,29 @@ struct ktm::detail::geometric_implement::refract
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x, const V& n, T eta) noexcept
     {
-        const T k = one<T> - eta * eta * (one<T> - dot<N, T>::call(x, n) * dot<N, T>::call(x, n));
-        return k >= zero<T> ? eta * x - (eta * dot<N, T>::call(x, n) + ktm::sqrt(k)) * n : V();
+        const T d = dot<N, T>::call(x, n);
+        const T k = one<T> - eta * eta * (one<T> - d * d);
+        return k >= zero<T> ? eta * x - (eta * d + ktm::sqrt(k)) * n : V();
+    }
+};
+
+template<size_t N, typename T, typename Void>
+struct ktm::detail::geometric_implement::fast_project
+{
+    using V = vec<N, T>;
+    static KTM_INLINE V call(const V& x, const V& y) noexcept
+    {
+        return dot<N, T>::call(x, y) * ktm::fast::recip(dot<N, T>::call(y, y)) * y; 
+    }
+};
+
+template<size_t N, typename T, typename Void>
+struct ktm::detail::geometric_implement::fast_normalize
+{
+    using V = vec<N, T>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        return ktm::fast::rsqrt(dot<N, T>::call(x, x)) * x;
     }
 };
 

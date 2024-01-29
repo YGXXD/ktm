@@ -6,51 +6,6 @@
 
 #if defined(KTM_SIMD_ARM)
 
-#if defined(KTM_COMPILER_CLANG)
-
-#if defined(__ORDER_LITTLE_ENDIAN__)
-
-#define neon_shuffle_s32(a, b, s1, s0) neon_shuffle_f32(a, b, s1, s0)
-#define neon_shuffleq_s32(a, b, s3, s2, s1, s0) neon_shuffleq_f32(a, b, s3, s2, s1, s0)
-#define neon_shuffle_f32(a, b, s1, s0) __builtin_shufflevector(a, b, s0, (s1) + 2)
-#define neon_shuffleq_f32(a, b, s3, s2, s1, s0) __builtin_shufflevector(a, b, s0, s1, (s2) + 4, (s3) + 4)
-
-#else
-
-#define neon_shuffle_s32(a, b, s1, s0) neon_shuffle_f32(a, b, s1, s0)
-#define neon_shuffleq_s32(a, b, s3, s2, s1, s0) neon_shuffleq_f32(a, b, s3, s2, s1, s0)
-#define neon_shuffle_f32(a, b, s1, s0) __builtin_shufflevector(b, a, 1 - (s1), 3 - (s0))
-#define neon_shuffleq_f32(a, b, s3, s2, s1, s0) __builtin_shufflevector(b, a, 3 - (s3), 3 - (s2), 7 - (s1), 7 - (s0))
-
-#endif
-
-#elif defined(KTM_COMPILER_GCC)
-
-#if defined(__ORDER_LITTLE_ENDIAN__)
-
-#define neon_shuffle_s32(a, b, s1, s0) neon_shuffle_f32(a, b, s1, s0)
-#define neon_shuffleq_s32(a, b, s3, s2, s1, s0) neon_shuffleq_f32(a, b, s3, s2, s1, s0)
-#define neon_shuffle_f32(a, b, s1, s0) __builtin_shuffle(a, b, uint32x2_t{ s0, (s1) + 2 })
-#define neon_shuffleq_f32(a, b, s3, s2, s1, s0) __builtin_shuffle(a, b, uint32x4_t{ s0, s1, (s2) + 4, (s3) + 4 })
-
-#else
-
-#define neon_shuffle_s32(a, b, s1, s0) neon_shuffle_f32(a, b, s1, s0)
-#define neon_shuffleq_s32(a, b, s3, s2, s1, s0) neon_shuffleq_f32(a, b, s3, s2, s1, s0)
-#define neon_shuffle_f32(a, b, s1, s0) __builtin_shuffle(b, a, uint32x2_t{ 1 - (s1), 3 - (s0) })
-#define neon_shuffleq_f32(a, b, s3, s2, s1, s0) __builtin_shuffle(b, a, uint32x4_t{ 3 - (s3), 3 - (s2), 7 - (s1), 7 - (s0) })
-
-#endif
-
-#else 
-
-#define neon_shuffle_s32(a, b, s1, s0) vcopy_lane_s32(vmov_n_s32(vget_lane_s32(a, s0)), 1, b, s1)
-#define neon_shuffleq_s32(a, b, s3, s2, s1, s0) vcopyq_laneq_s32(vcopyq_laneq_s32(vcopyq_laneq_s32(vmovq_n_s32(vgetq_lane_s32(a, s0)), 1, a, s1), 2, b, s2), 3, b, s3)
-#define neon_shuffle_f32(a, b, s1, s0) vcopy_lane_f32(vmov_n_f32(vget_lane_f32(a, s0)), 1, b, s1)
-#define neon_shuffleq_f32(a, b, s3, s2, s1, s0) vcopyq_laneq_f32(vcopyq_laneq_f32(vcopyq_laneq_f32(vmovq_n_f32(vgetq_lane_f32(a, s0)), 1, a, s1), 2, b, s2), 3, b, s3)
-
-#endif
-
 #if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
 
 #define neon_copy_lane_f32(dst, dst_lane, src, src_lane) vcopy_lane_f32(dst, dst_lane, src, src_lane)
@@ -91,20 +46,55 @@
 
 #endif
 
+#if defined(KTM_COMPILER_CLANG) & 0
+
+#if defined(__ORDER_LITTLE_ENDIAN__)
+
+#define neon_shuffle_s32(a, b, s1, s0) neon_shuffle_f32(a, b, s1, s0)
+#define neon_shuffleq_s32(a, b, s3, s2, s1, s0) neon_shuffleq_f32(a, b, s3, s2, s1, s0)
+#define neon_shuffle_f32(a, b, s1, s0) __builtin_shufflevector(a, b, s0, (s1) + 2)
+#define neon_shuffleq_f32(a, b, s3, s2, s1, s0) __builtin_shufflevector(a, b, s0, s1, (s2) + 4, (s3) + 4)
+
+#else
+
+#define neon_shuffle_s32(a, b, s1, s0) neon_shuffle_f32(a, b, s1, s0)
+#define neon_shuffleq_s32(a, b, s3, s2, s1, s0) neon_shuffleq_f32(a, b, s3, s2, s1, s0)
+#define neon_shuffle_f32(a, b, s1, s0) __builtin_shufflevector(b, a, 1 - (s1), 3 - (s0))
+#define neon_shuffleq_f32(a, b, s3, s2, s1, s0) __builtin_shufflevector(b, a, 3 - (s3), 3 - (s2), 7 - (s1), 7 - (s0))
+
+#endif
+
+#elif defined(KTM_COMPILER_GCC)
+
+#if defined(__ORDER_LITTLE_ENDIAN__)
+
+#define neon_shuffle_s32(a, b, s1, s0) neon_shuffle_f32(a, b, s1, s0)
+#define neon_shuffleq_s32(a, b, s3, s2, s1, s0) neon_shuffleq_f32(a, b, s3, s2, s1, s0)
+#define neon_shuffle_f32(a, b, s1, s0) __builtin_shuffle(a, b, uint32x2_t{ s0, (s1) + 2 })
+#define neon_shuffleq_f32(a, b, s3, s2, s1, s0) __builtin_shuffle(a, b, uint32x4_t{ s0, s1, (s2) + 4, (s3) + 4 })
+
+#else
+
+#define neon_shuffle_s32(a, b, s1, s0) neon_shuffle_f32(a, b, s1, s0)
+#define neon_shuffleq_s32(a, b, s3, s2, s1, s0) neon_shuffleq_f32(a, b, s3, s2, s1, s0)
+#define neon_shuffle_f32(a, b, s1, s0) __builtin_shuffle(b, a, uint32x2_t{ 1 - (s1), 3 - (s0) })
+#define neon_shuffleq_f32(a, b, s3, s2, s1, s0) __builtin_shuffle(b, a, uint32x4_t{ 3 - (s3), 3 - (s2), 7 - (s1), 7 - (s0) })
+
+#endif
+
+#else 
+
+#define neon_shuffle_s32(a, b, s1, s0) neon_copy_lane_s32(vmov_n_s32(vget_lane_s32(a, s0)), 1, b, s1)
+#define neon_shuffleq_s32(a, b, s3, s2, s1, s0) neon_copyq_laneq_s32(neon_copyq_laneq_s32(neon_copyq_laneq_s32(vmovq_n_s32(vgetq_lane_s32(a, s0)), 1, a, s1), 2, b, s2), 3, b, s3)
+#define neon_shuffle_f32(a, b, s1, s0) neon_copy_lane_f32(vmov_n_f32(vget_lane_f32(a, s0)), 1, b, s1)
+#define neon_shuffleq_f32(a, b, s3, s2, s1, s0) neon_copyq_laneq_f32(neon_copyq_laneq_f32(neon_copyq_laneq_f32(vmovq_n_f32(vgetq_lane_f32(a, s0)), 1, a, s1), 2, b, s2), 3, b, s3)
+
+#endif
+
 namespace arm
 {
 namespace ext 
 {
-KTM_FUNC unsigned int maskq_u32(uint32x4_t x) noexcept
-{
-	constexpr union { unsigned int u[4]; uint32x4_t n; } mask = { 1, 2, 4, 8 };
-    uint32x4_t tmp = vandq_u32(x, mask.n);
-    uint32x2_t l = vget_low_u32(tmp);
-    uint32x2_t h = vget_high_u32(tmp);
-    l = vorr_u32(l, h);  
-    l = vpadd_u32(l, l);
-    return vget_lane_u32(l, 0); 
-}
 
 KTM_FUNC int32x2_t clamp_s32(int32x2_t x, int32x2_t min, int32x2_t max) noexcept
 {
@@ -128,50 +118,54 @@ KTM_FUNC float32x4_t clampq_f32(float32x4_t x, float32x4_t min, float32x4_t max)
 
 KTM_FUNC float32x2_t fast_rsqrt_f32(float32x2_t x) noexcept
 {
-	float32x2_t r = vrsqrte_f32(x);
-	return vmul_f32(r, vrsqrts_f32(x, vmul_f32(r,r)));
+	return vrsqrte_f32(x);
 }
 
 KTM_FUNC float32x4_t fast_rsqrtq_f32(float32x4_t x) noexcept
 {
-	float32x4_t r = vrsqrteq_f32(x);
-  	return vmulq_f32(r, vrsqrtsq_f32(x, vmulq_f32(r, r)));
+  	return vrsqrteq_f32(x);
 }
 
 KTM_FUNC float32x2_t rsqrt_f32(float32x2_t x) noexcept
 {
 	float32x2_t r = fast_rsqrt_f32(x);
-	return vmul_f32(r, vrsqrts_f32(x, vmul_f32(r,r)));
+	r = vmul_f32(r, vrsqrts_f32(x, vmul_f32(r,r)));
+	r = vmul_f32(r, vrsqrts_f32(x, vmul_f32(r,r)));
+	return r;
 }
 
 KTM_FUNC float32x4_t rsqrtq_f32(float32x4_t x) noexcept
 {
 	float32x4_t r = fast_rsqrtq_f32(x);
-	return vmulq_f32(r, vrsqrtsq_f32(x, vmulq_f32(r,r)));
+	r = vmulq_f32(r, vrsqrtsq_f32(x, vmulq_f32(r,r)));
+	r = vmulq_f32(r, vrsqrtsq_f32(x, vmulq_f32(r,r)));
+	return r;
 }
 
 KTM_FUNC float32x2_t fast_recip_f32(float32x2_t x) noexcept
 {
-	float32x2_t r = vrecpe_f32(x);
-  	return vmul_f32(r, vrecps_f32(x, r));
+  	return vrecpe_f32(x);
 }
 
 KTM_FUNC float32x4_t fast_recipq_f32(float32x4_t x) noexcept
 {
-	float32x4_t r = vrecpeq_f32(x);
-  	return vmulq_f32(r, vrecpsq_f32(x, r));
+  	return vrecpeq_f32(x);
 }
 
 KTM_FUNC float32x2_t recip_f32(float32x2_t x) noexcept
 {
 	float32x2_t r = fast_recip_f32(x);
-  	return vmul_f32(r, vrecps_f32(x, r));
+	r = vmul_f32(r, vrecps_f32(x, r));
+	r = vmul_f32(r, vrecps_f32(x, r));
+  	return r;
 }
 
 KTM_FUNC float32x4_t recipq_f32(float32x4_t x) noexcept
 {
 	float32x4_t r = fast_recipq_f32(x);
-	return vmulq_f32(r, vrecpsq_f32(x, r));
+	r = vmulq_f32(r, vrecpsq_f32(x, r));
+	r = vmulq_f32(r, vrecpsq_f32(x, r));
+	return r;
 }
 
 KTM_FUNC float32x2_t div_f32(float32x2_t x, float32x2_t y) noexcept
@@ -467,6 +461,35 @@ KTM_FUNC float fv4_dot1(float32x4_t x, float32x4_t y) noexcept
 {
 	return fv4_radd(vmulq_f32(x, y));
 }
+
+KTM_FUNC float fv2_length1(float32x2_t x) noexcept
+{
+	float32x2_t dot = fv2_dot(x, x);
+	float32x2_t ret = vsqrt_f32(dot);
+    return vget_lane_f32(ret, 0);
+}
+
+KTM_FUNC float fv3_length1(float32x4_t x) noexcept
+{
+	float32x4_t mul = vmulq_f32(x, x);
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+	float32x4_t dot = vaddq_f32(vdupq_laneq_f32(mul, 1), mul);
+	dot = vaddq_f32(vdupq_laneq_f32(mul, 2), dot); 
+#else
+	float32x4_t dot = vaddq_f32(vmovq_n_f32(vgetq_lane_f32(mul, 1)), mul);
+	dot = vaddq_f32(vmovq_n_f32(vgetq_lane_f32(mul, 2)), dot); 
+#endif
+	float32x4_t ret = vsqrtq_f32(dot);
+    return vgetq_lane_f32(ret, 0);
+}
+
+KTM_FUNC float fv4_length1(float32x4_t x) noexcept
+{
+	float32x4_t dot = fv4_dot(x, x);
+	float32x4_t ret = vsqrtq_f32(dot);
+    return vgetq_lane_f32(ret, 0);
+}
+
 }
 
 namespace mt
