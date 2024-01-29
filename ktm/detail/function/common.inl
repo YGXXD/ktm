@@ -92,10 +92,7 @@ struct ktm::detail::common_implement::abs
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
-        if constexpr(std::is_unsigned_v<T>)
-            return x;
-        else
-            return call(x, std::make_index_sequence<N>());
+        return call(x, std::make_index_sequence<N>());
     }
 private:
     template<size_t ...Ns>

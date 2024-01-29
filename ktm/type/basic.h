@@ -7,9 +7,6 @@ namespace ktm
 {
 
 template<typename T>
-inline constexpr std::enable_if_t<std::is_arithmetic_v<T>, T> epsilon = static_cast<T>(0.00001);
-
-template<typename T>
 inline constexpr std::enable_if_t<std::is_arithmetic_v<T>, T> zero = static_cast<T>(0);
 
 template<typename T>

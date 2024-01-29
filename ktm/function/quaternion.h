@@ -10,6 +10,7 @@
 
 namespace ktm
 {
+
 template<class Q>
 KTM_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> conjugate(const Q& q) noexcept
 {
@@ -118,7 +119,6 @@ KTM_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> slerp_longest(const Q& x, c
         return slerp_internal(x, negate(y), t);
     return slerp_internal(x, y, t);
 }
-
 
 }
 

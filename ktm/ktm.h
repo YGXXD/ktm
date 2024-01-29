@@ -10,6 +10,8 @@
 #include "function/geometric.h"
 #include "function/matrix.h"
 #include "function/quaternion.h"
+#include "function/epsilon.h"
+#include "function/matrix_equation.h"
 #include "function/transform_3d.h"
 
 #endif

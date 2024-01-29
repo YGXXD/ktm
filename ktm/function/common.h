@@ -34,7 +34,7 @@ KTM_INLINE std::enable_if_t<is_vector_v<V>, vec_traits_base_t<V>> reduce_max(con
 }
 
 template<class V>
-KTM_INLINE std::enable_if_t<is_vector_v<V>, V> abs(const V& x) noexcept
+KTM_INLINE std::enable_if_t<is_vector_v<V> && !is_unsigned_base_v<V>, V> abs(const V& x) noexcept
 {
     return detail::common_implement::abs<vec_traits_len<V>, vec_traits_base_t<V>>::call(x);
 }
@@ -125,6 +125,7 @@ KTM_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> fr
 
 namespace fast
 {
+    
 template<class V>
 KTM_INLINE std::enable_if_t<is_vector_v<V> && is_listing_type_base_v<type_list<float, double>, V>, V> rsqrt(const V& x) noexcept
 {
@@ -136,6 +137,7 @@ KTM_INLINE std::enable_if_t<is_vector_v<V> && is_listing_type_base_v<type_list<f
 {
     return detail::common_implement::fast_recip<vec_traits_len<V>, vec_traits_base_t<V>>::call(x);
 }
+
 }
 
 }   

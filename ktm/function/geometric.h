@@ -8,6 +8,7 @@
 
 namespace ktm
 {
+
 template<class V>
 KTM_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, vec_traits_base_t<V>> dot(const V& x, const V& y) noexcept
 { 
@@ -64,6 +65,7 @@ KTM_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> re
 
 namespace fast
 {
+    
 template<class V>
 KTM_INLINE std::enable_if_t<is_vector_v<V> && is_listing_type_base_v<type_list<float, double>, V>, V> project(const V& x, const V& y) noexcept
 {
@@ -75,7 +77,9 @@ KTM_INLINE std::enable_if_t<is_vector_v<V> && is_listing_type_base_v<type_list<f
 {
     return detail::geometric_implement::fast_normalize<vec_traits_len<V>, vec_traits_base_t<V>>::call(x);
 } 
+
 }
+
 }
 
 #include "../detail/function/geometric.inl"

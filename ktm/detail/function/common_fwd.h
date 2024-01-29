@@ -23,7 +23,7 @@ struct reduce_min;
 template<size_t N, typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
 struct reduce_max;
 
-template<size_t N, typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+template<size_t N, typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && !std::is_unsigned_v<T>>>
 struct abs;
 
 template<size_t N, typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>

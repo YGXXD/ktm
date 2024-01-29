@@ -10,6 +10,7 @@ namespace detail
 {
 namespace vec_calc_implement
 {
+    
 template<size_t N, typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
 struct add;
 

@@ -8,6 +8,7 @@ namespace ktm
 {
 namespace detail
 {
+    
 namespace mat_opt_implement
 {
 template<size_t Row, size_t Col, typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
