@@ -32,17 +32,17 @@
 #define neon_copyq_lane_f32(dst, dst_lane, src, src_lane) vsetq_lane_f32(vget_lane_f32(src, src_lane), dst, dst_lane)
 #define neon_copyq_laneq_f32(dst, dst_lane, src, src_lane) vsetq_lane_f32(vgetq_lane_f32(src, src_lane), dst, dst_lane)
 #define neon_copy_lane_s32(dst, dst_lane, src, src_lane) vset_lane_s32(vget_lane_s32(src, src_lane), dst, dst_lane)
-#define neon_copy_laneq_s32(dst, dst_lane, src, src_lane) vset_lane_s32(vget_laneq_s32(src, src_lane), dst, dst_lane)
-#define neon_copyq_lane_s32(dst, dst_lane, src, src_lane) vset_laneq_s32(vget_lane_s32(src, src_lane), dst, dst_lane)
-#define neon_copyq_laneq_s32(dst, dst_lane, src, src_lane) vset_laneq_s32(vget_laneq_s32(src, src_lane), dst, dst_lane)
+#define neon_copy_laneq_s32(dst, dst_lane, src, src_lane) vset_lane_s32(vgetq_lane_s32(src, src_lane), dst, dst_lane)
+#define neon_copyq_lane_s32(dst, dst_lane, src, src_lane) vsetq_lane_s32(vget_lane_s32(src, src_lane), dst, dst_lane)
+#define neon_copyq_laneq_s32(dst, dst_lane, src, src_lane) vsetq_lane_s32(vgetq_lane_s32(src, src_lane), dst, dst_lane)
 #define neon_dup_lane_f32(a, lane) vdup_n_f32(vget_lane_f32(a, lane))
 #define neon_dupq_lane_f32(a, lane) vdupq_n_f32(vget_lane_f32(a, lane))
 #define neon_dup_laneq_f32(a, lane) vdup_n_f32(vgetq_lane_f32(a, lane))
 #define neon_dupq_laneq_f32(a, lane) vdupq_n_f32(vgetq_lane_f32(a, lane))
 #define neon_dup_lane_s32(a, lane) vdup_n_s32(vget_lane_s32(a, lane))
 #define neon_dupq_lane_s32(a, lane) vdupq_n_s32(vget_lane_s32(a, lane))
-#define neon_dup_laneq_s32(a, lane) vdup_n_s32(vget_laneq_s32(a, lane))
-#define neon_dupq_laneq_s32(a, lane) vdupq_n_s32(vget_laneq_s32(a, lane))
+#define neon_dup_laneq_s32(a, lane) vdup_n_s32(vgetq_lane_s32(a, lane))
+#define neon_dupq_laneq_s32(a, lane) vdupq_n_s32(vgetq_lane_s32(a, lane))
 
 #endif
 

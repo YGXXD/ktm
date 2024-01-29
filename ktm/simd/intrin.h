@@ -39,23 +39,23 @@
 	#include <xmmintrin.h>
 #endif
 
-#define KTM_SIMD_A32_FLAG 1
+#define KTM_SIMD_ARM_FLAG 1
 #define KTM_SIMD_A64_FLAG 2
 
 #if defined(KTM_COMPILER_MSVC)
 	#if defined(_M_ARM64) || defined(_M_HYBRID_X86_ARM64) || defined(_M_ARM64EC)
-		#define KTM_SIMD_ARM (KTM_SIMD_A32_FLAG | KTM_SIMD_A64_FLAG)
+		#define KTM_SIMD_ARM (KTM_SIMD_ARM_FLAG | KTM_SIMD_A64_FLAG)
 		#include <arm64_neon.h>
 	#elif defined(_M_ARM)
-		#define KTM_SIMD_ARM KTM_SIMD_A32_FLAG
+		#define KTM_SIMD_ARM KTM_SIMD_ARM_FLAG
 		#include <arm_neon.h>
 	#endif
 #else 
 	#if defined(__ARM_NEON) || defined(__ARM_NEON__)
 		#if defined(__aarch64__)
-			#define KTM_SIMD_ARM (KTM_SIMD_A32_FLAG | KTM_SIMD_A64_FLAG)
+			#define KTM_SIMD_ARM (KTM_SIMD_ARM_FLAG | KTM_SIMD_A64_FLAG)
 		#else
-			#define KTM_SIMD_ARM KTM_SIMD_A32_FLAG
+			#define KTM_SIMD_ARM KTM_SIMD_ARM_FLAG
 		#endif
 		#include <arm_neon.h>
 	#endif
