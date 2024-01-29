@@ -259,52 +259,8 @@ struct ktm::detail::geometric_implement::refract<2, float>
             return V();
         V ret;
         float32x2_t sqrt_k = vsqrt_f32(k);
-        float32x2_t fma = vfma_f32(sqrt_k, t_eta, dot);
+        float32x2_t fma = arm::ext::fma_f32(sqrt_k, t_eta, dot);
         ret.st = vsub_f32(vmul_f32(t_eta, x.st), vmul_f32(fma, n.st));
-        return ret;
-    }
-};
-
-template<>
-struct ktm::detail::geometric_implement::refract<3, float>
-{
-    using V = vec<3, float>;
-    static KTM_INLINE V call(const V& x, const V& n, float eta) noexcept
-    {
-        float32x4_t t_eta = vdupq_n_f32(eta);
-        float32x4_t one = vdupq_n_f32(1.f);
-        float32x4_t dot = arm::geo::fv3_dot(n.st, x.st);
-        float32x4_t eta2 = vmulq_f32(t_eta, t_eta);
-        float32x4_t one_minus_cos2 = vsubq_f32(one, vmulq_f32(dot, dot));
-        float32x4_t k = vsubq_f32(one, vmulq_f32(eta2, one_minus_cos2));
-        if(vgetq_lane_f32(vcgeq_f32(k, vdupq_n_f32(0.f)), 0) == 0)
-            return V();
-        V ret;
-        float32x4_t sqrt_k = vsqrtq_f32(k);
-        float32x4_t fma = vfmaq_f32(sqrt_k, t_eta, dot);
-        ret.st = vsubq_f32(vmulq_f32(t_eta, x.st), vmulq_f32(fma, n.st));
-        return ret;
-    }
-};
-
-template<>
-struct ktm::detail::geometric_implement::refract<4, float>
-{
-    using V = vec<3, float>;
-    static KTM_INLINE V call(const V& x, const V& n, float eta) noexcept
-    {
-        float32x4_t t_eta = vdupq_n_f32(eta);
-        float32x4_t one = vdupq_n_f32(1.f);
-        float32x4_t dot = arm::geo::fv4_dot(n.st, x.st);
-        float32x4_t eta2 = vmulq_f32(t_eta, t_eta);
-        float32x4_t one_minus_cos2 = vsubq_f32(one, vmulq_f32(dot, dot));
-        float32x4_t k = vsubq_f32(one, vmulq_f32(eta2, one_minus_cos2));
-        if(vgetq_lane_f32(vcgeq_f32(k, vdupq_n_f32(0.f)), 0) == 0)
-            return V();
-        V ret;
-        float32x4_t sqrt_k = vsqrtq_f32(k);
-        float32x4_t fma = vfmaq_f32(sqrt_k, t_eta, dot);
-        ret.st = vsubq_f32(vmulq_f32(t_eta, x.st), vmulq_f32(fma, n.st));
         return ret;
     }
 };
@@ -392,6 +348,54 @@ struct ktm::detail::geometric_implement::fast_normalize<4, float>
         return ret;
     }
 };
+
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+
+template<>
+struct ktm::detail::geometric_implement::refract<3, float>
+{
+    using V = vec<3, float>;
+    static KTM_INLINE V call(const V& x, const V& n, float eta) noexcept
+    {
+        float32x4_t t_eta = vdupq_n_f32(eta);
+        float32x4_t one = vdupq_n_f32(1.f);
+        float32x4_t dot = arm::geo::fv3_dot(n.st, x.st);
+        float32x4_t eta2 = vmulq_f32(t_eta, t_eta);
+        float32x4_t one_minus_cos2 = vsubq_f32(one, vmulq_f32(dot, dot));
+        float32x4_t k = vsubq_f32(one, vmulq_f32(eta2, one_minus_cos2));
+        if(vgetq_lane_f32(vcgeq_f32(k, vdupq_n_f32(0.f)), 0) == 0)
+            return V();
+        V ret;
+        float32x4_t sqrt_k = vsqrtq_f32(k);
+        float32x4_t fma = arm::ext::fmaq_f32(sqrt_k, t_eta, dot);
+        ret.st = vsubq_f32(vmulq_f32(t_eta, x.st), vmulq_f32(fma, n.st));
+        return ret;
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::refract<4, float>
+{
+    using V = vec<3, float>;
+    static KTM_INLINE V call(const V& x, const V& n, float eta) noexcept
+    {
+        float32x4_t t_eta = vdupq_n_f32(eta);
+        float32x4_t one = vdupq_n_f32(1.f);
+        float32x4_t dot = arm::geo::fv4_dot(n.st, x.st);
+        float32x4_t eta2 = vmulq_f32(t_eta, t_eta);
+        float32x4_t one_minus_cos2 = vsubq_f32(one, vmulq_f32(dot, dot));
+        float32x4_t k = vsubq_f32(one, vmulq_f32(eta2, one_minus_cos2));
+        if(vgetq_lane_f32(vcgeq_f32(k, vdupq_n_f32(0.f)), 0) == 0)
+            return V();
+        V ret;
+        float32x4_t sqrt_k = vsqrtq_f32(k);
+        float32x4_t fma = arm::ext::fmaq_f32(sqrt_k, t_eta, dot);
+        ret.st = vsubq_f32(vmulq_f32(t_eta, x.st), vmulq_f32(fma, n.st));
+        return ret;
+    }
+};
+
+#endif
 
 #elif defined(KTM_SIMD_X86)
 

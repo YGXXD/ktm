@@ -22,7 +22,7 @@ private:
     {
         ColV ret;
         ret.st = vmul_f32(m[0].st, vdup_n_f32(v[0]));
-        ((ret.st = vfma_f32(ret.st, m[Ns + 1].st, vdup_n_f32(v[Ns + 1]))), ...);
+        ((ret.st = arm::ext::fma_f32(ret.st, m[Ns + 1].st, vdup_n_f32(v[Ns + 1]))), ...);
         return ret; 
     }
 };
@@ -43,7 +43,7 @@ private:
     {
         ColV ret;
         ret.st = vmulq_f32(m[0].st, vdupq_n_f32(v[0]));
-        ((ret.st = vfmaq_f32(ret.st, m[Ns + 1].st, vdupq_n_f32(v[Ns + 1]))), ...);
+        ((ret.st = arm::ext::fmaq_f32(ret.st, m[Ns + 1].st, vdupq_n_f32(v[Ns + 1]))), ...);
         return ret; 
     }
 };

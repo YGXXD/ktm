@@ -473,7 +473,7 @@ struct ktm::detail::common_implement::floor<2, float>
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = vrndm_f32(x.st);
+        ret.st = arm::ext::floor_f32(x.st);
         return ret;
     }
 };
@@ -485,7 +485,7 @@ struct ktm::detail::common_implement::floor<N, float, std::enable_if_t<N == 3 ||
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = vrndmq_f32(x.st);
+        ret.st = arm::ext::floorq_f32(x.st);
         return ret;
     }
 };
@@ -497,7 +497,7 @@ struct ktm::detail::common_implement::ceil<2, float>
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = vrndp_f32(x.st);
+        ret.st = arm::ext::ceil_f32(x.st);
         return ret;
     }
 };
@@ -509,7 +509,7 @@ struct ktm::detail::common_implement::ceil<N, float, std::enable_if_t<N == 3 || 
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = vrndpq_f32(x.st);
+        ret.st = arm::ext::ceilq_f32(x.st);
         return ret;
     }
 };
@@ -521,7 +521,7 @@ struct ktm::detail::common_implement::round<2, float>
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = vrndi_f32(x.st);
+        ret.st = arm::ext::round_f32(x.st);
         return ret;
     }
 };
@@ -533,31 +533,7 @@ struct ktm::detail::common_implement::round<N, float, std::enable_if_t<N == 3 ||
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = vrndiq_f32(x.st);
-        return ret;
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::sqrt<2, float>
-{
-    using V = vec<2, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = vsqrt_f32(x.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::sqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = vsqrtq_f32(x.st);
+        ret.st = arm::ext::roundq_f32(x.st);
         return ret;
     }
 };
@@ -724,7 +700,7 @@ struct ktm::detail::common_implement::fract<2, float>
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        float32x2_t floor = vrndm_f32(x.st);
+        float32x2_t floor = arm::ext::floor_f32(x.st);
         ret.st = vsub_f32(x.st, floor);
         return ret;
     }
@@ -737,7 +713,7 @@ struct ktm::detail::common_implement::fract<N, float, std::enable_if_t<N == 3 ||
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        float32x4_t floor = vrndmq_f32(x.st);
+        float32x4_t floor = arm::ext::floorq_f32(x.st);
         ret.st = vsubq_f32(x.st, floor);
         return ret;
     }
@@ -790,6 +766,34 @@ struct ktm::detail::common_implement::fast_recip<N, float, std::enable_if_t<N ==
         return ret;
     }
 };
+
+#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+
+template<>
+struct ktm::detail::common_implement::sqrt<2, float>
+{
+    using V = vec<2, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = vsqrt_f32(x.st);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::sqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = vsqrtq_f32(x.st);
+        return ret;
+    }
+};
+
+#endif
 
 #elif defined(KTM_SIMD_X86)
 
