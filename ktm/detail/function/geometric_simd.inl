@@ -94,69 +94,6 @@ struct ktm::detail::geometric_implement::cross<3, float>
 };
 
 template<>
-struct ktm::detail::geometric_implement::length<2, float>
-{
-    using V = vec<2, float>;
-    static KTM_INLINE float call(const V& x) noexcept
-    {
-        return arm::geo::fv2_length1(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::geometric_implement::length<3, float>
-{
-    using V = vec<3, float>;
-    static KTM_INLINE float call(const V& x) noexcept
-    {
-        return arm::geo::fv3_length1(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::geometric_implement::length<4, float>
-{
-    using V = vec<4, float>;
-    static KTM_INLINE float call(const V& x) noexcept
-    {
-        return arm::geo::fv4_length1(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::geometric_implement::distance<2, float>
-{
-    using V = vec<2, float>;
-    static KTM_INLINE float call(const V& x, const V& y) noexcept
-    {
-        float32x2_t sub = vsub_f32(x.st, y.st);
-        return arm::geo::fv2_length1(sub);
-    }
-};
-
-template<>
-struct ktm::detail::geometric_implement::distance<3, float>
-{
-    using V = vec<3, float>;
-    static KTM_INLINE float call(const V& x, const V& y) noexcept
-    {
-        float32x4_t sub = vsubq_f32(x.st, y.st);
-        return arm::geo::fv3_length1(sub);
-    }
-};
-
-template<>
-struct ktm::detail::geometric_implement::distance<4, float>
-{
-    using V = vec<4, float>;
-    static KTM_INLINE float call(const V& x, const V& y) noexcept
-    {
-        float32x4_t sub = vsubq_f32(x.st, y.st);
-        return arm::geo::fv4_length1(sub);
-    }
-};
-
-template<>
 struct ktm::detail::geometric_implement::normalize<2, float>
 {
     using V = vec<2, float>;
@@ -239,28 +176,6 @@ struct ktm::detail::geometric_implement::reflect<4, float>
         float32x4_t mul_0 = vmulq_f32(n.st, dot);
         float32x4_t mul_1 = vmulq_f32(mul_0, vdupq_n_f32(2.0f));
         ret.st = vsubq_f32(x.st, mul_1);
-        return ret;
-    }
-};
-
-template<>
-struct ktm::detail::geometric_implement::refract<2, float>
-{
-    using V = vec<2, float>;
-    static KTM_INLINE V call(const V& x, const V& n, float eta) noexcept
-    {
-        float32x2_t t_eta = vdup_n_f32(eta);
-        float32x2_t one = vdup_n_f32(1.f);
-        float32x2_t dot = arm::geo::fv2_dot(n.st, x.st);
-        float32x2_t eta2 = vmul_f32(t_eta, t_eta);
-        float32x2_t one_minus_cos2 = vsub_f32(one, vmul_f32(dot, dot));
-        float32x2_t k = vsub_f32(one, vmul_f32(eta2, one_minus_cos2));
-        if(vget_lane_f32(vcge_f32(k, vdup_n_f32(0.f)), 0) == 0)
-            return V();
-        V ret;
-        float32x2_t sqrt_k = vsqrt_f32(k);
-        float32x2_t fma = arm::ext::fma_f32(sqrt_k, t_eta, dot);
-        ret.st = vsub_f32(vmul_f32(t_eta, x.st), vmul_f32(fma, n.st));
         return ret;
     }
 };
@@ -350,6 +265,91 @@ struct ktm::detail::geometric_implement::fast_normalize<4, float>
 };
 
 #if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
+
+template<>
+struct ktm::detail::geometric_implement::length<2, float>
+{
+    using V = vec<2, float>;
+    static KTM_INLINE float call(const V& x) noexcept
+    {
+        return arm::geo::fv2_length1(x.st);
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::length<3, float>
+{
+    using V = vec<3, float>;
+    static KTM_INLINE float call(const V& x) noexcept
+    {
+        return arm::geo::fv3_length1(x.st);
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::length<4, float>
+{
+    using V = vec<4, float>;
+    static KTM_INLINE float call(const V& x) noexcept
+    {
+        return arm::geo::fv4_length1(x.st);
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::distance<2, float>
+{
+    using V = vec<2, float>;
+    static KTM_INLINE float call(const V& x, const V& y) noexcept
+    {
+        float32x2_t sub = vsub_f32(x.st, y.st);
+        return arm::geo::fv2_length1(sub);
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::distance<3, float>
+{
+    using V = vec<3, float>;
+    static KTM_INLINE float call(const V& x, const V& y) noexcept
+    {
+        float32x4_t sub = vsubq_f32(x.st, y.st);
+        return arm::geo::fv3_length1(sub);
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::distance<4, float>
+{
+    using V = vec<4, float>;
+    static KTM_INLINE float call(const V& x, const V& y) noexcept
+    {
+        float32x4_t sub = vsubq_f32(x.st, y.st);
+        return arm::geo::fv4_length1(sub);
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::refract<2, float>
+{
+    using V = vec<2, float>;
+    static KTM_INLINE V call(const V& x, const V& n, float eta) noexcept
+    {
+        float32x2_t t_eta = vdup_n_f32(eta);
+        float32x2_t one = vdup_n_f32(1.f);
+        float32x2_t dot = arm::geo::fv2_dot(n.st, x.st);
+        float32x2_t eta2 = vmul_f32(t_eta, t_eta);
+        float32x2_t one_minus_cos2 = vsub_f32(one, vmul_f32(dot, dot));
+        float32x2_t k = vsub_f32(one, vmul_f32(eta2, one_minus_cos2));
+        if(vget_lane_f32(vcge_f32(k, vdup_n_f32(0.f)), 0) == 0)
+            return V();
+        V ret;
+        float32x2_t sqrt_k = vsqrt_f32(k);
+        float32x2_t fma = arm::ext::fma_f32(sqrt_k, t_eta, dot);
+        ret.st = vsub_f32(vmul_f32(t_eta, x.st), vmul_f32(fma, n.st));
+        return ret;
+    }
+};
 
 template<>
 struct ktm::detail::geometric_implement::refract<3, float>

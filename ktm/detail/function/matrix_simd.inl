@@ -98,7 +98,7 @@ struct ktm::detail::matrix_implement::determinant<4, float>
 
         float32x4_t mul_3 = vmulq_f32(c_0, vaddq_f32(vaddq_f32(mul_0, mul_1), mul_2)); 
         mul_3 = neon_shuffleq_f32(mul_3, mul_3, 3, 1, 2, 0);
-        return vaddv_f32(vsub_f32(vget_low_f32(mul_3), vget_high_f32(mul_3)));
+        return arm::geo::fv2_radd(vsub_f32(vget_low_f32(mul_3), vget_high_f32(mul_3)));
     }
 };
 
@@ -155,7 +155,7 @@ struct ktm::detail::matrix_implement::determinant<4, int>
 
         int32x4_t mul_3 = vmulq_s32(c_0, vaddq_s32(vaddq_s32(mul_0, mul_1), mul_2)); 
         mul_3 = neon_shuffleq_s32(mul_3, mul_3, 3, 1, 2, 0);
-        return vaddv_s32(vsub_s32(vget_low_s32(mul_3), vget_high_s32(mul_3)));
+        return arm::geo::sv2_radd(vsub_s32(vget_low_s32(mul_3), vget_high_s32(mul_3)));
     }
 };
 
