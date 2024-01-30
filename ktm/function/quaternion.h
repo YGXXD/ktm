@@ -5,7 +5,6 @@
 #include "../traits/type_traits_math.h"
 #include "../type/quat.h"
 #include "arithmetic.h"
-#include "common.h"
 #include "geometric.h"
 
 namespace ktm
@@ -21,8 +20,7 @@ KTM_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> conjugate(const Q& q) noexcep
 template<class Q>
 KTM_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> inverse(const Q& q) noexcept
 {
-    using T = quat_traits_base_t<Q>;
-    return Q(conjugate(q).vector * (one<T> / (length_squared(q.vector))));
+    return Q(conjugate(q).vector / length_squared(q.vector, q.vector));
 }
 
 template<class Q>
@@ -50,23 +48,11 @@ KTM_INLINE std::enable_if_t<is_quaternion_v<Q>, quat_traits_base_t<Q>> length(co
 }
 
 template<class Q>
-KTM_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> normalize(const Q& q) noexcept
+KTM_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> normalize(const Q& q) noexcept
 {
     using T = quat_traits_base_t<Q>;
     T ls = length_squared(q.vector);
-    if(equal_zero(ls)) 
-        return Q(zero<T>, zero<T>, zero<T>, one<T>);
-    return Q(q.vector * rsqrt(ls));
-}
-
-template<class Q>
-KTM_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> fast_normalize(const Q& q) noexcept
-{
-    using T = quat_traits_base_t<Q>;
-    T ls = length_squared(q.vector);
-    if(equal_zero(ls))
-        return Q(zero<T>, zero<T>, zero<T>, one<T>);
-    return Q(q.vector * fast_rsqrt(ls));
+    return ls == zero<T> ? Q(zero<T>, zero<T>, zero<T>, one<T>) : Q(q.vector * rsqrt(ls));
 }
 
 template<class Q>

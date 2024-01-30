@@ -40,6 +40,12 @@ KTM_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, vec_t
 }
 
 template<class V>
+KTM_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, vec_traits_base_t<V>> length_squared(const V& x) noexcept
+{
+    return detail::geometric_implement::dot<vec_traits_len<V>, vec_traits_base_t<V>>::call(x, x);
+}
+
+template<class V>
 KTM_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, vec_traits_base_t<V>> distance(const V& x, const V& y) noexcept
 {
     return detail::geometric_implement::distance<vec_traits_len<V>, vec_traits_base_t<V>>::call(x, y);

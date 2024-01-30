@@ -51,7 +51,7 @@ struct iquat_make<Father, quat<T>> : Father
                 return 0x1p-104;
         };
 
-        if (dot(half, half) < epsilonLambda()) 
+        if (length_squared(half) < epsilonLambda()) 
         {
             vec<3, T> abs_from = abs(from);
             if (abs_from.x <= abs_from.y && abs_from.x <= abs_from.z)
