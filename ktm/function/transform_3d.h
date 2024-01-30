@@ -4,6 +4,7 @@
 #include "../setup.h"
 #include "../type/vec.h"
 #include "../type/mat.h"
+#include "trigonometric.h"
 #include "geometric.h"
 
 namespace ktm

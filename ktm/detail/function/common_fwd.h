@@ -68,6 +68,9 @@ struct smoothstep;
 template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
 struct fract;
 
+template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
+struct mod;
+
 template<size_t N, typename T, typename = std::enable_if_t<std::is_exist_same_vs<float, double, T>>>
 struct fast_rsqrt;
 

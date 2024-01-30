@@ -123,6 +123,12 @@ KTM_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> fr
     return detail::common_implement::fract<vec_traits_len<V>, vec_traits_base_t<V>>::call(x);
 }
 
+template<class V>
+KTM_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> mod(const V& x, const V& y) noexcept
+{
+    return detail::common_implement::mod<vec_traits_len<V>, vec_traits_base_t<V>>::call(x, y);
+}
+
 namespace fast
 {
     

@@ -6,6 +6,7 @@
 #include "../traits/type_traits_math.h"
 #include "matrix.h"
 #include "epsilon.h"
+#include "trigonometric.h"
 
 namespace ktm
 {

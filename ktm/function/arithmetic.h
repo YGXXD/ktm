@@ -16,298 +16,21 @@ KTM_INLINE std::enable_if_t<(std::is_arithmetic_v<T> && !std::is_unsigned_v<T>),
 }
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> max(T x, T y) noexcept
-{
-    return x > y ? x : y;
-}
-
-template<typename T>
 KTM_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> min(T x, T y) noexcept
 {
     return x < y ? x : y;
 }
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> clamp(T v, T min, T max) noexcept
+KTM_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> max(T x, T y) noexcept
 {
-    return ktm::min<T>(ktm::max<T>(v, min), max);
+    return x > y ? x : y;
 }
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> pow2(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> clamp(T v, T min_v, T max_v) noexcept
 {
-    return x * x;
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> pow5(T x) noexcept
-{
-    return pow2(x) * pow2(x) * x;
-}
-
-template<size_t N, typename T>
-KTM_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> pow(T x) noexcept
-{
-    if constexpr(N == 0)
-    {
-        return one<T>;
-    }
-    else
-    {
-        return x * pow<N - 1>(x);
-    }
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> radians(T degrees) noexcept
-{
-    constexpr T degrees_to_radians = pi<T> / static_cast<T>(180);
-    return degrees * degrees_to_radians;
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> degrees(T radians) noexcept
-{
-    constexpr T radians_to_degrees = static_cast<T>(180) * one_over_pi<T>;
-    return radians * radians_to_degrees;
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> acos(T x) noexcept
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::acosf(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::acos(x);
-    else 
-        return ::acosl(x); 
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> asin(T x) noexcept
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::asinf(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::asin(x);
-    else 
-        return ::asinl(x); 
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> atan(T x) noexcept
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::atanf(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::atan(x);
-    else 
-        return ::atanl(x); 
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> atan2(T x, T y) noexcept
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::atan2f(x, y);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::atan2(x, y);
-    else 
-        return ::atan2l(x, y); 
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> cos(T x) noexcept
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::cosf(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::cos(x);
-    else 
-        return ::cosl(x); 
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> sin(T x) noexcept
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::sinf(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::sin(x);
-    else 
-        return ::sinl(x); 
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> tan(T x) noexcept
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::tanf(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::tan(x);
-    else 
-        return ::tanl(x); 
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> sinc(T x) noexcept
-{
-    if(equal_zero(x)) return one<T>;
-    return sin(x) / x;
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> acosh(T x) noexcept
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::acoshf(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::acosh(x);
-    else 
-        return ::acoshl(x); 
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> asinh(T x) noexcept
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::asinhf(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::asinh(x);
-    else 
-        return ::asinhl(x); 
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> atanh(T x) noexcept
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::atanhf(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::atanh(x);
-    else 
-        return ::atanhl(x); 
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> cosh(T x) noexcept
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::coshf(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::cosh(x);
-    else 
-        return ::coshl(x); 
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> sinh(T x) noexcept
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::sinhf(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::sinh(x);
-    else 
-        return ::sinhl(x); 
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> tanh(T x) noexcept
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::tanhf(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::tanh(x);
-    else 
-        return ::tanhl(x); 
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> exp(T x) noexcept
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::expf(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::exp(x);
-    else 
-        return ::expl(x); 
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> exp2(T x) noexcept
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::exp2f(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::exp2(x);
-    else 
-        return ::exp2l(x); 
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> expm1(T x) noexcept
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::expm1f(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::expm1(x);
-    else 
-        return ::expm1l(x); 
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> log(T x) noexcept
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::logf(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::log(x);
-    else 
-        return ::logl(x); 
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> log10(T x) noexcept
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::log10f(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::log10(x);
-    else 
-        return ::log10l(x); 
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> log2(T x) noexcept
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::log2f(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::log2(x);
-    else 
-        return ::log2l(x); 
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> log1p(T x) noexcept
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::log1pf(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::log1p(x);
-    else 
-        return ::log1pl(x); 
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> logb(T x) noexcept
-{
-    if constexpr(std::is_same_v<T, float>)
-        return ::logbf(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::logb(x);
-    else 
-        return ::logbl(x); 
+    return min(max(v, min_v), max_v);
 }
 
 template<typename T>
@@ -367,9 +90,15 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> recip(T x) noexcept
 }
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> mix(T x, T y, T t) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> lerp(T x, T y, T t) noexcept
 {
     return x + t * (y - x);
+}
+
+template<typename T>
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> mix(T x, T y, T t) noexcept
+{
+    return lerp(x, y, t);
 }
 
 template<typename T>
@@ -388,7 +117,13 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> smoothstep(T edge0, 
 template<typename T>
 KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> fract(T x) noexcept
 {
-    return x - ktm::floor(x);
+    return x - floor(x);
+}
+
+template<typename T>
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> mod(T x, T y) noexcept
+{
+    return x - y * floor(x / y);
 }
 
 namespace fast

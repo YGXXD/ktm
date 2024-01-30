@@ -281,7 +281,7 @@ private:
     static KTM_INLINE V call(const V& x, const V& y, T t, std::index_sequence<Ns...>) noexcept
     {
         V ret;
-        ((ret[Ns] = ktm::mix(x[Ns], y[Ns], t)), ...);
+        ((ret[Ns] = ktm::lerp(x[Ns], y[Ns], t)), ...);
         return ret;
     }
 };
@@ -299,7 +299,7 @@ private:
     static KTM_INLINE V call(const V& x, const V& y, const V& t, std::index_sequence<Ns...>) noexcept
     {
         V ret;
-        ((ret[Ns] = ktm::mix(x[Ns], y[Ns], t[Ns])), ...);
+        ((ret[Ns] = ktm::lerp(x[Ns], y[Ns], t[Ns])), ...);
         return ret;
     }
 };
@@ -354,6 +354,24 @@ private:
     {
         V ret;
         ((ret[Ns] = ktm::fract(x[Ns])), ...);
+        return ret;
+    }
+};
+
+template<size_t N, typename T, typename Void>
+struct ktm::detail::common_implement::mod
+{
+    using V = vec<N, T>;
+    static KTM_INLINE V call(const V& x, const V& y) noexcept
+    {
+        return call(x, y, std::make_index_sequence<N>());
+    }
+private:
+    template<size_t ...Ns>
+    static KTM_INLINE V call(const V& x, const V& y, std::index_sequence<Ns...>) noexcept
+    {
+        V ret;
+        ((ret[Ns] = ktm::mod(x[Ns], y[Ns])), ...);
         return ret;
     }
 };

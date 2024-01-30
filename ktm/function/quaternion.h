@@ -5,6 +5,7 @@
 #include "../type/quat.h"
 #include "../traits/type_traits_math.h"
 #include "arithmetic.h"
+#include "trigonometric.h"
 #include "geometric.h"
 
 namespace ktm
