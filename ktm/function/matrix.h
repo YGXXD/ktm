@@ -2,8 +2,8 @@
 #define _KTM_MATRIX_H_
 
 #include "../setup.h"
-#include "../traits/type_traits_math.h"
 #include "../type/mat.h"
+#include "../traits/type_traits_math.h"
 #include "../detail/function/matrix_fwd.h"
 
 namespace ktm

@@ -2,8 +2,8 @@
 #define _KTM_COMMON_H_
 
 #include "../setup.h"
-#include "../traits/type_traits_math.h"
 #include "../type/vec.h"
+#include "../traits/type_traits_math.h"
 #include "../detail/function/common_fwd.h"
 
 namespace ktm
