@@ -11,7 +11,7 @@ namespace ktm
 {
 
 template<class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<M, M>> factor_lu(const M& m)
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<M, M>> factor_lu(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_n<M>;
 
@@ -57,7 +57,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 }
 
 template<class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<M, M>> factor_qr(const M& m)
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<M, M>> factor_qr(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_n<M>;
     using T = mat_traits_base_t<M>;
@@ -106,7 +106,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 }
 
 template<class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<mat_traits_col_t<M>, M>> eigen_qrit(const M& m)
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<mat_traits_col_t<M>, M>> eigen_qrit(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_n<M>;
 
@@ -137,7 +137,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 }
 
 template<class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<mat_traits_col_t<M>, M>> eigen_jacobi(const M& m)
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<mat_traits_col_t<M>, M>> eigen_jacobi(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_n<M>;
     using T = mat_traits_base_t<M>;
@@ -241,7 +241,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 }
 
 template<class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<M, M, M>> factor_svd(const M& m)
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<M, M, M>> factor_svd(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_n<M>;
 
