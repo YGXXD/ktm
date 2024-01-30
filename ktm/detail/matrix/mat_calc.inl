@@ -3,6 +3,8 @@
 
 #include "mat_calc_fwd.h"
 #include "../../setup.h"
+#include "../../type/vec_fwd.h"
+#include "../../type/mat_fwd.h"
 #include "../../function/common.h"
 
 template<size_t Row, size_t Col, typename T, typename Void>

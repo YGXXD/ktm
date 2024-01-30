@@ -20,7 +20,7 @@ KTM_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> conjugate(const Q& q) noexcep
 template<class Q>
 KTM_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> inverse(const Q& q) noexcept
 {
-    return Q(conjugate(q).vector / length_squared(q.vector, q.vector));
+    return Q(conjugate(q).vector / length_squared(q.vector));
 }
 
 template<class Q>

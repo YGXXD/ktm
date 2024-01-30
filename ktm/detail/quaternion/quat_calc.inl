@@ -3,6 +3,8 @@
 
 #include "quat_calc_fwd.h"
 #include "../../setup.h"
+#include "../../type/vec_fwd.h"
+#include "../../type/quat_fwd.h"
 #include "../../function/geometric.h"
 
 template<typename T, typename Void>

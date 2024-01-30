@@ -1,9 +1,11 @@
 #ifndef _KTM_MATRIX_INL_
 #define _KTM_MATRIX_INL_
 
+#include <utility>
 #include "matrix_fwd.h"
 #include "../../setup.h"
 #include "../../type/basic.h"
+#include "../../type/vec_fwd.h"
 #include "../../type/mat_fwd.h"
 
 template<size_t N, typename T, typename Void>

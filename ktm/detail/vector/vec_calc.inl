@@ -1,9 +1,11 @@
 #ifndef _KTM_VEC_CALC_INL_
 #define _KTM_VEC_CALC_INL_
 
+#include <utility>
 #include "vec_calc_fwd.h"
 #include "../../setup.h"
 #include "../../type/basic.h"
+#include "../../type/vec_fwd.h"
 
 template<size_t N, typename T, typename Void>
 struct ktm::detail::vec_calc_implement::add

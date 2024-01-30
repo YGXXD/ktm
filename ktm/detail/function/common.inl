@@ -1,9 +1,11 @@
 #ifndef _KTM_COMMON_INL_
 #define _KTM_COMMON_INL_
 
+#include <utility>
 #include "common_fwd.h"
 #include "../../setup.h"
 #include "../../type/basic.h"
+#include "../../type/vec_fwd.h"
 #include "../../function/arithmetic.h"
 
 template<size_t StepN, size_t N, typename T, typename Void>

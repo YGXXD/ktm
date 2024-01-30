@@ -3,6 +3,7 @@
 
 #include "vec_data_fwd.h"
 #include "../../setup.h"
+#include "../../type/vec_fwd.h"
 
 template<size_t N, typename T, typename Void>
 struct ktm::detail::vec_data_implement::vec_storage
