@@ -587,6 +587,60 @@ struct ktm::detail::common_implement::recip<N, float, std::enable_if_t<N == 3 ||
 };
 
 template<>
+struct ktm::detail::common_implement::fract<2, float>
+{
+    using V = vec<2, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        float32x2_t floor = arm::ext::floor_f32(x.st);
+        ret.st = vsub_f32(x.st, floor);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::fract<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        float32x4_t floor = arm::ext::floorq_f32(x.st);
+        ret.st = vsubq_f32(x.st, floor);
+        return ret;
+    }
+};
+
+template<>
+struct ktm::detail::common_implement::mod<2, float>
+{
+    using V = vec<2, float>;
+    static KTM_INLINE V call(const V& x, const V& y) noexcept
+    {
+        V ret;
+        float32x2_t div = arm::ext::div_f32(x.st, y.st);
+        float32x2_t floor = arm::ext::floor_f32(div);
+        ret.st = vsub_f32(x.st, vmul_f32(y.st, floor));
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::mod<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x, const V& y) noexcept
+    {
+        V ret;
+        float32x4_t div = arm::ext::divq_f32(x.st, y.st);
+        float32x4_t floor = arm::ext::floorq_f32(div);
+        ret.st = vsubq_f32(x.st, vmulq_f32(y.st, floor));
+        return ret;
+    }
+};
+
+template<>
 struct ktm::detail::common_implement::lerp<2, float>
 {
     using V = vec<2, float>;
@@ -689,60 +743,6 @@ struct ktm::detail::common_implement::smoothstep<N, float, std::enable_if_t<N ==
         float32x4_t tmp = arm::ext::divq_f32(vsubq_f32(x.st, edge0.st), vsubq_f32(edge1.st, edge0.st));
         tmp = arm::ext::clampq_f32(tmp, vdupq_n_f32(0.f), vdupq_n_f32(1.f));
         ret.st = vmulq_f32(vmulq_f32(tmp, tmp), vsubq_f32(vdupq_n_f32(3.f), vmulq_f32(vdupq_n_f32(2.f), tmp)));
-        return ret;
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::fract<2, float>
-{
-    using V = vec<2, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        float32x2_t floor = arm::ext::floor_f32(x.st);
-        ret.st = vsub_f32(x.st, floor);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::fract<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        float32x4_t floor = arm::ext::floorq_f32(x.st);
-        ret.st = vsubq_f32(x.st, floor);
-        return ret;
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::mod<2, float>
-{
-    using V = vec<2, float>;
-    static KTM_INLINE V call(const V& x, const V& y) noexcept
-    {
-        V ret;
-        float32x2_t div = arm::ext::div_f32(x.st, y.st);
-        float32x2_t floor = arm::ext::floor_f32(div);
-        ret.st = vsub_f32(x.st, vmul_f32(y.st, floor));
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::mod<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x, const V& y) noexcept
-    {
-        V ret;
-        float32x4_t div = arm::ext::divq_f32(x.st, y.st);
-        float32x4_t floor = arm::ext::floorq_f32(div);
-        ret.st = vsubq_f32(x.st, vmulq_f32(y.st, floor));
         return ret;
     }
 };
@@ -1037,6 +1037,33 @@ struct ktm::detail::common_implement::recip<N, float, std::enable_if_t<N == 3 ||
 };
 
 template<size_t N>
+struct ktm::detail::common_implement::fract<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        __m128 floor = x86::ext::floor_ps(x.st);
+        ret.st = _mm_sub_ps(x.st, floor);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::mod<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x, const V& y) noexcept
+    {
+        V ret;
+        __m128 div = _mm_div_ps(x.st, y.st);
+        __m128 floor = x86::ext::floor_ps(div);
+        ret.st = _mm_sub_ps(x.st, _mm_mul_ps(y.st, floor));
+        return ret;
+    }
+};
+
+template<size_t N>
 struct ktm::detail::common_implement::lerp<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
@@ -1084,33 +1111,6 @@ struct ktm::detail::common_implement::smoothstep<N, float, std::enable_if_t<N ==
         __m128 tmp = _mm_div_ps(_mm_sub_ps(x.st, edge0.st), _mm_sub_ps(edge1.st, edge0.st));
         tmp = x86::ext::clamp_ps(tmp, _mm_setzero_ps(), _mm_set1_ps(1.f));
         ret.st = _mm_mul_ps(_mm_mul_ps(tmp, tmp), _mm_sub_ps(_mm_set1_ps(3.f), _mm_mul_ps(_mm_set1_ps(2.f), tmp)));
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::fract<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        __m128 floor = x86::ext::floor_ps(x.st);
-        ret.st = _mm_sub_ps(x.st, floor);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::mod<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x, const V& y) noexcept
-    {
-        V ret;
-        __m128 div = _mm_div_ps(x.st, y.st);
-        __m128 floor = x86::ext::floor_ps(div);
-        ret.st = _mm_sub_ps(x.st, _mm_mul_ps(y.st, floor));
         return ret;
     }
 };

@@ -269,6 +269,42 @@ private:
 };
 
 template<size_t N, typename T, typename Void>
+struct ktm::detail::common_implement::fract
+{
+    using V = vec<N, T>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        return call(x, std::make_index_sequence<N>());
+    }
+private:
+    template<size_t ...Ns>
+    static KTM_INLINE V call(const V& x, std::index_sequence<Ns...>) noexcept
+    {
+        V ret;
+        ((ret[Ns] = ktm::fract(x[Ns])), ...);
+        return ret;
+    }
+};
+
+template<size_t N, typename T, typename Void>
+struct ktm::detail::common_implement::mod
+{
+    using V = vec<N, T>;
+    static KTM_INLINE V call(const V& x, const V& y) noexcept
+    {
+        return call(x, y, std::make_index_sequence<N>());
+    }
+private:
+    template<size_t ...Ns>
+    static KTM_INLINE V call(const V& x, const V& y, std::index_sequence<Ns...>) noexcept
+    {
+        V ret;
+        ((ret[Ns] = ktm::mod(x[Ns], y[Ns])), ...);
+        return ret;
+    }
+};
+
+template<size_t N, typename T, typename Void>
 struct ktm::detail::common_implement::lerp
 {
     using V = vec<N, T>;
@@ -336,42 +372,6 @@ private:
     {
         V ret;
         ((ret[Ns] = ktm::smoothstep(edge0[Ns], edge1[Ns], x[Ns])), ...);
-        return ret;
-    }
-};
-
-template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::fract
-{
-    using V = vec<N, T>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        return call(x, std::make_index_sequence<N>());
-    }
-private:
-    template<size_t ...Ns>
-    static KTM_INLINE V call(const V& x, std::index_sequence<Ns...>) noexcept
-    {
-        V ret;
-        ((ret[Ns] = ktm::fract(x[Ns])), ...);
-        return ret;
-    }
-};
-
-template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::mod
-{
-    using V = vec<N, T>;
-    static KTM_INLINE V call(const V& x, const V& y) noexcept
-    {
-        return call(x, y, std::make_index_sequence<N>());
-    }
-private:
-    template<size_t ...Ns>
-    static KTM_INLINE V call(const V& x, const V& y, std::index_sequence<Ns...>) noexcept
-    {
-        V ret;
-        ((ret[Ns] = ktm::mod(x[Ns], y[Ns])), ...);
         return ret;
     }
 };

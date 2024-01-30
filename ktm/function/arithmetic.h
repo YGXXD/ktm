@@ -12,7 +12,18 @@ namespace ktm
 template<typename T>
 KTM_INLINE std::enable_if_t<(std::is_arithmetic_v<T> && !std::is_unsigned_v<T>), T> abs(T x) noexcept
 {
-    return x < 0 ? -x : x;
+    if constexpr(std::is_same_v<float, T>)
+    {
+        unsigned int ret = *reinterpret_cast<unsigned int*>(&x) & 0x7fffffff;
+        return *reinterpret_cast<float*>(&ret);
+    }
+    else if constexpr(std::is_same_v<double, T>)
+    {
+        unsigned long long ret = *reinterpret_cast<unsigned long long*>(&x) & 0x7fffffffffffffff;
+        return *reinterpret_cast<double*>(&ret);
+    }
+    else
+        return x < 0 ? -x : x;
 }
 
 template<typename T>
@@ -90,6 +101,18 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> recip(T x) noexcept
 }
 
 template<typename T>
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> fract(T x) noexcept
+{
+    return x - floor(x);
+}
+
+template<typename T>
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> mod(T x, T y) noexcept
+{
+    return x - y * floor(x / y);
+}
+
+template<typename T>
 KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> lerp(T x, T y, T t) noexcept
 {
     return x + t * (y - x);
@@ -112,18 +135,6 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> smoothstep(T edge0, 
 {
     const T tmp = ktm::clamp((x - edge0) / (edge1 - edge0), zero<T>, one<T>);
     return tmp * tmp * (static_cast<T>(3) - static_cast<T>(2) * tmp);
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> fract(T x) noexcept
-{
-    return x - floor(x);
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> mod(T x, T y) noexcept
-{
-    return x - y * floor(x / y);
 }
 
 namespace fast
