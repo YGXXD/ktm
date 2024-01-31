@@ -223,6 +223,69 @@ struct ktm::detail::geometric_implement::fast_project<4, float>
 };
 
 template<>
+struct ktm::detail::geometric_implement::fast_length<2, float>
+{
+    using V = vec<2, float>;
+    static KTM_INLINE float call(const V& x) noexcept
+    {
+        return arm::geo::fv2_fast_length1(x.st);
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::fast_length<3, float>
+{
+    using V = vec<3, float>;
+    static KTM_INLINE float call(const V& x) noexcept
+    {
+        return arm::geo::fv3_fast_length1(x.st);
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::fast_length<4, float>
+{
+    using V = vec<4, float>;
+    static KTM_INLINE float call(const V& x) noexcept
+    {
+        return arm::geo::fv4_fast_length1(x.st);
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::fast_distance<2, float>
+{
+    using V = vec<2, float>;
+    static KTM_INLINE float call(const V& x, const V& y) noexcept
+    {
+        float32x2_t sub = vsub_f32(x.st, y.st);
+        return arm::geo::fv2_fast_length1(sub);
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::fast_distance<3, float>
+{
+    using V = vec<3, float>;
+    static KTM_INLINE float call(const V& x, const V& y) noexcept
+    {
+        float32x4_t sub = vsubq_f32(x.st, y.st);
+        return arm::geo::fv3_fast_length1(sub);
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::fast_distance<4, float>
+{
+    using V = vec<4, float>;
+    static KTM_INLINE float call(const V& x, const V& y) noexcept
+    {
+        float32x4_t sub = vsubq_f32(x.st, y.st);
+        return arm::geo::fv4_fast_length1(sub);
+    }
+};
+
+template<>
 struct ktm::detail::geometric_implement::fast_normalize<2, float>
 {
     using V = vec<2, float>;
@@ -631,6 +694,48 @@ struct ktm::detail::geometric_implement::fast_project<4, float>
         __m128 dot_yy = x86::geo::fv4_dot(y.st, y.st);
         ret.st = _mm_mul_ps(_mm_mul_ps(dot_xy, x86::ext::fast_recip_ps(dot_yy)), y.st);
         return ret;
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::fast_length<3, float>
+{
+    using V = vec<3, float>;
+    static KTM_INLINE float call(const V& x) noexcept
+    {
+        return x86::geo::fv3_fast_length1(x.st);
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::fast_length<4, float>
+{
+    using V = vec<4, float>;
+    static KTM_INLINE float call(const V& x) noexcept
+    {
+        return x86::geo::fv4_fast_length1(x.st);
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::fast_distance<3, float>
+{
+    using V = vec<3, float>;
+    static KTM_INLINE float call(const V& x, const V& y) noexcept
+    {
+        __m128 sub = _mm_sub_ps(x.st, y.st);
+        return x86::geo::fv3_fast_length1(sub);
+    }
+};
+
+template<>
+struct ktm::detail::geometric_implement::fast_distance<4, float>
+{
+    using V = vec<4, float>;
+    static KTM_INLINE float call(const V& x, const V& y) noexcept
+    {
+        __m128 sub = _mm_sub_ps(x.st, y.st);
+        return x86::geo::fv4_fast_length1(sub);
     }
 };
 

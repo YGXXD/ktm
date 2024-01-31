@@ -79,6 +79,18 @@ KTM_INLINE std::enable_if_t<is_vector_v<V> && is_listing_type_base_v<type_list<f
 }
 
 template<class V>
+KTM_INLINE std::enable_if_t<is_vector_v<V> && is_listing_type_base_v<type_list<float, double>, V>, vec_traits_base_t<V>> length(const V& x) noexcept
+{
+    return detail::geometric_implement::fast_length<vec_traits_len<V>, vec_traits_base_t<V>>::call(x);
+}
+
+template<class V>
+KTM_INLINE std::enable_if_t<is_vector_v<V> && is_listing_type_base_v<type_list<float, double>, V>, vec_traits_base_t<V>> distance(const V& x, const V& y) noexcept
+{
+    return detail::geometric_implement::fast_distance<vec_traits_len<V>, vec_traits_base_t<V>>::call(x, y);
+}
+
+template<class V>
 KTM_INLINE std::enable_if_t<is_vector_v<V> && is_listing_type_base_v<type_list<float, double>, V>, V> normalize(const V& x) noexcept
 {
     return detail::geometric_implement::fast_normalize<vec_traits_len<V>, vec_traits_base_t<V>>::call(x);

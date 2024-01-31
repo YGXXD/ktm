@@ -72,6 +72,9 @@ template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_poin
 struct smoothstep;
 
 template<size_t N, typename T, typename = std::enable_if_t<std::is_exist_same_vs<float, double, T>>>
+struct fast_sqrt;
+
+template<size_t N, typename T, typename = std::enable_if_t<std::is_exist_same_vs<float, double, T>>>
 struct fast_rsqrt;
 
 template<size_t N, typename T, typename = std::enable_if_t<std::is_exist_same_vs<float, double, T>>>

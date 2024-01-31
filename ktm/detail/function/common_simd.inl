@@ -748,6 +748,30 @@ struct ktm::detail::common_implement::smoothstep<N, float, std::enable_if_t<N ==
 };
 
 template<>
+struct ktm::detail::common_implement::fast_sqrt<2, float>
+{
+    using V = vec<2, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = arm::ext::fast_recip_f32(arm::ext::fast_rsqrt_f32(x.st));
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::fast_sqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        arm::ext::fast_recipq_f32(arm::ext::fast_rsqrtq_f32(x.st));
+        return ret;
+    }
+};
+
+template<>
 struct ktm::detail::common_implement::fast_rsqrt<2, float>
 {
     using V = vec<2, float>;
@@ -1111,6 +1135,18 @@ struct ktm::detail::common_implement::smoothstep<N, float, std::enable_if_t<N ==
         __m128 tmp = _mm_div_ps(_mm_sub_ps(x.st, edge0.st), _mm_sub_ps(edge1.st, edge0.st));
         tmp = x86::ext::clamp_ps(tmp, _mm_setzero_ps(), _mm_set1_ps(1.f));
         ret.st = _mm_mul_ps(_mm_mul_ps(tmp, tmp), _mm_sub_ps(_mm_set1_ps(3.f), _mm_mul_ps(_mm_set1_ps(2.f), tmp)));
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::fast_sqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = x86::ext::fast_recip_ps(x86::ext::fast_rsqrt_ps(x.st));
         return ret;
     }
 };

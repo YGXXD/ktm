@@ -139,13 +139,25 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> smoothstep(T edge0, 
 
 namespace fast
 {
+// 雷神三算法: u = 0.0450465
+template<typename T>
+KTM_INLINE std::enable_if_t<is_listing_type_v<type_list<float, double>, T>, T> sqrt(T x) noexcept
+{
+    using integral_type = std::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
+    integral_type i = *reinterpret_cast<const integral_type*>(&x);
+    if constexpr(std::is_same_v<integral_type, unsigned int>)
+        i = 0x1fbd1df5 + (i >> 1);
+    else
+        i = 0x1ff7a3bea91d9b1b + (i >> 1);
+    T ret = *reinterpret_cast<T*>(&i); 
+    return (ret + x / ret) * static_cast<T>(0.5);
+}
 
 template<typename T>
 KTM_INLINE std::enable_if_t<is_listing_type_v<type_list<float, double>, T>, T> rsqrt(T x) noexcept
 {
     using integral_type = std::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
     integral_type i = *reinterpret_cast<const integral_type*>(&x);
-    // 雷神三算法: u = 0.0450465
     if constexpr(std::is_same_v<integral_type, unsigned int>)
         i = 0x5f3759df - (i >> 1);
     else
@@ -159,7 +171,6 @@ KTM_INLINE std::enable_if_t<is_listing_type_v<type_list<float, double>, T>, T> r
 {
     using integral_type = std::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
     integral_type i = *reinterpret_cast<const integral_type*>(&x);
-    // u = 0.0450465
     if constexpr(std::is_same_v<integral_type, unsigned int>)
         i = 0x7ef477d5 - i;
     else

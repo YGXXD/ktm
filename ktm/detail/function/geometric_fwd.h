@@ -39,6 +39,12 @@ template<size_t N, typename T, typename = std::enable_if_t<std::is_exist_same_vs
 struct fast_project;
 
 template<size_t N, typename T, typename = std::enable_if_t<std::is_exist_same_vs<float, double, T>>>
+struct fast_length;
+
+template<size_t N, typename T, typename = std::enable_if_t<std::is_exist_same_vs<float, double, T>>>
+struct fast_distance;
+
+template<size_t N, typename T, typename = std::enable_if_t<std::is_exist_same_vs<float, double, T>>>
 struct fast_normalize;
 
 }

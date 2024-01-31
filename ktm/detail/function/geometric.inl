@@ -110,6 +110,26 @@ struct ktm::detail::geometric_implement::fast_project
 };
 
 template<size_t N, typename T, typename Void>
+struct ktm::detail::geometric_implement::fast_length
+{
+    using V = vec<N, T>;
+    static KTM_INLINE T call(const V& x) noexcept
+    {
+        return ktm::fast::sqrt(dot<N, T>::call(x, x));
+    }
+};
+
+template<size_t N, typename T, typename Void>
+struct ktm::detail::geometric_implement::fast_distance
+{
+    using V = vec<N, T>;
+    static KTM_INLINE T call(const V& x, const V& y) noexcept
+    {
+        return fast_length<N, T>::call(x - y);
+    }
+};
+
+template<size_t N, typename T, typename Void>
 struct ktm::detail::geometric_implement::fast_normalize
 {
     using V = vec<N, T>;

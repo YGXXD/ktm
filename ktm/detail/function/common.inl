@@ -377,6 +377,24 @@ private:
 };
 
 template<size_t N, typename T, typename Void>
+struct ktm::detail::common_implement::fast_sqrt
+{
+    using V = vec<N, T>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        return call(x, std::make_index_sequence<N>());
+    }
+private:
+    template<size_t ...Ns>
+    static KTM_INLINE V call(const V& x, std::index_sequence<Ns...>) noexcept
+    {
+        V ret;
+        ((ret[Ns] = ktm::fast::sqrt(x[Ns])), ...);
+        return ret;
+    }
+};
+
+template<size_t N, typename T, typename Void>
 struct ktm::detail::common_implement::fast_rsqrt
 {
     using V = vec<N, T>;

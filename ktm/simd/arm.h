@@ -594,6 +594,29 @@ KTM_FUNC float fv4_dot1(float32x4_t x, float32x4_t y) noexcept
 	return fv4_radd(vmulq_f32(x, y));
 }
 
+KTM_FUNC float fv2_fast_length1(float32x2_t x) noexcept
+{
+	float32x2_t dot = fv2_dot(x, x);
+	float32x2_t ret = vrecpe_f32(vrsqrte_f32(dot));
+    return vget_lane_f32(ret, 0);
+}
+
+KTM_FUNC float fv3_fast_length1(float32x4_t x) noexcept
+{
+	float32x4_t mul = vmulq_f32(x, x);
+	float32x4_t dot = vaddq_f32(vdupq_laneq_f32(mul, 1), mul);
+	dot = vaddq_f32(vdupq_laneq_f32(mul, 2), dot); 
+	float32x4_t ret = vrecpeq_f32(vrsqrteq_f32(dot));
+    return vgetq_lane_f32(ret, 0);
+}
+
+KTM_FUNC float fv4_fast_length1(float32x4_t x) noexcept
+{
+	float32x4_t dot = fv4_dot(x, x);
+	float32x4_t ret = vrecpeq_f32(vrsqrteq_f32(dot));
+    return vgetq_lane_f32(ret, 0);
+}
+
 #if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
 
 KTM_FUNC float fv2_length1(float32x2_t x) noexcept
