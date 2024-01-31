@@ -2,6 +2,7 @@
 #define _KTM_I_MAT_CALC_H_
 
 #include "../../setup.h"
+#include "../../type/vec_fwd.h"
 #include "../../type/mat_fwd.h"
 #include "../../detail/matrix/mat_calc_fwd.h"
 

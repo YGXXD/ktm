@@ -401,45 +401,6 @@ struct ktm::detail::matrix_implement::transpose<4, 4, float>
 };
 
 template<>
-struct ktm::detail::matrix_implement::transpose<2, 2, int>
-{
-    using M = mat<2, 2, int>;
-    using RetM = M;
-    static KTM_INLINE RetM call(const M& m) noexcept
-    {
-        RetM ret;
-        x86::mt::fmt2_tp(&ret[0].st, &m[0].st);
-        return ret;
-    }
-};
-
-template<>
-struct ktm::detail::matrix_implement::transpose<3, 3, int>
-{
-    using M = mat<3, 3, int>;
-    using RetM = M;
-    static KTM_INLINE RetM call(const M& m) noexcept
-    {
-        RetM ret;
-        x86::mt::fmt3_tp(reinterpret_cast<__m128*>(&ret[0].st), reinterpret_cast<const __m128*>(&m[0].st));
-        return ret; 
-    }
-};
-
-template<>
-struct ktm::detail::matrix_implement::transpose<4, 4, int>
-{
-    using M = mat<4, 4, int>;
-    using RetM = M;
-    static KTM_INLINE RetM call(const M& m) noexcept
-    {
-        RetM ret;
-        x86::mt::fmt4_tp(reinterpret_cast<__m128*>(&ret[0].st), reinterpret_cast<const __m128*>(&m[0].st));
-        return ret; 
-    }
-};
-
-template<>
 struct ktm::detail::matrix_implement::determinant<3, float>
 {
     using M = mat<3, 3, float>;
