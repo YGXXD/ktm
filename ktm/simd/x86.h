@@ -190,8 +190,15 @@ KTM_FUNC float fv4_rmax(__m128 x) noexcept
 KTM_FUNC __m128 fv3_dot(__m128 x, __m128 y) noexcept
 {
 	__m128 mul = _mm_mul_ps(x, y);
+#if KTM_SIMD_X86 & KTM_SIMD_SSE3_FLAG
+	constexpr union { unsigned int i; float f; } mask = { 0xffffffff };
+	mul = _mm_and_ps(mul, _mm_set_ps(0.f, mask.f, mask.f, mask.f));
+	__m128 add_0 = _mm_hadd_ps(mul, mul);
+	__m128 add_1 = _mm_hadd_ps(add_0, add_0);
+#else
 	__m128 add_0 = _mm_add_ps(_mm_shuffle_ps(mul, mul, _MM_SHUFFLE(0, 0, 0, 0)), _mm_shuffle_ps(mul, mul, _MM_SHUFFLE(1, 1, 1, 1)));
 	__m128 add_1 = _mm_add_ps(add_0, _mm_shuffle_ps(mul, mul, _MM_SHUFFLE(2, 2, 2, 2)));
+#endif
 	return add_1;
 }
 
