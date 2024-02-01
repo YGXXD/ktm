@@ -289,34 +289,28 @@ KTM_FUNC __m128 fv4_dot1(__m128 x, __m128 y) noexcept
 	return fv4_dot(x, y);
 }
 
-KTM_FUNC float fv3_length1(__m128 x) noexcept
+KTM_FUNC __m128 fv3_length1(__m128 x) noexcept
 {
 	__m128 dot = fv3_dot1(x, x);
-	__m128 ret = _mm_sqrt_ss(dot);
-    return _mm_cvtss_f32(ret);
+    return _mm_sqrt_ss(dot);;
 }
 
-KTM_FUNC float fv4_length1(__m128 x) noexcept
+KTM_FUNC __m128 fv4_length1(__m128 x) noexcept
 {
 	__m128 dot = fv4_dot1(x, x);
-	__m128 ret = _mm_sqrt_ss(dot);
-    return _mm_cvtss_f32(ret);
+    return _mm_sqrt_ss(dot);;
 }
 
-KTM_FUNC float fv3_fast_length1(__m128 x) noexcept
+KTM_FUNC __m128 fv3_fast_length1(__m128 x) noexcept
 {
-	__m128 mul = _mm_mul_ps(x, x);
-	__m128 dot = _mm_add_ss(mul, _mm_shuffle_ps(mul, mul, 1));
-	dot = _mm_add_ss(dot, _mm_shuffle_ps(mul, mul, 2));
-	__m128 ret = _mm_rcp_ss(_mm_rsqrt_ss(dot));
-    return _mm_cvtss_f32(ret);
+	__m128 dot = fv3_dot1(x, x);
+    return _mm_rcp_ss(_mm_rsqrt_ss(dot));;
 }
 
-KTM_FUNC float fv4_fast_length1(__m128 x) noexcept
+KTM_FUNC __m128 fv4_fast_length1(__m128 x) noexcept
 {
 	__m128 dot = fv4_dot(x, x);
-	__m128 ret = _mm_rcp_ss(_mm_rsqrt_ss(dot));
-    return _mm_cvtss_f32(ret);
+    return _mm_rcp_ss(_mm_rsqrt_ss(dot));;
 }
 
 }

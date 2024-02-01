@@ -228,7 +228,7 @@ struct ktm::detail::geometric_implement::fast_length<2, float>
     using V = vec<2, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return arm::geo::fv2_fast_length1(x.st);
+        return vget_lane_f32(arm::geo::fv2_fast_length1(x.st), 0);
     }
 };
 
@@ -238,7 +238,7 @@ struct ktm::detail::geometric_implement::fast_length<3, float>
     using V = vec<3, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return arm::geo::fv3_fast_length1(x.st);
+        return vgetq_lane_f32(arm::geo::fv3_fast_length1(x.st), 0);
     }
 };
 
@@ -248,7 +248,7 @@ struct ktm::detail::geometric_implement::fast_length<4, float>
     using V = vec<4, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return arm::geo::fv4_fast_length1(x.st);
+        return vgetq_lane_f32(arm::geo::fv4_fast_length1(x.st), 0);
     }
 };
 
@@ -259,7 +259,7 @@ struct ktm::detail::geometric_implement::fast_distance<2, float>
     static KTM_INLINE float call(const V& x, const V& y) noexcept
     {
         float32x2_t sub = vsub_f32(x.st, y.st);
-        return arm::geo::fv2_fast_length1(sub);
+        return vget_lane_f32(arm::geo::fv2_fast_length1(sub), 0);
     }
 };
 
@@ -270,7 +270,7 @@ struct ktm::detail::geometric_implement::fast_distance<3, float>
     static KTM_INLINE float call(const V& x, const V& y) noexcept
     {
         float32x4_t sub = vsubq_f32(x.st, y.st);
-        return arm::geo::fv3_fast_length1(sub);
+        return vgetq_lane_f32(arm::geo::fv3_fast_length1(sub), 0);
     }
 };
 
@@ -281,7 +281,7 @@ struct ktm::detail::geometric_implement::fast_distance<4, float>
     static KTM_INLINE float call(const V& x, const V& y) noexcept
     {
         float32x4_t sub = vsubq_f32(x.st, y.st);
-        return arm::geo::fv4_fast_length1(sub);
+        return vgetq_lane_f32(arm::geo::fv4_fast_length1(sub), 0);
     }
 };
 
@@ -335,7 +335,7 @@ struct ktm::detail::geometric_implement::length<2, float>
     using V = vec<2, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return arm::geo::fv2_length1(x.st);
+        return vget_lane_f32(arm::geo::fv2_length1(x.st), 0);
     }
 };
 
@@ -345,7 +345,7 @@ struct ktm::detail::geometric_implement::length<3, float>
     using V = vec<3, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return arm::geo::fv3_length1(x.st);
+        return vgetq_lane_f32(arm::geo::fv3_length1(x.st), 0);
     }
 };
 
@@ -355,7 +355,7 @@ struct ktm::detail::geometric_implement::length<4, float>
     using V = vec<4, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return arm::geo::fv4_length1(x.st);
+        return vgetq_lane_f32(arm::geo::fv4_length1(x.st), 0);
     }
 };
 
@@ -366,7 +366,7 @@ struct ktm::detail::geometric_implement::distance<2, float>
     static KTM_INLINE float call(const V& x, const V& y) noexcept
     {
         float32x2_t sub = vsub_f32(x.st, y.st);
-        return arm::geo::fv2_length1(sub);
+        return vget_lane_f32(arm::geo::fv2_length1(sub), 0);
     }
 };
 
@@ -377,7 +377,7 @@ struct ktm::detail::geometric_implement::distance<3, float>
     static KTM_INLINE float call(const V& x, const V& y) noexcept
     {
         float32x4_t sub = vsubq_f32(x.st, y.st);
-        return arm::geo::fv3_length1(sub);
+        return vgetq_lane_f32(arm::geo::fv3_length1(sub), 0);
     }
 };
 
@@ -388,7 +388,7 @@ struct ktm::detail::geometric_implement::distance<4, float>
     static KTM_INLINE float call(const V& x, const V& y) noexcept
     {
         float32x4_t sub = vsubq_f32(x.st, y.st);
-        return arm::geo::fv4_length1(sub);
+        return vgetq_lane_f32(arm::geo::fv4_length1(sub), 0);
     }
 };
 
@@ -531,7 +531,7 @@ struct ktm::detail::geometric_implement::length<3, float>
     using V = vec<3, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return x86::geo::fv3_length1(x.st);
+        return _mm_cvtss_f32(x86::geo::fv3_length1(x.st));
     }
 };
 
@@ -541,7 +541,7 @@ struct ktm::detail::geometric_implement::length<4, float>
     using V = vec<4, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return x86::geo::fv4_length1(x.st);
+        return _mm_cvtss_f32(x86::geo::fv4_length1(x.st));
     }
 };
 
@@ -552,7 +552,7 @@ struct ktm::detail::geometric_implement::distance<3, float>
     static KTM_INLINE float call(const V& x, const V& y) noexcept
     {
         __m128 sub = _mm_sub_ps(x.st, y.st);
-        return x86::geo::fv3_length1(sub);
+        return _mm_cvtss_f32(x86::geo::fv3_length1(sub));
     }
 };
 
@@ -563,7 +563,7 @@ struct ktm::detail::geometric_implement::distance<4, float>
     static KTM_INLINE float call(const V& x, const V& y) noexcept
     {
         __m128 sub = _mm_sub_ps(x.st, y.st);
-        return x86::geo::fv4_length1(sub);
+        return _mm_cvtss_f32(x86::geo::fv4_length1(sub));
     }
 };
 
@@ -703,7 +703,7 @@ struct ktm::detail::geometric_implement::fast_length<3, float>
     using V = vec<3, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return x86::geo::fv3_fast_length1(x.st);
+        return _mm_cvtss_f32(x86::geo::fv3_fast_length1(x.st));
     }
 };
 
@@ -713,7 +713,7 @@ struct ktm::detail::geometric_implement::fast_length<4, float>
     using V = vec<4, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return x86::geo::fv4_fast_length1(x.st);
+        return _mm_cvtss_f32(x86::geo::fv4_fast_length1(x.st));
     }
 };
 
@@ -724,7 +724,7 @@ struct ktm::detail::geometric_implement::fast_distance<3, float>
     static KTM_INLINE float call(const V& x, const V& y) noexcept
     {
         __m128 sub = _mm_sub_ps(x.st, y.st);
-        return x86::geo::fv3_fast_length1(sub);
+        return _mm_cvtss_f32(x86::geo::fv3_fast_length1(sub));
     }
 };
 
@@ -735,7 +735,7 @@ struct ktm::detail::geometric_implement::fast_distance<4, float>
     static KTM_INLINE float call(const V& x, const V& y) noexcept
     {
         __m128 sub = _mm_sub_ps(x.st, y.st);
-        return x86::geo::fv4_fast_length1(sub);
+        return _mm_cvtss_f32(x86::geo::fv4_fast_length1(sub));
     }
 };
 
