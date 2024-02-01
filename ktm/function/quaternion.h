@@ -15,7 +15,7 @@ template<class Q>
 KTM_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> conjugate(const Q& q) noexcept
 {
     using T = quat_traits_base_t<Q>;
-    return Q(q.vector * quat_traits_storage_t<Q>(-one<T>, -one<T>, -one<T>, one<T>));
+    return Q(-q.i, -q.j, -q.k, q.r);
 }
 
 template<class Q>
