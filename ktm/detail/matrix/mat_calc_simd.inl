@@ -63,7 +63,7 @@ private:
     static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = arm::geo::fv2_radd(vmul_f32(v.st, m[Ns].st))), ...);
+        ((ret[Ns] = arm::rdc::fv2_radd(vmul_f32(v.st, m[Ns].st))), ...);
         return ret;
     }
 };
@@ -83,7 +83,7 @@ private:
     static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = arm::geo::fv3_radd(vmulq_f32(v.st, m[Ns].st))), ...);
+        ((ret[Ns] = arm::rdc::fv3_radd(vmulq_f32(v.st, m[Ns].st))), ...);
         return ret;
     }
 };
@@ -103,7 +103,7 @@ private:
     static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = arm::geo::fv4_radd(vmulq_f32(v.st, m[Ns].st))), ...);
+        ((ret[Ns] = arm::rdc::fv4_radd(vmulq_f32(v.st, m[Ns].st))), ...);
         return ret;
     }
 };
@@ -241,7 +241,7 @@ private:
     static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = arm::geo::sv2_radd(vmul_s32(v.st, m[Ns].st))), ...);
+        ((ret[Ns] = arm::rdc::sv2_radd(vmul_s32(v.st, m[Ns].st))), ...);
         return ret;
     }
 };
@@ -261,7 +261,7 @@ private:
     static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = arm::geo::sv3_radd(vmulq_s32(v.st, m[Ns].st))), ...);
+        ((ret[Ns] = arm::rdc::sv3_radd(vmulq_s32(v.st, m[Ns].st))), ...);
         return ret;
     }
 };
@@ -281,7 +281,7 @@ private:
     static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = arm::geo::sv4_radd(vmulq_s32(v.st, m[Ns].st))), ...);
+        ((ret[Ns] = arm::rdc::sv4_radd(vmulq_s32(v.st, m[Ns].st))), ...);
         return ret;
     }
 };
@@ -401,7 +401,7 @@ private:
     static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = x86::geo::fv3_radd(_mm_mul_ps(v.st, m[Ns].st))), ...);
+        ((ret[Ns] = x86::rdc::fv3_radd(_mm_mul_ps(v.st, m[Ns].st))), ...);
         return ret;
     }
 };
@@ -421,7 +421,7 @@ private:
     static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = x86::geo::fv4_radd(_mm_mul_ps(v.st, m[Ns].st))), ...);
+        ((ret[Ns] = x86::rdc::fv4_radd(_mm_mul_ps(v.st, m[Ns].st))), ...);
         return ret;
     }
 };
@@ -545,7 +545,7 @@ private:
     static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = x86::geo::sv3_radd(_mm_mullo_epi32(v.st, m[Ns].st))), ...);
+        ((ret[Ns] = x86::rdc::sv3_radd(_mm_mullo_epi32(v.st, m[Ns].st))), ...);
         return ret;
     }
 };
@@ -565,7 +565,7 @@ private:
     static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
     {
         RowV ret;
-        ((ret[Ns] = x86::geo::sv4_radd(_mm_mullo_epi32(v.st, m[Ns].st))), ...);
+        ((ret[Ns] = x86::rdc::sv4_radd(_mm_mullo_epi32(v.st, m[Ns].st))), ...);
         return ret;
     }
 };

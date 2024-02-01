@@ -138,8 +138,9 @@ KTM_FUNC __m128i clamp_epi32(__m128i x, __m128i min, __m128i max) noexcept
 #endif	
 }
 
-namespace geo
+namespace rdc
 {
+
 KTM_FUNC float fv3_radd(__m128 x) noexcept
 {
 	__m128 ret = _mm_add_ss(x, _mm_shuffle_ps(x, x, 1));
@@ -186,6 +187,66 @@ KTM_FUNC float fv4_rmax(__m128 x) noexcept
 	ret = _mm_max_ss(ret, _mm_shuffle_ps(ret, ret, 1));
 	return _mm_cvtss_f32(ret); 
 }
+
+#if KTM_SIMD_X86 & KTM_SIMD_SSE2_FLAG
+
+KTM_FUNC int sv3_radd(__m128i x) noexcept
+{
+	__m128i ret = _mm_add_epi32(x, _mm_shuffle_epi32(x, 1));
+	ret = _mm_add_epi32(ret, _mm_shuffle_epi32(x, 2));
+	return _mm_cvtsi128_si32(ret); 
+}
+
+KTM_FUNC int sv4_radd(__m128i x) noexcept
+{
+#if KTM_SIMD_X86 & KTM_SIMD_SSE3_FLAG
+	__m128i ret = _mm_hadd_epi32(x, x);
+	ret = _mm_hadd_epi32(ret, ret);
+#else
+	__m128i ret = _mm_add_epi32(x, _mm_shuffle_epi32(x, _MM_SHUFFLE(1, 0, 3, 2)));
+	ret = _mm_add_epi32(ret, _mm_shuffle_epi32(ret, 1));
+#endif	
+	return _mm_cvtsi128_si32(ret); 	
+}
+
+#endif
+
+#if KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
+
+KTM_FUNC int sv3_rmin(__m128i x) noexcept
+{
+	__m128i ret = _mm_min_epi32(x, _mm_shuffle_epi32(x, 1));
+	ret = _mm_min_epi32(ret, _mm_shuffle_epi32(x, 2));
+	return _mm_cvtsi128_si32(ret); 
+}
+
+KTM_FUNC int sv4_rmin(__m128i x) noexcept
+{
+	__m128i ret = _mm_min_epi32(x, _mm_shuffle_epi32(x, _MM_SHUFFLE(1, 0, 3, 2)));
+	ret = _mm_min_epi32(ret, _mm_shuffle_epi32(ret, 1));
+	return _mm_cvtsi128_si32(ret); 	
+}
+
+KTM_FUNC int sv3_rmax(__m128i x) noexcept
+{
+	__m128i ret = _mm_max_epi32(x, _mm_shuffle_epi32(x, 1));
+	ret = _mm_max_epi32(ret, _mm_shuffle_epi32(x, 2));
+	return _mm_cvtsi128_si32(ret); 
+}
+
+KTM_FUNC int sv4_rmax(__m128i x) noexcept
+{
+	__m128i ret = _mm_max_epi32(x, _mm_shuffle_epi32(x, _MM_SHUFFLE(1, 0, 3, 2)));
+	ret = _mm_max_epi32(ret, _mm_shuffle_epi32(ret, 1));
+	return _mm_cvtsi128_si32(ret); 
+}
+
+#endif
+
+}
+
+namespace geo
+{
 
 KTM_FUNC __m128 fv3_dot(__m128 x, __m128 y) noexcept
 {
@@ -258,60 +319,6 @@ KTM_FUNC float fv4_fast_length1(__m128 x) noexcept
     return _mm_cvtss_f32(ret);
 }
 
-#if KTM_SIMD_X86 & KTM_SIMD_SSE2_FLAG
-
-KTM_FUNC int sv3_radd(__m128i x) noexcept
-{
-	__m128i ret = _mm_add_epi32(x, _mm_shuffle_epi32(x, 1));
-	ret = _mm_add_epi32(ret, _mm_shuffle_epi32(x, 2));
-	return _mm_cvtsi128_si32(ret); 
-}
-
-KTM_FUNC int sv4_radd(__m128i x) noexcept
-{
-#if KTM_SIMD_X86 & KTM_SIMD_SSE3_FLAG
-	__m128i ret = _mm_hadd_epi32(x, x);
-	ret = _mm_hadd_epi32(ret, ret);
-#else
-	__m128i ret = _mm_add_epi32(x, _mm_shuffle_epi32(x, _MM_SHUFFLE(1, 0, 3, 2)));
-	ret = _mm_add_epi32(ret, _mm_shuffle_epi32(ret, 1));
-#endif	
-	return _mm_cvtsi128_si32(ret); 	
-}
-
-#endif
-
-#if KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
-
-KTM_FUNC int sv3_rmin(__m128i x) noexcept
-{
-	__m128i ret = _mm_min_epi32(x, _mm_shuffle_epi32(x, 1));
-	ret = _mm_min_epi32(ret, _mm_shuffle_epi32(x, 2));
-	return _mm_cvtsi128_si32(ret); 
-}
-
-KTM_FUNC int sv4_rmin(__m128i x) noexcept
-{
-	__m128i ret = _mm_min_epi32(x, _mm_shuffle_epi32(x, _MM_SHUFFLE(1, 0, 3, 2)));
-	ret = _mm_min_epi32(ret, _mm_shuffle_epi32(ret, 1));
-	return _mm_cvtsi128_si32(ret); 	
-}
-
-KTM_FUNC int sv3_rmax(__m128i x) noexcept
-{
-	__m128i ret = _mm_max_epi32(x, _mm_shuffle_epi32(x, 1));
-	ret = _mm_max_epi32(ret, _mm_shuffle_epi32(x, 2));
-	return _mm_cvtsi128_si32(ret); 
-}
-
-KTM_FUNC int sv4_rmax(__m128i x) noexcept
-{
-	__m128i ret = _mm_max_epi32(x, _mm_shuffle_epi32(x, _MM_SHUFFLE(1, 0, 3, 2)));
-	ret = _mm_max_epi32(ret, _mm_shuffle_epi32(ret, 1));
-	return _mm_cvtsi128_si32(ret); 
-}
-
-#endif
 }
 
 namespace mt

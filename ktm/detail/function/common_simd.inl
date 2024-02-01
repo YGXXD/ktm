@@ -100,7 +100,7 @@ struct ktm::detail::common_implement::reduce_add<2, float>
     using V = vec<2, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return arm::geo::fv2_radd(x.st);
+        return arm::rdc::fv2_radd(x.st);
     }
 };
 
@@ -110,7 +110,7 @@ struct ktm::detail::common_implement::reduce_add<3, float>
     using V = vec<3, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return arm::geo::fv3_radd(x.st);
+        return arm::rdc::fv3_radd(x.st);
     }
 };
 
@@ -120,7 +120,7 @@ struct ktm::detail::common_implement::reduce_add<4, float>
     using V = vec<4, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return arm::geo::fv4_radd(x.st);
+        return arm::rdc::fv4_radd(x.st);
     }
 };
 
@@ -130,7 +130,7 @@ struct ktm::detail::common_implement::reduce_add<2, int>
     using V = vec<2, int>;
     static KTM_INLINE int call(const V& x) noexcept
     {
-        return arm::geo::sv2_radd(x.st);
+        return arm::rdc::sv2_radd(x.st);
     }
 };
 
@@ -140,7 +140,7 @@ struct ktm::detail::common_implement::reduce_add<3, int>
     using V = vec<3, int>;
     static KTM_INLINE int call(const V& x) noexcept
     {
-        return arm::geo::sv3_radd(x.st); 
+        return arm::rdc::sv3_radd(x.st); 
     }
 };
 
@@ -150,7 +150,7 @@ struct ktm::detail::common_implement::reduce_add<4, int>
     using V = vec<4, int>;
     static KTM_INLINE int call(const V& x) noexcept
     {
-        return arm::geo::sv4_radd(x.st);
+        return arm::rdc::sv4_radd(x.st);
     }
 };
 
@@ -160,7 +160,7 @@ struct ktm::detail::common_implement::reduce_min<2, float>
     using V = vec<2, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return arm::geo::fv2_rmin(x.st);
+        return arm::rdc::fv2_rmin(x.st);
     }
 };
 
@@ -170,7 +170,7 @@ struct ktm::detail::common_implement::reduce_min<3, float>
     using V = vec<3, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return arm::geo::fv3_rmin(x.st);
+        return arm::rdc::fv3_rmin(x.st);
     }
 };
 
@@ -180,7 +180,7 @@ struct ktm::detail::common_implement::reduce_min<4, float>
     using V = vec<4, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return arm::geo::fv4_rmin(x.st);
+        return arm::rdc::fv4_rmin(x.st);
     }
 };
 
@@ -190,7 +190,7 @@ struct ktm::detail::common_implement::reduce_min<2, int>
     using V = vec<2, int>;
     static KTM_INLINE int call(const V& x) noexcept
     {
-        return arm::geo::sv2_rmin(x.st);
+        return arm::rdc::sv2_rmin(x.st);
     }
 };
 
@@ -200,7 +200,7 @@ struct ktm::detail::common_implement::reduce_min<3, int>
     using V = vec<3, int>;
     static KTM_INLINE int call(const V& x) noexcept
     {
-        return arm::geo::sv3_rmin(x.st);
+        return arm::rdc::sv3_rmin(x.st);
     }
 };
 
@@ -210,7 +210,7 @@ struct ktm::detail::common_implement::reduce_min<4, int>
     using V = vec<4, int>;
     static KTM_INLINE int call(const V& x) noexcept
     {
-        return arm::geo::sv4_rmin(x.st);
+        return arm::rdc::sv4_rmin(x.st);
     }
 };
 
@@ -220,7 +220,7 @@ struct ktm::detail::common_implement::reduce_max<2, float>
     using V = vec<2, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return arm::geo::fv2_rmax(x.st);
+        return arm::rdc::fv2_rmax(x.st);
     }
 };
 
@@ -230,7 +230,7 @@ struct ktm::detail::common_implement::reduce_max<3, float>
     using V = vec<3, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return arm::geo::fv3_rmax(x.st);
+        return arm::rdc::fv3_rmax(x.st);
     }
 };
 
@@ -240,7 +240,7 @@ struct ktm::detail::common_implement::reduce_max<4, float>
     using V = vec<4, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return arm::geo::fv4_rmax(x.st);
+        return arm::rdc::fv4_rmax(x.st);
     }
 };
 
@@ -250,7 +250,7 @@ struct ktm::detail::common_implement::reduce_max<2, int>
     using V = vec<2, int>;
     static KTM_INLINE int call(const V& x) noexcept
     {
-        return arm::geo::sv2_rmax(x.st);
+        return arm::rdc::sv2_rmax(x.st);
     }
 };
 
@@ -260,7 +260,7 @@ struct ktm::detail::common_implement::reduce_max<3, int>
     using V = vec<3, int>;
     static KTM_INLINE int call(const V& x) noexcept
     {
-        return arm::geo::sv3_rmax(x.st);
+        return arm::rdc::sv3_rmax(x.st);
     }
 };
 
@@ -270,7 +270,7 @@ struct ktm::detail::common_implement::reduce_max<4, int>
     using V = vec<4, int>;
     static KTM_INLINE int call(const V& x) noexcept
     {
-        return arm::geo::sv4_rmax(x.st);
+        return arm::rdc::sv4_rmax(x.st);
     }
 };
 
@@ -886,7 +886,7 @@ struct ktm::detail::common_implement::reduce_add<3, float>
     using V = vec<3, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return x86::geo::fv3_radd(x.st);
+        return x86::rdc::fv3_radd(x.st);
     }
 };
 
@@ -896,7 +896,7 @@ struct ktm::detail::common_implement::reduce_add<4, float>
     using V = vec<4, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return x86::geo::fv4_radd(x.st);
+        return x86::rdc::fv4_radd(x.st);
     }
 };
 
@@ -906,7 +906,7 @@ struct ktm::detail::common_implement::reduce_min<3, float>
     using V = vec<3, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return x86::geo::fv3_rmin(x.st);
+        return x86::rdc::fv3_rmin(x.st);
     }
 };
 
@@ -916,7 +916,7 @@ struct ktm::detail::common_implement::reduce_min<4, float>
     using V = vec<4, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return x86::geo::fv4_rmin(x.st);
+        return x86::rdc::fv4_rmin(x.st);
     }
 };
 
@@ -926,7 +926,7 @@ struct ktm::detail::common_implement::reduce_max<3, float>
     using V = vec<3, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return x86::geo::fv3_rmax(x.st);
+        return x86::rdc::fv3_rmax(x.st);
     }
 };
 
@@ -936,7 +936,7 @@ struct ktm::detail::common_implement::reduce_max<4, float>
     using V = vec<4, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return x86::geo::fv4_rmax(x.st);  
+        return x86::rdc::fv4_rmax(x.st);  
     }
 };
 
@@ -1214,7 +1214,7 @@ struct ktm::detail::common_implement::reduce_add<3, int>
     using V = vec<3, int>;
     static KTM_INLINE int call(const V& x) noexcept
     {
-        return x86::geo::sv3_radd(x.st);
+        return x86::rdc::sv3_radd(x.st);
     }
 };
 
@@ -1224,7 +1224,7 @@ struct ktm::detail::common_implement::reduce_add<4, int>
     using V = vec<4, int>;
     static KTM_INLINE int call(const V& x) noexcept
     {
-        return x86::geo::sv4_radd(x.st);
+        return x86::rdc::sv4_radd(x.st);
     }
 };
 
@@ -1250,7 +1250,7 @@ struct ktm::detail::common_implement::reduce_min<3, int>
     using V = vec<3, int>;
     static KTM_INLINE int call(const V& x) noexcept
     {
-        return x86::geo::sv3_rmin(x.st);
+        return x86::rdc::sv3_rmin(x.st);
     }
 };
 
@@ -1260,7 +1260,7 @@ struct ktm::detail::common_implement::reduce_min<4, int>
     using V = vec<4, int>;
     static KTM_INLINE int call(const V& x) noexcept
     {
-        return x86::geo::sv4_rmin(x.st);
+        return x86::rdc::sv4_rmin(x.st);
     }
 };
 
@@ -1270,7 +1270,7 @@ struct ktm::detail::common_implement::reduce_max<3, int>
     using V = vec<3, int>;
     static KTM_INLINE int call(const V& x) noexcept
     {
-        return x86::geo::sv3_rmax(x.st); 
+        return x86::rdc::sv3_rmax(x.st); 
     }
 };
 
@@ -1280,7 +1280,7 @@ struct ktm::detail::common_implement::reduce_max<4, int>
     using V = vec<4, int>;
     static KTM_INLINE int call(const V& x) noexcept
     {
-        return x86::geo::sv4_rmax(x.st);
+        return x86::rdc::sv4_rmax(x.st);
     }
 };
 

@@ -320,8 +320,9 @@ KTM_FUNC float32x4_t fmaq_f32(float32x4_t a, float32x4_t x, float32x4_t y) noexc
 
 }
 
-namespace geo
+namespace rdc
 {
+
 KTM_FUNC int sv2_radd(int32x2_t x) noexcept
 {
 #if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
@@ -520,6 +521,11 @@ KTM_FUNC float fv4_rmax(float32x4_t x) noexcept
 #endif
 }
 
+}
+
+namespace geo
+{
+
 KTM_FUNC float32x2_t fv2_dot(float32x2_t x, float32x2_t y) noexcept
 {
 	float32x2_t mul = vmul_f32(x, y);
@@ -624,6 +630,7 @@ KTM_FUNC float fv4_length1(float32x4_t x) noexcept
 
 namespace mt
 {
+
 KTM_FUNC void fmt2_tp(float32x2_t out[2], const float32x2_t in[2]) noexcept
 {
 	float32x4_t tmp = vcombine_f32(in[0], in[1]);
@@ -658,6 +665,7 @@ KTM_FUNC void fmt4_tp(float32x4_t out[4], const float32x4_t in[4]) noexcept
 
 namespace qt
 {
+
 KTM_FUNC float32x4_t fv3_mul_fq(float32x4_t v, float32x4_t q) noexcept
 {
     float32x4_t q_opp = vnegq_f32(q);
@@ -682,7 +690,9 @@ KTM_FUNC float32x4_t fq_mul_fq(float32x4_t x, float32x4_t y) noexcept
     float32x4_t add_3 = vmulq_f32(neon_dupq_laneq_f32(x, 3), y); 
     return vaddq_f32(add_012, add_3);
 }
+
 }
+
 }
 
 #endif
