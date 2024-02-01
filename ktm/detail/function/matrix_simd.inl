@@ -57,7 +57,7 @@ struct ktm::detail::matrix_implement::determinant<3, float>
         float32x4_t mul_00 = vmulq_f32(neon_shuffleq_f32(c_1, c_1, 3, 0, 2, 1), neon_shuffleq_f32(c_2, c_2, 3, 1, 0, 2));
         float32x4_t mul_01 = vmulq_f32(neon_shuffleq_f32(c_1, c_1, 3, 1, 0, 2), neon_shuffleq_f32(c_2, c_2, 3, 0, 2, 1));
         float32x4_t sub_0 = vsubq_f32(mul_00, mul_01);  
-        return arm::geo::fv3_dot1(c_0, sub_0);
+        return arm::geo::fv3_radd(vmulq_f32(c_0, sub_0));
     }
 };
 
@@ -114,7 +114,7 @@ struct ktm::detail::matrix_implement::determinant<3, int>
         int32x4_t mul_00 = vmulq_s32(neon_shuffleq_s32(c_1, c_1, 3, 0, 2, 1), neon_shuffleq_s32(c_2, c_2, 3, 1, 0, 2));
         int32x4_t mul_01 = vmulq_s32(neon_shuffleq_s32(c_1, c_1, 3, 1, 0, 2), neon_shuffleq_s32(c_2, c_2, 3, 0, 2, 1));
         int32x4_t sub_0 = vsubq_s32(mul_00, mul_01);  
-        return arm::geo::sv3_dot1(c_0, sub_0);
+        return arm::geo::sv3_radd(vmulq_s32(c_0, sub_0));
     }
 };
 
@@ -413,7 +413,7 @@ struct ktm::detail::matrix_implement::determinant<3, float>
         __m128 mul_01 = _mm_mul_ps(_mm_shuffle_ps(c_1, c_1, _MM_SHUFFLE(3, 1, 0, 2)), _mm_shuffle_ps(c_2, c_2, _MM_SHUFFLE(3, 0, 2, 1)));
         __m128 sub_0 = _mm_sub_ps(mul_00, mul_01);  
         
-        return x86::geo::fv3_dot1(c_0, sub_0); 
+        return x86::geo::fv3_radd(_mm_mul_ps(c_0, sub_0)); 
     }
 };
 
@@ -641,7 +641,7 @@ struct ktm::detail::matrix_implement::determinant<3, int>
         __m128i mul_00 = _mm_mullo_epi32(_mm_shuffle_epi32(c_1, _MM_SHUFFLE(3, 0, 2, 1)), _mm_shuffle_epi32(c_2, _MM_SHUFFLE(3, 1, 0, 2)));
         __m128i mul_01 = _mm_mullo_epi32(_mm_shuffle_epi32(c_1, _MM_SHUFFLE(3, 1, 0, 2)), _mm_shuffle_epi32(c_2, _MM_SHUFFLE(3, 0, 2, 1)));
         __m128i sub_0 = _mm_sub_epi32(mul_00, mul_01);  
-        return x86::geo::sv3_dot1(c_0, sub_0); 
+        return x86::geo::sv3_radd(_mm_mullo_epi32(c_0, sub_0)); 
     }
 };
 

@@ -208,28 +208,29 @@ KTM_FUNC __m128 fv4_dot(__m128 x, __m128 y) noexcept
 	return add_1;
 }
 
-KTM_FUNC float fv3_dot1(__m128 x, __m128 y) noexcept
+KTM_FUNC __m128 fv3_dot1(__m128 x, __m128 y) noexcept
 {
-	return fv3_radd(_mm_mul_ps(x, y)); 
+	__m128 mul = _mm_mul_ps(x, y);
+	__m128 ret = _mm_add_ss(mul, _mm_shuffle_ps(mul, mul, 1));
+	ret = _mm_add_ss(ret, _mm_shuffle_ps(mul, mul, 2));
+	return ret;
 }
 
-KTM_FUNC float fv4_dot1(__m128 x, __m128 y) noexcept
+KTM_FUNC __m128 fv4_dot1(__m128 x, __m128 y) noexcept
 {
-	return fv4_radd(_mm_mul_ps(x, y));  
+	return fv4_dot(x, y);
 }
 
 KTM_FUNC float fv3_length1(__m128 x) noexcept
 {
-	__m128 mul = _mm_mul_ps(x, x);
-	__m128 dot = _mm_add_ss(mul, _mm_shuffle_ps(mul, mul, 1));
-	dot = _mm_add_ss(dot, _mm_shuffle_ps(mul, mul, 2));
+	__m128 dot = fv3_dot1(x, x);
 	__m128 ret = _mm_sqrt_ss(dot);
     return _mm_cvtss_f32(ret);
 }
 
 KTM_FUNC float fv4_length1(__m128 x) noexcept
 {
-	__m128 dot = fv4_dot(x, x);
+	__m128 dot = fv4_dot1(x, x);
 	__m128 ret = _mm_sqrt_ss(dot);
     return _mm_cvtss_f32(ret);
 }
@@ -301,24 +302,6 @@ KTM_FUNC int sv4_rmax(__m128i x) noexcept
 	__m128i ret = _mm_max_epi32(x, _mm_shuffle_epi32(x, _MM_SHUFFLE(1, 0, 3, 2)));
 	ret = _mm_max_epi32(ret, _mm_shuffle_epi32(ret, 1));
 	return _mm_cvtsi128_si32(ret); 
-}
-
-KTM_FUNC __m128i sv4_dot(__m128i x, __m128i y) noexcept
-{
-	__m128i mul = _mm_mullo_epi32(x, y);
-	__m128i add_0 = _mm_hadd_epi32(mul, mul);
-	__m128i add_1 = _mm_hadd_epi32(add_0, add_0);
-	return add_1;
-}
-
-KTM_FUNC int sv3_dot1(__m128i x, __m128i y) noexcept
-{
-	return sv3_radd(_mm_mullo_epi32(x, y)); 
-}
-
-KTM_FUNC int sv4_dot1(__m128i x, __m128i y) noexcept
-{
-	return sv4_radd(_mm_mullo_epi32(x, y)); 
 }
 
 #endif

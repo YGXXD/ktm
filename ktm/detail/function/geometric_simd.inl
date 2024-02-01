@@ -12,7 +12,7 @@ struct ktm::detail::geometric_implement::dot<2, float>
     using V = vec<2, float>;
     static KTM_INLINE float call(const V& x, const V& y) noexcept
     {
-        return arm::geo::fv2_dot1(x.st, y.st);
+        return vget_lane_f32(arm::geo::fv2_dot1(x.st, y.st), 0);
     }
 };
 
@@ -22,7 +22,7 @@ struct ktm::detail::geometric_implement::dot<3, float>
     using V = vec<3, float>;
     static KTM_INLINE float call(const V& x, const V& y) noexcept
     {
-        return arm::geo::fv3_dot1(x.st, y.st);
+        return vgetq_lane_f32(arm::geo::fv3_dot1(x.st, y.st), 0);
     }
 };
 
@@ -32,7 +32,7 @@ struct ktm::detail::geometric_implement::dot<4, float>
     using V = vec<4, float>;
     static KTM_INLINE float call(const V& x, const V& y) noexcept
     {
-        return arm::geo::fv4_dot1(x.st, y.st);
+        return vgetq_lane_f32(arm::geo::fv4_dot1(x.st, y.st), 0);
     }
 };
 
@@ -468,7 +468,7 @@ struct ktm::detail::geometric_implement::dot<3, float>
     using V = vec<3, float>;
     static KTM_INLINE float call(const V& x, const V& y) noexcept
     {
-        return x86::geo::fv3_dot1(x.st, y.st);
+        return _mm_cvtss_f32(x86::geo::fv3_dot1(x.st, y.st));
     }
 };
 
@@ -478,7 +478,7 @@ struct ktm::detail::geometric_implement::dot<4, float>
     using V = vec<4, float>;
     static KTM_INLINE float call(const V& x, const V& y) noexcept
     {
-        return x86::geo::fv4_dot1(x.st, y.st);
+        return _mm_cvtss_f32(x86::geo::fv4_dot1(x.st, y.st));
     }
 };
 
