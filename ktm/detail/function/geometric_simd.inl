@@ -404,7 +404,7 @@ struct ktm::detail::geometric_implement::refract<2, float>
         float32x2_t eta2 = vmul_f32(t_eta, t_eta);
         float32x2_t one_minus_cos2 = vsub_f32(one, vmul_f32(dot, dot));
         float32x2_t k = vsub_f32(one, vmul_f32(eta2, one_minus_cos2));
-        if(vget_lane_f32(vcge_f32(k, vdup_n_f32(0.f)), 0) == 0)
+        if(vget_lane_u32(vcge_f32(k, vdup_n_f32(0.f)), 0) == 0)
             return V();
         V ret;
         float32x2_t sqrt_k = vsqrt_f32(k);
@@ -426,7 +426,7 @@ struct ktm::detail::geometric_implement::refract<3, float>
         float32x4_t eta2 = vmulq_f32(t_eta, t_eta);
         float32x4_t one_minus_cos2 = vsubq_f32(one, vmulq_f32(dot, dot));
         float32x4_t k = vsubq_f32(one, vmulq_f32(eta2, one_minus_cos2));
-        if(vgetq_lane_f32(vcgeq_f32(k, vdupq_n_f32(0.f)), 0) == 0)
+        if(vgetq_lane_u32(vcgeq_f32(k, vdupq_n_f32(0.f)), 0) == 0)
             return V();
         V ret;
         float32x4_t sqrt_k = vsqrtq_f32(k);
@@ -448,7 +448,7 @@ struct ktm::detail::geometric_implement::refract<4, float>
         float32x4_t eta2 = vmulq_f32(t_eta, t_eta);
         float32x4_t one_minus_cos2 = vsubq_f32(one, vmulq_f32(dot, dot));
         float32x4_t k = vsubq_f32(one, vmulq_f32(eta2, one_minus_cos2));
-        if(vgetq_lane_f32(vcgeq_f32(k, vdupq_n_f32(0.f)), 0) == 0)
+        if(vgetq_lane_u32(vcgeq_f32(k, vdupq_n_f32(0.f)), 0) == 0)
             return V();
         V ret;
         float32x4_t sqrt_k = vsqrtq_f32(k);
