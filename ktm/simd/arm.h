@@ -46,7 +46,7 @@
 
 #endif
 
-#if defined(KTM_COMPILER_CLANG) & 0
+#if defined(KTM_COMPILER_CLANG)
 
 #if defined(__ORDER_LITTLE_ENDIAN__)
 
