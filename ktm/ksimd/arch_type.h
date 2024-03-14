@@ -1,7 +1,7 @@
 #ifndef _KTM_ARCH_TYPE_H_
 #define _KTM_ARCH_TYPE_H_
 
-#include "intrin.h"
+#include "arch_def.h"
 #include "../traits/type_traits_ext.h"
 
 #define SIMD_INTRINSICS_STRUCT_TYPE(plat, latest, past) \

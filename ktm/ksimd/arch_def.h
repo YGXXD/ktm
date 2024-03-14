@@ -1,5 +1,5 @@
-#ifndef _KTM_INTRIN_H_
-#define _KTM_INTRIN_H_
+#ifndef _KTM_ARCH_DEF_H_
+#define _KTM_ARCH_DEF_H_
 
 #include "../setup.h"
 
@@ -37,7 +37,7 @@
 #elif defined(__SSE3__)
 	#define KTM_SIMD_SUPPORT (KTM_SIMD_SSE3 | KTM_SIMD_SSE2 | KTM_SIMD_SSE)
 	#include <pmmintrin.h>
-#elif defined(__SSE2__) || defined(_M_X64) || defined(_M_AMD64)
+#elif defined(__SSE2__)
 	#define KTM_SIMD_SUPPORT (KTM_SIMD_SSE2 | KTM_SIMD_SSE)
 	#include <emmintrin.h>
 #elif defined(__SSE__)
@@ -45,13 +45,15 @@
 	#include <xmmintrin.h>
 #endif
 
-#if defined(KTM_COMPILER_MSVC)
-	#if defined(_M_IX86_FP)
-		#define KTM_SIMD_SSE_X86 0xffffffff
-	#endif
-#else
-	#if defined(__i386__) || defined(__x86_64__)
-		#define KTM_SIMD_SSE_X86 0xffffffff	
+#if KTM_SIMD_ENABLE(KTM_SIMD_SSE)
+	#if defined(KTM_COMPILER_MSVC)
+		#if defined(_M_IX86_FP)
+			#define KTM_SIMD_SSE_X86 0xffffffff
+		#endif
+	#else
+		#if defined(__i386__) || defined(__x86_64__)
+			#define KTM_SIMD_SSE_X86 0xffffffff	
+		#endif
 	#endif
 #endif
 
