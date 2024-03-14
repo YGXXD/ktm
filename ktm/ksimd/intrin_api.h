@@ -11,6 +11,7 @@
 #define _set64_f32(a, b) ::ext::set64_f32(a, b)
 #define _shuff64_two_f32(a, b, n1, n0) ::ext::shuffle64_f32<n1, n0>(a, b)
 #define _shuff64_one_f32(a, n1, n0) ::ext::shuffle64_f32<n1, n0>(a)
+#define _cast64_to32_f32(a) ::ext::cast64_to32_f32(a)
 #define _add64_f32(a, b) ::ext::add64_f32(a, b)
 #define _sub64_f32(a, b) ::ext::sub64_f32(a, b)
 #define _mul64_f32(a, b) ::ext::mul64_f32(a, b)
@@ -57,6 +58,8 @@
 #define _set128_f32(a, b) ::ext::set128_f32(a, b)
 #define _shuff128_two_f32(a, b, n3, n2, n1, n0) ::ext::shuffle128_f32<n3, n2, n1, n0>(a, b)
 #define _shuff128_one_f32(a, n3, n2, n1, n0) ::ext::shuffle128_f32<n3, n2, n1, n0>(a)
+#define _cast128_to32_f32(a) ::ext::cast128_to32_f32(a)
+#define _cast128_to64_f32(a) ::ext::cast128_to64_f32(a)
 #define _add128_f32(a, b) ::ext::add128_f32(a, b)
 #define _sub128_f32(a, b) ::ext::sub128_f32(a, b)
 #define _mul128_f32(a, b) ::ext::mul128_f32(a, b)
@@ -114,6 +117,20 @@
 #define _padd128_f32(a, b) ::ext::padd128_f32(a, b)
 #define _padd128_s32(a, b) ::ext::padd128_s32(a, b)
 
+#endif
+
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON)
+    typedef float32x2_t skv64_f32;
+    typedef int32x2_t skv64_s32; 
+    typedef float32x4_t skv128_f32;
+    typedef int32x4_t skv128_s32;
+#elif KTM_SIMD_ENABLE(KTM_SIMD_SSE)
+    typedef __m64 skv64_f32;
+    typedef __m64 skv64_s32;
+    typedef __m128 skv128_f32;
+    #if KTM_SIMD_ENABLE(KTM_SIMD_SSE2)
+       typedef __m128i skv128_s32; 
+    #endif
 #endif
 
 #endif

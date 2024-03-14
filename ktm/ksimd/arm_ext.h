@@ -105,6 +105,11 @@ KTM_FUNC float32x2_t shuffle64_f32(float32x2_t a) noexcept
     return detail::shuffle64_f32<N1, N0>::call(a, a); 
 }
 
+KTM_FUNC float cast64_to32_f32(float32x2_t a) noexcept
+{
+  	return vget_lane_f32(a, 0);
+}
+
 KTM_FUNC float32x2_t add64_f32(float32x2_t a, float32x2_t b) noexcept
 {
     return vadd_f32(a, b);
@@ -299,6 +304,16 @@ template<size_t N3, size_t N2, size_t N1, size_t N0>
 KTM_FUNC float32x4_t shuffle128_f32(float32x4_t a) noexcept
 {
     return detail::shuffle128_f32<N3, N2, N1, N0>::call(a, a); 
+}
+
+KTM_FUNC float cast128_to32_f32(float32x4_t a) noexcept
+{
+  	return vgetq_lane_f32(a, 0);
+}
+
+KTM_FUNC float32x2_t cast128_to64_f32(float32x4_t a) noexcept
+{
+  	return vget_low_f32(a);
 }
 
 KTM_FUNC float32x4_t add128_f32(float32x4_t a, float32x4_t b) noexcept
