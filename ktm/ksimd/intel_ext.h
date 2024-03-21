@@ -42,7 +42,7 @@ KTM_FUNC __m128 shuffle128_f32(__m128 a) noexcept
 #endif
 }
 
-KTM_FUNC float cast128_to32_f32(__m128 a) noexcept
+KTM_FUNC float cast128to32_f32(__m128 a) noexcept
 {
   	return _mm_cvtss_f32(a);
 }
@@ -90,40 +90,13 @@ KTM_FUNC __m128 madd128_f32(__m128 a, __m128 b, __m128 c) noexcept
 KTM_FUNC __m128 neg128_f32(__m128 a) noexcept
 {
 	constexpr union { unsigned int i; float f; } mask = { 0x80000000 };
-	return _mm_xor_ps(x, _mm_set1_ps(mask.f));
+	return _mm_xor_ps(a, _mm_set1_ps(mask.f));
 }
 
 KTM_FUNC __m128 abs128_f32(__m128 a) noexcept
 {
 	constexpr union { unsigned int i; float f; } mask = { 0x7fffffff };
-	return _mm_and_ps(x, _mm_set1_ps(mask.f));
-}
-
-KTM_FUNC float radd128_f32(__m128 a) noexcept
-{
-    __m128 shuf = shuffle128_f32<3, 3, 1, 1>(a);
-    __m128 add = _mm_add_ps(a, shuf);
-    shuf = shuffle128_f32<3, 2, 3, 2>(add);
-    add = _mm_add_ss(add, shuf);
-    return _mm_cvtss_f32(add);
-}
-
-KTM_FUNC float rmax128_f32(__m128 a) noexcept
-{
-    __m128 shuf = shuffle128_f32<3, 3, 1, 1>(a);
-    __m128 max = _mm_max_ps(a, shuf);
-    shuf = shuffle128_f32<3, 2, 3, 2>(max);
-    max = _mm_max_ss(max, shuf);
-    return _mm_cvtss_f32(max);
-}
-
-KTM_FUNC float rmin128_f32(float32x4_t a) noexcept
-{
-    __m128 shuf = shuffle128_f32<3, 3, 1, 1>(a);
-    __m128 min = _mm_min_ps(a, shuf);
-    shuf = shuffle128_f32<3, 2, 3, 2>(min);
-    min = _mm_min_ss(min, shuf);
-    return _mm_cvtss_f32(min);
+	return _mm_and_ps(a, _mm_set1_ps(mask.f));
 }
 
 KTM_FUNC __m128 max128_f32(__m128 a, __m128 b) noexcept
@@ -134,11 +107,6 @@ KTM_FUNC __m128 max128_f32(__m128 a, __m128 b) noexcept
 KTM_FUNC __m128 min128_f32(__m128 a, __m128 b) noexcept
 {
     return _mm_min_ps(a, b);
-}
-
-KTM_FUNC __m128 clamp128_f32(__m128 a, __m128 min, __m128 max) noexcept
-{
-	return _mm_min_ps(_mm_max_ps(a, min), max);
 }
 
 KTM_FUNC __m128 cmpeq128_f32(__m128 a, __m128 b) noexcept
@@ -168,17 +136,17 @@ KTM_FUNC __m128 cmpge128_f32(__m128 a, __m128 b) noexcept
 
 KTM_FUNC __m128 recipl128_f32(__m128 a) noexcept
 {
-	return _mm_rcp_ps(x);
+	return _mm_rcp_ps(a);
 }
 
 KTM_FUNC __m128 reciph128_f32(__m128 a) noexcept
 {
 	constexpr union { unsigned int i; float f; } ninf = { 0xff800000 };
-	__m128 r = recipl128_f32(x);
-	__m128 mask = _mm_cmpeq_ps(x, _mm_setzero_ps());
-	__m128 x_sel = _mm_andnot_ps(mask, x);
+	__m128 r = recipl128_f32(a);
+	__m128 mask = _mm_cmpeq_ps(a, _mm_setzero_ps());
+	__m128 a_sel = _mm_andnot_ps(mask, a);
 	__m128 ninf_sel = _mm_and_ps(mask, _mm_set1_ps(ninf.f));
-	__m128 mul = _mm_mul_ps(_mm_or_ps(x_sel, ninf_sel), r);
+	__m128 mul = _mm_mul_ps(_mm_or_ps(a_sel, ninf_sel), r);
 	__m128 sub = _mm_sub_ps(_mm_set1_ps(2.f), mul);
 	return _mm_mul_ps(r, sub);
 }
@@ -191,11 +159,11 @@ KTM_FUNC __m128 rsqrtl128_f32(__m128 a) noexcept
 KTM_FUNC __m128 rsqrth128_f32(__m128 a) noexcept
 {
 	constexpr union { unsigned int i; float f; } inf = { 0x7f800000 };
-	__m128 r = rsqrtl128_f32(x);
+	__m128 r = rsqrtl128_f32(a);
 	__m128 mask = _mm_cmpeq_ps(r, _mm_set1_ps(inf.f));
-	__m128 x_sel = _mm_andnot_ps(mask, x);
+	__m128 a_sel = _mm_andnot_ps(mask, a);
 	__m128 ninf_sel = _mm_and_ps(mask, _mm_set1_ps(-inf.f));
-	__m128 mul = _mm_mul_ps(_mm_mul_ps(_mm_set1_ps(0.5f), _mm_or_ps(x_sel, ninf_sel)), _mm_mul_ps(r, r));
+	__m128 mul = _mm_mul_ps(_mm_mul_ps(_mm_set1_ps(0.5f), _mm_or_ps(a_sel, ninf_sel)), _mm_mul_ps(r, r));
 	__m128 sub = _mm_sub_ps(_mm_set1_ps(1.5f), mul);
 	return _mm_mul_ps(r, sub);
 }
@@ -208,48 +176,6 @@ KTM_FUNC __m128 sqrtl128_f32(__m128 a) noexcept
 KTM_FUNC __m128 sqrth128_f32(__m128 a) noexcept
 {
     return _mm_sqrt_ps(a);
-}
-
-KTM_FUNC __m128 round128_f32(__m128 a) noexcept
-{
-#if KTM_SIMD_ENABLE(KTM_SIMD_SSE4_1)
-	return _mm_round_ps(x, _MM_FROUND_TO_NEAREST_INT);
-#else
-	constexpr union { unsigned int i; float f; } mask1 = { 0x80000000 };
-	constexpr union { unsigned int i; float f; } mask2 = { 0x4b000000 };
-	__m128 tmp = _mm_and_ps(x, _mm_set1_ps(mask1.f));
-	tmp = _mm_or_ps(tmp, _mm_set1_ps(mask2.f));
-    __m128 ret = _mm_sub_ps(_mm_add_ps(x, tmp), tmp);
-	return ret;
-#endif
-}
-
-KTM_FUNC __m128 floor128_f32(__m128 a) noexcept
-{
-#if KTM_SIMD_ENABLE(KTM_SIMD_SSE4_1)
-	return _mm_floor_ps(x);
-#else
-	constexpr union { unsigned int i; float f; } mask = { 0x3f800000 };
-	__m128 rnd = round_ps(x);
-	__m128 tmp = _mm_cmplt_ps(x, rnd);
-	tmp = _mm_and_ps(tmp, _mm_set1_ps(mask.f));
-	__m128 ret = _mm_sub_ps(rnd, tmp);
-	return ret;
-#endif
-}
-
-KTM_FUNC __m128 ceil128_f32(__m128 a) noexcept
-{
-#if KTM_SIMD_ENABLE(KTM_SIMD_SSE4_1)
-	return _mm_ceil_ps(x);
-#else
-	constexpr union { unsigned int i; float f; } mask = { 0x3f800000 };
-	__m128 rnd = round_ps(x);
-	__m128 tmp = _mm_cmpgt_ps(x, rnd);
-	tmp = _mm_and_ps(tmp, _mm_set1_ps(mask.f));
-	__m128 ret = _mm_add_ps(rnd, tmp);
-	return ret;
-#endif
 }
 
 #endif
@@ -279,15 +205,6 @@ KTM_FUNC __m128i sub128_s32(__m128i a, __m128i b) noexcept
 KTM_FUNC __m128i neg128_s32(__m128i a) noexcept
 {
 	return _mm_sub_epi32(_mm_setzero_si128(), a);
-}
-
-KTM_FUNC __m128i radd128_s32(__m128i a) noexcept
-{
-    __m128i shuf = _mm_castps_si128(shuffle128_f32<3, 3, 1, 1>(_mm_castsi128_ps(a)));
-    __m128i add = _mm_add_epi32(a, shuf);
-    shuf = _mm_castps_si128(shuffle128_f32<3, 2, 3, 2>(_mm_castsi128_ps(add)));
-    add = _mm_add_epi32(add, shuf);
-    return _mm_cvtsi128_si32(add);
 }
 
 KTM_FUNC __m128i cmpeq128_s32(__m128i a, __m128i b) noexcept
@@ -326,53 +243,42 @@ KTM_FUNC __m128i abs128_s32(__m128i a) noexcept
 
 #endif
 
-#if KTM_SIMD_ENABLE(1)
-KTM_FUNC int32x4_t mul128_s32(int32x4_t a, int32x4_t b) noexcept
+#if KTM_SIMD_ENABLE(KTM_SIMD_SSE4_1)
+
+KTM_FUNC __m128 round128_f32(__m128 a) noexcept
 {
-    return vmulq_s32(a, b);
+	return _mm_round_ps(a, _MM_FROUND_TO_NEAREST_INT);
 }
 
-// KTM_FUNC int32x4_t madd128_s32(int32x4_t a, int32x4_t b, int32x4_t c) noexcept
-// {
-//   	return vmlaq_s32(a, b, c);
-// }
-
-KTM_FUNC int rmax128_s32(int32x4_t a) noexcept
+KTM_FUNC __m128 floor128_f32(__m128 a) noexcept
 {
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON64)
-	return vmaxvq_s32(a);
-#else
-  	int32x2_t r = vpmax_s32(vget_low_s32(x), vget_high_s32(x));
-  	r = vpmax_s32(r, r);
-  	return vget_lane_s32(r, 0);
-#endif
+	return _mm_floor_ps(a);
 }
 
-// KTM_FUNC int rmin128_s32(int32x4_t a) noexcept
-// {
-// #if KTM_SIMD_ENABLE(KTM_SIMD_NEON64)
-// 	return vminvq_s32(a);
-// #else
-//   	int32x2_t r = vpmin_s32(vget_low_s32(x), vget_high_s32(x));
-//   	r = vpmin_s32(r, r);
-//   	return vget_lane_s32(r, 0);
-// #endif
-// }
+KTM_FUNC __m128 ceil128_f32(__m128 a) noexcept
+{
+	return _mm_ceil_ps(a);
+}
 
-// KTM_FUNC int32x4_t max128_s32(int32x4_t a, int32x4_t b) noexcept
-// {
-// 	return vmaxq_s32(a, b);
-// }
+KTM_FUNC __m128i mul128_s32(__m128i a, __m128i b) noexcept
+{
+    return _mm_mullo_epi32(a, b);
+}
 
-// KTM_FUNC int32x4_t min128_s32(int32x4_t a, int32x4_t b) noexcept
-// {
-// 	return vminq_s32(a, b);
-// }
+KTM_FUNC __m128i madd128_s32(__m128i a, __m128i b, __m128i c) noexcept
+{
+  	return _mm_add_epi32(a, _mm_mullo_epi32(b, c));
+}
 
-// KTM_FUNC int32x4_t clamp128_s32(int32x4_t a, int32x4_t min, int32x4_t max) noexcept
-// {
-// 	return vminq_s32(vmaxq_s32(a, min), max);
-// }
+KTM_FUNC __m128i max128_s32(__m128i a, __m128i b) noexcept
+{
+	return _mm_max_epi32(a, b);
+}
+
+KTM_FUNC __m128i min128_s32(__m128i a, __m128i b) noexcept
+{
+	return _mm_min_epi32(a, b);
+}
 
 #endif
 
