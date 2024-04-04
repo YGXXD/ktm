@@ -1,12 +1,10 @@
-#ifndef _KTM_ARM_EXT_H_
-#define _KTM_ARM_EXT_H_
+#ifndef _KTM_ARM_INTRIN_H_
+#define _KTM_ARM_INTRIN_H_
 
 #include "arch_def.h"
 #include <cstddef>
 
-#if defined(KTM_SIMD_SUPPORT)
-
-namespace ext
+namespace intrin 
 {
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON)
@@ -65,12 +63,27 @@ namespace detail
     };
 }
 
+KTM_FUNC float cast64to32_f32(float32x2_t a) noexcept
+{
+  	return vget_lane_f32(a, 0);
+}
+
+KTM_FUNC int32x2_t cast64_s32_f32(float32x2_t a) noexcept
+{
+  	return vreinterpret_s32_f32(a);
+}
+
+KTM_FUNC float32x2_t cast64_f32_s32(int32x2_t a) noexcept
+{
+  	return vreinterpret_f32_s32(a);
+}
+
 KTM_FUNC float32x2_t dup64_f32(float a) noexcept
 {
   	return vdup_n_f32(a);
 }
 
-KTM_FUNC float32x2_t setzero64_f32() noexcept
+KTM_FUNC float32x2_t dupzero64_f32() noexcept
 {
   	return vdup_n_f32(0.f);
 }
@@ -91,11 +104,6 @@ template<size_t N1, size_t N0>
 KTM_FUNC float32x2_t shuffle64_f32(float32x2_t a) noexcept
 {
     return detail::shuffle64_f32<N1, N0>::call(a, a); 
-}
-
-KTM_FUNC float cast64to32_f32(float32x2_t a) noexcept
-{
-  	return vget_lane_f32(a, 0);
 }
 
 KTM_FUNC float32x2_t and64_f32(float32x2_t a, float32x2_t b) noexcept
@@ -239,12 +247,32 @@ KTM_FUNC float32x2_t div64_f32(float32x2_t a, float32x2_t b) noexcept
 #endif
 }
 
+KTM_FUNC float cast128to32_f32(float32x4_t a) noexcept
+{
+  	return vgetq_lane_f32(a, 0);
+}
+
+KTM_FUNC float32x2_t cast128to64_f32(float32x4_t a) noexcept
+{
+  	return vget_low_f32(a);
+}
+
+KTM_FUNC int32x4_t cast128_s32_f32(float32x4_t a) noexcept
+{
+  	return vreinterpretq_s32_f32(a);
+}
+
+KTM_FUNC float32x4_t cast128_f32_s32(int32x4_t a) noexcept
+{
+  	return vreinterpretq_f32_s32(a);
+}
+
 KTM_FUNC float32x4_t dup128_f32(float a) noexcept
 {
   	return vdupq_n_f32(a);
 }
 
-KTM_FUNC float32x4_t setzero128_f32() noexcept
+KTM_FUNC float32x4_t dupzero128_f32() noexcept
 {
 	return vdupq_n_f32(0.f);
 }
@@ -268,16 +296,6 @@ template<size_t N3, size_t N2, size_t N1, size_t N0>
 KTM_FUNC float32x4_t shuffle128_f32(float32x4_t a) noexcept
 {
     return detail::shuffle128_f32<N3, N2, N1, N0>::call(a, a); 
-}
-
-KTM_FUNC float cast128to32_f32(float32x4_t a) noexcept
-{
-  	return vgetq_lane_f32(a, 0);
-}
-
-KTM_FUNC float32x2_t cast128to64_f32(float32x4_t a) noexcept
-{
-  	return vget_low_f32(a);
 }
 
 KTM_FUNC float32x4_t and128_f32(float32x4_t a, float32x4_t b) noexcept
@@ -585,21 +603,6 @@ KTM_FUNC float32x2_t padd64_f32(float32x2_t a, float32x2_t b) noexcept
 	return vpadd_f32(a, b);
 }
 
-KTM_FUNC float radd64_f32(float32x2_t a) noexcept
-{
-	return vaddv_f32(a);
-}
-
-KTM_FUNC float rmax64_f32(float32x2_t a) noexcept
-{
-	return vmaxv_f32(a);
-}
-
-KTM_FUNC float rmin64_f32(float32x2_t a) noexcept
-{
-	return vminv_f32(a);
-}
-
 KTM_FUNC float32x2_t round64_f32(float32x2_t a) noexcept
 {
 	return vrndi_f32(a);
@@ -655,21 +658,6 @@ KTM_FUNC int32x2_t padd64_s32(int32x2_t a, int32x2_t b) noexcept
 	return vpadd_s32(a, b);
 }
 
-KTM_FUNC int radd64_s32(int32x2_t a) noexcept
-{
-	return vaddv_s32(a);
-}
-
-KTM_FUNC int rmax64_s32(int32x2_t a) noexcept
-{
-	return vmaxv_s32(a);
-}
-
-KTM_FUNC int rmin64_s32(int32x2_t a) noexcept
-{
-	return vminv_s32(a);
-}
-
 KTM_FUNC int32x4_t padd128_s32(int32x4_t a, int32x4_t b) noexcept
 {
 	return vpaddq_s32(a, b);
@@ -693,7 +681,5 @@ KTM_FUNC int rmin128_s32(int32x4_t a) noexcept
 #endif
 
 }
-
-#endif
 
 #endif

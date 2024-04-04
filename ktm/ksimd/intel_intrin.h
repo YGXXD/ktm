@@ -1,22 +1,25 @@
-#ifndef _KTM_INTEL_EXT_H_
-#define _KTM_INTEL_EXT_H_
+#ifndef _KTM_INTEL_INTRIN_H_
+#define _KTM_INTEL_INTRIN_H_
 
 #include "arch_def.h"
 #include <cstddef>
 
-#if defined(KTM_SIMD_SUPPORT)
-
-namespace ext 
+namespace intrin 
 {
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_SSE)
+
+KTM_FUNC float cast128to32_f32(__m128 a) noexcept
+{
+  	return _mm_cvtss_f32(a);
+}
 
 KTM_FUNC __m128 dup128_f32(float a) noexcept
 {
   	return _mm_set1_ps(a);
 }
 
-KTM_FUNC __m128 setzero128_f32() noexcept
+KTM_FUNC __m128 dupzero128_f32() noexcept
 {
 	return _mm_setzero_ps();
 }
@@ -40,11 +43,6 @@ KTM_FUNC __m128 shuffle128_f32(__m128 a) noexcept
 #else
     return _mm_shuffle_ps(a, a, _MM_SHUFFLE(N3, N2, N1, N0));
 #endif
-}
-
-KTM_FUNC float cast128to32_f32(__m128 a) noexcept
-{
-  	return _mm_cvtss_f32(a);
 }
 
 KTM_FUNC __m128 and128_f32(__m128 a, __m128 b) noexcept
@@ -89,13 +87,13 @@ KTM_FUNC __m128 madd128_f32(__m128 a, __m128 b, __m128 c) noexcept
 
 KTM_FUNC __m128 neg128_f32(__m128 a) noexcept
 {
-	constexpr union { unsigned int i; float f; } mask = { 0x80000000 };
+	constexpr union { unsigned int i; float f; } mask { 0x80000000 };
 	return _mm_xor_ps(a, _mm_set1_ps(mask.f));
 }
 
 KTM_FUNC __m128 abs128_f32(__m128 a) noexcept
 {
-	constexpr union { unsigned int i; float f; } mask = { 0x7fffffff };
+	constexpr union { unsigned int i; float f; } mask { 0x7fffffff };
 	return _mm_and_ps(a, _mm_set1_ps(mask.f));
 }
 
@@ -141,7 +139,7 @@ KTM_FUNC __m128 recipl128_f32(__m128 a) noexcept
 
 KTM_FUNC __m128 reciph128_f32(__m128 a) noexcept
 {
-	constexpr union { unsigned int i; float f; } ninf = { 0xff800000 };
+	constexpr union { unsigned int i; float f; } ninf { 0xff800000 };
 	__m128 r = recipl128_f32(a);
 	__m128 mask = _mm_cmpeq_ps(a, _mm_setzero_ps());
 	__m128 a_sel = _mm_andnot_ps(mask, a);
@@ -158,7 +156,7 @@ KTM_FUNC __m128 rsqrtl128_f32(__m128 a) noexcept
 
 KTM_FUNC __m128 rsqrth128_f32(__m128 a) noexcept
 {
-	constexpr union { unsigned int i; float f; } inf = { 0x7f800000 };
+	constexpr union { unsigned int i; float f; } inf { 0x7f800000 };
 	__m128 r = rsqrtl128_f32(a);
 	__m128 mask = _mm_cmpeq_ps(r, _mm_set1_ps(inf.f));
 	__m128 a_sel = _mm_andnot_ps(mask, a);
@@ -181,6 +179,16 @@ KTM_FUNC __m128 sqrth128_f32(__m128 a) noexcept
 #endif
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_SSE2)
+
+KTM_FUNC __m128i cast128_s32_f32(__m128 a) noexcept
+{
+  	return _mm_castps_si128(a);
+}
+
+KTM_FUNC __m128 cast128_f32_s32(__m128i a) noexcept
+{
+  	return _mm_castsi128_ps(a);
+}
 
 KTM_FUNC __m128i dup128_s32(int a) noexcept
 {
@@ -205,6 +213,16 @@ KTM_FUNC __m128i sub128_s32(__m128i a, __m128i b) noexcept
 KTM_FUNC __m128i neg128_s32(__m128i a) noexcept
 {
 	return _mm_sub_epi32(_mm_setzero_si128(), a);
+}
+
+KTM_FUNC __m128i abs128_s32(__m128i a) noexcept
+{
+#if KTM_SIMD_ENABLE(KTM_SIMD_SSSE3)
+	return _mm_abs_epi32(a);
+#else 
+	__m128i mask = _mm_srli_epi32(a, 31);
+	return _mm_sub_epi32(_mm_xor_si128(a, mask), mask);
+#endif
 }
 
 KTM_FUNC __m128i cmpeq128_s32(__m128i a, __m128i b) noexcept
@@ -234,11 +252,16 @@ KTM_FUNC __m128i cmpge128_s32(__m128i a, __m128i b) noexcept
 
 #endif
 
-#if KTM_SIMD_ENABLE(KTM_SIMD_SSSE3)
+#if KTM_SIMD_ENABLE(KTM_SIMD_SSE3)
 
-KTM_FUNC __m128i abs128_s32(__m128i a) noexcept
+KTM_FUNC __m128i padd128_f32(__m128 a, __m128 b) noexcept
 {
-	return _mm_abs_epi32(a);
+	return _mm_hadd_ps(a, b);
+}
+
+KTM_FUNC __m128i padd128_s32(__m128i a, __m128i b) noexcept
+{
+	return _mm_hadd_epi32(a, b);
 }
 
 #endif
@@ -283,7 +306,5 @@ KTM_FUNC __m128i min128_s32(__m128i a, __m128i b) noexcept
 #endif
 
 }
-
-#endif
 
 #endif
