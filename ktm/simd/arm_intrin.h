@@ -20,17 +20,17 @@ namespace detail
 #if defined(__ORDER_LITTLE_ENDIAN__)
             return __builtin_shufflevector(a, b, N0, N1 + 2);
 #else
-            return __builtin_shufflevector(y, a, 1 - N1, 3 - N0);
+            return __builtin_shufflevector(b, a, 1 - N1, 3 - N0);
 #endif
-#elif defined(KTM_COMPILER_CLANG)
+#elif defined(KTM_COMPILER_GCC)
 #if defined(__ORDER_LITTLE_ENDIAN__)
             return __builtin_shuffle(a, b, uint32x2_t{ N0, N1 + 2 });
 #else
-            return __builtin_shuffle(y, a, uint32x2_t{ 1 - N1, 3 - N0 });
+            return __builtin_shuffle(b, a, uint32x2_t{ 1 - N1, 3 - N0 });
 #endif
 #else
             float32x2_t ret = vmov_n_f32(vget_lane_f32(a, N0));
-            return vset_lane_f32(vget_lane_f32(y, N1), ret, 1);
+            return vset_lane_f32(vget_lane_f32(b, N1), ret, 1);
 #endif 
         }
     };
@@ -44,19 +44,19 @@ namespace detail
 #if defined(__ORDER_LITTLE_ENDIAN__)
             return __builtin_shufflevector(a, b, N0, N1, N2 + 4, N3 + 4);
 #else
-            return __builtin_shufflevector(y, a, 3 - N3, 3 - N2, 7 - N1, 7 - N0);
+            return __builtin_shufflevector(b, a, 3 - N3, 3 - N2, 7 - N1, 7 - N0);
 #endif
-#elif defined(KTM_COMPILER_CLANG)
+#elif defined(KTM_COMPILER_GCC)
 #if defined(__ORDER_LITTLE_ENDIAN__)
             return __builtin_shuffle(a, b, uint32x4_t{ N0, N1, N2 + 4, N3 + 4 });
 #else
-            return __builtin_shuffle(y, a, uint32x4_t{ 3 - N3, 3 - N2, 7 - N1, 7 - N0 });
+            return __builtin_shuffle(b, a, uint32x4_t{ 3 - N3, 3 - N2, 7 - N1, 7 - N0 });
 #endif
 #else
             float32x4_t ret = vmovq_n_f32(vgetq_lane_f32(a, N0));
             ret = vsetq_lane_f32(vgetq_lane_f32(a, N1), ret, 1);
-            ret = vsetq_lane_f32(vgetq_lane_f32(y, N2), ret, 2);
-            ret = vsetq_lane_f32(vgetq_lane_f32(y, N3), ret, 3);
+            ret = vsetq_lane_f32(vgetq_lane_f32(b, N2), ret, 2);
+            ret = vsetq_lane_f32(vgetq_lane_f32(b, N3), ret, 3);
             return ret;
 #endif 
         }
@@ -282,7 +282,7 @@ KTM_FUNC float32x4_t set128_f32(float a, float b, float c, float d) noexcept
 	float32x4_t ret = vmovq_n_f32(d);
 	ret = vsetq_lane_f32(c, ret, 1);
 	ret = vsetq_lane_f32(b, ret, 2);
-	ret = vsetq_lane_f32(a, ret, 1);
+	ret = vsetq_lane_f32(a, ret, 3);
   	return ret;
 }
 
@@ -525,7 +525,7 @@ KTM_FUNC int32x4_t set128_s32(int a, int b, int c, int d) noexcept
 	int32x4_t ret = vmovq_n_s32(d);
 	ret = vsetq_lane_s32(c, ret, 1);
 	ret = vsetq_lane_s32(b, ret, 2);
-	ret = vsetq_lane_s32(a, ret, 1);
+	ret = vsetq_lane_s32(a, ret, 3);
   	return ret;
 }
 

@@ -38,7 +38,10 @@
 #define _sqrth64_f32(a) ::intrin::sqrth64_f32(a) 
 
 #define _dup64_s32(a) ::intrin::dup64_s32(a)
+#define _dupzero64_s32() _cast64_s32_f32(_dupzero64_f32())
 #define _set64_s32(a, b) ::intrin::set64_s32(a, b)
+#define _shufft64_s32(a, b, n1, n0) _cast64_s32_f32(_shufft64_f32(_cast64_f32_s32(a), _cast64_f32_s32(b), n1, n0))
+#define _shuffo64_s32(a, n1, n0) _cast64_s32_f32(_shuffo64_f32(_cast64_f32_s32(a), n1, n0))
 #define _add64_s32(a, b) ::intrin::add64_s32(a, b)
 #define _sub64_s32(a, b) ::intrin::sub64_s32(a, b)
 #define _mul64_s32(a, b) ::intrin::mul64_s32(a, b)
@@ -61,11 +64,47 @@
 
 #endif
 
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON64)
+
+#define _round64_f32(a) ::intrin::round64_f32(a) 
+#define _floor64_f32(a) ::intrin::floor64_f32(a)
+#define _ceil64_f32(a) ::intrin::ceil64_f32(a)
+
+#define _padd64_f32(a, b) ::intrin::padd64_f32(a, b)
+#define _radd128_f32(a) ::intrin::radd128_f32(a)
+#define _rmax128_f32(a) ::intrin::rmax128_f32(a)
+#define _rmin128_f32(a) ::intrin::rmin128_f32(a)
+
+#define _padd64_s32(a, b) ::intrin::padd64_s32(a, b)
+#define _radd128_s32(a) ::intrin::radd128_s32(a)
+#define _rmax128_s32(a) ::intrin::rmax128_s32(a)
+#define _rmin128_s32(a) ::intrin::rmin128_s32(a)
+
+#endif
+
+#if KTM_SIMD_ENABLE(KTM_SIMD_SSE3)
+
+#define _psub128_f32(a, b) ::intrin::psub128_f32(a, b)
+
+#endif
+
+#if KTM_SIMD_ENABLE(KTM_SIMD_SSSE3)
+
+#define _psub128_s32(a, b) ::intrin::psub128_s32(a, b)
+
+#endif
+
+#if KTM_SIMD_ENABLE(KTM_SIMD_SSE4_1)
+
+#define _dot128_f32(a, b, dot, str) ::intrin::dot128_f32<dot, str>(a, b)
+
+#endif
+
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE)
 
 #define _dup128_f32(a) ::intrin::dup128_f32(a)
 #define _dupzero128_f32() ::intrin::dupzero128_f32()
-#define _set128_f32(a, b) ::intrin::set128_f32(a, b)
+#define _set128_f32(a, b, c, d) ::intrin::set128_f32(a, b, c, d)
 #define _shufft128_f32(a, b, n3, n2, n1, n0) ::intrin::shuffle128_f32<n3, n2, n1, n0>(a, b)
 #define _shuffo128_f32(a, n3, n2, n1, n0) ::intrin::shuffle128_f32<n3, n2, n1, n0>(a)
 #define _and128_f32(a, b) ::intrin::and128_f32(a, b)
@@ -100,7 +139,10 @@
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2)
 
 #define _dup128_s32(a) ::intrin::dup128_s32(a)
-#define _set128_s32(a, b) ::intrin::set128_s32(a, b)
+#define _dupzero128_s32() _cast128_s32_f32(_dupzero128_f32())
+#define _set128_s32(a, b, c, d) ::intrin::set128_s32(a, b, c, d)
+#define _shufft128_s32(a, b, n3, n2, n1, n0) _cast128_s32_f32(_shufft128_f32(_cast128_f32_s32(a), _cast128_f32_s32(b), n3, n2, n1, n0))
+#define _shuffo128_s32(a, n3, n2, n1, n0) _cast128_s32_f32(_shuffo128_f32(_cast128_f32_s32(a), n3, n2, n1, n0))
 #define _add128_s32(a, b) ::intrin::add128_s32(a, b)
 #define _sub128_s32(a, b) ::intrin::sub128_s32(a, b)
 #define _neg128_s32(a) ::intrin::neg128_s32(a)
@@ -116,6 +158,18 @@
 
 #endif
 
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON64 | KTM_SIMD_SSE3)
+
+#define _padd128_f32(a, b) ::intrin::padd128_f32(a, b)
+
+#endif
+
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON64 | KTM_SIMD_SSSE3)
+
+#define _padd128_s32(a, b) ::intrin::padd128_s32(a, b)
+
+#endif
+
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1) 
 
 #define _mul128_s32(a, b) ::intrin::mul128_s32(a, b)
@@ -123,31 +177,6 @@
 #define _max128_s32(a, b) ::intrin::max128_s32(a, b)
 #define _min128_s32(a, b) ::intrin::min128_s32(a, b)
 #define _clamp128_s32(a, min, max) _min128_s32(_max128_s32(a, min), max)
-
-#endif
-
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON64)
-
-#define _round64_f32(a) ::intrin::round64_f32(a) 
-#define _floor64_f32(a) ::intrin::floor64_f32(a)
-#define _ceil64_f32(a) ::intrin::ceil64_f32(a)
-
-#define _padd64_f32(a, b) ::intrin::padd64_f32(a, b)
-#define _radd128_f32(a) ::intrin::radd128_f32(a)
-#define _rmax128_f32(a) ::intrin::rmax128_f32(a)
-#define _rmin128_f32(a) ::intrin::rmin128_f32(a)
-
-#define _padd64_s32(a, b) ::intrin::padd64_s32(a, b)
-#define _radd128_s32(a) ::intrin::radd128_s32(a)
-#define _rmax128_s32(a) ::intrin::rmax128_s32(a)
-#define _rmin128_s32(a) ::intrin::rmin128_s32(a)
-
-#endif
-
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON64 | KTM_SIMD_SSE3)
-
-#define _padd128_f32(a, b) ::intrin::padd128_f32(a, b)
-#define _padd128_s32(a, b) ::intrin::padd128_s32(a, b)
 
 #endif
 

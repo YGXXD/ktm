@@ -254,19 +254,39 @@ KTM_FUNC __m128i cmpge128_s32(__m128i a, __m128i b) noexcept
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_SSE3)
 
-KTM_FUNC __m128i padd128_f32(__m128 a, __m128 b) noexcept
+KTM_FUNC __m128 padd128_f32(__m128 a, __m128 b) noexcept
 {
 	return _mm_hadd_ps(a, b);
 }
+
+KTM_FUNC __m128 psub128_f32(__m128 a, __m128 b) noexcept
+{
+	return _mm_hsub_ps(a, b);
+}
+
+#endif
+
+#if KTM_SIMD_ENABLE(KTM_SIMD_SSSE3)
 
 KTM_FUNC __m128i padd128_s32(__m128i a, __m128i b) noexcept
 {
 	return _mm_hadd_epi32(a, b);
 }
 
+KTM_FUNC __m128i psub128_s32(__m128i a, __m128i b) noexcept
+{
+	return _mm_hsub_epi32(a, b);
+}
+
 #endif
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_SSE4_1)
+
+template<unsigned char DotLane, unsigned char StrLane>
+KTM_FUNC __m128 dot128_f32(__m128 a, __m128 b) noexcept
+{
+	return _mm_dp_ps(a, b, (DotLane << 4) | StrLane);
+}
 
 KTM_FUNC __m128 round128_f32(__m128 a) noexcept
 {

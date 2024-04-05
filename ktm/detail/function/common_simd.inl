@@ -2,117 +2,25 @@
 #define _KTM_COMMON_SIMD_INL_
 
 #include "common_fwd.h"
-#include "../../simd/intrin.h"
+#include "../../simd/skv.h"
 
-#if defined(KTM_SIMD_ARM)
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE)
 
-template<size_t L>
-struct ktm::detail::common_implement::elem_move<L, 2, float>
-{
-    static_assert(L == 1);
-    using V = vec<2, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = neon_shuffle_f32(x.st, x.st, 0, L);
-        return ret;
-    }
-};
-
-template<size_t L>
-struct ktm::detail::common_implement::elem_move<L, 3, float>
-{
-    static_assert(L > 0 && L < 3);
-    using V = vec<3, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        constexpr size_t i1 = 1 + L < 3 ? 1 + L : L - 2;
-        constexpr size_t i2 = 2 + L < 3 ? 2 + L : L - 1; 
-        ret.st = neon_shuffleq_f32(x.st, x.st, 3, i2, i1, L);
-        return ret;
-    }
-};
-
-template<size_t L>
-struct ktm::detail::common_implement::elem_move<L, 4, float>
-{
-    static_assert(L > 0 && L < 4);
-    using V = vec<4, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        constexpr size_t i1 = 1 + L < 4 ? 1 + L : L - 3;
-        constexpr size_t i2 = 2 + L < 4 ? 2 + L : L - 2; 
-        constexpr size_t i3 = 3 + L < 4 ? 3 + L : L - 1;  
-        ret.st = neon_shuffleq_f32(x.st, x.st, i3, i2, i1, L);
-        return ret;
-    }
-};
-
-template<size_t L>
-struct ktm::detail::common_implement::elem_move<L, 2, int>
-{
-    static_assert(L == 1);
-    using V = vec<2, int>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = neon_shuffle_s32(x.st, x.st, 0, L);
-        return ret;
-    }
-};
-
-template<size_t L>
-struct ktm::detail::common_implement::elem_move<L, 3, int>
-{
-    static_assert(L > 0 && L < 3);
-    using V = vec<3, int>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        constexpr size_t i1 = 1 + L < 3 ? 1 + L : L - 2;
-        constexpr size_t i2 = 2 + L < 3 ? 2 + L : L - 1; 
-        ret.st = neon_shuffleq_s32(x.st, x.st, 3, i2, i1, L);
-        return ret;
-    }
-};
-
-template<size_t L>
-struct ktm::detail::common_implement::elem_move<L, 4, int>
-{
-    static_assert(L > 0 && L < 3);
-    using V = vec<3, int>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        constexpr size_t i1 = 1 + L < 4 ? 1 + L : L - 3;
-        constexpr size_t i2 = 2 + L < 4 ? 2 + L : L - 2; 
-        constexpr size_t i3 = 3 + L < 4 ? 3 + L : L - 1;  
-        ret.st = neon_shuffleq_s32(x.st, x.st, i3, i2, i1, L);
-        return ret;
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_add<2, float>
-{
-    using V = vec<2, float>;
-    static KTM_INLINE float call(const V& x) noexcept
-    {
-        return arm::rdc::fv2_radd(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_add<3, float>
-{
-    using V = vec<3, float>;
-    static KTM_INLINE float call(const V& x) noexcept
-    {
-        return arm::rdc::fv3_radd(x.st);
-    }
-};
+// template<size_t L, size_t N>
+// struct ktm::detail::common_implement::elem_move<L, N, float, std::enable_if_t<N == 3 || N == 4>>
+// {
+//     static_assert(L > 0 && L < N);
+//     using V = vec<3, float>;
+//     static KTM_INLINE V call(const V& x) noexcept
+//     {
+//         V ret;
+//         constexpr size_t i1 = 1 + L < N ? 1 + L : L - (N - 1);
+//         constexpr size_t i2 = 2 + L < N ? 2 + L : L - (N - 2);
+//         constexpr size_t i3 = 3 + L < N ? 3 + L : L - (N - 3); 
+//         ret.st = _shuffo128_f32(x.st, i3, i2, i1, L);
+//         return ret;
+//     }
+// };
 
 template<>
 struct ktm::detail::common_implement::reduce_add<4, float>
@@ -120,57 +28,7 @@ struct ktm::detail::common_implement::reduce_add<4, float>
     using V = vec<4, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return arm::rdc::fv4_radd(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_add<2, int>
-{
-    using V = vec<2, int>;
-    static KTM_INLINE int call(const V& x) noexcept
-    {
-        return arm::rdc::sv2_radd(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_add<3, int>
-{
-    using V = vec<3, int>;
-    static KTM_INLINE int call(const V& x) noexcept
-    {
-        return arm::rdc::sv3_radd(x.st); 
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_add<4, int>
-{
-    using V = vec<4, int>;
-    static KTM_INLINE int call(const V& x) noexcept
-    {
-        return arm::rdc::sv4_radd(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_min<2, float>
-{
-    using V = vec<2, float>;
-    static KTM_INLINE float call(const V& x) noexcept
-    {
-        return arm::rdc::fv2_rmin(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_min<3, float>
-{
-    using V = vec<3, float>;
-    static KTM_INLINE float call(const V& x) noexcept
-    {
-        return arm::rdc::fv3_rmin(x.st);
+        return skv::radd_fv4(x.st);
     }
 };
 
@@ -180,57 +38,7 @@ struct ktm::detail::common_implement::reduce_min<4, float>
     using V = vec<4, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return arm::rdc::fv4_rmin(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_min<2, int>
-{
-    using V = vec<2, int>;
-    static KTM_INLINE int call(const V& x) noexcept
-    {
-        return arm::rdc::sv2_rmin(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_min<3, int>
-{
-    using V = vec<3, int>;
-    static KTM_INLINE int call(const V& x) noexcept
-    {
-        return arm::rdc::sv3_rmin(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_min<4, int>
-{
-    using V = vec<4, int>;
-    static KTM_INLINE int call(const V& x) noexcept
-    {
-        return arm::rdc::sv4_rmin(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_max<2, float>
-{
-    using V = vec<2, float>;
-    static KTM_INLINE float call(const V& x) noexcept
-    {
-        return arm::rdc::fv2_rmax(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_max<3, float>
-{
-    using V = vec<3, float>;
-    static KTM_INLINE float call(const V& x) noexcept
-    {
-        return arm::rdc::fv3_rmax(x.st);
+        return skv::rmin_fv4(x.st);
     }
 };
 
@@ -240,49 +48,7 @@ struct ktm::detail::common_implement::reduce_max<4, float>
     using V = vec<4, float>;
     static KTM_INLINE float call(const V& x) noexcept
     {
-        return arm::rdc::fv4_rmax(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_max<2, int>
-{
-    using V = vec<2, int>;
-    static KTM_INLINE int call(const V& x) noexcept
-    {
-        return arm::rdc::sv2_rmax(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_max<3, int>
-{
-    using V = vec<3, int>;
-    static KTM_INLINE int call(const V& x) noexcept
-    {
-        return arm::rdc::sv3_rmax(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_max<4, int>
-{
-    using V = vec<4, int>;
-    static KTM_INLINE int call(const V& x) noexcept
-    {
-        return arm::rdc::sv4_rmax(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::abs<2, float>
-{
-    using V = vec<2, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = vabs_f32(x.st);
-        return ret;
+        return skv::rmax_fv4(x.st);  
     }
 };
 
@@ -293,20 +59,245 @@ struct ktm::detail::common_implement::abs<N, float, std::enable_if_t<N == 3 || N
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = vabsq_f32(x.st);
+        ret.st = _abs128_f32(x.st);
         return ret;
     }
 };
 
-template<>
-struct ktm::detail::common_implement::abs<2, int>
+template<size_t N>
+struct ktm::detail::common_implement::min<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
-    using V = vec<2, int>;
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x, const V& y) noexcept
+    {
+        V ret;
+        ret.st = _min128_f32(x.st, y.st);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::max<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x, const V& y) noexcept
+    {
+        V ret;
+        ret.st = _max128_f32(x.st, y.st);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::clamp<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
+    {
+        V ret;
+        ret.st = _clamp128_f32(v.st, min.st, max.st);
+        return ret; 
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::floor<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = vabs_s32(x.st);
+        ret.st = skv::floor_fv4(x.st);
         return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::ceil<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = skv::ceil_fv4(x.st);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::round<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = skv::round_fv4(x.st);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::sqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = _sqrth128_f32(x.st);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::rsqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = _rsqrth128_f32(x.st);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::recip<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = _reciph128_f32(x.st);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::fract<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        skv::fv4 floor = skv::floor_fv4(x.st);
+        ret.st = _sub128_f32(x.st, floor);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::mod<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x, const V& y) noexcept
+    {
+        V ret;
+        skv::fv4 div = _div128_f32(x.st, y.st);
+        skv::fv4 floor = skv::floor_fv4(div);
+        ret.st = _sub128_f32(x.st, _mul128_f32(y.st, floor));
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::lerp<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x, const V& y, float t) noexcept
+    {
+        V ret;
+        skv::fv4 t_t = _dup128_f32(t);
+        ret.st = _madd128_f32(x.st, t_t, _sub128_f32(y.st, x.st));
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::mix<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x, const V& y, const V& t) noexcept
+    {
+        V ret;
+        ret.st = _madd128_f32(x.st, t.st, _sub128_f32(y.st, x.st));
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::step<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& edge, const V& x) noexcept
+    {
+        V ret;
+        skv::fv4 cmp = _cmplt128_f32(x.st, edge.st);
+        ret.st = _and128_f32(_dup128_f32(1.f), cmp);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::smoothstep<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& edge0, const V& edge1, const V& x) noexcept
+    {
+        V ret;
+        skv::fv4 tmp = _div128_f32(_sub128_f32(x.st, edge0.st), _sub128_f32(edge1.st, edge0.st));
+        tmp = _clamp128_f32(tmp, _dupzero128_f32(), _dup128_f32(1.f));
+        ret.st = _mul128_f32(_mul128_f32(tmp, tmp), _sub128_f32(_dup128_f32(3.f), _mul128_f32(_dup128_f32(2.f), tmp)));
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::fast_sqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = _sqrtl128_f32(x.st);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::fast_rsqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = _rsqrtl128_f32(x.st);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::fast_recip<N, float, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = _recipl128_f32(x.st);
+        return ret;
+    }
+};
+
+#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE)
+
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2)
+
+template<>
+struct ktm::detail::common_implement::reduce_add<4, int>
+{
+    using V = vec<4, int>;
+    static KTM_INLINE int call(const V& x) noexcept
+    {
+        return skv::radd_sv4(x.st);
     }
 };
 
@@ -317,7 +308,96 @@ struct ktm::detail::common_implement::abs<N, int, std::enable_if_t<N == 3 || N =
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = vabsq_s32(x.st);
+        ret.st = _abs128_s32(x.st);
+        return ret;
+    }
+};
+
+#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2)
+
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1)
+
+template<>
+struct ktm::detail::common_implement::reduce_min<4, int>
+{
+    using V = vec<4, int>;
+    static KTM_INLINE int call(const V& x) noexcept
+    {
+        return skv::rmin_sv4(x.st);
+    }
+};
+
+template<>
+struct ktm::detail::common_implement::reduce_max<4, int>
+{
+    using V = vec<4, int>;
+    static KTM_INLINE int call(const V& x) noexcept
+    {
+        return skv::rmax_sv4(x.st);
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::min<N, int, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, int>;
+    static KTM_INLINE V call(const V& x, const V& y) noexcept
+    {
+        V ret;
+        ret.st = _min128_s32(x.st, y.st);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::max<N, int, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, int>;
+    static KTM_INLINE V call(const V& x, const V& y) noexcept
+    {
+        V ret;
+        ret.st = _max128_s32(x.st, y.st);
+        return ret;
+    }
+};
+
+template<size_t N>
+struct ktm::detail::common_implement::clamp<N, int, std::enable_if_t<N == 3 || N == 4>>
+{
+    using V = vec<N, int>;
+    static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
+    {
+        V ret;
+        ret.st = _clamp128_s32(v.st, min.st, max.st);
+        return ret; 
+    }
+};
+
+#endif // KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
+
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON)
+
+// template<size_t L>
+// struct ktm::detail::common_implement::elem_move<L, 2, float>
+// {
+//     static_assert(L == 1);
+//     using V = vec<2, float>;
+//     static KTM_INLINE V call(const V& x) noexcept
+//     {
+//         V ret;
+//         ret.st = _shuffo64_f32(x.st, x.st, 0, L);
+//         return ret;
+//     }
+// };
+
+template<>
+struct ktm::detail::common_implement::abs<2, float>
+{
+    using V = vec<2, float>;
+    static KTM_INLINE V call(const V& x) noexcept
+    {
+        V ret;
+        ret.st = _abs64_f32(x.st);
         return ret;
     }
 };
@@ -329,43 +409,7 @@ struct ktm::detail::common_implement::min<2, float>
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
-        ret.st = arm::ext::min_f32(x.st, y.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::min<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x, const V& y) noexcept
-    {
-        V ret;
-        ret.st = arm::ext::minq_f32(x.st, y.st);
-        return ret;
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::min<2, int>
-{
-    using V = vec<2, int>;
-    static KTM_INLINE V call(const V& x, const V& y) noexcept
-    {
-        V ret;
-        ret.st = vmin_s32(x.st, y.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::min<N, int, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, int>;
-    static KTM_INLINE V call(const V& x, const V& y) noexcept
-    {
-        V ret;
-        ret.st = vminq_s32(x.st, y.st);
+        ret.st = _min64_f32(x.st, y.st);
         return ret;
     }
 };
@@ -377,43 +421,7 @@ struct ktm::detail::common_implement::max<2, float>
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
-        ret.st = arm::ext::max_f32(x.st, y.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::max<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x, const V& y) noexcept
-    {
-        V ret;
-        ret.st = arm::ext::maxq_f32(x.st, y.st);
-        return ret;
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::max<2, int>
-{
-    using V = vec<2, int>;
-    static KTM_INLINE V call(const V& x, const V& y) noexcept
-    {
-        V ret;
-        ret.st = vmax_s32(x.st, y.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::max<N, int, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, int>;
-    static KTM_INLINE V call(const V& x, const V& y) noexcept
-    {
-        V ret;
-        ret.st = vmaxq_s32(x.st, y.st);
+        ret.st = _max64_f32(x.st, y.st);
         return ret;
     }
 };
@@ -425,43 +433,7 @@ struct ktm::detail::common_implement::clamp<2, float>
     static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
         V ret;
-        ret.st = arm::ext::clamp_f32(v.st, min.st, max.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::clamp<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
-    {
-        V ret;
-        ret.st = arm::ext::clampq_f32(v.st, min.st, max.st);
-        return ret;
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::clamp<2, int>
-{
-    using V = vec<2, int>;
-    static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
-    {
-        V ret;
-        ret.st = arm::ext::clamp_s32(v.st, min.st, max.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::clamp<N, int, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, int>;
-    static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
-    {
-        V ret;
-        ret.st = arm::ext::clampq_s32(v.st, min.st, max.st);
+        ret.st = _clamp64_f32(v.st, min.st, max.st);
         return ret;
     }
 };
@@ -473,19 +445,7 @@ struct ktm::detail::common_implement::floor<2, float>
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = arm::ext::floor_f32(x.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::floor<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = arm::ext::floorq_f32(x.st);
+        ret.st = skv::floor_fv2(x.st);
         return ret;
     }
 };
@@ -497,19 +457,7 @@ struct ktm::detail::common_implement::ceil<2, float>
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = arm::ext::ceil_f32(x.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::ceil<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = arm::ext::ceilq_f32(x.st);
+        ret.st = skv::ceil_fv2(x.st);
         return ret;
     }
 };
@@ -521,19 +469,19 @@ struct ktm::detail::common_implement::round<2, float>
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = arm::ext::round_f32(x.st);
+        ret.st = skv::round_fv2(x.st);
         return ret;
     }
 };
 
-template<size_t N>
-struct ktm::detail::common_implement::round<N, float, std::enable_if_t<N == 3 || N == 4>>
+template<>
+struct ktm::detail::common_implement::sqrt<2, float>
 {
-    using V = vec<N, float>;
+    using V = vec<2, float>;
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = arm::ext::roundq_f32(x.st);
+        ret.st = _sqrth64_f32(x.st);
         return ret;
     }
 };
@@ -545,19 +493,7 @@ struct ktm::detail::common_implement::rsqrt<2, float>
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = arm::ext::rsqrt_f32(x.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::rsqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = arm::ext::rsqrtq_f32(x.st);
+        ret.st = _rsqrth64_f32(x.st);
         return ret;
     }
 };
@@ -569,19 +505,7 @@ struct ktm::detail::common_implement::recip<2, float>
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = arm::ext::recip_f32(x.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::recip<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = arm::ext::recipq_f32(x.st);
+        ret.st = _reciph64_f32(x.st);
         return ret;
     }
 };
@@ -593,21 +517,8 @@ struct ktm::detail::common_implement::fract<2, float>
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        float32x2_t floor = arm::ext::floor_f32(x.st);
-        ret.st = vsub_f32(x.st, floor);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::fract<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        float32x4_t floor = arm::ext::floorq_f32(x.st);
-        ret.st = vsubq_f32(x.st, floor);
+        skv::fv2 floor = skv::floor_fv2(x.st);
+        ret.st = _sub64_f32(x.st, floor);
         return ret;
     }
 };
@@ -619,23 +530,9 @@ struct ktm::detail::common_implement::mod<2, float>
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
-        float32x2_t div = arm::ext::div_f32(x.st, y.st);
-        float32x2_t floor = arm::ext::floor_f32(div);
-        ret.st = vsub_f32(x.st, vmul_f32(y.st, floor));
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::mod<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x, const V& y) noexcept
-    {
-        V ret;
-        float32x4_t div = arm::ext::divq_f32(x.st, y.st);
-        float32x4_t floor = arm::ext::floorq_f32(div);
-        ret.st = vsubq_f32(x.st, vmulq_f32(y.st, floor));
+        skv::fv2 div = _div64_f32(x.st, y.st);
+        skv::fv2 floor = skv::floor_fv2(div);
+        ret.st = _sub64_f32(x.st, _mul64_f32(y.st, floor));
         return ret;
     }
 };
@@ -647,21 +544,8 @@ struct ktm::detail::common_implement::lerp<2, float>
     static KTM_INLINE V call(const V& x, const V& y, float t) noexcept
     {
         V ret;
-        float32x2_t t_t = vdup_n_f32(t);
-        ret.st = vadd_f32(x.st, vmul_f32(t_t, vsub_f32(y.st, x.st)));
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::lerp<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x, const V& y, float t) noexcept
-    {
-        V ret;
-        float32x4_t t_t = vdupq_n_f32(t);
-        ret.st = vaddq_f32(x.st, vmulq_f32(t_t, vsubq_f32(y.st, x.st)));
+        skv::fv2 t_t = _dup64_f32(t);
+        ret.st = _madd64_f32(x.st, t_t, _sub64_f32(y.st, x.st));
         return ret;
     }
 };
@@ -673,19 +557,7 @@ struct ktm::detail::common_implement::mix<2, float>
     static KTM_INLINE V call(const V& x, const V& y, const V& t) noexcept
     {
         V ret;
-        ret.st = vadd_f32(x.st, vmul_f32(t.st, vsub_f32(y.st, x.st)));
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::mix<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x, const V& y, const V& t) noexcept
-    {
-        V ret;
-        ret.st = vaddq_f32(x.st, vmulq_f32(t.st, vsubq_f32(y.st, x.st)));
+        ret.st = _madd64_f32(x.st, t.st, _sub64_f32(y.st, x.st));
         return ret;
     }
 };
@@ -697,23 +569,8 @@ struct ktm::detail::common_implement::step<2, float>
     static KTM_INLINE V call(const V& edge, const V& x) noexcept
     {
         V ret;
-        uint32x2_t cmp = vclt_f32(x.st, edge.st);
-        uint32x2_t tmp = vand_u32(vreinterpret_u32_f32(vdup_n_f32(1.f)), cmp);
-        ret.st = vreinterpret_f32_u32(tmp);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::step<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& edge, const V& x) noexcept
-    {
-        V ret;
-        uint32x4_t cmp = vcltq_f32(x.st, edge.st);
-        uint32x4_t tmp = vandq_u32(vreinterpretq_u32_f32(vdupq_n_f32(1.f)), cmp);
-        ret.st = vreinterpretq_f32_u32(tmp);
+        skv::fv2 cmp = _cmplt64_f32(x.st, edge.st);
+        ret.st = _and64_f32(_dup64_f32(1.f), cmp);
         return ret;
     }
 };
@@ -725,24 +582,9 @@ struct ktm::detail::common_implement::smoothstep<2, float>
     static KTM_INLINE V call(const V& edge0, const V& edge1, const V& x) noexcept
     {
         V ret;
-        float32x2_t tmp = arm::ext::div_f32(vsub_f32(x.st, edge0.st), vsub_f32(edge1.st, edge0.st));
-        tmp = arm::ext::clamp_f32(tmp, vdup_n_f32(0.f), vdup_n_f32(1.f));
-        ret.st = vmul_f32(vmul_f32(tmp, tmp), vsub_f32(vdup_n_f32(3.f), vmul_f32(vdup_n_f32(2.f), tmp)));
-        return ret;
-    }
-};
-
-
-template<size_t N>
-struct ktm::detail::common_implement::smoothstep<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& edge0, const V& edge1, const V& x) noexcept
-    {
-        V ret;
-        float32x4_t tmp = arm::ext::divq_f32(vsubq_f32(x.st, edge0.st), vsubq_f32(edge1.st, edge0.st));
-        tmp = arm::ext::clampq_f32(tmp, vdupq_n_f32(0.f), vdupq_n_f32(1.f));
-        ret.st = vmulq_f32(vmulq_f32(tmp, tmp), vsubq_f32(vdupq_n_f32(3.f), vmulq_f32(vdupq_n_f32(2.f), tmp)));
+        skv::fv2 tmp = _div64_f32(_sub64_f32(x.st, edge0.st), _sub64_f32(edge1.st, edge0.st));
+        tmp = _clamp64_f32(tmp, _dupzero64_f32(), _dup64_f32(1.f));
+        ret.st = _mul64_f32(_mul64_f32(tmp, tmp), _sub64_f32(_dup64_f32(3.f), _mul64_f32(_dup64_f32(2.f), tmp)));
         return ret;
     }
 };
@@ -754,19 +596,7 @@ struct ktm::detail::common_implement::fast_sqrt<2, float>
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = arm::ext::fast_recip_f32(arm::ext::fast_rsqrt_f32(x.st));
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::fast_sqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        arm::ext::fast_recipq_f32(arm::ext::fast_rsqrtq_f32(x.st));
+        ret.st = _sqrtl64_f32(x.st);
         return ret;
     }
 };
@@ -778,19 +608,7 @@ struct ktm::detail::common_implement::fast_rsqrt<2, float>
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = arm::ext::fast_rsqrt_f32(x.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::fast_rsqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = arm::ext::fast_rsqrtq_f32(x.st);
+        ret.st = _rsqrtl64_f32(x.st);
         return ret;
     }
 };
@@ -802,525 +620,58 @@ struct ktm::detail::common_implement::fast_recip<2, float>
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = arm::ext::fast_recip_f32(x.st);
+        ret.st = _recipl64_f32(x.st);
         return ret;
     }
 };
 
-template<size_t N>
-struct ktm::detail::common_implement::fast_recip<N, float, std::enable_if_t<N == 3 || N == 4>>
+template<>
+struct ktm::detail::common_implement::abs<2, int>
 {
-    using V = vec<N, float>;
+    using V = vec<2, int>;
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        ret.st = arm::ext::fast_recipq_f32(x.st);
-        return ret;
-    }
-};
-
-#if KTM_SIMD_ARM & KTM_SIMD_A64_FLAG
-
-template<>
-struct ktm::detail::common_implement::sqrt<2, float>
-{
-    using V = vec<2, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = vsqrt_f32(x.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::sqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = vsqrtq_f32(x.st);
-        return ret;
-    }
-};
-
-#endif
-
-#elif defined(KTM_SIMD_X86)
-
-template<size_t L>
-struct ktm::detail::common_implement::elem_move<L, 3, float>
-{
-    static_assert(L > 0 && L < 3);
-    using V = vec<3, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        constexpr size_t i1 = 1 + L < 3 ? 1 + L : L - 2;
-        constexpr size_t i2 = 2 + L < 3 ? 2 + L : L - 1; 
-        ret.st = _mm_shuffle_ps(x.st, x.st, _MM_SHUFFLE(3, i2, i1, L));
-        return ret;
-    }
-};
-
-template<size_t L>
-struct ktm::detail::common_implement::elem_move<L, 4, float>
-{
-    static_assert(L > 0 && L < 4);
-    using V = vec<4, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        constexpr size_t i1 = 1 + L < 4 ? 1 + L : L - 3;
-        constexpr size_t i2 = 2 + L < 4 ? 2 + L : L - 2; 
-        constexpr size_t i3 = 3 + L < 4 ? 3 + L : L - 1; 
-        ret.st = _mm_shuffle_ps(x.st, x.st, _MM_SHUFFLE(i3, i2, i1, L));
+        ret.st = _abs64_s32(x.st);
         return ret;
     }
 };
 
 template<>
-struct ktm::detail::common_implement::reduce_add<3, float>
+struct ktm::detail::common_implement::min<2, int>
 {
-    using V = vec<3, float>;
-    static KTM_INLINE float call(const V& x) noexcept
-    {
-        return x86::rdc::fv3_radd(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_add<4, float>
-{
-    using V = vec<4, float>;
-    static KTM_INLINE float call(const V& x) noexcept
-    {
-        return x86::rdc::fv4_radd(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_min<3, float>
-{
-    using V = vec<3, float>;
-    static KTM_INLINE float call(const V& x) noexcept
-    {
-        return x86::rdc::fv3_rmin(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_min<4, float>
-{
-    using V = vec<4, float>;
-    static KTM_INLINE float call(const V& x) noexcept
-    {
-        return x86::rdc::fv4_rmin(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_max<3, float>
-{
-    using V = vec<3, float>;
-    static KTM_INLINE float call(const V& x) noexcept
-    {
-        return x86::rdc::fv3_rmax(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_max<4, float>
-{
-    using V = vec<4, float>;
-    static KTM_INLINE float call(const V& x) noexcept
-    {
-        return x86::rdc::fv4_rmax(x.st);  
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::abs<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = x86::ext::abs_ps(x.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::min<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
+    using V = vec<2, int>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
-        ret.st = _mm_min_ps(x.st, y.st);
+        ret.st = _min64_s32(x.st, y.st);
         return ret;
     }
 };
 
-template<size_t N>
-struct ktm::detail::common_implement::max<N, float, std::enable_if_t<N == 3 || N == 4>>
+template<>
+struct ktm::detail::common_implement::max<2, int>
 {
-    using V = vec<N, float>;
+    using V = vec<2, int>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
-        ret.st = _mm_max_ps(x.st, y.st);
+        ret.st = _max64_s32(x.st, y.st);
         return ret;
     }
 };
 
-template<size_t N>
-struct ktm::detail::common_implement::clamp<N, float, std::enable_if_t<N == 3 || N == 4>>
+template<>
+struct ktm::detail::common_implement::clamp<2, int>
 {
-    using V = vec<N, float>;
+    using V = vec<2, int>;
     static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
         V ret;
-        ret.st = x86::ext::clamp_ps(v.st, min.st, max.st);
-        return ret; 
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::floor<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = x86::ext::floor_ps(x.st);
+        ret.st = _clamp64_s32(v.st, min.st, max.st);
         return ret;
     }
 };
-
-template<size_t N>
-struct ktm::detail::common_implement::ceil<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = x86::ext::ceil_ps(x.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::round<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = x86::ext::round_ps(x.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::sqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = _mm_sqrt_ps(x.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::rsqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = x86::ext::rsqrt_ps(x.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::recip<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = x86::ext::recip_ps(x.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::fract<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        __m128 floor = x86::ext::floor_ps(x.st);
-        ret.st = _mm_sub_ps(x.st, floor);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::mod<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x, const V& y) noexcept
-    {
-        V ret;
-        __m128 div = _mm_div_ps(x.st, y.st);
-        __m128 floor = x86::ext::floor_ps(div);
-        ret.st = _mm_sub_ps(x.st, _mm_mul_ps(y.st, floor));
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::lerp<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x, const V& y, float t) noexcept
-    {
-        V ret;
-        __m128 t_t = _mm_set1_ps(t);
-        ret.st = _mm_add_ps(x.st, _mm_mul_ps(t_t, _mm_sub_ps(y.st, x.st)));
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::mix<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x, const V& y, const V& t) noexcept
-    {
-        V ret;
-        ret.st = _mm_add_ps(x.st, _mm_mul_ps(t.st, _mm_sub_ps(y.st, x.st)));
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::step<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& edge, const V& x) noexcept
-    {
-        V ret;
-        __m128 cmp = _mm_cmplt_ps(x.st, edge.st);
-        ret.st = _mm_and_ps(_mm_set1_ps(1.f), cmp);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::smoothstep<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& edge0, const V& edge1, const V& x) noexcept
-    {
-        V ret;
-        __m128 tmp = _mm_div_ps(_mm_sub_ps(x.st, edge0.st), _mm_sub_ps(edge1.st, edge0.st));
-        tmp = x86::ext::clamp_ps(tmp, _mm_setzero_ps(), _mm_set1_ps(1.f));
-        ret.st = _mm_mul_ps(_mm_mul_ps(tmp, tmp), _mm_sub_ps(_mm_set1_ps(3.f), _mm_mul_ps(_mm_set1_ps(2.f), tmp)));
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::fast_sqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = x86::ext::fast_recip_ps(x86::ext::fast_rsqrt_ps(x.st));
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::fast_rsqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = x86::ext::fast_rsqrt_ps(x.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::fast_recip<N, float, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, float>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = x86::ext::fast_recip_ps(x.st);
-        return ret;
-    }
-};
-
-#if KTM_SIMD_X86 & KTM_SIMD_SSE2_FLAG
-
-template<size_t L>
-struct ktm::detail::common_implement::elem_move<L, 3, int>
-{
-    static_assert(L > 0 && L < 3);
-    using V = vec<3, int>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        constexpr size_t i1 = 1 + L < 3 ? 1 + L : L - 2;
-        constexpr size_t i2 = 2 + L < 3 ? 2 + L : L - 1; 
-        ret.st = _mm_shuffle_epi32(x.st, _MM_SHUFFLE(3, i2, i1, L));
-        return ret;
-    }
-};
-
-template<size_t L>
-struct ktm::detail::common_implement::elem_move<L, 4, int>
-{
-    static_assert(L > 0 && L < 4);
-    using V = vec<4, int>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        constexpr size_t i1 = 1 + L < 4 ? 1 + L : L - 3;
-        constexpr size_t i2 = 2 + L < 4 ? 2 + L : L - 2; 
-        constexpr size_t i3 = 3 + L < 4 ? 3 + L : L - 1;  
-        ret.st = _mm_shuffle_epi32(x.st, _MM_SHUFFLE(i3, i2, i1, L));
-        return ret;
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_add<3, int>
-{
-    using V = vec<3, int>;
-    static KTM_INLINE int call(const V& x) noexcept
-    {
-        return x86::rdc::sv3_radd(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_add<4, int>
-{
-    using V = vec<4, int>;
-    static KTM_INLINE int call(const V& x) noexcept
-    {
-        return x86::rdc::sv4_radd(x.st);
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::abs<N, int, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, int>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        ret.st = x86::ext::abs_epi32(x.st);
-        return ret;
-    }
-};
-
-#endif // KTM_SIMD_X86 & KTM_SIMD_SSE2_FLAG
-
-#if KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
-
-template<>
-struct ktm::detail::common_implement::reduce_min<3, int>
-{
-    using V = vec<3, int>;
-    static KTM_INLINE int call(const V& x) noexcept
-    {
-        return x86::rdc::sv3_rmin(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_min<4, int>
-{
-    using V = vec<4, int>;
-    static KTM_INLINE int call(const V& x) noexcept
-    {
-        return x86::rdc::sv4_rmin(x.st);
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_max<3, int>
-{
-    using V = vec<3, int>;
-    static KTM_INLINE int call(const V& x) noexcept
-    {
-        return x86::rdc::sv3_rmax(x.st); 
-    }
-};
-
-template<>
-struct ktm::detail::common_implement::reduce_max<4, int>
-{
-    using V = vec<4, int>;
-    static KTM_INLINE int call(const V& x) noexcept
-    {
-        return x86::rdc::sv4_rmax(x.st);
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::min<N, int, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, int>;
-    static KTM_INLINE V call(const V& x, const V& y) noexcept
-    {
-        V ret;
-        ret.st = _mm_min_epi32(x.st, y.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::max<N, int, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, int>;
-    static KTM_INLINE V call(const V& x, const V& y) noexcept
-    {
-        V ret;
-        ret.st = _mm_max_epi32(x.st, y.st);
-        return ret;
-    }
-};
-
-template<size_t N>
-struct ktm::detail::common_implement::clamp<N, int, std::enable_if_t<N == 3 || N == 4>>
-{
-    using V = vec<N, int>;
-    static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
-    {
-        V ret;
-        ret.st = x86::ext::clamp_epi32(v.st, min.st, max.st);
-        return ret; 
-    }
-};
-
-#endif // KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
 
 #endif
 
