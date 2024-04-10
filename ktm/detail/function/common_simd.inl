@@ -6,22 +6,6 @@
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE)
 
-// template<size_t L, size_t N>
-// struct ktm::detail::common_implement::elem_move<L, N, float, std::enable_if_t<N == 3 || N == 4>>
-// {
-//     static_assert(L > 0 && L < N);
-//     using V = vec<3, float>;
-//     static KTM_INLINE V call(const V& x) noexcept
-//     {
-//         V ret;
-//         constexpr size_t i1 = 1 + L < N ? 1 + L : L - (N - 1);
-//         constexpr size_t i2 = 2 + L < N ? 2 + L : L - (N - 2);
-//         constexpr size_t i3 = 3 + L < N ? 3 + L : L - (N - 3); 
-//         ret.st = _shuffo128_f32(x.st, i3, i2, i1, L);
-//         return ret;
-//     }
-// };
-
 template<>
 struct ktm::detail::common_implement::reduce_add<4, float>
 {

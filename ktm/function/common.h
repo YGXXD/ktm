@@ -9,12 +9,6 @@
 namespace ktm
 {
 
-template<size_t StepN, class V>
-KTM_INLINE std::enable_if_t<is_vector_v<V> && (StepN > 0) && (StepN < vec_traits_len<V>), V> elem_move(const V& x) noexcept
-{
-    return detail::common_implement::elem_move<StepN, vec_traits_len<V>, vec_traits_base_t<V>>::call(x);
-}
-
 template<class V>
 KTM_INLINE std::enable_if_t<is_vector_v<V>, vec_traits_base_t<V>> reduce_add(const V& x) noexcept
 {

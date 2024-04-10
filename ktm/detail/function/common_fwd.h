@@ -11,9 +11,6 @@ namespace detail
 namespace common_implement
 {
 
-template<size_t StepN, size_t N, typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && (StepN > 0 && StepN < N)>>
-struct elem_move;
-
 template<size_t N, typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
 struct reduce_add;
 

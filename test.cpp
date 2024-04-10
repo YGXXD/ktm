@@ -6,7 +6,6 @@ static void VecTest()
     ktm::fvec3 t1 { -6, 7, 9 };
     ktm::svec3 t2 { -6, 7, 9 };
 
-    std::cout << "elem_move: " << ktm::elem_move<1>(t1) << ", " << ktm::elem_move<2>(t2) << std::endl;
     std::cout << "reduce_add: " << ktm::reduce_add(t1) << ", " << ktm::reduce_add(t2) << std::endl; 
     std::cout << "reduce_max: " << ktm::reduce_max(t1) << ", " << ktm::reduce_max(t2) << std::endl;
     std::cout << "reduce_min: " << ktm::reduce_min(t1) << ", " << ktm::reduce_min(t2) << std::endl;

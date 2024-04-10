@@ -8,24 +8,6 @@
 #include "../../type/vec_fwd.h"
 #include "../../function/arithmetic.h"
 
-template<size_t StepN, size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::elem_move
-{
-	using V = vec<N, T>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        return call(x, std::make_index_sequence<N>());
-    }
-private:
-    template<size_t ...Ns>
-    static KTM_INLINE V call(const V& x, std::index_sequence<Ns...>) noexcept
-    {
-        V ret;
-        ((ret[Ns] = x[(Ns + StepN) < N ? Ns + StepN : Ns + StepN - N]), ...);
-        return ret;
-    }
-};
-
 template<size_t N, typename T, typename Void>
 struct ktm::detail::common_implement::reduce_add
 {
