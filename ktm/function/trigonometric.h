@@ -1,3 +1,10 @@
+//  MIT License
+//
+//  Copyright (c) 2023 有个小小杜
+//
+//  Created by 有个小小杜
+//
+
 #ifndef _KTM_TRIGONOMETRIC_H_
 #define _KTM_TRIGONOMETRIC_H_
 

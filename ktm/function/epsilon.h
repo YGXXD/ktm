@@ -1,3 +1,10 @@
+//  MIT License
+//
+//  Copyright (c) 2023 有个小小杜
+//
+//  Created by 有个小小杜
+//
+
 #ifndef _KTM_EPSILON_H_
 #define _KTM_EPSILON_H_
 

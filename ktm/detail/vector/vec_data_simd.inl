@@ -1,3 +1,10 @@
+//  MIT License
+//
+//  Copyright (c) 2023 有个小小杜
+//
+//  Created by 有个小小杜
+//
+
 #ifndef _KTM_VEC_DATA_SIMD_INL_
 #define _KTM_VEC_DATA_SIMD_INL_
 
