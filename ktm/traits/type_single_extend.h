@@ -13,7 +13,7 @@
 namespace ktm 
 {
 
-// 存储类型的容器
+// type container
 template<typename ...Ts>
 struct type_list 
 {
@@ -23,7 +23,7 @@ struct type_list
     using index = std::select_idx_t<N, Ts...>;
 };
 
-// 模版特化后的实例类型
+// type container instance
 template<typename TList, template<typename ...> class Tp>
 struct type_instance;
 
@@ -36,7 +36,7 @@ struct type_instance<type_list<Ts...>, Tp>
 template<typename TList, template<typename ...> class Tp>
 using type_instance_t = typename type_instance<TList, Tp>::Type;
 
-// 存储模版未特化类型的容器
+// template container
 template<template<typename ...> class ...Tps>
 struct template_list 
 {
@@ -44,7 +44,7 @@ struct template_list
     static inline constexpr bool is_exist_same = std::is_template_exist_same_vs<Tps...>;
 };
 
-// 单继承化模版
+// single_extends's template
 template<class Child>
 struct empty_child { };
 
@@ -68,9 +68,11 @@ struct single_extends<template_list<Father, Fathers...>, Child>
 template<typename TpList, class Child>
 using single_extends_t = typename single_extends<TpList, Child>::fater_type;
 
-// D : C : B : A : Nil
+// example:
 // struct D : SingleExtends_t<TemplateList<C, B, A>, D>::type { }
-// 父类里面特化的模版为最后一级子类, A<D>, B<D>, C<D>
+// parent struct's child is D, A<D>, B<D>, C<D>
+// struct D's inheritance is { D : C : B : A : Nil }
+
 }
 
 #endif

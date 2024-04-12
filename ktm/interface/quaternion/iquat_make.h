@@ -114,7 +114,7 @@ struct iquat_make<Father, quat<T>> : Father
 private:
     static KTM_INLINE quat<T> from_to_less_0p5pi(const vec<3, T>& from, const vec<3, T>& to)
     {
-        // 计算向量旋转夹角小于二分之pi的四元数
+        // calculate quaternions with rotation angles less than half pi
         vec<3, T> half = normalize(from + to);
         return real_imag(dot(from, half), cross(from, half));
     }

@@ -23,7 +23,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 {
     constexpr size_t N = mat_traits_col_n<M>;
 
-    // 求矩阵lu分解
+    // calc matrix lu decomposition
     M l = M::from_eye(), u { };
 
     // u[i][0] = m[i][0]
@@ -70,7 +70,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
     constexpr size_t N = mat_traits_col_n<M>;
     using T = mat_traits_base_t<M>;
 
-    // householder变换求矩阵qr分解
+    // householder transformation for matrix qr decomposition
     M q = M::from_eye(), r { m };
 
     for(int i = 0; i < N; ++i)
@@ -118,7 +118,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 {
     constexpr size_t N = mat_traits_col_n<M>;
 
-    // qr迭代法求矩阵特征向量和特征值
+    // qr iteration for calc matrix eigenvectors and eigenvalues
     M a { m }, eigen_vec = M::from_eye();
     mat_traits_col_t<M> eigen_value, last_eigen_value;
 
@@ -150,13 +150,13 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
     constexpr size_t N = mat_traits_col_n<M>;
     using T = mat_traits_base_t<M>;
 
-    // jacobi迭代求矩阵特征向量和特征值(矩阵必须为对称矩阵)
+    // jacobi iteration for matrix eigenvectors and eigenvalues(the matrix must be a symmetric matrix)
     M a { m }, eigen_vec = M::from_eye();
     mat_traits_col_t<M> eigen_value;
 
     for(int it = 0; it < 100; ++it)
     {
-        // 找到非对角线的最大元素
+        // find the maximum element on a non diagonal line
         int col = 0, row = 1;
         T nd_max = abs(a[0][1]);
         for(int i = 0; i < N; ++i)
@@ -180,7 +180,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
         T arr = a[row][row];
         T acr = a[col][row];
         
-        // 计算旋转角度
+        // calc rotation angles
         T sin_theta, cos_theta, sin_2theta, cos_2theta;
 
         if(equal(arr, acc))
@@ -209,7 +209,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
             cos_2theta = cos(static_cast<T>(2) * theta);
         }
 
-        // 计算迭代后的的矩阵元素
+        // calc matrix element
         a[col][col] = arr * sin_theta * sin_theta + acc * cos_theta * cos_theta + acr * sin_2theta; 
         a[row][row] = arr * cos_theta * cos_theta + acc * sin_theta * sin_theta + acr * sin_2theta;
         a[col][row] = static_cast<T>(0.5) * (acc - arr) * sin_2theta + acr * cos_2theta;
@@ -229,7 +229,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
             }
         }
 
-        // 计算特征向量
+        // calc eigenvectors
         for(int i = 0; i < N; ++i)
         {
             T eci = eigen_vec[col][i];
@@ -253,7 +253,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 {
     constexpr size_t N = mat_traits_col_n<M>;
 
-    // 求矩阵svd分解(通过jacobi迭代法找矩阵特征向量和特征值)
+    // calc matrix SVD decomposition(using eigen_jacobi to find matrix eigenvectors and eigenvalues)
     std::tuple<mat_traits_col_t<M>, M> ata_eigen = eigen_jacobi(transpose(m) * m);
     mat_traits_col_t<M>& ata_eigen_value_ref = std::get<0>(ata_eigen);
 

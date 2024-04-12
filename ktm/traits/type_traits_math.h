@@ -83,7 +83,7 @@ using quat_traits_base_t = typename quat_traits<T>::base_type;
 template<typename T>
 using quat_traits_storage_t = typename quat_traits<T>::storage_type;
 
-// 数学库类型特性
+// ktm type traits
 template<typename T>
 struct is_vector : std::false_type { };
 
