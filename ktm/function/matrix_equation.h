@@ -8,6 +8,7 @@
 #ifndef _KTM_MATRIX_EQUATION_H_
 #define _KTM_MATRIX_EQUATION_H_
 
+#include <tuple>
 #include "../setup.h"
 #include "../type/basic.h"
 #include "../traits/type_traits_math.h"

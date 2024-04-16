@@ -18,9 +18,9 @@ int main(int argc, char* argv[])
     std::cout << "abs: " << ktm::abs(t1) << ", " << ktm::abs(t2) << std::endl;
     std::cout << "clamp: " << ktm::clamp(t1, {-5.f, -5.f, -5.f}, {8.f, 8.f, 8.f}) << ", " << ktm::clamp(t2, {-5, -5, -5}, {8, 8, 8}) << std::endl;
 
-    ktm::fvec3 t3{8.f, 9.f, -10.f};
+    ktm::fvec3 t3{ 8.f, 9.f, -10.f };
     ktm::fvec3 t4 = (ktm::fvec3)t2;
-    ktm::fvec3 t5 = {2.8f, 3.5f, 8.9f};
+    ktm::fvec3 t5 = { 2.8f, 3.5f, 8.9f };
     t3 *= t1 + t5;
 
     std::cout << "equal: " << (t1 == t3) << ", " << (t1 == t4) << ", " << (t2 == (ktm::svec3)t1) << std::endl;
