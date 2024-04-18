@@ -1,43 +1,37 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(ktm)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-	add_compile_options(/std:c++17)
+project(ktm)
+
+if(KTM_BUILD_WASM AND NOT "${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
+	add_compile_options(-msimd128)
+elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	add_compile_options(/source-charset:utf-8)
 	add_compile_options(/execution-charset:utf-8)
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-	add_compile_options(-std=gnu++17)
-	add_compile_options(-fvisibility=hidden)
-	add_compile_options(-march=native)
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
-	add_compile_options(-std=gnu++17)
-	add_compile_options(-Wc++17-extensions)
-	add_compile_options(-fvisibility=hidden)
+elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR 
+		"${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR 
+		"${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
 	add_compile_options(-march=native)
 endif()
 
-add_executable(geometry_test ${CMAKE_CURRENT_SOURCE_DIR}/test/geometry_test.cpp) 
-add_executable(matrix_test ${CMAKE_CURRENT_SOURCE_DIR}/test/matrix_test.cpp) 
-add_executable(quaternion_test ${CMAKE_CURRENT_SOURCE_DIR}/test/quaternion_test.cpp) 
-add_executable(vector_test ${CMAKE_CURRENT_SOURCE_DIR}/test/vector_test.cpp) 
+if(KTM_BUILD_TESTING)
+	add_subdirectory(test)
+endif()
 
-enable_testing()
-
-add_test(geometry_test geometry_test)
-add_test(matrix_test matrix_test)
-add_test(quaternion_test quaternion_test)
-add_test(vector_test vector_test)
+add_executable(ktm ${CMAKE_CURRENT_SOURCE_DIR}/src/ktm.cpp) 
 
 install(DIRECTORY ktm DESTINATION include)
 
 if(NOT TARGET uninstall)
-  configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
-    IMMEDIATE @ONLY)
+	configure_file(
+		"${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
+		"${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+		IMMEDIATE @ONLY)
 
-  add_custom_target(uninstall
-    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+	add_custom_target(uninstall
+		COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
 endif()

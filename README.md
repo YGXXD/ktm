@@ -14,13 +14,26 @@
 **特点** 
 
 - head-only，引入头文件即可使用
-- 支持Simd指令集加速，SSE，SSE2，SSE3，SSE4.1，SSE4.2，Neon
+- 支持Simd指令集加速，SSE，SSE2，SSE3，SSE4.1，SSE4.2，Neon，Wasm
 - 代码结构清晰，类利用模板实现组件化
+
+**构建和安装** 
+
+```shell
+# unix
+mkdir build && cd build
+cmake ..
+sudo make install
+
+# windows
+cmake -S . -B ./build
+cmake --install ./build --config Release
+```
 
 **示例** 
 
 ```c++
-#include "ktm/ktm.h"
+#include <ktm/ktm.h>
 
 using namespace ktm;
 using namespace std;

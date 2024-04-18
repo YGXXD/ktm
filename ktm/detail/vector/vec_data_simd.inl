@@ -11,7 +11,7 @@
 #include "vec_data_fwd.h"
 #include "../../simd/skv.h"
 
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE)
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
 template<>
 struct ktm::detail::vec_data_implement::vec_storage<2, float>
@@ -95,9 +95,9 @@ struct ktm::detail::vec_data_implement::vec_storage<2, int>
     typedef skv::sv2 type;
 };
 
-#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE)
+#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2)
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2 | KTM_SIMD_WASM)
 
 template<>
 struct ktm::detail::vec_data_implement::vec_storage<3, int>
@@ -111,7 +111,7 @@ struct ktm::detail::vec_data_implement::vec_storage<4, int>
     typedef skv::sv4 type;
 };
 
-#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2)
+#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2 | KTM_SIMD_WASM)
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON)
 

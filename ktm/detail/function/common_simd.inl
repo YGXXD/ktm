@@ -11,7 +11,7 @@
 #include "common_fwd.h"
 #include "../../simd/skv.h"
 
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE)
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
 template<>
 struct ktm::detail::common_implement::reduce_add<4, float>
@@ -278,9 +278,9 @@ struct ktm::detail::common_implement::fast_recip<N, float, std::enable_if_t<N ==
     }
 };
 
-#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE)
+#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2)
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2 | KTM_SIMD_WASM)
 
 template<>
 struct ktm::detail::common_implement::reduce_add<4, int>
@@ -304,9 +304,9 @@ struct ktm::detail::common_implement::abs<N, int, std::enable_if_t<N == 3 || N =
     }
 };
 
-#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2)
+#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2 | KTM_SIMD_WASM)
 
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1)
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1 | KTM_SIMD_WASM)
 
 template<>
 struct ktm::detail::common_implement::reduce_min<4, int>
@@ -364,22 +364,9 @@ struct ktm::detail::common_implement::clamp<N, int, std::enable_if_t<N == 3 || N
     }
 };
 
-#endif // KTM_SIMD_X86 & KTM_SIMD_SSE4_1_FLAG
+#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1 | KTM_SIMD_WASM)
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON)
-
-// template<size_t L>
-// struct ktm::detail::common_implement::elem_move<L, 2, float>
-// {
-//     static_assert(L == 1);
-//     using V = vec<2, float>;
-//     static KTM_INLINE V call(const V& x) noexcept
-//     {
-//         V ret;
-//         ret.st = _shuffo64_f32(x.st, x.st, 0, L);
-//         return ret;
-//     }
-// };
 
 template<>
 struct ktm::detail::common_implement::abs<2, float>
@@ -664,6 +651,6 @@ struct ktm::detail::common_implement::clamp<2, int>
     }
 };
 
-#endif
+#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON)
 
 #endif

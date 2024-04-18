@@ -11,7 +11,7 @@
 #include "mat_calc_fwd.h"
 #include "../../simd/skv.h"
 
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE)
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
 template<size_t Row, size_t Col>
 struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, float, std::enable_if_t<Col == 3 || Col == 4>>
@@ -100,9 +100,9 @@ private:
     }
 };
 
-#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE)
+#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2)
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2 | KTM_SIMD_WASM)
 
 template<size_t Row, size_t Col>
 struct ktm::detail::mat_opt_implement::add<Row, Col, int, std::enable_if_t<Col == 3 || Col == 4>>
@@ -142,9 +142,9 @@ private:
     }
 };
 
-#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2)
+#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2 | KTM_SIMD_WASM)
 
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1)
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1 | KTM_SIMD_WASM)
 
 template<size_t Row, size_t Col>
 struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, int, std::enable_if_t<Col == 3 || Col == 4>>
@@ -195,7 +195,7 @@ private:
     }
 };
 
-#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1)
+#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1 | KTM_SIMD_WASM)
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON)
 

@@ -11,7 +11,7 @@
 #include "quat_calc_fwd.h"
 #include "../../simd/skv.h"
 
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE)
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
 namespace ktm
 {
@@ -81,6 +81,6 @@ struct ktm::detail::quat_calc_implement::act<float>
     }
 };
 
-#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE)
+#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
 #endif

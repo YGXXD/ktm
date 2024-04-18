@@ -11,7 +11,7 @@
 #include "matrix_fwd.h"
 #include "../../simd/skv.h"
 
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE)
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
 template<>
 struct ktm::detail::matrix_implement::transpose<2, 2, float>
@@ -345,9 +345,9 @@ struct ktm::detail::matrix_implement::inverse<4, float>
     }
 };
 
-#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE)
+#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1)
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1 | KTM_SIMD_WASM)
 
 template<>
 struct ktm::detail::matrix_implement::determinant<3, int>
@@ -405,6 +405,6 @@ struct ktm::detail::matrix_implement::determinant<4, int>
     }
 };
 
-#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1)
+#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1 | KTM_SIMD_WASM)
 
 #endif

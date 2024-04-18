@@ -11,6 +11,7 @@
 #include "arch_def.h"
 #include "arm_intrin.h"
 #include "intel_intrin.h"
+#include "wasm_intrin.h"
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON)
 
@@ -107,7 +108,7 @@
 
 #endif
 
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE)
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
 #define _dup128_f32(a) ::intrin::dup128_f32(a)
 #define _dupzero128_f32() ::intrin::dupzero128_f32()
@@ -143,7 +144,7 @@
 
 #endif
 
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2)
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2 | KTM_SIMD_WASM)
 
 #define _dup128_s32(a) ::intrin::dup128_s32(a)
 #define _dupzero128_s32() _cast128_s32_f32(_dupzero128_f32())
@@ -177,7 +178,7 @@
 
 #endif
 
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1) 
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1 | KTM_SIMD_WASM) 
 
 #define _mul128_s32(a, b) ::intrin::mul128_s32(a, b)
 #define _madd128_s32(a, b, c) ::intrin::madd128_s32(a, b, c)
@@ -187,7 +188,7 @@
 
 #endif
 
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON64 | KTM_SIMD_SSE4_1)
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON64 | KTM_SIMD_SSE4_1 | KTM_SIMD_WASM)
 
 #define _round128_f32(a) ::intrin::round128_f32(a) 
 #define _floor128_f32(a) ::intrin::floor128_f32(a)

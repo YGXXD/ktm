@@ -26,6 +26,11 @@ namespace skv
     #if KTM_SIMD_ENABLE(KTM_SIMD_SSE2)
        typedef __m128i sv4; 
     #endif
+#elif KTM_SIMD_ENABLE(KTM_SIMD_WASM)
+    typedef uint64_t fv2;
+    typedef uint64_t sv2; 
+    typedef v128_t fv4;
+    typedef v128_t sv4; 
 #endif
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON)
@@ -117,11 +122,11 @@ KTM_FUNC fv2 dot1_fv2(fv2 x, fv2 y) noexcept
 
 #endif
 
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE)
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
 KTM_FUNC fv4 round_fv4(fv4 a) noexcept
 {
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON64 | KTM_SIMD_SSE4_1)
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON64 | KTM_SIMD_SSE4_1 | KTM_SIMD_WASM)
 	return _round128_f32(a);
 #else
 	constexpr union { unsigned int i; float f; } mask1 { 0x80000000 };
@@ -135,7 +140,7 @@ KTM_FUNC fv4 round_fv4(fv4 a) noexcept
 
 KTM_FUNC fv4 floor_fv4(fv4 a) noexcept
 {
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON64 | KTM_SIMD_SSE4_1)
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON64 | KTM_SIMD_SSE4_1 | KTM_SIMD_WASM)
 	return _floor128_f32(a);
 #else
 	constexpr union { unsigned int i; float f; } mask = { 0x3f800000 };
@@ -149,7 +154,7 @@ KTM_FUNC fv4 floor_fv4(fv4 a) noexcept
 
 KTM_FUNC fv4 ceil_fv4(fv4 a) noexcept
 {
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON64 | KTM_SIMD_SSE4_1)
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON64 | KTM_SIMD_SSE4_1 | KTM_SIMD_WASM)
 	return _ceil128_f32(a);
 #else
     constexpr union { unsigned int i; float f; } mask = { 0x3f800000 };
@@ -284,9 +289,9 @@ KTM_FUNC fv4 dot1_fv4(fv4 x, fv4 y) noexcept
 	return dot;
 }
 
-#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE)
+#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2)
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2 | KTM_SIMD_WASM)
 
 KTM_FUNC int radd_sv3(sv4 a) noexcept
 {
@@ -332,9 +337,9 @@ KTM_FUNC int rsub_sv4(sv4 a) noexcept
     return ret.i;
 }
 
-#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2)
+#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2 | KTM_SIMD_WASM)
 
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1)
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1 | KTM_SIMD_WASM)
 
 KTM_FUNC int rmax_sv4(sv4 a) noexcept
 {
@@ -364,7 +369,7 @@ KTM_FUNC int rmin_sv4(sv4 a) noexcept
 #endif
 }
 
-#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1)
+#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1 | KTM_SIMD_WASM)
 
 }
 

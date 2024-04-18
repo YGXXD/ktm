@@ -41,8 +41,8 @@ int main(int argc, char* argv[])
     std::cout << "inverse: " << ktm::inverse(q5) << std::endl;
     std::cout << "negate: " << ktm::negate(q5) << std::endl;
     std::cout << "normalize: " << ktm::normalize(q5) << std::endl;
-    std::cout << "slerp: " << ktm::slerp(q5, q4, 0.5f) << std::endl;
-    std::cout << "slerp_longest: " << ktm::slerp_longest(q5, q4, 0.5f) << std::endl;
+    std::cout << "slerp: " << ktm::slerp(q5, q3, 0.5f) << std::endl;
+    std::cout << "slerp_longest: " << ktm::slerp_longest(q5, q3, 0.5f) << std::endl;
 
     return 0;
 }

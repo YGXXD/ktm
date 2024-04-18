@@ -11,7 +11,7 @@
 #include "vec_calc_fwd.h"
 #include "../../simd/skv.h"
 
-#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE)
+#if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
 template<size_t N>
 struct ktm::detail::vec_calc_implement::add<N, float, std::enable_if_t<N == 3 || N == 4>>
@@ -354,7 +354,7 @@ struct ktm::detail::vec_calc_implement::mul_scalar_to_self<N, int, std::enable_i
     }
 };
 
-#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1)
+#endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1 | KTM_SIMD_WASM)
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON)
 

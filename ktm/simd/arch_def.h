@@ -18,6 +18,7 @@
 #define KTM_SIMD_SSSE3 0x00000020
 #define KTM_SIMD_SSE4_1 0x00000040
 #define KTM_SIMD_SSE4_2 0x00000080
+#define KTM_SIMD_WASM 0x00000100
 #define KTM_SIMD_ENABLE(flags) (KTM_SIMD_SUPPORT & (flags))
 
 #if defined(KTM_COMPILER_MSVC)
@@ -83,6 +84,11 @@
 			#include <arm_neon.h>
 		#endif
 	#endif
+#endif
+
+#if defined(__wasm__) && defined (__wasm_simd128__)
+	#define KTM_SIMD_SUPPORT KTM_SIMD_WASM
+	#include <wasm_simd128.h>
 #endif
 
 #endif
