@@ -12,11 +12,13 @@
 #include "type_vec.h"
 #include "type_mat.h"
 #include "type_quat.h"
+#include "type_comp.h"
 
 #include "function/arithmetic.h"
 #include "function/geometric.h"
 #include "function/matrix.h"
 #include "function/quaternion.h"
+#include "function/complex.h"
 #include "function/epsilon.h"
 #include "function/matrix_equation.h"
 #include "function/transform_3d.h"

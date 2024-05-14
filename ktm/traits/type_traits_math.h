@@ -11,6 +11,7 @@
 #include "../type/vec_fwd.h"
 #include "../type/mat_fwd.h"
 #include "../type/quat_fwd.h"
+#include "../type/comp_fwd.h"
 #include "type_single_extend.h"
 
 namespace ktm
@@ -83,6 +84,23 @@ using quat_traits_base_t = typename quat_traits<T>::base_type;
 template<typename T>
 using quat_traits_storage_t = typename quat_traits<T>::storage_type;
 
+// comp traits
+template<typename T>
+struct comp_traits;
+
+template<typename T>
+struct comp_traits<comp<T>>
+{
+    using base_type = T;
+    using storage_type = vec<2, T>;
+};
+
+template<typename T>
+using comp_traits_base_t = typename comp_traits<T>::base_type;
+
+template<typename T>
+using comp_traits_storage_t = typename comp_traits<T>::storage_type;
+
 // ktm type traits
 template<typename T>
 struct is_vector : std::false_type { };
@@ -109,6 +127,12 @@ template<typename T>
 struct is_quaternion<quat<T>> : std::true_type { };
 
 template<typename T>
+struct is_complex : std::false_type { };
+
+template<typename T>
+struct is_complex<comp<T>> : std::true_type { };
+
+template<typename T>
 struct is_floating_point_base : std::false_type { };
 
 template<size_t N, typename T>
@@ -119,6 +143,9 @@ struct is_floating_point_base<mat<Row, Col, T>> : std::is_floating_point<T> { };
 
 template<typename T>
 struct is_floating_point_base<quat<T>> : std::true_type { };
+
+template<typename T>
+struct is_floating_point_base<comp<T>> : std::true_type { };
 
 template<typename T>
 struct is_unsigned_base : std::false_type { };
@@ -161,6 +188,9 @@ inline constexpr bool is_square_matrix_v = is_square_matrix<T>::value;
 
 template<typename T>
 inline constexpr bool is_quaternion_v = is_quaternion<T>::value;
+
+template<typename T>
+inline constexpr bool is_complex_v = is_complex<T>::value;
 
 template<typename T>
 inline constexpr bool is_floating_point_base_v = is_floating_point_base<T>::value;
