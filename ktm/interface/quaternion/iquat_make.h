@@ -51,15 +51,8 @@ struct iquat_make<Father, quat<T>> : Father
         
         vec<3, T> half = from + to;
 
-        constexpr auto epsilonLambda = []() -> T
-        {
-            if constexpr(std::is_same_v<T, float>)
-                return 0x1p-46f;
-            else
-                return 0x1p-104;
-        };
-
-        if (length_squared(half) < epsilonLambda()) 
+        constexpr T length_squared_epsilon = std::is_same_v<T, float> ? 0x1p-46f : 0x1p-104;
+        if (length_squared(half) < length_squared_epsilon) 
         {
             vec<3, T> abs_from = abs(from);
             if (abs_from.x <= abs_from.y && abs_from.x <= abs_from.z)

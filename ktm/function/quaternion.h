@@ -11,7 +11,8 @@
 #include "../setup.h"
 #include "../type/quat.h"
 #include "../traits/type_traits_math.h"
-#include "arithmetic.h"
+#include "epsilon.h"
+#include "exponential.h"
 #include "trigonometric.h"
 #include "geometric.h"
 
@@ -21,7 +22,6 @@ namespace ktm
 template<class Q>
 KTM_INLINE std::enable_if_t<is_quaternion_v<Q>, Q> conjugate(const Q& q) noexcept
 {
-    using T = quat_traits_base_t<Q>;
     return Q(-q.i, -q.j, -q.k, q.r);
 }
 
@@ -82,7 +82,7 @@ KTM_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> log(const Q& q) noexcept
     using T = quat_traits_base_t<Q>;
     T real = log(length_squared(q.vector)) / static_cast<T>(2);
     vec<3, T> q_imag = q.imag();
-    if (q_imag == vec<3, T>()) 
+    if (equal_zero(q_imag)) 
         return Q(zero<T>, zero<T>, zero<T>, real);
     vec<3, T> imag = acos(q.real() / length(q)) * normalize(q_imag);
     return Q::real_imag(real, imag);
@@ -93,7 +93,7 @@ KTM_NOINLINE std::enable_if_t<is_quaternion_v<Q>, Q> slerp_internal(const Q& x, 
 {
     using T = quat_traits_base_t<Q>;
     T s = one<T> - t;
-    T a = static_cast<T>(2) * atan2(length(x.vector - x.vector), length(x.vector + x.vector));// angel
+    T a = static_cast<T>(2) * atan2(length(x.vector - y.vector), length(x.vector + y.vector)); // angel
     T r = one<T> / sinc(a);
     return normalize(Q(sinc(s * a) * r * s * x.vector + sinc(t * a) * r * t * y.vector));
 }

@@ -75,7 +75,8 @@ struct ktm::detail::quat_calc_implement::act<float>
     static KTM_INLINE vec<3, float> call(const Q& q, const vec<3, float>& v) noexcept
     {
         vec<3, float> ret;
-        skv::fv4 qi = _mul128_f32(q.vector.st, _set128_f32(1.f, -1.f, -1.f, -1.f));
+        constexpr union { unsigned int i; float f; } mask { 0x80000000 };
+        skv::fv4 qi = _xor128_f32(q.vector.st, _set128_f32(0.f, mask.f, mask.f, mask.f));
         ret.st = fq_mul_fq(q.vector.st, fv3_mul_fq(v.st, qi));
         return ret;
     }

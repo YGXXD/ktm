@@ -29,6 +29,7 @@ struct quat<T> : quat_father_type<quat<T>>
     using fater_type = quat_father_type<quat<T>>;
     using fater_type::fater_type;
 };
+
 }
 
 #include "../detail/quaternion/quat_calc.inl"
