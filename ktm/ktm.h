@@ -21,6 +21,7 @@
 #include "function/complex.h"
 #include "function/epsilon.h"
 #include "function/matrix_equation.h"
+#include "function/transform_2d.h"
 #include "function/transform_3d.h"
 
 #endif

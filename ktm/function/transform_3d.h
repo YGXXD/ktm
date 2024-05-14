@@ -62,33 +62,6 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> ortho(T l
                         { (right + left) / (-dx), (top + bottom) / (-dy), znear / (-dz), one<T>});
 }
 
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_x(T angle_radians) noexcept
-{
-    return mat<4, 4, T>({ one<T>, zero<T>, zero<T>, zero<T> },
-                        { zero<T>, cos(angle_radians), sin(angle_radians), zero<T> },
-                        { zero<T>, -sin(angle_radians), cos(angle_radians), zero<T> },
-                        { zero<T>, zero<T>, zero<T>, one<T> });
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_y(T angle_radians) noexcept
-{
-    return mat<4, 4, T>({ cos(angle_radians), zero<T>, -sin(angle_radians), zero<T> },
-                        { zero<T>, one<T>, zero<T>, zero<T> },
-                        { sin(angle_radians), zero<T>, cos(angle_radians), zero<T> },
-                        { zero<T>, zero<T>, zero<T>, one<T> });
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_z(T angle_radians) noexcept
-{
-    return mat<4, 4, T>({ cos(angle_radians), sin(angle_radians), zero<T>, zero<T> },
-                        { -sin(angle_radians), cos(angle_radians), zero<T>, zero<T> },
-                        { zero<T>, zero<T>, one<T>, zero<T> },
-                        { zero<T>, zero<T>, zero<T>, one<T> });
-}
-
 namespace detail
 {
 namespace transform_3d_implement
@@ -132,6 +105,39 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_ax
 }
 
 template<typename T>
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_axis_x(T angle_radians) noexcept
+{
+    T cos_theta = cos(angle_radians);
+    T sin_theta = sin(sin_theta);
+    return mat<4, 4, T>({ one<T>, zero<T>, zero<T>, zero<T> },
+                        { zero<T>, cos_theta, sin_theta, zero<T> },
+                        { zero<T>, -sin_theta, cos_theta, zero<T> },
+                        { zero<T>, zero<T>, zero<T>, one<T> });
+}
+
+template<typename T>
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_axis_y(T angle_radians) noexcept
+{
+    T cos_theta = cos(angle_radians);
+    T sin_theta = sin(sin_theta);
+    return mat<4, 4, T>({ cos_theta, zero<T>, -sin_theta, zero<T> },
+                        { zero<T>, one<T>, zero<T>, zero<T> },
+                        { sin_theta, zero<T>, cos_theta, zero<T> },
+                        { zero<T>, zero<T>, zero<T>, one<T> });
+}
+
+template<typename T>
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_axis_z(T angle_radians) noexcept
+{
+    T cos_theta = cos(angle_radians);
+    T sin_theta = sin(sin_theta);
+    return mat<4, 4, T>({ cos_theta, sin_theta, zero<T>, zero<T> },
+                        { -sin_theta, cos_theta, zero<T>, zero<T> },
+                        { zero<T>, zero<T>, one<T>, zero<T> },
+                        { zero<T>, zero<T>, zero<T>, one<T> });
+}
+
+template<typename T>
 KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_from_to(const vec<3, T>& from, const vec<3, T>& to) noexcept
 {
     T cos_theta = dot(from, to);
@@ -146,7 +152,7 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_an
 }
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> translate(const vec<3, T>& v) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> translate_3d(const vec<3, T>& v) noexcept
 {
     return mat<4, 4, T>({ one<T>, zero<T>, zero<T>, zero<T> },
                         { zero<T>, one<T>, zero<T>, zero<T> },
@@ -155,7 +161,7 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> translate
 }
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> scale(const vec<3, T>& v) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> scale_3d(const vec<3, T>& v) noexcept
 {
     return mat<4, 4, T>({ v[0], zero<T>, zero<T>, zero<T> },
                         { zero<T>, v[1], zero<T>, zero<T> },

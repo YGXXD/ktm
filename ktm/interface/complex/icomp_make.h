@@ -46,12 +46,12 @@ struct icomp_make<Father, comp<T>> : Father
 
     static KTM_INLINE comp<T> from_matrix(const mat<2, 2, T>& matrix) noexcept
     {
-        return comp<T>(matrix[0]);
+        return comp<T>(matrix[0].yx());
     }
 
     static KTM_INLINE comp<T> from_matrix(const mat<3, 3, T>& matrix) noexcept
     {
-        return comp<T>(matrix[0].xy()); 
+        return comp<T>(matrix[0].yx()); 
     }
 };
 }
