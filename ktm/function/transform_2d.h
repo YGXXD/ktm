@@ -21,7 +21,7 @@ template<typename T>
 KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> rotate_origin(T angle_radians) noexcept
 {
     T cos_theta = cos(angle_radians);
-    T sin_theta = sin(sin_theta);
+    T sin_theta = sin(angle_radians);
     return mat<3, 3, T>({ cos_theta, sin_theta, zero<T> },
                         { -sin_theta, cos_theta, zero<T> },
                         { zero<T>, zero<T>, one<T> });
@@ -31,11 +31,21 @@ template<typename T>
 KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> rotate_point(T angle_radians, const vec<2, T>& point) noexcept
 {
     T cos_theta = cos(angle_radians);
-    T sin_theta = sin(sin_theta);
+    T sin_theta = sin(angle_radians);
     T one_minus_cos_theta = one<T> - cos_theta;
     return mat<3, 3, T>({cos_theta, sin_theta, zero<T>}, {-sin_theta, cos_theta, zero<T>},
                         {point[0] * one_minus_cos_theta + point[1] * sin_theta,
                          point[1] * one_minus_cos_theta - point[0] * sin_theta, one<T>});
+}
+
+template<typename T>
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> rotate_from_to(const vec<2, T>& from, const vec<2, T>& to) noexcept
+{
+    T cos_theta = dot(from, to);
+    T sin_theta = from[0] * to[1] - from[1] * to[0];
+    return mat<3, 3, T>({ cos_theta, sin_theta, zero<T> },
+                        { -sin_theta, cos_theta, zero<T> },
+                        { zero<T>, zero<T>, one<T> }); 
 }
 
 template<typename T>

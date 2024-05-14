@@ -108,7 +108,7 @@ template<typename T>
 KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_axis_x(T angle_radians) noexcept
 {
     T cos_theta = cos(angle_radians);
-    T sin_theta = sin(sin_theta);
+    T sin_theta = sin(angle_radians);
     return mat<4, 4, T>({ one<T>, zero<T>, zero<T>, zero<T> },
                         { zero<T>, cos_theta, sin_theta, zero<T> },
                         { zero<T>, -sin_theta, cos_theta, zero<T> },
@@ -119,7 +119,7 @@ template<typename T>
 KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_axis_y(T angle_radians) noexcept
 {
     T cos_theta = cos(angle_radians);
-    T sin_theta = sin(sin_theta);
+    T sin_theta = sin(angle_radians);
     return mat<4, 4, T>({ cos_theta, zero<T>, -sin_theta, zero<T> },
                         { zero<T>, one<T>, zero<T>, zero<T> },
                         { sin_theta, zero<T>, cos_theta, zero<T> },
@@ -130,7 +130,7 @@ template<typename T>
 KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate_axis_z(T angle_radians) noexcept
 {
     T cos_theta = cos(angle_radians);
-    T sin_theta = sin(sin_theta);
+    T sin_theta = sin(angle_radians);
     return mat<4, 4, T>({ cos_theta, sin_theta, zero<T>, zero<T> },
                         { -sin_theta, cos_theta, zero<T>, zero<T> },
                         { zero<T>, zero<T>, one<T>, zero<T> },
