@@ -204,29 +204,29 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> scale3d(c
 }
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> shear3d_x(T angle_y, T angle_z) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> shear3d_x(T angle_y, T angle_z) noexcept
+{
+    return mat<4, 4, T>({ one<T>, tan(angle_y), tan(angle_z), zero<T> },
+                        { zero<T>, one<T>, zero<T>, zero<T> },
+                        { zero<T>, zero<T>, one<T>, zero<T> },
+                        { zero<T>, zero<T>, zero<T>, one<T> });
+}
+
+template<typename T>
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> shear3d_y(T angle_x, T angle_z) noexcept
 {
     return mat<4, 4, T>({ one<T>, zero<T>, zero<T>, zero<T> },
-                        { tan(angle_y), one<T>, zero<T>, zero<T> },
-                        { tan(angle_z), zero<T>, one<T>, zero<T> },
+                        { tan(angle_x), one<T>, tan(angle_z), zero<T> },
+                        { zero<T>, zero<T>, one<T>, zero<T> },
                         { zero<T>, zero<T>, zero<T>, one<T> });
 }
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> shear3d_y(T angle_x, T angle_z) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> shear3d_z(T angle_x, T angle_y) noexcept
 {
-    return mat<4, 4, T>({ one<T>, tan(angle_x), zero<T>, zero<T> },
+    return mat<4, 4, T>({ one<T>, zero<T>, zero<T>, zero<T> },
                         { zero<T>, one<T>, zero<T>, zero<T> },
-                        { zero<T>, tan(angle_z), one<T>, zero<T> },
-                        { zero<T>, zero<T>, zero<T>, one<T> });
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> shear3d_z(T angle_x, T angle_y) noexcept
-{
-    return mat<4, 4, T>({ one<T>, zero<T>, tan(angle_x), zero<T> },
-                        { zero<T>, one<T>, zero<T>, zero<T> },
-                        { zero<T>, zero<T>, tan(angle_y), zero<T> },
+                        { tan(angle_x), tan(angle_y), one<T>, zero<T> },
                         { zero<T>, zero<T>, zero<T>, one<T> });
 }
 

@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
     std::cout << q5_mat3x3 * v2 << "\n" << q5 * v2 << std::endl;
 
     std::cout << "inverse: " << ktm::inverse(q5) << std::endl;
-    std::cout << "negate: " << ktm::negate(q5) << std::endl;
+    std::cout << "negate: " << -q5 << std::endl;
     std::cout << "normalize: " << ktm::normalize(q5) << std::endl;
     std::cout << "log(exp): " << ktm::log(ktm::exp(q5)) << std::endl;
     std::cout << "slerp: " << ktm::slerp(q5, q3, 0.5f) << std::endl;

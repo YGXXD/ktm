@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
     }
 
     std::cout << "inverse: " << ktm::inverse(c5) << std::endl;
-    std::cout << "negate: " << ktm::negate(c5) << std::endl;
+    std::cout << "negate: " << -c5 << std::endl;
     std::cout << "normalize: " << ktm::normalize(c5) << std::endl;
     std::cout << "log(exp): " << ktm::log(ktm::exp(c3)) << std::endl;
     std::cout << "slerp: " << ktm::slerp(c5, c3, 0.5f) << std::endl;

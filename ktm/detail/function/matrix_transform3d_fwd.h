@@ -23,7 +23,7 @@ namespace matrix_transform3d_implement
 template <typename T>
 KTM_NOINLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate3d_normal(
     T sin_theta, T cos_theta, const vec<3, T>& normal, const vec<3, T>* normal_start_ptr = nullptr) noexcept;
-
+    
 }
 }
 }

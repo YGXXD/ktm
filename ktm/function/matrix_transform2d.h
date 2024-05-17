@@ -33,9 +33,9 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> rotate2d_
     T cos_theta = cos(angle);
     T sin_theta = sin(angle);
     T one_minus_cos_theta = one<T> - cos_theta;
-    return mat<3, 3, T>({cos_theta, sin_theta, zero<T>}, {-sin_theta, cos_theta, zero<T>},
-                        {point[0] * one_minus_cos_theta + point[1] * sin_theta,
-                         point[1] * one_minus_cos_theta - point[0] * sin_theta, one<T>});
+    return mat<3, 3, T>({ cos_theta, sin_theta, zero<T> }, { -sin_theta, cos_theta, zero<T> },
+                        { point[0] * one_minus_cos_theta + point[1] * sin_theta,
+                          point[1] * one_minus_cos_theta - point[0] * sin_theta, one<T> });
 }
 
 template<typename T>
