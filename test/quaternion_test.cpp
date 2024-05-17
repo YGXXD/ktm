@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
     std::cout << "angle_axis rotate vec" << std::endl;
     std::cout << q4 * v2 << std::endl;
 
-    ktm::fmat4x4 q4_mat = ktm::rotate_axis(ktm::half_pi<float>, ktm::fvec3(0.f, 0.6f, 0.8f));
+    ktm::fmat4x4 q4_mat = ktm::rotate3d_axis(ktm::half_pi<float>, ktm::fvec3(0.f, 0.6f, 0.8f));
     ktm::fquat q5 = ktm::fquat::from_matrix(q4_mat);
     std::cout << "mat cvt quat" << std::endl; 
     std::cout << q4 << "\n" << q5 << std::endl;

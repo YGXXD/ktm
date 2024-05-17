@@ -18,7 +18,7 @@ namespace ktm
 {
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> rotate_origin(T angle) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> rotate2d(T angle) noexcept
 {
     T cos_theta = cos(angle);
     T sin_theta = sin(angle);
@@ -28,7 +28,7 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> rotate_or
 }
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> rotate_point(T angle, const vec<2, T>& point) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> rotate2d_point(T angle, const vec<2, T>& point) noexcept
 {
     T cos_theta = cos(angle);
     T sin_theta = sin(angle);
@@ -39,7 +39,7 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> rotate_po
 }
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> rotate_from_to(const vec<2, T>& from, const vec<2, T>& to) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> rotate2d_from_to(const vec<2, T>& from, const vec<2, T>& to) noexcept
 {
     T cos_theta = dot(from, to);
     T sin_theta = from[0] * to[1] - from[1] * to[0];
@@ -49,7 +49,7 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> rotate_fr
 }
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> translate_2d(const vec<2, T>& v) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> translate2d(const vec<2, T>& v) noexcept
 {
     return mat<3, 3, T>({ one<T>, zero<T>, zero<T> },
                         { zero<T>, one<T>, zero<T> },
@@ -57,7 +57,7 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> translate
 }
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> scale_2d(const vec<2, T>& v) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> scale2d(const vec<2, T>& v) noexcept
 {
     return mat<3, 3, T>({ v[0], zero<T>, zero<T> },
                         { zero<T>, v[1], zero<T> },
@@ -65,7 +65,7 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> scale_2d(
 }
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> shear_x(T angle) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> shear2d_x(T angle) noexcept
 {
     return mat<3, 3, T>({ one<T>, zero<T>, zero<T> },
                         { tan(angle), one<T>, zero<T> },
@@ -73,7 +73,7 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> shear_x(T
 }
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> shear_y(T angle) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> shear2d_y(T angle) noexcept
 {
     return mat<3, 3, T>({ one<T>, tan(angle), zero<T> },
                         { zero<T>, one<T>, zero<T> },
