@@ -16,6 +16,8 @@
 #include "epsilon.h"
 #include "trigonometric.h"
 
+#define KTM_MATRIX_EIGEN_ITERATOR_MAX 100
+
 namespace ktm
 {
 
@@ -128,17 +130,13 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
         eigen_value[i] = a[i][i]; 
     }
     
-    for(int it = 0; it < 100; ++it) 
+    for(int it = 0; it < KTM_MATRIX_EIGEN_ITERATOR_MAX; ++it) 
     {
         last_eigen_value = eigen_value;
         std::tuple<M, M> qr = factor_qr(a);
         a = std::get<1>(qr) * std::get<0>(qr);
         eigen_vec = eigen_vec * std::get<0>(qr);
-
-        for(int i = 0; i < N; ++i)
-        {
-            eigen_value[i] = a[i][i]; 
-        }
+        eigen_value = diagonal(a);
         if(equal(eigen_value, last_eigen_value))
             break;
     }
@@ -155,7 +153,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
     M a { m }, eigen_vec = M::from_eye();
     mat_traits_col_t<M> eigen_value;
 
-    for(int it = 0; it < 100; ++it)
+    for(int it = 0; it < KTM_MATRIX_EIGEN_ITERATOR_MAX; ++it)
     {
         // find the maximum element on a non diagonal line
         int col = 0, row = 1;
@@ -241,10 +239,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
         }
     }
 
-    for(int i = 0; i < N; ++i)
-    {
-        eigen_value[i] = a[i][i];
-    }
+    eigen_value = diagonal(a);
 
     return { eigen_value, eigen_vec };
 }
@@ -258,16 +253,10 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
     std::tuple<mat_traits_col_t<M>, M> ata_eigen = eigen_jacobi(transpose(m) * m);
     mat_traits_col_t<M>& ata_eigen_value_ref = std::get<0>(ata_eigen);
 
-    for(int i = 0; i < N; ++i)
-    {
-        ata_eigen_value_ref[i] = sqrt(abs(ata_eigen_value_ref[i])); 
-    }
+    ata_eigen_value_ref = sqrt(abs(ata_eigen_value_ref)); 
     M v = transpose(std::get<1>(ata_eigen));
     M s = M::from_diag(ata_eigen_value_ref);
-    for(int i = 0; i < N; ++i)
-    {
-        ata_eigen_value_ref[i] = recip(ata_eigen_value_ref[i]);  
-    }
+    ata_eigen_value_ref = recip(ata_eigen_value_ref);  
     M u = m * std::get<1>(ata_eigen) * M::from_diag(ata_eigen_value_ref);
     return { u, s, v };
 }

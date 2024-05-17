@@ -65,17 +65,17 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> scale2d(c
 }
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> shear2d_x(T angle) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> shear2d_x(T angle_y) noexcept
 {
     return mat<3, 3, T>({ one<T>, zero<T>, zero<T> },
-                        { tan(angle), one<T>, zero<T> },
+                        { tan(angle_y), one<T>, zero<T> },
                         { zero<T>, zero<T>, one<T> });
 }
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> shear2d_y(T angle) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> shear2d_y(T angle_x) noexcept
 {
-    return mat<3, 3, T>({ one<T>, tan(angle), zero<T> },
+    return mat<3, 3, T>({ one<T>, tan(angle_x), zero<T> },
                         { zero<T>, one<T>, zero<T> },
                         { zero<T>, zero<T>, one<T> });
 }

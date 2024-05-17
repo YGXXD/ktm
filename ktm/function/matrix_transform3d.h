@@ -133,13 +133,7 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> frustum_r
 }
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate3d_axis(T angle, const vec<3, T>& axis) noexcept
-{
-	return detail::matrix_transform3d_implement::rotate3d_normal(sin(angle), cos(angle), axis);
-}
-
-template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate3d_axis_x(T angle) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate3d_x(T angle) noexcept
 {
     T cos_theta = cos(angle);
     T sin_theta = sin(angle);
@@ -150,7 +144,7 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate3d_
 }
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate3d_axis_y(T angle) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate3d_y(T angle) noexcept
 {
     T cos_theta = cos(angle);
     T sin_theta = sin(angle);
@@ -161,7 +155,7 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate3d_
 }
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate3d_axis_z(T angle) noexcept
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate3d_z(T angle) noexcept
 {
     T cos_theta = cos(angle);
     T sin_theta = sin(angle);
@@ -169,6 +163,12 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate3d_
                         { -sin_theta, cos_theta, zero<T>, zero<T> },
                         { zero<T>, zero<T>, one<T>, zero<T> },
                         { zero<T>, zero<T>, zero<T>, one<T> });
+}
+
+template<typename T>
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> rotate3d_axis(T angle, const vec<3, T>& axis) noexcept
+{
+	return detail::matrix_transform3d_implement::rotate3d_normal(sin(angle), cos(angle), axis);
 }
 
 template<typename T>
@@ -200,6 +200,33 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> scale3d(c
     return mat<4, 4, T>({ v[0], zero<T>, zero<T>, zero<T> },
                         { zero<T>, v[1], zero<T>, zero<T> },
                         { zero<T>, zero<T>, v[2], zero<T> },
+                        { zero<T>, zero<T>, zero<T>, one<T> });
+}
+
+template<typename T>
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> shear3d_x(T angle_y, T angle_z) noexcept
+{
+    return mat<4, 4, T>({ one<T>, zero<T>, zero<T>, zero<T> },
+                        { tan(angle_y), one<T>, zero<T>, zero<T> },
+                        { tan(angle_z), zero<T>, one<T>, zero<T> },
+                        { zero<T>, zero<T>, zero<T>, one<T> });
+}
+
+template<typename T>
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> shear3d_y(T angle_x, T angle_z) noexcept
+{
+    return mat<4, 4, T>({ one<T>, tan(angle_x), zero<T>, zero<T> },
+                        { zero<T>, one<T>, zero<T>, zero<T> },
+                        { zero<T>, tan(angle_z), one<T>, zero<T> },
+                        { zero<T>, zero<T>, zero<T>, one<T> });
+}
+
+template<typename T>
+KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> shear3d_z(T angle_x, T angle_y) noexcept
+{
+    return mat<4, 4, T>({ one<T>, zero<T>, tan(angle_x), zero<T> },
+                        { zero<T>, one<T>, zero<T>, zero<T> },
+                        { zero<T>, zero<T>, tan(angle_y), zero<T> },
                         { zero<T>, zero<T>, zero<T>, one<T> });
 }
 
