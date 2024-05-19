@@ -13,6 +13,7 @@
 #include "type_mat.h"
 #include "type_quat.h"
 #include "type_comp.h"
+#include "type_affine.h"
 
 #include "function/arithmetic.h"
 #include "function/trigonometric.h"
