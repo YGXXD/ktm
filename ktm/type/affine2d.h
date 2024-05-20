@@ -9,6 +9,7 @@
 #define _KTM_AFFINE_2D_H_
 
 #include "mat.h"
+#include "comp.h"
 #include "../function/trigonometric.h"
 #include "../function/matrix.h"
 #include "../function/matrix_equation.h"

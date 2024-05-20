@@ -9,7 +9,7 @@
 #define _KTM_MATRIX_EQUATION_H_
 
 #include <tuple>
-#include <string>
+#include <cstring>
 #include "../setup.h"
 #include "../type/basic.h"
 #include "../traits/type_traits_math.h"
@@ -290,12 +290,12 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
         using AffV = vec<N - 1, T>;
         constexpr size_t affv_size = (N - 1) * sizeof(T);
 
-        constexpr auto m_affm_lambda = [](const M& in_m, AffM& out_affm) -> void
+        constexpr auto m_affm_lambda = [N, affv_size](const M& in_m, AffM& out_affm) -> void
         {
             for(int i = 0; i < N - 1; ++i)
                 memcpy(&out_affm[i], &in_m[i], affv_size); 
         };
-        constexpr auto affm_m_lambda = [](const AffM& in_affm, M& out_m) -> void
+        constexpr auto affm_m_lambda = [N, affv_size](const AffM& in_affm, M& out_m) -> void
         {
             for(int i = 0; i < N - 1; ++i)
             {

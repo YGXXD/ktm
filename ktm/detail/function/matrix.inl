@@ -124,8 +124,8 @@ struct ktm::detail::matrix_implement::inverse<2, T>
         T one_over_det = one<T> / determinant<2, T>::call(m);
         M ret;
         ret[0][0] = m[1][1] * one_over_det;
-        ret[0][1] = - m[1][0] * one_over_det; 
-        ret[1][0] = - m[0][1] * one_over_det; 
+        ret[0][1] = - m[0][1] * one_over_det; 
+        ret[1][0] = - m[1][0] * one_over_det; 
         ret[1][1] = m[0][0] * one_over_det;
         return ret;
     }
