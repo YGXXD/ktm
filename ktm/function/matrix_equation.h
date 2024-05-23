@@ -248,8 +248,6 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 template<class M>
 KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<M, M, M>> factor_svd(const M& m) noexcept
 {
-    constexpr size_t N = mat_traits_col_n<M>;
-
     // calc matrix sdv decomposition(using eigen_jacobi to find matrix eigenvectors and eigenvalues)
     std::tuple<mat_traits_col_t<M>, M> ata_eigen = eigen_jacobi(transpose(m) * m);
     mat_traits_col_t<M>& ata_eigen_value_ref = std::get<0>(ata_eigen);
