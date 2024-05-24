@@ -53,34 +53,19 @@ KTM_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> clamp(T v, T min_v, T ma
 template<typename T>
 KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> floor(T x) noexcept
 {
-    if constexpr(std::is_same_v<T, float>)
-        return ::floorf(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::floor(x);
-    else 
-        return ::floorl(x);
+    return std::floor(x);
 }
 
 template<typename T>
 KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> ceil(T x) noexcept
 {
-    if constexpr(std::is_same_v<T, float>)
-        return ::ceilf(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::ceil(x);
-    else 
-        return ::ceill(x);
+    return std::ceil;
 }
 
 template<typename T>
 KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> round(T x) noexcept
 {
-    if constexpr(std::is_same_v<T, float>)
-        return ::roundf(x);
-    else if constexpr(std::is_same_v<T, double>)
-        return ::round(x);
-    else 
-        return ::roundl(x);
+    return std::round(x);
 }
 
 template<typename T>
