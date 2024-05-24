@@ -14,7 +14,7 @@
 #include "../type/basic.h"
 #include "../traits/type_traits_math.h"
 #include "matrix.h"
-#include "epsilon.h"
+#include "compare.h"
 #include "trigonometric.h"
 
 #define KTM_MATRIX_EIGEN_ITERATOR_MAX 100

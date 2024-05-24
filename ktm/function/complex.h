@@ -11,7 +11,7 @@
 #include "../setup.h"
 #include "../type/comp.h"
 #include "../traits/type_traits_math.h"
-#include "epsilon.h"
+#include "compare.h"
 #include "exponential.h"
 #include "trigonometric.h"
 #include "geometric.h"
@@ -72,7 +72,7 @@ KTM_NOINLINE std::enable_if_t<is_complex_v<C>, C> log(const C& c) noexcept
 {
     using T = comp_traits_base_t<C>;
     T real = log(length_squared(c.vector)) / static_cast<T>(2);
-    if (equal_zero(c.imag())) 
+    if(equal_zero(c.imag())) 
         return C(zero<T>, real);
     return C(c.angle(), real);
 }

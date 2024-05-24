@@ -20,7 +20,7 @@
 #include "function/exponential.h"
 #include "function/common.h"
 #include "function/geometric.h"
-#include "function/epsilon.h"
+#include "function/compare.h"
 #include "function/matrix.h"
 #include "function/matrix_equation.h"
 #include "function/matrix_transform2d.h"
