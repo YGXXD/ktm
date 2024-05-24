@@ -8,9 +8,9 @@
 #ifndef _KTM_I_ARRAY_H_
 #define _KTM_I_ARRAY_H_
 
-#include "../../setup.h"
 #include <array>
 #include <iostream>
+#include "../../setup.h"
 
 namespace ktm
 {

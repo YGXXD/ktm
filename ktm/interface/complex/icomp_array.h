@@ -8,9 +8,9 @@
 #ifndef _KTM_I_COMP_ARRAY_H_
 #define _KTM_I_COMP_ARRAY_H_
 
+#include <array>
 #include "../../setup.h"
 #include "../../type/comp_fwd.h"
-#include <array>
 
 namespace ktm
 {

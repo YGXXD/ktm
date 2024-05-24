@@ -8,9 +8,9 @@
 #ifndef _KTM_I_VEC_ARRAY_H_
 #define _KTM_I_VEC_ARRAY_H_
 
+#include <array>
 #include "../../setup.h"
 #include "../../type/vec_fwd.h"
-#include <array>
 
 namespace ktm
 {
