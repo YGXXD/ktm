@@ -11,9 +11,10 @@
 #include "../setup.h"
 #include "../type/vec.h"
 #include "../type/mat.h"
-#include "../detail/function/matrix_transform3d_fwd.h"
+#include "exponential.h"
 #include "trigonometric.h"
 #include "geometric.h"
+#include "../detail/function/matrix_transform3d_fwd.h"
 
 namespace ktm
 {

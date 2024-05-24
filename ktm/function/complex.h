@@ -11,9 +11,9 @@
 #include "../setup.h"
 #include "../type/comp.h"
 #include "../traits/type_traits_math.h"
-#include "compare.h"
 #include "exponential.h"
 #include "trigonometric.h"
+#include "compare.h"
 #include "geometric.h"
 
 namespace ktm

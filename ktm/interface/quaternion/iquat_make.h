@@ -12,7 +12,7 @@
 #include "../../type/vec_fwd.h"
 #include "../../type/quat_fwd.h"
 #include "../../type/mat_fwd.h"
-#include "../../function/arithmetic.h"
+#include "../../function/exponential.h"
 #include "../../function/trigonometric.h"
 #include "../../function/geometric.h"
 #include "../../function/matrix.h"

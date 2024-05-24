@@ -13,9 +13,10 @@
 #include "../setup.h"
 #include "../type/basic.h"
 #include "../traits/type_traits_math.h"
-#include "matrix.h"
-#include "compare.h"
+#include "exponential.h"
 #include "trigonometric.h"
+#include "compare.h"
+#include "matrix.h"
 
 #define KTM_MATRIX_EIGEN_ITERATOR_MAX 100
 
