@@ -9,7 +9,6 @@
 #define _KTM_MATRIX_TRANSFORM_3D_FWD_H_
 
 #include "../../setup.h"
-#include "../../type/basic.h"
 #include "../../type/vec_fwd.h"
 #include "../../type/mat_fwd.h"
 

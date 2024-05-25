@@ -9,6 +9,7 @@
 #define _KTM_MATRIX_TRANSFORM_3D_FWD_INL_
 
 #include "matrix_transform3d_fwd.h"
+#include "../../type/basic.h"
 
 template <typename T>
 KTM_NOINLINE std::enable_if_t<std::is_floating_point_v<T>, ktm::mat<4, 4, T>> ktm::detail::matrix_transform3d_implement::

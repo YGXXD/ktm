@@ -11,7 +11,6 @@
 #include <utility>
 #include "common_fwd.h"
 #include "../../setup.h"
-#include "../../type/basic.h"
 #include "../../type/vec_fwd.h"
 #include "../../function/arithmetic.h"
 #include "../../function/exponential.h"
