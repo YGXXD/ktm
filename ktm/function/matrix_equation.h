@@ -18,13 +18,13 @@
 #include "compare.h"
 #include "matrix.h"
 
-#define KTM_MATRIX_EIGEN_ITERATOR_MAX 100
+#define KTM_MATRIX_EQUATION_ITERATION_MAX 100
 
 namespace ktm
 {
 
 template<class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<M, M>> factor_lu(const M& m) noexcept
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<M, M>> decompose_lu(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_n<M>;
 
@@ -70,7 +70,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 }
 
 template<class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<M, M>> factor_qr(const M& m) noexcept
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<M, M>> decompose_qr(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_n<M>;
     using T = mat_traits_base_t<M>;
@@ -121,26 +121,20 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 template<class M>
 KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<mat_traits_col_t<M>, M>> eigen_qrit(const M& m) noexcept
 {
-    constexpr size_t N = mat_traits_col_n<M>;
-
     // qr iteration for calc matrix eigenvectors and eigenvalues
     M a { m }, eigen_vec = M::from_eye();
-    mat_traits_col_t<M> eigen_value, last_eigen_value;
+    mat_traits_col_t<M> eigen_value, last_eigen_value = diagonal(a);
 
-    for(int i = 0; i < N; ++i)
+    for(int it = 0; it < KTM_MATRIX_EQUATION_ITERATION_MAX; ++it) 
     {
-        eigen_value[i] = a[i][i]; 
-    }
-    
-    for(int it = 0; it < KTM_MATRIX_EIGEN_ITERATOR_MAX; ++it) 
-    {
-        last_eigen_value = eigen_value;
-        std::tuple<M, M> qr = factor_qr(a);
+        
+        std::tuple<M, M> qr = decompose_qr(a);
         a = std::get<1>(qr) * std::get<0>(qr);
         eigen_vec = eigen_vec * std::get<0>(qr);
         eigen_value = diagonal(a);
         if(equal(eigen_value, last_eigen_value))
             break;
+        last_eigen_value = eigen_value;
     }
     return { eigen_value, eigen_vec };
 }
@@ -155,11 +149,11 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
     M a { m }, eigen_vec = M::from_eye();
     mat_traits_col_t<M> eigen_value;
 
-    for(int it = 0; it < KTM_MATRIX_EIGEN_ITERATOR_MAX; ++it)
+    for(int it = 0; it < KTM_MATRIX_EQUATION_ITERATION_MAX; ++it)
     {
         // find the maximum element on a non diagonal line
         int col = 0, row = 1;
-        T nd_max = abs(a[0][1]);
+        T nd_max = a[0][1];
         for(int i = 0; i < N; ++i)
         {
             for(int j = i + 1; j < N; ++j)
@@ -182,7 +176,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
         T acr = a[col][row];
         
         // calc rotation angles
-        T sin_theta, cos_theta, sin_2theta, cos_2theta;
+        T sin_theta, cos_theta, sin_two_theta, cos_two_theta;
 
         if(equal(arr, acc))
         {
@@ -190,32 +184,34 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
             {
                 sin_theta = -rsqrt(static_cast<T>(2));
                 cos_theta = rsqrt(static_cast<T>(2));
-                sin_2theta = -one<T>;
-                cos_2theta = zero<T>;
+                sin_two_theta = -one<T>;
+                cos_two_theta = zero<T>;
             }
             else 
             {
                 sin_theta = rsqrt(static_cast<T>(2));
                 cos_theta = rsqrt(static_cast<T>(2));
-                sin_2theta = one<T>;
-                cos_2theta = zero<T>; 
+                sin_two_theta = one<T>;
+                cos_two_theta = zero<T>;
             }
         }
         else
         {
-            T theta = static_cast<T>(0.5) * atan2(static_cast<T>(2) * acr, arr - acc);
+            T theta = static_cast<T>(0.5) * atan2(static_cast<T>(2) * acr, acc - arr);
             sin_theta = sin(theta);
             cos_theta = cos(theta);
-            sin_2theta = sin(static_cast<T>(2) * theta);
-            cos_2theta = cos(static_cast<T>(2) * theta);
+            sin_two_theta = static_cast<T>(2) * sin_theta * cos_theta;
+            cos_two_theta = cos_theta * cos_theta - sin_theta * sin_theta;
         }
 
-        // calc matrix element
-        a[col][col] = arr * sin_theta * sin_theta + acc * cos_theta * cos_theta + acr * sin_2theta; 
-        a[row][row] = arr * cos_theta * cos_theta + acc * sin_theta * sin_theta + acr * sin_2theta;
-        a[col][row] = static_cast<T>(0.5) * (acc - arr) * sin_2theta + acr * cos_2theta;
+        T sin_theta_square = pow2(sin_theta);
+        T cos_theta_square = pow2(cos_theta);
+        a[col][col] = acc * cos_theta_square + arr * sin_theta_square + acr * sin_two_theta; 
+        a[row][row] = acc * sin_theta_square + arr * cos_theta_square - acr * sin_two_theta;
+        a[col][row] = static_cast<T>(0.5) * (arr - acc) * sin_two_theta + acr * cos_two_theta;
         a[row][col] = a[col][row];
 
+        // givens rotate
         for(int i = 0; i < N; ++i)
         {
             if((i != col) && (i != row))
@@ -223,21 +219,20 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
                 T aci = a[col][i];
                 T ari = a[row][i];
 
-                a[col][i] = cos_theta * aci - sin_theta * ari;
-                a[row][i] = cos_theta * ari + sin_theta * aci;
+                a[col][i] = cos_theta * aci + sin_theta * ari;
+                a[row][i] = cos_theta * ari - sin_theta * aci;
                 a[i][col] = a[col][i];
                 a[i][row] = a[row][i];
             }
         }
 
-        // calc eigenvectors
         for(int i = 0; i < N; ++i)
         {
             T eci = eigen_vec[col][i];
             T eri = eigen_vec[row][i];
 
-            eigen_vec[col][i] = cos_theta * eci - sin_theta * eri;
-            eigen_vec[row][i] = cos_theta * eri + sin_theta * eci;
+            eigen_vec[col][i] = cos_theta * eci + sin_theta * eri;
+            eigen_vec[row][i] = cos_theta * eri - sin_theta * eci;
         }
     }
 
@@ -247,9 +242,9 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 }
 
 template<class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<M, M, M>> factor_svd(const M& m) noexcept
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<M, M, M>> decompose_svd(const M& m) noexcept
 {
-    // calc matrix sdv decomposition(using eigen_jacobi to find matrix eigenvectors and eigenvalues)
+    // calc matrix svd decomposition(using eigen_jacobi to find matrix eigenvectors and eigenvalues)
     std::tuple<mat_traits_col_t<M>, M> ata_eigen = eigen_jacobi(transpose(m) * m);
     mat_traits_col_t<M>& ata_eigen_value_ref = std::get<0>(ata_eigen);
 
@@ -262,7 +257,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 }
 
 template<class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<M, M, M, M>> factor_affine(const M& m) noexcept
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<M, M, M, M>> decompose_affine(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_n<M>;
     using T = mat_traits_base_t<M>;
@@ -308,7 +303,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
         // calc matrix affine decomposition(translation * rotation * shear * scale)
         AffM affine_matrix;
         m_affm_lambda(m, affine_matrix);
-        std::tuple<AffM, AffM> affine_qr = factor_qr(affine_matrix);
+        std::tuple<AffM, AffM> affine_qr = decompose_qr(affine_matrix);
         AffM& affine_rotate_ref = std::get<0>(affine_qr);
         AffM& affine_upper_ref = std::get<1>(affine_qr);
         AffV affine_diag_vec = diagonal(affine_upper_ref);

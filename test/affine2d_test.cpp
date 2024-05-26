@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
     std::cout << affine_mat << "\n" << a4_mat << std::endl;
     std::cout << affine_mat * a4_vec << "\n" << a4_mat * a4_vec << std::endl;
 
-    auto affine_factor = ktm::factor_affine(affine_mat);
+    auto affine_factor = ktm::decompose_affine(affine_mat);
 
     std::cout << "affine2d_matrix factor translation rotation shear scale:" << std::endl;
     std::cout << std::get<0>(affine_factor) << "\n" << 
