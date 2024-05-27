@@ -9,7 +9,6 @@
 #define _KTM_I_VEC_DATA_H_
 
 #include "../../setup.h"
-#include "../../traits/type_traits_ext.h"
 #include "../../type/vec_fwd.h"
 #include "../../detail/vector/vec_data_fwd.h"
 
