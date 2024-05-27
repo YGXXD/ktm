@@ -44,7 +44,7 @@ struct iquat_data<Father, quat<T>> : Father
     }
     KTM_INLINE mat<4, 4, T> matrix4x4() const noexcept 
     {
-        mat<4, 4, T> ret = { };
+        mat<4, 4, T> ret { };
         matrix(reinterpret_cast<mat<3, 3, T>&>(ret));
         ret[3][3] = one<T>;
         return ret;
