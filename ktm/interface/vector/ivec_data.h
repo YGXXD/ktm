@@ -9,6 +9,7 @@
 #define _KTM_I_VEC_DATA_H_
 
 #include "../../setup.h"
+#include "../../traits/type_traits_ext.h"
 #include "../../type/vec_fwd.h"
 #include "../../detail/vector/vec_data_fwd.h"
 
@@ -95,21 +96,6 @@ template<class Father, class Child>
 struct ivec_data;
 
 template<class Father, typename T>
-struct ivec_data<Father, vec<1, T>> : Father
-{
-    using Father::Father;
-    union
-    {
-        struct { T x; };
-        struct { T r; };
-        typename detail::vec_data_implement::vec_storage<1, T>::type st;
-    };
-    constexpr ivec_data(T xi) noexcept : x(xi) { }
-    template<typename U, typename = std::enable_if_t<!std::is_same_v<U, T>>>
-    ivec_data(const vec<1, U>& v) noexcept : x(static_cast<T>(v.x)) { }
-};
-
-template<class Father, typename T>
 struct ivec_data<Father, vec<2, T>> : Father
 {
     using Father::Father;
@@ -120,7 +106,6 @@ struct ivec_data<Father, vec<2, T>> : Father
         typename detail::vec_data_implement::vec_storage<2, T>::type st;
     };
     constexpr ivec_data(T xi, T yi) noexcept : x(xi), y(yi) { }
-    ivec_data(const vec<1, T>& v, T yi) noexcept : x(v.x), y(yi) { }
     template<typename U, typename = std::enable_if_t<!std::is_same_v<U, T>>>
     ivec_data(const vec<2, U>& v) noexcept : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)) { }
 
@@ -164,6 +149,39 @@ struct ivec_data<Father, vec<4, T>> : Father
 
     KTM_SWIZZLE_VEC4(x, y, z, w)
     KTM_SWIZZLE_VEC4(r, g, b, a)
+};
+
+template<class Father, size_t N, typename T>
+struct ivec_data<Father, vec<N, T>> : Father
+{
+    using Father::Father;
+    typename detail::vec_data_implement::vec_storage<N, T>::type st;
+
+    template<typename ...Ts, typename = std::enable_if_t<sizeof...(Ts) == N>>
+    ivec_data(Ts... elems) noexcept 
+    {
+        T* st_ptr = reinterpret_cast<T*>(&st);
+        int i = 0;
+        ((st_ptr[i++] = static_cast<T>(elems)), ...);
+    }
+
+    template<typename U, typename = std::enable_if_t<!std::is_same_v<U, T>>>
+    ivec_data(const vec<N, U>& v) noexcept
+    {
+        T* st_ptr = reinterpret_cast<T*>(&st);
+        const U* v_ptr = reinterpret_cast<const U*>(&v.st);
+        for(int i = 0; i < N; ++i)
+        {
+            st_ptr[i] = static_cast<T>(v_ptr[i]);
+        }
+    }
+
+    template<size_t ...Ns> 
+    KTM_INLINE std::enable_if_t<sizeof...(Ns) <= N && ((Ns < N) && ...), vec<sizeof...(Ns), T>> swizzle() noexcept
+    {
+        return detail::vec_data_implement::vec_swizzle<sizeof...(Ns), N, T>::template call<Ns...>(
+            reinterpret_cast<const vec<N, T> &>(*this));
+    }
 };
 
 }
