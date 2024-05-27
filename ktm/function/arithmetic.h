@@ -18,16 +18,8 @@ namespace ktm
 template<typename T>
 KTM_INLINE std::enable_if_t<(std::is_arithmetic_v<T> && !std::is_unsigned_v<T>), T> abs(T x) noexcept
 {
-    if constexpr(std::is_same_v<float, T>)
-    {
-        unsigned int ret = *reinterpret_cast<unsigned int*>(&x) & 0x7fffffff;
-        return *reinterpret_cast<float*>(&ret);
-    }
-    else if constexpr(std::is_same_v<double, T>)
-    {
-        unsigned long long ret = *reinterpret_cast<unsigned long long*>(&x) & 0x7fffffffffffffff;
-        return *reinterpret_cast<double*>(&ret);
-    }
+    if constexpr(std::is_floating_point_v<T>)
+        return std::copysign(x, zero<T>);
     else
         return x < 0 ? -x : x;
 }
@@ -35,13 +27,19 @@ KTM_INLINE std::enable_if_t<(std::is_arithmetic_v<T> && !std::is_unsigned_v<T>),
 template<typename T>
 KTM_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> min(T x, T y) noexcept
 {
-    return x < y ? x : y;
+    if constexpr(std::is_floating_point_v<T>)
+        return std::fmin(x, y);
+    else
+        return x < y ? x : y;
 }
 
 template<typename T>
 KTM_INLINE std::enable_if_t<std::is_arithmetic_v<T>, T> max(T x, T y) noexcept
 {
-    return x > y ? x : y;
+    if constexpr(std::is_floating_point_v<T>)
+        return std::fmax(x, y);
+    else
+        return x > y ? x : y;
 }
 
 template<typename T>

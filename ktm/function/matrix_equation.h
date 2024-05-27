@@ -127,7 +127,6 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 
     for(int it = 0; it < KTM_MATRIX_EQUATION_ITERATION_MAX; ++it) 
     {
-        
         std::tuple<M, M> qr = decompose_qr(a);
         a = std::get<1>(qr) * std::get<0>(qr);
         eigen_vec = eigen_vec * std::get<0>(qr);
