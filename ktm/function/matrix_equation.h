@@ -8,11 +8,11 @@
 #ifndef _KTM_MATRIX_EQUATION_H_
 #define _KTM_MATRIX_EQUATION_H_
 
-#include <tuple>
 #include <cstring>
 #include "../setup.h"
 #include "../type/basic.h"
 #include "../traits/type_traits_math.h"
+#include "../traits/type_matrix_component.h"
 #include "exponential.h"
 #include "trigonometric.h"
 #include "compare.h"
@@ -24,7 +24,7 @@ namespace ktm
 {
 
 template<class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<M, M>> decompose_lu(const M& m) noexcept
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, lu_component<M>> decompose_lu(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_n<M>;
 
@@ -70,7 +70,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 }
 
 template<class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<M, M>> decompose_qr(const M& m) noexcept
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>> decompose_qr(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_n<M>;
     using T = mat_traits_base_t<M>;
@@ -119,7 +119,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 }
 
 template<class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<mat_traits_col_t<M>, M>> eigen_qrit(const M& m) noexcept
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, eigen_component<M>> decompose_eigen_qrit(const M& m) noexcept
 {
     // qr iteration for calc matrix eigenvectors and eigenvalues
     M a { m }, eigen_vec = M::from_eye();
@@ -127,9 +127,9 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 
     for(int it = 0; it < KTM_MATRIX_EQUATION_ITERATION_MAX; ++it) 
     {
-        std::tuple<M, M> qr = decompose_qr(a);
-        a = std::get<1>(qr) * std::get<0>(qr);
-        eigen_vec = eigen_vec * std::get<0>(qr);
+        qr_component<M> qr = decompose_qr(a);
+        a = qr.get_r() * qr.get_q();
+        eigen_vec = eigen_vec * qr.get_q();
         eigen_value = diagonal(a);
         if(equal(eigen_value, last_eigen_value))
             break;
@@ -139,12 +139,12 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 }
 
 template<class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<mat_traits_col_t<M>, M>> eigen_jacobi(const M& m) noexcept
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, eigen_component<M>> decompose_eigen_jacobi(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_n<M>;
     using T = mat_traits_base_t<M>;
 
-    // jacobi iteration for matrix eigenvectors and eigenvalues(the matrix must be a symmetric matrix)
+    // jacobi iteration for matrix eigenvectors and eigenvalues
     M a { m }, eigen_vec = M::from_eye();
     mat_traits_col_t<M> eigen_value;
 
@@ -241,97 +241,124 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 }
 
 template<class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<M, M, M>> decompose_svd(const M& m) noexcept
+KTM_NOINLINE std::enable_if_t<is_floating_point_base_v<M>, svd_component<M>> decompose_svd(const M& m) noexcept
 {
-    // calc matrix svd decomposition(using eigen_jacobi to find matrix eigenvectors and eigenvalues)
-    std::tuple<mat_traits_col_t<M>, M> ata_eigen = eigen_jacobi(transpose(m) * m);
-    mat_traits_col_t<M>& ata_eigen_value_ref = std::get<0>(ata_eigen);
+    using u_type = typename svd_component<M>::u_type;
+    using s_type = typename svd_component<M>::s_type;
+    using vt_type = typename svd_component<M>::vt_type;
+    constexpr size_t row_n = mat_traits_row_n<s_type>;
+    constexpr size_t col_n = mat_traits_col_n<s_type>;
 
-    ata_eigen_value_ref = sqrt(abs(ata_eigen_value_ref)); 
-    M v = transpose(std::get<1>(ata_eigen));
-    M s = M::from_diag(ata_eigen_value_ref);
-    ata_eigen_value_ref = recip(ata_eigen_value_ref);  
-    M u = m * std::get<1>(ata_eigen) * M::from_diag(ata_eigen_value_ref);
-    return { u, s, v };
+    // calc matrix svd decomposition(using decompose_eigen_jacobi to decompose matrix eigenvectors and eigenvalues)
+    if constexpr(row_n >= col_n)
+    {
+        // if row_n >= col_n, first calc v matrix
+        eigen_component<vt_type> ata_eigen = decompose_eigen_jacobi(transpose(m) * m);
+        mat_traits_col_t<s_type>& ata_eigen_value_ref = reinterpret_cast<mat_traits_col_t<s_type>&>(ata_eigen.get_value());
+        ata_eigen_value_ref = sqrt(abs(ata_eigen_value_ref));
+        s_type s; mat_traits_tp_t<s_type> inv_s;
+        if constexpr(row_n == col_n)
+        {
+            s = s_type::from_diag(ata_eigen_value_ref);
+            inv_s = s_type::from_diag(recip(ata_eigen_value_ref));
+        }
+        else
+        {
+            s = { }; inv_s = { };
+            mat_traits_col_t<s_type> recip_diag_value = recip(ata_eigen_value_ref);
+            for(int i = 0; i < col_n; ++i)
+            {
+                s[i][i] = ata_eigen_value_ref[i];
+                inv_s[i][i] = recip_diag_value[i]; 
+            }
+        }
+        vt_type& v = ata_eigen.get_vector();
+        u_type u = m * v * inv_s;
+        return { u, s, transpose(v) };
+    }
+    else
+    {
+        // if row_n < col_n, first calc u matrix
+        eigen_component<u_type> aat_eigen = decompose_eigen_jacobi(m * transpose(m));
+        u_type& u = aat_eigen.get_vector();
+        mat_traits_row_t<s_type>& aat_eigen_value_ref = reinterpret_cast<mat_traits_row_t<s_type>&>(aat_eigen.get_value());
+        aat_eigen_value_ref = sqrt(abs(aat_eigen_value_ref));
+        s_type s { }; mat_traits_tp_t<s_type> inv_s { }; 
+        mat_traits_row_t<s_type> recip_diag_value = recip(aat_eigen_value_ref);
+        for(int i = 0; i < row_n; ++i)
+        {
+            s[i][i] = aat_eigen_value_ref[i];
+            inv_s[i][i] = recip_diag_value[i];
+        }
+        vt_type vt = inv_s * transpose(u) * m;
+        return { u, s, vt };
+    }
 }
 
 template<class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, std::tuple<M, M, M, M>> decompose_affine(const M& m) noexcept
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, affine_component<M>> decompose_affine(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_n<M>;
     using T = mat_traits_base_t<M>;
     if constexpr(N == 2)
     {
         M translate_matrix = M::from_eye();
-        M rotate_matrix = M::from_eye();
-        M scale_matrix = M::from_eye();
         translate_matrix[1][0] = m[1][0];
-        if(m[0][0] < zero<T>)
-        {
-            rotate_matrix[0][0] = -one<T>;
-            scale_matrix[0][0] = -m[0][0];
-        }
-        else
-        {
-            scale_matrix[0][0] = m[0][0];
-        }
+        M rotate_matrix = M::from_eye();
+        rotate_matrix[0][0] = std::copysign(one<T>, m[0][0]);
+        M scale_matrix = M::from_eye();
+        scale_matrix[0][0] = abs(m[0][0]);
         return { translate_matrix, rotate_matrix, M::from_eye(), scale_matrix };
     }
     else
     {
         using AffM = mat<N - 1, N - 1, T>;
         using AffV = vec<N - 1, T>;
-        constexpr size_t affv_size = (N - 1) * sizeof(T);
-
-        constexpr auto m_affm_lambda = [N, affv_size](const M& in_m, AffM& out_affm) -> void
+        constexpr auto m_to_affm_lambda = [N](const M& in_m, AffM& out_affm) -> void
         {
             for(int i = 0; i < N - 1; ++i)
-                memcpy(&out_affm[i], &in_m[i], affv_size); 
+                std::copy(in_m[i].begin(), in_m[i].end() - 1, out_affm[i].begin());
         };
-        constexpr auto affm_m_lambda = [N, affv_size](const AffM& in_affm, M& out_m) -> void
+        constexpr auto affm_to_m_lambda = [N](const AffM& in_affm, M& out_m) -> void
         {
             for(int i = 0; i < N - 1; ++i)
             {
-                memcpy(&out_m[i], &in_affm[i], affv_size);
+                std::copy(in_affm[i].begin(), in_affm[i].end(), out_m[i].begin());
                 out_m[i][N - 1] = zero<T>;
             }
-            memset(&out_m[N - 1], 0, affv_size);
+            out_m[N - 1].fill(zero<T>); 
             out_m[N - 1][N - 1] = one<T>;
         };
 
         // calc matrix affine decomposition(translation * rotation * shear * scale)
         AffM affine_matrix;
-        m_affm_lambda(m, affine_matrix);
-        std::tuple<AffM, AffM> affine_qr = decompose_qr(affine_matrix);
-        AffM& affine_rotate_ref = std::get<0>(affine_qr);
-        AffM& affine_upper_ref = std::get<1>(affine_qr);
+        m_to_affm_lambda(m, affine_matrix);
+        qr_component<AffM> affine_qr = decompose_qr(affine_matrix);
+        AffM& affine_rotate_ref = affine_qr.get_q();
+        AffM& affine_upper_ref = affine_qr.get_r();
         AffV affine_diag_vec = diagonal(affine_upper_ref);
         mat_traits_col_t<M> diag_vec;
         for(int i = 0; i < N - 1; ++i)
         {
             if(affine_diag_vec[i] < 0)
             {
-                diag_vec[i] = -affine_diag_vec[i];
                 affine_rotate_ref[i] = -affine_rotate_ref[i];
                 for(int j = i; j < N - 1; ++j)
                 {
                     affine_upper_ref[i][j] = -affine_upper_ref[i][j];
                 }
             }
-            else
-            {
-                diag_vec[i] = affine_diag_vec[i];
-            }
-            affine_upper_ref[i] /= diag_vec[i];
+            diag_vec[i] = abs(affine_diag_vec[i]);
+            affine_upper_ref[i] *= recip(diag_vec[i]);
         }
         diag_vec[N - 1] = one<T>;
 
         M translate_matrix = M::from_eye();
         translate_matrix[N - 1] = m[N - 1];
         M rotate_matrix;
-        affm_m_lambda(affine_rotate_ref, rotate_matrix); 
+        affm_to_m_lambda(affine_rotate_ref, rotate_matrix); 
         M shear_matrix;
-        affm_m_lambda(affine_upper_ref, shear_matrix);
+        affm_to_m_lambda(affine_upper_ref, shear_matrix);
         M scale_matrix = M::from_diag(diag_vec);
 
         return { translate_matrix, rotate_matrix, shear_matrix, scale_matrix };
