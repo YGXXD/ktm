@@ -17,6 +17,7 @@
 
 namespace ktm
 {
+
 template<class Father, class Child>
 struct iquat_data;
 
@@ -66,6 +67,7 @@ private:
         m[2][2] = one<T> - (yy2 + xx2);
     }
 };
+
 }
 
 #endif

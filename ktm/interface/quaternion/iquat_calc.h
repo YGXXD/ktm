@@ -16,6 +16,7 @@
 
 namespace ktm
 {
+    
 template<class Father, class Child>
 struct iquat_calc;
 

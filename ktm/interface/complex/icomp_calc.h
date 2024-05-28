@@ -16,6 +16,7 @@
 
 namespace ktm
 {
+
 template<class Father, class Child>
 struct icomp_calc;
 
@@ -90,6 +91,7 @@ struct icomp_calc<Father, comp<T>> : Father
         return reinterpret_cast<comp<T>&>(*this);
     }
 };
+
 }
 
 #endif

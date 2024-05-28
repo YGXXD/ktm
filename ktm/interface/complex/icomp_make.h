@@ -16,6 +16,7 @@
 
 namespace ktm
 {
+
 template<class Father, class Child>
 struct icomp_make;
 
@@ -54,6 +55,7 @@ struct icomp_make<Father, comp<T>> : Father
         return comp<T>(matrix[0].yx()); 
     }
 };
+
 }
 
 #endif

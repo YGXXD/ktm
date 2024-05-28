@@ -17,6 +17,7 @@
 
 namespace ktm
 {
+    
 template<class Father, class Child>
 struct icomp_data;
 
@@ -44,6 +45,7 @@ struct icomp_data<Father, comp<T>> : Father
         return mat<3, 3, T>(vec<3, T>(r, i, zero<T>), vec<3, T>(-i, r, zero<T>), vec<3, T>(zero<T>, zero<T>, one<T>));
     }
 };
+
 }
 
 #endif

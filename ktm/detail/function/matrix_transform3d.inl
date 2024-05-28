@@ -37,7 +37,7 @@ KTM_NOINLINE std::enable_if_t<std::is_floating_point_v<T>, ktm::mat<4, 4, T>> kt
     }
     else
     {
-        ret[3] = {zero<T>, zero<T>, zero<T>, one<T>};
+        ret[3] = { zero<T>, zero<T>, zero<T>, one<T> };
     }
     return ret;
 }

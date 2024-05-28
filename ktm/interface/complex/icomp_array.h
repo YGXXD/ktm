@@ -14,6 +14,7 @@
 
 namespace ktm
 {
+
 template<class Father, class Child>
 struct icomp_array;
 
@@ -23,6 +24,7 @@ struct icomp_array<Father, comp<T>> : Father
     using Father::Father;
     using array_type = std::array<T, 2>;
 };
+
 }
 
 #endif
