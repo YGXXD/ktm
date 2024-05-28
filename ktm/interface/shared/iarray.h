@@ -21,10 +21,23 @@ struct iarray : Father
     using Father::Father;
     using typename Father::array_type;
 
+    KTM_FUNC iarray(std::initializer_list<typename array_type::value_type> li) noexcept
+    {
+        std::copy(li.begin(), li.begin() + (li.size() < size() ? li.size() : size()), begin());
+    };
+
     template<size_t Index> 
-    KTM_FUNC typename array_type::value_type get() const noexcept { static_assert(Index < size()); return reinterpret_cast<typename array_type::const_pointer>(this)[Index]; }
+    KTM_FUNC typename array_type::value_type get() const noexcept 
+    { 
+        static_assert(Index < size());
+        return reinterpret_cast<typename array_type::const_pointer>(this)[Index]; 
+    }
     template<size_t Index> 
-    KTM_FUNC void set(typename array_type::const_reference v) noexcept { static_assert(Index < size()); reinterpret_cast<typename array_type::pointer>(this)[Index] = v; }
+    KTM_FUNC void set(typename array_type::const_reference v) noexcept 
+    { 
+        static_assert(Index < size());
+        reinterpret_cast<typename array_type::pointer>(this)[Index] = v; 
+    }
 
     KTM_FUNC array_type& to_array() noexcept { return reinterpret_cast<array_type&>(*this); }
     KTM_FUNC const array_type& to_array() const noexcept { return reinterpret_cast<const array_type&>(*this); }
@@ -47,9 +60,9 @@ struct iarray : Father
     KTM_FUNC typename array_type::const_reverse_iterator crbegin() const noexcept { return rbegin(); }
     KTM_FUNC typename array_type::const_reverse_iterator crend() const noexcept { return rend(); }
 
-    constexpr size_t size() const noexcept { return to_array().size(); }
-    constexpr size_t max_size() const noexcept { return to_array().max_size(); }
-    constexpr bool empty() const noexcept { return false; }
+    KTM_FUNC constexpr size_t size() const noexcept { return to_array().size(); }
+    KTM_FUNC constexpr size_t max_size() const noexcept { return to_array().max_size(); }
+    KTM_FUNC constexpr bool empty() const noexcept { return false; }
 
     KTM_FUNC typename array_type::reference at(size_t i) { return to_array().at(i); }
     KTM_FUNC typename array_type::const_reference at(size_t i) const { return to_array().at(i); }
@@ -87,7 +100,7 @@ struct iarray : Father
     }
 
 };
-}
 
+}
 
 #endif

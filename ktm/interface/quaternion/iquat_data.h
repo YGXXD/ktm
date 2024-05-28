@@ -30,8 +30,8 @@ struct iquat_data<Father, quat<T>> : Father
         struct { vec<4, T> vector; };
         struct { T i, j, k, r; };
     };
-    constexpr iquat_data(T x, T y, T z, T w) noexcept : i(x), j(y), k(z), r(w) { }
-    iquat_data(const vec<4, T>& vec) noexcept : vector(vec) { }
+    constexpr explicit iquat_data(T x, T y, T z, T w) noexcept : i(x), j(y), k(z), r(w) { }
+    explicit iquat_data(const vec<4, T>& vec) noexcept : vector(vec) { }
 
     KTM_INLINE T real() const noexcept { return r; }
     KTM_INLINE vec<3, T> imag() const noexcept { return vec<3, T>(i, j, k); } 

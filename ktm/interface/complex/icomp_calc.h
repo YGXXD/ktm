@@ -53,7 +53,9 @@ struct icomp_calc<Father, comp<T>> : Father
 
     KTM_INLINE comp<T> operator-() const noexcept
     {
-        return detail::vec_calc_implement::opposite<2, T>::call(reinterpret_cast<const vec<2, T>&>(*this));
+        comp<T> ret;
+        ret.vector = detail::vec_calc_implement::opposite<2, T>::call(reinterpret_cast<const vec<2, T>&>(*this));
+        return ret;
     }
 
     KTM_INLINE comp<T> operator*(const comp<T>& y) const noexcept

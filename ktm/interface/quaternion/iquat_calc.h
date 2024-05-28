@@ -47,7 +47,9 @@ struct iquat_calc<Father, quat<T>> : Father
 
     KTM_INLINE quat<T> operator-() const noexcept
     {
-        return detail::vec_calc_implement::opposite<4, T>::call(reinterpret_cast<const vec<4, T>&>(*this));
+        quat<T> ret;
+        ret.vector = detail::vec_calc_implement::opposite<4, T>::call(reinterpret_cast<const vec<4, T>&>(*this));
+        return ret;
     }
 
     KTM_INLINE quat<T>& operator-=(const quat<T>& y) noexcept

@@ -30,8 +30,8 @@ struct icomp_data<Father, comp<T>> : Father
         struct { vec<2, T> vector; };
         struct { T i, r; };
     };
-    constexpr icomp_data(T x, T y) noexcept : i(x), r(y) { }
-    icomp_data(const vec<2, T> vec) noexcept : vector(vec) { }
+    constexpr explicit icomp_data(T x, T y) noexcept : i(x), r(y) { }
+    explicit icomp_data(const vec<2, T> vec) noexcept : vector(vec) { }
 
     KTM_INLINE T real() const noexcept { return r; }
     KTM_INLINE T imag() const noexcept { return i; } 
