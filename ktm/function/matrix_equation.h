@@ -16,6 +16,7 @@
 #include "exponential.h"
 #include "trigonometric.h"
 #include "compare.h"
+#include "geometric.h"
 #include "matrix.h"
 
 #define KTM_MATRIX_EQUATION_ITERATION_MAX 100
@@ -39,7 +40,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
         l[0][i] = m[0][i] / u[0][0];
     }
 
-    for (int i = 1; i < N; i++)
+    for(int i = 1; i < N; i++)
     {
         //                     \- j-1
         // u[i][j] = m[i][j] - |  l[k][j] * u[i][k]
@@ -70,7 +71,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 }
 
 template<class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>> decompose_qr(const M& m) noexcept
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>> decompose_qr_householder(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_n<M>;
     using T = mat_traits_base_t<M>;
@@ -119,6 +120,76 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 }
 
 template<class M>
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>> decompose_qr_givens(const M& m) noexcept
+{
+    constexpr size_t N = mat_traits_col_n<M>;
+    using T = mat_traits_base_t<M>;
+
+    // givens rotation for matrix qr decomposition
+    M q = M::from_eye(), r { m };
+
+    for(int i = 0; i < N; ++i) 
+    {
+        for(int j = N - 1; j > i; --j) 
+        {
+            if(!equal_zero(r[i][j]))
+            {
+                vec<2, T> cos_sin = normalize(vec<2, T>(r[i][j - 1], r[i][j]));       
+                for(int k = 0; k < N; ++k) 
+                {
+                    T tmp = r[k][j - 1];
+                    r[k][j - 1] = cos_sin[0] * tmp + cos_sin[1] * r[k][j];
+                    r[k][j] = cos_sin[0] * r[k][j] - cos_sin[1] * tmp;
+
+                    tmp = q[j - 1][k];
+                    q[j - 1][k] = cos_sin[0] * tmp + cos_sin[1] * q[j][k];
+                    q[j][k] = cos_sin[0] * q[j][k] - cos_sin[1] * tmp;
+                }
+            }
+        }
+    }
+    return { q, r };
+}
+
+template<class M>
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>> decompose_qr_schmitd(const M& m) noexcept
+{
+    constexpr size_t N = mat_traits_col_n<M>;
+    using T = mat_traits_base_t<M>;
+
+    // gram-schmidt orthogonalization for matrix qr decomposition
+    M q { }, r { }, a { m };
+
+    for(int i = 0; i < N; ++i)
+	{
+		T mod = 0;
+		for(int j = 0; j < N; ++j)
+		{
+			mod += a[i][j] * a[i][j]; 
+		}
+		r[i][i] = sqrt(mod);
+
+		for(int j = 0; j < N; ++j)
+		{
+			q[i][j] = a[i][j] * recip(r[i][i]);
+		}
+
+		for(int j = i + 1; j < N; ++j)
+		{
+			for(int k = 0; k < N; ++k)
+			{
+				r[j][i] += a[j][k] * q[i][k];
+			}
+			for(int k = 0; k < N; ++k)
+			{
+				a[j][k] -= r[j][i] * q[i][k];
+			}
+		}
+	}
+    return { q, r };
+}
+
+template<class M>
 KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, eigen_component<M>> decompose_eigen_qrit(const M& m) noexcept
 {
     // qr iteration for calc matrix eigenvectors and eigenvalues
@@ -127,7 +198,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 
     for(int it = 0; it < KTM_MATRIX_EQUATION_ITERATION_MAX; ++it) 
     {
-        qr_component<M> qr = decompose_qr(a);
+        qr_component<M> qr = decompose_qr_householder(a);
         a = qr.get_r() * qr.get_q();
         eigen_vec = eigen_vec * qr.get_q();
         eigen_value = diagonal(a);
@@ -234,9 +305,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
             eigen_vec[row][i] = cos_theta * eri - sin_theta * eci;
         }
     }
-
     eigen_value = diagonal(a);
-
     return { eigen_value, eigen_vec };
 }
 
@@ -333,7 +402,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
         // calc matrix affine decomposition(translation * rotation * shear * scale)
         AffM affine_matrix;
         m_to_affm_lambda(m, affine_matrix);
-        qr_component<AffM> affine_qr = decompose_qr(affine_matrix);
+        qr_component<AffM> affine_qr = decompose_qr_householder(affine_matrix);
         AffM& affine_rotate_ref = affine_qr.get_q();
         AffM& affine_upper_ref = affine_qr.get_r();
         AffV affine_diag_vec = diagonal(affine_upper_ref);

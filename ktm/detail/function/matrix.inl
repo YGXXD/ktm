@@ -125,11 +125,11 @@ struct ktm::detail::matrix_implement::determinant
         for(int i = 0; i < N; ++i) 
         {
             mat<N - 1, N - 1, T> sub_matrix;
-            for (int col = 1; col < N; ++col) 
+            for(int col = 1; col < N; ++col) 
             {
-                for (int row = 0, sub_row = 0; row < N; ++row) 
+                for(int row = 0, sub_row = 0; row < N; ++row) 
                 {
-                    if (row == i) 
+                    if(row == i) 
                         continue;
                     sub_matrix[col - 1][sub_row] = m[col][row];
                     ++sub_row;

@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
     std::cout << std::get<0>(lu) << "\n" << std::get<1>(lu) << "\n" << std::get<0>(lu) * std::get<1>(lu) << std::endl;
 
     std::cout << "factor qr test:" << std::endl;
-    auto qr = ktm::decompose_qr(mt8);
+    auto qr = ktm::decompose_qr_householder(mt8);
     std::cout << std::get<0>(qr) << "\n" << std::get<1>(qr) << "\n" << std::get<0>(qr) * std::get<1>(qr) << std::endl;
 
     std::cout << "factor svd test:" << std::endl;
