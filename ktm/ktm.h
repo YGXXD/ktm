@@ -22,7 +22,7 @@
 #include "function/geometric.h"
 #include "function/compare.h"
 #include "function/matrix.h"
-#include "function/matrix_equation.h"
+#include "function/matrix_decompose.h"
 #include "function/matrix_transform2d.h"
 #include "function/matrix_transform3d.h"
 #include "function/quaternion.h"

@@ -5,8 +5,8 @@
 //  Created by 有个小小杜
 //
 
-#ifndef _KTM_MATRIX_EQUATION_H_
-#define _KTM_MATRIX_EQUATION_H_
+#ifndef _KTM_MATRIX_DECOMPOSE_H_
+#define _KTM_MATRIX_DECOMPOSE_H_
 
 #include <cstring>
 #include "../setup.h"
@@ -19,7 +19,7 @@
 #include "geometric.h"
 #include "matrix.h"
 
-#define KTM_MATRIX_EQUATION_ITERATION_MAX 100
+#define KTM_MATRIX_DECOMPOSE_ITERATION_MAX 100
 
 namespace ktm
 {
@@ -86,15 +86,19 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
         {
             alpha += r[i][j] * r[i][j];
         }
-        alpha = r[i][i] > zero<T> ? -sqrt(alpha) : sqrt(alpha);
+        alpha = std::copysign(sqrt(alpha), -r[i][i]);
 
-        T r_rho = rsqrt(static_cast<T>(2) * alpha * (alpha - r[i][i]));
-        r[i][i] = (r[i][i] - alpha) * r_rho;
-        for(int j = i + 1; j < N; ++j)
+        T rho_square = static_cast<T>(2) * alpha * (alpha - r[i][i]);
+        if(greater_zero(rho_square))
         {
-            r[i][j] *= r_rho;
+            T r_rho = rsqrt(rho_square);
+            r[i][i] = (r[i][i] - alpha) * r_rho;
+            for(int j = i + 1; j < N; ++j)
+            {
+                r[i][j] *= r_rho;
+            }
         }
-
+        
         for(int k = 0; k < N; ++k)
         {
             T tq = zero<T>;
@@ -162,28 +166,13 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 
     for(int i = 0; i < N; ++i)
 	{
-		T mod = 0;
-		for(int j = 0; j < N; ++j)
-		{
-			mod += a[i][j] * a[i][j]; 
-		}
-		r[i][i] = sqrt(mod);
-
-		for(int j = 0; j < N; ++j)
-		{
-			q[i][j] = a[i][j] * recip(r[i][i]);
-		}
+		r[i][i] = length(a[i]);
+        q[i] = a[i] * recip(r[i][i]);
 
 		for(int j = i + 1; j < N; ++j)
 		{
-			for(int k = 0; k < N; ++k)
-			{
-				r[j][i] += a[j][k] * q[i][k];
-			}
-			for(int k = 0; k < N; ++k)
-			{
-				a[j][k] -= r[j][i] * q[i][k];
-			}
+            r[j][i] += dot(a[j], q[i]);
+			a[j] -= r[j][i] * q[i];
 		}
 	}
     return { q, r };
@@ -192,14 +181,19 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 template<class M>
 KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, eigen_component<M>> decompose_eigen_qrit(const M& m) noexcept
 {
+    constexpr size_t N = mat_traits_col_n<M>;
+    using T = mat_traits_base_t<M>;
+
     // qr iteration for calc matrix eigenvectors and eigenvalues
     M a { m }, eigen_vec = M::from_eye();
-    mat_traits_col_t<M> eigen_value, last_eigen_value = diagonal(a);
+    mat_traits_col_t<M> eigen_value, last_eigen_value = diagonal(a), one_vec;
+    one_vec.fill(one<T>);
 
-    for(int it = 0; it < KTM_MATRIX_EQUATION_ITERATION_MAX; ++it) 
+    for(int it = 0; it < KTM_MATRIX_DECOMPOSE_ITERATION_MAX; ++it) 
     {
-        qr_component<M> qr = decompose_qr_householder(a);
-        a = qr.get_r() * qr.get_q();
+        M shift_i = M::from_diag(one_vec * a[N - 1][N - 1]);
+        qr_component<M> qr = decompose_qr_householder(a - shift_i);
+        a = qr.get_r() * qr.get_q() + shift_i;
         eigen_vec = eigen_vec * qr.get_q();
         eigen_value = diagonal(a);
         if(equal(eigen_value, last_eigen_value))
@@ -219,7 +213,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
     M a { m }, eigen_vec = M::from_eye();
     mat_traits_col_t<M> eigen_value;
 
-    for(int it = 0; it < KTM_MATRIX_EQUATION_ITERATION_MAX; ++it)
+    for(int it = 0; it < KTM_MATRIX_DECOMPOSE_ITERATION_MAX; ++it)
     {
         // find the maximum element on a non diagonal line
         int col = 0, row = 1;
