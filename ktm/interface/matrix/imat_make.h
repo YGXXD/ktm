@@ -21,7 +21,7 @@ template<class Father, class Child>
 struct imat_make;
 
 template<class Father, size_t Row, size_t Col, typename T>
-struct imat_make<Father, mat<Row, Col, T>> : Father
+struct imat_make<Father, mat<Row, Col, T, std::enable_if_t<Row != Col>>> : Father
 {
     using Father::Father;
 

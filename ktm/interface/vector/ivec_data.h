@@ -117,8 +117,8 @@ struct ivec_data<Father, vec<N, T>> : Father
             st_ptr[i] = static_cast<T>(v_ptr[i]);
     }
 
-    template<size_t ...Ns> 
-    KTM_INLINE std::enable_if_t<sizeof...(Ns) <= N && ((Ns < N) && ...), vec<sizeof...(Ns), T>> swizzle() noexcept
+    template<size_t ...Ns, typename = std::enable_if_t<((Ns < N) && ...)>>
+    KTM_INLINE std::enable_if_t<sizeof...(Ns) <= N, vec<sizeof...(Ns), T>> swizzle() noexcept
     {
         return detail::vec_data_implement::vec_swizzle<sizeof...(Ns), N, T>::template call<Ns...>(
             reinterpret_cast<const vec<N, T> &>(*this));

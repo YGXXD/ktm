@@ -60,9 +60,9 @@ struct iarray : Father
     KTM_FUNC typename array_type::const_reverse_iterator crbegin() const noexcept { return rbegin(); }
     KTM_FUNC typename array_type::const_reverse_iterator crend() const noexcept { return rend(); }
 
-    KTM_FUNC constexpr size_t size() const noexcept { return to_array().size(); }
-    KTM_FUNC constexpr size_t max_size() const noexcept { return to_array().max_size(); }
-    KTM_FUNC constexpr bool empty() const noexcept { return false; }
+    constexpr KTM_FUNC size_t size() const noexcept { return to_array().size(); }
+    constexpr KTM_FUNC size_t max_size() const noexcept { return to_array().max_size(); }
+    constexpr KTM_FUNC bool empty() const noexcept { return false; }
 
     KTM_FUNC typename array_type::reference at(size_t i) { return to_array().at(i); }
     KTM_FUNC typename array_type::const_reference at(size_t i) const { return to_array().at(i); }
