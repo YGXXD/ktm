@@ -21,9 +21,17 @@ struct iarray : Father
     using Father::Father;
     using typename Father::array_type;
 
+#if defined(KTM_DEFAULT_CONSTRUCT_INIT)
+    KTM_FUNC iarray() noexcept { fill(typename array_type::value_type { }); }
+#endif
+
     KTM_FUNC iarray(std::initializer_list<typename array_type::value_type> li) noexcept
     {
-        std::copy(li.begin(), li.begin() + (li.size() < size() ? li.size() : size()), begin());
+        const size_t offset = li.size() < size() ? li.size() : size();
+        std::copy(li.begin(), li.begin() + offset, begin());
+#if defined(KTM_DEFAULT_CONSTRUCT_INIT)
+        std::fill(begin() + offset, end(), typename array_type::value_type { });
+#endif
     };
 
     template<size_t Index> 
