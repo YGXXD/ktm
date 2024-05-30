@@ -85,7 +85,7 @@ struct affine_component<mat<N, N, T>> : std::tuple<mat<N, N, T>, mat<N, N, T>, m
     KTM_MATRIX_COMPONENT_ELEMENT(translate, 0)
     KTM_MATRIX_COMPONENT_ELEMENT(rotate, 1)
     KTM_MATRIX_COMPONENT_ELEMENT(shear, 2)
-    KTM_MATRIX_COMPONENT_ELEMENT(scale, 2)
+    KTM_MATRIX_COMPONENT_ELEMENT(scale, 3)
 };
 
 }
