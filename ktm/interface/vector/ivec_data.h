@@ -39,11 +39,6 @@ KTM_INLINE vec<3, T> x##z##y() const noexcept \
         KTM_VEC_ST_ENUM_GET(z), KTM_VEC_ST_ENUM_GET(y)>(reinterpret_cast<const vec<n, T>&>(*this)); \
 }
 
-#define KTM_PERMUTATION_3_3(x, y, z, n) \
-KTM_PERMUTATION_3_2(x, y, z, n) \
-KTM_PERMUTATION_3_2(y, z, x, n) \
-KTM_PERMUTATION_3_2(z, x, y, n)
-
 #define KTM_PERMUTATION_4_2(x, y, z, w, n) \
 KTM_INLINE vec<4, T> x##y##z##w() const noexcept \
 { \
@@ -56,6 +51,11 @@ KTM_INLINE vec<4, T> x##y##w##z() const noexcept \
         KTM_VEC_ST_ENUM_GET(y), KTM_VEC_ST_ENUM_GET(w), KTM_VEC_ST_ENUM_GET(z)>(reinterpret_cast<const vec<n, T>&>(*this)); \
 }
 
+#define KTM_PERMUTATION_3_3(x, y, z, n) \
+KTM_PERMUTATION_3_2(x, y, z, n) \
+KTM_PERMUTATION_3_2(y, z, x, n) \
+KTM_PERMUTATION_3_2(z, x, y, n)
+
 #define KTM_PERMUTATION_4_3(x, y, z, w, n) \
 KTM_PERMUTATION_4_2(x, y, z, w, n) \
 KTM_PERMUTATION_4_2(x, z, w, y, n) \
@@ -67,7 +67,8 @@ KTM_PERMUTATION_4_3(y, z, w, x, n) \
 KTM_PERMUTATION_4_3(z, w, x, y, n) \
 KTM_PERMUTATION_4_3(w, x, y, z, n)
 
-#define KTM_SWIZZLE_VEC2(x, y) KTM_PERMUTATION_2_2(x, y, 2)
+#define KTM_SWIZZLE_VEC2(x, y) \
+KTM_PERMUTATION_2_2(x, y, 2)
 
 #define KTM_SWIZZLE_VEC3(x, y, z) \
 KTM_PERMUTATION_3_3(x, y, z, 3) \

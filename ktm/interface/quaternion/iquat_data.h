@@ -12,7 +12,7 @@
 #include "../../type/vec_fwd.h"
 #include "../../type/quat_fwd.h"
 #include "../../type/mat_fwd.h"
-#include "../../function/arithmetic.h"
+#include "../../function/trigonometric.h"
 #include "../../function/geometric.h"
 
 namespace ktm
@@ -27,11 +27,11 @@ struct iquat_data<Father, quat<T>> : Father
     using Father::Father;
     union
     {
-        struct { vec<4, T> vector; };
         struct { T i, j, k, r; };
+        struct { T x, y, z, w; };
     };
     constexpr explicit iquat_data(T x, T y, T z, T w) noexcept : i(x), j(y), k(z), r(w) { }
-    explicit iquat_data(const vec<4, T>& vec) noexcept : vector(vec) { }
+    explicit iquat_data(const vec<4, T>& vec) noexcept : i(vec.x), j(vec.y), k(vec.z), r(vec.w) { }
 
     KTM_INLINE T real() const noexcept { return r; }
     KTM_INLINE vec<3, T> imag() const noexcept { return vec<3, T>(i, j, k); } 
