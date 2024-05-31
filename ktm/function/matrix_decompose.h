@@ -396,7 +396,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
         // calc matrix affine decomposition(translation * rotation * shear * scale)
         AffM affine_matrix;
         m_to_affm_lambda(m, affine_matrix);
-        qr_component<AffM> affine_qr = decompose_qr_householder(affine_matrix);
+        qr_component<AffM> affine_qr = decompose_qr_givens(affine_matrix);
         AffM& affine_rotate_ref = affine_qr.get_q();
         AffM& affine_upper_ref = affine_qr.get_r();
         AffV affine_diag_vec = diagonal(affine_upper_ref);

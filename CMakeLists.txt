@@ -12,8 +12,9 @@ if(KTM_BUILD_WASM AND NOT "${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
 elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	add_compile_options(/source-charset:utf-8)
 	add_compile_options(/execution-charset:utf-8)
-elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR 
-		"${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR 
+	add_compile_options(/arch:SSE2)
+elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR
+		"${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
 		"${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
 	add_compile_options(-march=native)
 endif()

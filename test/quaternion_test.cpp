@@ -38,6 +38,18 @@ int main(int argc, char* argv[])
     std::cout << "matrix and quat effect" << std::endl;
     std::cout << q5_mat3x3 * v2 << "\n" << q5 * v2 << std::endl;
 
+    ktm::fquat q6 = ktm::fquat::angle_axis(ktm::half_pi<float>, ktm::fvec3(1.f, 0.f, 0.f));
+    ktm::fquat q7 = ktm::fquat::angle_axis(ktm::tow_pi<float>, ktm::fvec3(0.6f, -0.8f, 0.f));
+    ktm::fvec3 v3 = { 1.f, 1.f, 1.f };
+    std::cout << "slerp comp rotate vec" << std::endl;
+    for(float i = 0.f; i <= 1.00005f; i += 0.1f)
+    {
+        ktm::fquat q = slerp(q6, q7, i);
+        ktm::fmat3x3 m = q.matrix3x3();
+        std::cout << q * v3 << std::endl;
+        std::cout << m * v3 << std::endl;
+    }
+
     std::cout << "inverse: " << ktm::inverse(q5) << std::endl;
     std::cout << "negate: " << -q5 << std::endl;
     std::cout << "normalize: " << ktm::normalize(q5) << std::endl;
