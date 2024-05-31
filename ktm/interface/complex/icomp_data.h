@@ -12,6 +12,7 @@
 #include "../../type/vec_fwd.h"
 #include "../../type/comp_fwd.h"
 #include "../../type/mat_fwd.h"
+#include "../../detail/vector/vec_data_fwd.h"
 #include "../../function/trigonometric.h"
 
 namespace ktm
@@ -27,7 +28,7 @@ struct icomp_data<Father, comp<T>> : Father
     union
     {
         struct { T i, r; };
-        struct { T x, y; };
+        typename detail::vec_data_implement::vec_storage<2, T>::type st;
     };
     constexpr explicit icomp_data(T x, T y) noexcept : i(x), r(y) { }
     explicit icomp_data(const vec<2, T> vec) noexcept : i(vec.x), r(vec.y) { }

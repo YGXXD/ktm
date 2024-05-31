@@ -12,6 +12,7 @@
 #include "../../type/vec_fwd.h"
 #include "../../type/quat_fwd.h"
 #include "../../type/mat_fwd.h"
+#include "../../detail/vector/vec_data_fwd.h"
 #include "../../function/trigonometric.h"
 #include "../../function/geometric.h"
 
@@ -28,7 +29,7 @@ struct iquat_data<Father, quat<T>> : Father
     union
     {
         struct { T i, j, k, r; };
-        struct { T x, y, z, w; };
+        typename detail::vec_data_implement::vec_storage<4, T>::type st;
     };
     constexpr explicit iquat_data(T x, T y, T z, T w) noexcept : i(x), j(y), k(z), r(w) { }
     explicit iquat_data(const vec<4, T>& vec) noexcept : i(vec.x), j(vec.y), k(vec.z), r(vec.w) { }
