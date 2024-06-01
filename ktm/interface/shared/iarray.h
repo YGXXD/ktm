@@ -9,6 +9,7 @@
 #define _KTM_I_ARRAY_H_
 
 #include <array>
+#include <cstring>
 #include <iostream>
 #include "../../setup.h"
 
@@ -24,7 +25,6 @@ struct iarray : Father
 #if defined(KTM_DEFAULT_CONSTRUCT_INIT)
     KTM_FUNC iarray() noexcept { fill(typename array_type::value_type { }); }
 #endif
-
     KTM_FUNC iarray(std::initializer_list<typename array_type::value_type> li) noexcept
     {
         const size_t offset = li.size() < size() ? li.size() : size();
@@ -33,6 +33,10 @@ struct iarray : Father
         std::fill(begin() + offset, end(), typename array_type::value_type { });
 #endif
     };
+    KTM_FUNC iarray(const iarray& copy) noexcept { std::memcpy(begin(), copy.begin(), sizeof(array_type)); }
+    KTM_FUNC iarray(iarray&& copy) noexcept { std::memmove(begin(), copy.begin(), sizeof(array_type)); };
+    KTM_FUNC iarray& operator=(const iarray& copy) noexcept { std::memcpy(begin(), copy.begin(), sizeof(array_type)); return *this; }
+    KTM_FUNC iarray& operator=(iarray&& copy) noexcept { std::memmove(begin(), copy.begin(), sizeof(array_type)); return *this; }
 
     template<size_t Index> 
     KTM_FUNC typename array_type::value_type get() const noexcept 
