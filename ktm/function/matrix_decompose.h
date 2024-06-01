@@ -399,19 +399,15 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
         qr_component<AffM> affine_qr = decompose_qr_givens(affine_matrix);
         AffM& affine_rotate_ref = affine_qr.get_q();
         AffM& affine_upper_ref = affine_qr.get_r();
+        std::cout << " -------- " << std::endl;
+        std::cout << affine_qr.get_q() << "\n" << affine_qr.get_r() << std::endl;
+        std::cout << affine_qr.get_q() * affine_qr.get_r() << std::endl;
+        std::cout << " -------- " << std::endl;
         AffV affine_diag_vec = diagonal(affine_upper_ref);
         mat_traits_col_t<M> diag_vec;
         for(int i = 0; i < N - 1; ++i)
         {
-            if(affine_diag_vec[i] < 0)
-            {
-                affine_rotate_ref[i] = -affine_rotate_ref[i];
-                for(int j = i; j < N - 1; ++j)
-                {
-                    affine_upper_ref[i][j] = -affine_upper_ref[i][j];
-                }
-            }
-            diag_vec[i] = abs(affine_diag_vec[i]);
+            diag_vec[i] = affine_diag_vec[i];
             affine_upper_ref[i] *= recip(diag_vec[i]);
         }
         diag_vec[N - 1] = one<T>;
