@@ -25,49 +25,88 @@ namespace ktm
 {
 
 template<class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, lu_component<M>> decompose_lu(const M& m) noexcept
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, lu_component<M>> decompose_lu_doolittle(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_n<M>;
+    using T = mat_traits_base_t<M>;
 
-    // calc matrix lu decomposition
-    M l = M::from_eye(), u { };
+    // doolittle for matrix lu decomposition, row transfrom
+    M l = M::from_eye(), u { m };
 
-    // u[i][0] = m[i][0]
-    // l[0][j] = m[0][j] / u[0][0]
-    for(int i = 0; i < N; ++i)
+    for(int i = 0; i < N - 1; ++i)
     {
-        u[i][0] = m[i][0];
-        l[0][i] = m[0][i] / u[0][0];
-    }
-
-    for(int i = 1; i < N; i++)
-    {
-        //                     \- j-1
-        // u[i][j] = m[i][j] - |  l[k][j] * u[i][k]
-        //                     /- k=0
-        for(int j = 1; j <= i; ++j)
-        {
-            u[i][j] = m[i][j];
-            for(int k = 0; k < j; ++k)
-            {
-                u[i][j] -= l[k][j] * u[i][k];
-            }
-        }
-
-        //                     \- i-1
-        // l[i][j] = m[i][j] - |  l[k][j] * u[i][k] / u[i][i]
-        //                     /- k=0
+        T r_uii = recip(u[i][i]);
         for(int j = i + 1; j < N; ++j)
         {
-            l[i][j] = m[i][j];
-            for(int k = 0; k < i; ++k)
+            l[i][j] = u[i][j] * r_uii;
+            u[i][j] = zero<T>;
+            for(int k = i + 1; k < N; ++k)
             {
-                l[i][j] -= l[k][j] * u[i][k];
+                u[k][j] -= l[i][j] * u[k][i];
             }
-            l[i][j] /= u[i][i];
         }
     }
+
     return { l, u };
+}
+
+template<class M>
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, lu_component<M>> decompose_lu_crout(const M& m) noexcept
+{
+    constexpr size_t N = mat_traits_col_n<M>;
+    using T = mat_traits_base_t<M>;
+
+    // crout for matrix lu decomposition, col transform
+    M l = { m }, u = M::from_eye();
+
+    for(int i = 0; i < N - 1; ++i)
+    {
+        T r_lii = recip(l[i][i]);
+        for(int j = i + 1; j < N; ++j)
+        {
+            u[j][i] = l[j][i] * r_lii;
+            l[j][i] = zero<T>;
+            for(int k = i + 1; k < N; ++k)
+            {
+                l[j][k] -= l[i][k] * u[j][i];
+            }
+        }
+    }
+    
+    return { l, u };
+}
+
+template<class M>
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, lu_component<M>> decompose_lu_cholesky(const M& m) noexcept
+{
+    constexpr size_t N = mat_traits_col_n<M>;
+    using T = mat_traits_base_t<M>;
+
+    // cholesky for matrix lu decomposition(matrix must be positive definite matrix)
+    M u = { };
+
+    for(int i = 0; i < N; ++i)
+    {
+        for(int j = 0; j <= i; ++j)
+        {
+            T mij = m[i][j];
+            for(int k = 0; k < j; ++k)
+            {
+                mij -= u[i][k] * u[j][k];
+            }
+
+            if(i == j)
+            {
+                u[i][j] = sqrt(mij);
+            }
+            else
+            {
+                u[i][j] = mij * recip(u[j][j]);
+            }
+        }
+    }
+
+    return { transpose(u), u };
 }
 
 template<class M>
@@ -88,10 +127,9 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
         }
         alpha = std::copysign(sqrt(alpha), -r[i][i]);
 
-        T rho_square = static_cast<T>(2) * alpha * (alpha - r[i][i]);
-        if(greater_zero(rho_square))
+        if(!equal(alpha, r[i][i]))
         {
-            T r_rho = rsqrt(rho_square);
+            T r_rho = rsqrt(static_cast<T>(2) * alpha * (alpha - r[i][i]));
             r[i][i] = (r[i][i] - alpha) * r_rho;
             for(int j = i + 1; j < N; ++j)
             {
@@ -209,7 +247,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
     constexpr size_t N = mat_traits_col_n<M>;
     using T = mat_traits_base_t<M>;
 
-    // jacobi iteration for matrix eigenvectors and eigenvalues
+    // jacobi iteration for matrix eigenvectors and eigenvalues(matrix must be symmetric matrix)
     M a { m }, eigen_vec = M::from_eye();
     mat_traits_col_t<M> eigen_value;
 
@@ -399,10 +437,6 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
         qr_component<AffM> affine_qr = decompose_qr_givens(affine_matrix);
         AffM& affine_rotate_ref = affine_qr.get_q();
         AffM& affine_upper_ref = affine_qr.get_r();
-        std::cout << " -------- " << std::endl;
-        std::cout << affine_qr.get_q() << "\n" << affine_qr.get_r() << std::endl;
-        std::cout << affine_qr.get_q() * affine_qr.get_r() << std::endl;
-        std::cout << " -------- " << std::endl;
         AffV affine_diag_vec = diagonal(affine_upper_ref);
         mat_traits_col_t<M> diag_vec;
         for(int i = 0; i < N - 1; ++i)

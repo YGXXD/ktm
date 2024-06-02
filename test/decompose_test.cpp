@@ -9,6 +9,15 @@
 
 int main(int argc, char* argv[])
 {
+    ktm::mat<5, 5, double> pdmt = 
+    {
+        {6, -1, 0, 0, 0},
+        {-1, 7, -1, 0, 0},
+        {0, -1, 8, -1, 0},
+        {0, 0, -1, 9, -1},
+        {0, 0, 0, -1, 10}
+    };
+
     ktm::fmat2x2 mt1 = { { 1.f, 2.f }, { 3.f, 4.f } };
     ktm::fmat3x3 mt2 = { { 1.f, 2.f, 3.f }, { 4.f, 5.f, 6.f}, { 7.f, -1.f, -2.f }};
     ktm::mat<5, 5, double> mt3 = 
@@ -21,19 +30,19 @@ int main(int argc, char* argv[])
     };
 
     std::cout << "decompose lu1 test:" << std::endl;
-    auto lu1 = ktm::decompose_lu(mt1);
+    auto lu1 = ktm::decompose_lu_cholesky(pdmt);
     std::cout << lu1.get_l() << "\n" << lu1.get_u() << "\n" << lu1.get_l() * lu1.get_u() << std::endl;
 
     std::cout << std::endl;
 
     std::cout << "decompose lu2 test:" << std::endl;
-    auto lu2 = ktm::decompose_lu(mt2);
+    auto lu2 = ktm::decompose_lu_doolittle(mt1);
     std::cout << lu2.get_l() << "\n" << lu2.get_u() << "\n" << lu2.get_l() * lu2.get_u() << std::endl;
 
     std::cout << std::endl;
 
     std::cout << "decompose lu3 test:" << std::endl;
-    auto lu3 = ktm::decompose_lu(mt3);
+    auto lu3 = ktm::decompose_lu_crout(mt3);
     std::cout << lu3.get_l() << "\n" << lu3.get_u() << "\n" << lu3.get_l() * lu3.get_u() << std::endl;
 
     std::cout << std::endl;
@@ -51,7 +60,7 @@ int main(int argc, char* argv[])
     std::cout << std::endl;
 
     std::cout << "decompose qr3 test:" << std::endl;
-    auto qr3 = ktm::decompose_qr_schmitd(mt2);
+    auto qr3 = ktm::decompose_qr_schmitd(mt3);
     std::cout << qr3.get_q() << "\n" << qr3.get_r() << "\n" << qr3.get_q() * qr3.get_r() << std::endl;
     
     std::cout << std::endl;
