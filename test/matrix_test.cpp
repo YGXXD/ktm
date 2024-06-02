@@ -56,20 +56,7 @@ int main(int argc, char* argv[])
 
     std::cout << "inverse test:" << std::endl;  
     ktm::fmat4x4 mt9 = { {2, -1, 9, 9}, {-1, 2, -1, -8}, { 20, -1, 2, 2}, { 1, 3, 2, 77 }};
-    std::cout << ktm::inverse(mt9) * mt9 * mt8 << std::endl;
-
-    std::cout << "factor lu test:" << std::endl;
-    auto lu = ktm::decompose_lu(mt8);
-    std::cout << std::get<0>(lu) << "\n" << std::get<1>(lu) << "\n" << std::get<0>(lu) * std::get<1>(lu) << std::endl;
-
-    std::cout << "factor qr test:" << std::endl;
-    auto qr = ktm::decompose_qr(mt8);
-    std::cout << std::get<0>(qr) << "\n" << std::get<1>(qr) << "\n" << std::get<0>(qr) * std::get<1>(qr) << std::endl;
-
-    std::cout << "factor svd test:" << std::endl;
-    auto usv = ktm::decompose_svd(mt8);
-    std::cout << std::get<0>(usv) << "\n" << std::get<1>(usv) << "\n" << std::get<2>(usv) 
-        << "\n" << std::get<0>(usv) * std::get<1>(usv) * std::get<2>(usv) << std::endl; 
+    std::cout << ktm::inverse(mt9) * mt9 * mt8 << std::endl; 
 
     return 0;
 }

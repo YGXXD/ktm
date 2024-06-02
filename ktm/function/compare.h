@@ -56,7 +56,7 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, bool> greater(T x, T y,
 template<class V>
 KTM_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, bool> equal_zero(const V& x, vec_traits_base_t<V> e = epsilon<vec_traits_base_t<V>>) noexcept
 {
-    return equal_zero(reduce_max(abs(x)), e);
+    return equal_zero(reduce_add(abs(x)), e);
 }
 
 template<class V>

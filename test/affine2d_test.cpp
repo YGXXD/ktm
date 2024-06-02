@@ -44,14 +44,14 @@ int main(int argc, char* argv[])
     auto affine_factor = ktm::decompose_affine(affine_mat);
 
     std::cout << "affine2d_matrix factor translation rotation shear scale:" << std::endl;
-    std::cout << std::get<0>(affine_factor) << "\n" << 
-        std::get<1>(affine_factor) << "\n" << 
-            std::get<2>(affine_factor) << "\n" << 
-                std::get<3>(affine_factor) << std::endl;
-    std::cout << std::get<0>(affine_factor) * 
-        std::get<1>(affine_factor) * 
-            std::get<2>(affine_factor) * 
-                std::get<3>(affine_factor) * a4_vec << std::endl;
+    std::cout << affine_factor.get_translate() << "\n" << 
+        affine_factor.get_rotate() << "\n" << 
+            affine_factor.get_shear() << "\n" << 
+                affine_factor.get_scale() << std::endl;
+    std::cout << affine_factor.get_translate() * 
+        affine_factor.get_rotate() * 
+            affine_factor.get_shear() * 
+                affine_factor.get_scale() * a4_vec << std::endl;
 
     std::cout << "affine2d invert test:" << std::endl;
     ktm::fmat3x3 invert_matrix;

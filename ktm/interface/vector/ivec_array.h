@@ -24,6 +24,7 @@ struct ivec_array<Father, vec<N, T>> : Father
     using Father::Father;
     using array_type = std::array<T, N>;
 };
+
 }
 
 #endif

@@ -35,7 +35,6 @@ int main(int argc, char* argv[])
         ktm::fmat2x2 m = c.matrix2x2();
         std::cout << c * v3 << std::endl;
         std::cout << m * v3 << std::endl;
-        std::cout << ktm::fcomp::from_matrix(m) * v3 << std::endl;
     }
 
     std::cout << "inverse: " << ktm::inverse(c5) << std::endl;

@@ -24,7 +24,8 @@ int main(int argc, char* argv[])
     t3 *= t1 + t5;
 
     std::cout << "equal: " << (t1 == t3) << ", " << (t1 == t4) << ", " << (t2 == (ktm::svec3)t1) << std::endl;
-    std::cout << "value: " << t3 << "\nstep: " << ktm::step({-100.f, 200.f, 10.f}, t3) << std::endl;
+    std::cout << "value: " << t3 << std::endl;
+    std::cout << "step: " << ktm::step({-100.f, 200.f, 10.f}, t3) << std::endl;
     std::cout << "smoothstep: " << ktm::smoothstep({-100.f, 20.f, -200.f}, {100.f, 200.f, 200.f}, t3) << std::endl;
     std::cout << "lerp: " << ktm::lerp(t1, t3, 0.6f) << std::endl;
     std::cout << "mix: " << ktm::mix(t1, t3, {0.5f, 0.6f, 0.3f}) << std::endl;
