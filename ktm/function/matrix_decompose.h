@@ -405,11 +405,9 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
     {
         M translate_matrix = M::from_eye();
         translate_matrix[1][0] = m[1][0];
-        M rotate_matrix = M::from_eye();
-        rotate_matrix[0][0] = std::copysign(one<T>, m[0][0]);
         M scale_matrix = M::from_eye();
-        scale_matrix[0][0] = abs(m[0][0]);
-        return { translate_matrix, rotate_matrix, M::from_eye(), scale_matrix };
+        scale_matrix[0][0] = m[0][0];
+        return { translate_matrix, M::from_eye(), M::from_eye(), scale_matrix };
     }
     else
     {
