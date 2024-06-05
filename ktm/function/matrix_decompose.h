@@ -118,7 +118,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
     // householder transformation for matrix qr decomposition
     M q = M::from_eye(), r { m };
 
-    for(int i = 0; i < N; ++i)
+    for(int i = 0; i < N - 1; ++i)
     {
         T alpha = zero<T>;
         for(int j = i; j < N; ++j)
@@ -137,7 +137,19 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
             }
         }
         
-        for(int k = 0; k < N; ++k)
+        for(int k = 0; k <= i; ++k)
+        {
+            T tq = zero<T>;
+            for(int j = i; j < N; ++j)
+            {
+                tq += r[i][j] * q[k][j];
+            }
+            for(int j = i; j < N; ++j)
+            {
+                q[k][j] -= static_cast<T>(2) * tq * r[i][j];
+            }
+        }
+        for(int k = i + 1; k < N; ++k)
         {
             T tq = zero<T>;
             T tr = zero<T>;
@@ -152,6 +164,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
                 r[k][j] -= static_cast<T>(2) * tr * r[i][j];
             }
         }
+
         r[i][i] = alpha;
         for(int j = i + 1; j < N; ++j)
         {
@@ -170,7 +183,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
     // givens rotation for matrix qr decomposition
     M q = M::from_eye(), r { m };
 
-    for(int i = 0; i < N; ++i) 
+    for(int i = 0; i < N - 1; ++i) 
     {
         for(int j = N - 1; j > i; --j) 
         {
@@ -224,14 +237,12 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 
     // qr iteration for calc matrix eigenvectors and eigenvalues
     M a { m }, eigen_vec = M::from_eye();
-    mat_traits_col_t<M> eigen_value, last_eigen_value = diagonal(a), one_vec;
-    one_vec.fill(one<T>);
+    mat_traits_col_t<M> eigen_value, last_eigen_value = diagonal(a);
 
     for(int it = 0; it < KTM_MATRIX_DECOMPOSE_ITERATION_MAX; ++it) 
     {
-        M shift_i = M::from_diag(one_vec * a[N - 1][N - 1]);
-        qr_component<M> qr = decompose_qr_householder(a - shift_i);
-        a = qr.get_r() * qr.get_q() + shift_i;
+        qr_component<M> qr = decompose_qr_householder(a);
+        a = qr.get_r() * qr.get_q();
         eigen_vec = eigen_vec * qr.get_q();
         eigen_value = diagonal(a);
         if(equal(eigen_value, last_eigen_value))
