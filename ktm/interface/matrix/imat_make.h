@@ -29,7 +29,7 @@ struct imat_make<Father, mat<Row, Col, T, std::enable_if_t<Row != Col>>> : Fathe
     static KTM_INLINE std::enable_if_t<sizeof...(RowVs) == Col && std::is_same_vs<vec<Row, T>, std::remove_const_t<std::remove_reference_t<RowVs>>...>, 
         mat<Row, Col, T>> from_row(RowVs&&... rows) noexcept
     {
-        return from_row(std::make_index_sequence<Col>(), std::forward<RowVs>(rows)...);
+        return from_row(std::make_index_sequence<Row>(), std::forward<RowVs>(rows)...);
     }
 private:
     template<typename ...RowVs, size_t ...Ns>
