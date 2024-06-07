@@ -42,7 +42,15 @@ struct ktm::detail::matrix_implement::trace
     using M = mat<N, N, T>;
     static KTM_INLINE T call(const M& m) noexcept
     {
-        return call(m, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(m, std::make_index_sequence<N>());
+        else
+        {
+            T ret = zero<T>;
+            for(int i = 0; i < N; ++i)
+                ret += m[i][i];
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -59,7 +67,15 @@ struct ktm::detail::matrix_implement::diagonal
     using ColV = vec<N, T>;
     static KTM_INLINE ColV call(const M& m) noexcept
     {
-        return call(m, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(m, std::make_index_sequence<N>());
+        else
+        {
+            ColV ret;
+            for(int i = 0; i < N; ++i)
+                ret[i] = m[i][i];
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>

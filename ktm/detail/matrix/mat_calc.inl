@@ -22,7 +22,15 @@ struct ktm::detail::mat_opt_implement::mat_mul_vec
     using RowV = vec<Row, T>;
     static KTM_INLINE ColV call(const M& m, const RowV& v) noexcept
     {
-        return call(m, v, std::make_index_sequence<Row>());
+        if constexpr(Row <= 4)
+            return call(m, v, std::make_index_sequence<Row>());
+        else
+        {
+            ColV ret { };
+            for(int i = 0; i < Row; ++i)
+                ret += (m[i] * v[i]);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -42,7 +50,15 @@ struct ktm::detail::mat_opt_implement::vec_mul_mat
     using RowV = vec<Row, T>;
     static KTM_INLINE RowV call(const ColV& v, const M& m) noexcept
     {
-        return call(v, m, std::make_index_sequence<Row>());
+        if constexpr(Row <= 4)
+            return call(v, m, std::make_index_sequence<Row>());
+        else
+        {
+            RowV ret;
+            for(int i = 0; i < Row; ++i)
+                ret[i] = ktm::reduce_add(m[i] * v);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -66,7 +82,15 @@ struct ktm::detail::mat_opt_implement::mat_mul_mat
     template<size_t U>
     static KTM_INLINE RetM<U> call(const M& m1 , const M2<U>& m2) noexcept
     {
-        return call(m1, m2,  std::make_index_sequence<U>());
+        if constexpr(U <= 4)
+            return call(m1, m2,  std::make_index_sequence<U>());
+        else
+        {
+            RetM<U> ret;
+            for(int i = 0; i < U; ++i)
+                ret[i] = mat_mul_vec<Row, Col, T>::call(m1, m2[i]);
+            return ret;
+        }
     }
 private:
     template<size_t U, size_t ...Ns>
@@ -84,7 +108,15 @@ struct ktm::detail::mat_opt_implement::add
 	using M = mat<Row, Col, T>;
     static KTM_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<Row>());
+        if constexpr(Row <= 4)
+            return call(m1, m2, std::make_index_sequence<Row>());
+        else
+        {
+            M ret;
+            for(int i = 0; i < Row; ++i)
+                ret[i] = m1[i] + m2[i];
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -102,7 +134,15 @@ struct ktm::detail::mat_opt_implement::minus
 	using M = mat<Row, Col, T>;
     static KTM_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<Row>());
+        if constexpr(Row <= 4)
+            return call(m1, m2, std::make_index_sequence<Row>());
+        else
+        {
+            M ret;
+            for(int i = 0; i < Row; ++i)
+                ret[i] = m1[i] - m2[i];
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -120,7 +160,15 @@ struct ktm::detail::mat_opt_implement::opposite
 	using M = mat<Row, Col, T>;
     static KTM_INLINE M call(const M& m) noexcept
     {
-        return call(m, std::make_index_sequence<Row>());
+        if constexpr(Row <= 4)
+            return call(m, std::make_index_sequence<Row>());
+        else
+        {
+            M ret;
+            for(int i = 0; i < Row; ++i)
+                ret[i] = -m[i];
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>

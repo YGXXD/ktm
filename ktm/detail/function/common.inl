@@ -21,7 +21,15 @@ struct ktm::detail::common_implement::reduce_add
     using V = vec<N, T>;
     static KTM_INLINE T call(const V& x) noexcept
     {
-        return call(x, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(x, std::make_index_sequence<N>());
+        else
+        {
+            T ret = zero<T>;
+            for(int i = 0; i < N; ++i)
+                ret += x[i];
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -37,20 +45,23 @@ struct ktm::detail::common_implement::reduce_min
     using V = vec<N, T>;
     static KTM_INLINE T call(const V& x) noexcept
     {
-        return call(x, std::make_index_sequence<N - 1>());
+        if constexpr(N <= 4)
+            return call(x, std::make_index_sequence<N - 1>());
+        else
+        {
+            T ret = x[0];
+            for(int i = 0; i < N - 1; ++i)
+                ret = ktm::min(ret, x[i + 1]);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
     static KTM_INLINE T call(const V& x, std::index_sequence<Ns...>) noexcept
     {
-        if constexpr(sizeof...(Ns))
-        {
-            T ret = x[0];
-            ((ret = ktm::min(ret, x[Ns + 1])), ...);
-            return ret;
-        }
-        else
-            return x[0];
+        T ret = x[0];
+        ((ret = ktm::min(ret, x[Ns + 1])), ...);
+        return ret;
     }
 };
 
@@ -60,20 +71,23 @@ struct ktm::detail::common_implement::reduce_max
     using V = vec<N, T>;
     static KTM_INLINE T call(const V& x) noexcept
     {
-        return call(x, std::make_index_sequence<N - 1>());
+        if constexpr(N <= 4)
+            return call(x, std::make_index_sequence<N - 1>());
+        else
+        {
+            T ret = x[0];
+            for(int i = 0; i < N - 1; ++i)
+                ret = ktm::max(ret, x[i + 1]);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
     static KTM_INLINE T call(const V& x, std::index_sequence<Ns...>) noexcept
     {
-        if constexpr(sizeof...(Ns))
-        {
-            T ret = x[0];
-            ((ret = ktm::max(ret, x[Ns + 1])), ...);
-            return ret;
-        }
-        else
-            return x[0];
+        T ret = x[0];
+        ((ret = ktm::max(ret, x[Ns + 1])), ...);
+        return ret;
     }
 };
 
@@ -83,7 +97,15 @@ struct ktm::detail::common_implement::abs
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
-        return call(x, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(x, std::make_index_sequence<N>());
+        else
+        {
+            V ret;
+            for(int i = 0; i < N; ++i)
+                ret[i] = ktm::abs(x[i]);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -101,7 +123,15 @@ struct ktm::detail::common_implement::min
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
-        return call(x, y, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(x, y, std::make_index_sequence<N>());
+        else
+        {
+            V ret;
+            for(int i = 0; i < N; ++i)
+                ret[i] = ktm::min(x[i], y[i]);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -119,7 +149,15 @@ struct ktm::detail::common_implement::max
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
-        return call(x, y, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(x, y, std::make_index_sequence<N>());
+        else
+        {
+            V ret;
+            for(int i = 0; i < N; ++i)
+                ret[i] = ktm::max(x[i], y[i]);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -137,7 +175,15 @@ struct ktm::detail::common_implement::clamp
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
-        return call(v, min, max, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(v, min, max, std::make_index_sequence<N>());
+        else
+        {
+            V ret;
+            for(int i = 0; i < N; ++i)
+                ret[i] = ktm::clamp(v[i], min[i], max[i]);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -155,7 +201,15 @@ struct ktm::detail::common_implement::floor
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
-        return call(x, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(x, std::make_index_sequence<N>());
+        else
+        {
+            V ret;
+            for(int i = 0; i < N; ++i)
+                ret[i] = ktm::floor(x[i]);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -173,7 +227,15 @@ struct ktm::detail::common_implement::ceil
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
-        return call(x, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(x, std::make_index_sequence<N>());
+        else
+        {
+            V ret;
+            for(int i = 0; i < N; ++i)
+                ret[i] = ktm::ceil(x[i]);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -191,7 +253,15 @@ struct ktm::detail::common_implement::round
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
-        return call(x, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(x, std::make_index_sequence<N>());
+        else
+        {
+            V ret;
+            for(int i = 0; i < N; ++i)
+                ret[i] = ktm::round(x[i]);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -209,7 +279,15 @@ struct ktm::detail::common_implement::fract
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
-        return call(x, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(x, std::make_index_sequence<N>());
+        else
+        {
+            V ret;
+            for(int i = 0; i < N; ++i)
+                ret[i] = ktm::fract(x[i]);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -227,7 +305,15 @@ struct ktm::detail::common_implement::mod
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
-        return call(x, y, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(x, y, std::make_index_sequence<N>());
+        else
+        {
+            V ret;
+            for(int i = 0; i < N; ++i)
+                ret[i] = ktm::mod(x[i], y[i]);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -245,7 +331,15 @@ struct ktm::detail::common_implement::lerp
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x, const V& y, T t) noexcept
     {
-        return call(x, y, t, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(x, y, t, std::make_index_sequence<N>());
+        else
+        {
+            V ret;
+            for(int i = 0; i < N; ++i)
+                ret[i] = ktm::lerp(x[i], y[i], t);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -263,7 +357,15 @@ struct ktm::detail::common_implement::mix
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x, const V& y, const V& t) noexcept
     {
-        return call(x, y, t, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(x, y, t, std::make_index_sequence<N>());
+        else
+        {
+            V ret;
+            for(int i = 0; i < N; ++i)
+                ret[i] = ktm::lerp(x[i], y[i], t[i]);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -281,7 +383,15 @@ struct ktm::detail::common_implement::step
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& edge, const V& x) noexcept
     {
-        return call(edge, x, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(edge, x, std::make_index_sequence<N>());
+        else
+        {
+            V ret;
+            for(int i = 0; i < N; ++i)
+                ret[i] = ktm::step(edge[i], x[i]);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -299,7 +409,15 @@ struct ktm::detail::common_implement::smoothstep
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& edge0, const V& edge1, const V& x) noexcept
     {
-        return call(edge0, edge1, x, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(edge0, edge1, x, std::make_index_sequence<N>());
+        else
+        {
+            V ret;
+            for(int i = 0; i < N; ++i)
+                ret[i] = ktm::smoothstep(edge0[i], edge1[i], x[i]);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -317,7 +435,15 @@ struct ktm::detail::common_implement::sqrt
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
-        return call(x, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(x, std::make_index_sequence<N>());
+        else
+        {
+            V ret;
+            for(int i = 0; i < N; ++i)
+                ret[i] = ktm::sqrt(x[i]);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -335,7 +461,15 @@ struct ktm::detail::common_implement::rsqrt
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
-        return call(x, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(x, std::make_index_sequence<N>());
+        else
+        {
+            V ret;
+            for(int i = 0; i < N; ++i)
+                ret[i] = ktm::rsqrt(x[i]);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -353,7 +487,15 @@ struct ktm::detail::common_implement::recip
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
-        return call(x, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(x, std::make_index_sequence<N>());
+        else
+        {
+            V ret;
+            for(int i = 0; i < N; ++i)
+                ret[i] = ktm::recip(x[i]);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -371,7 +513,15 @@ struct ktm::detail::common_implement::fast_sqrt
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
-        return call(x, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(x, std::make_index_sequence<N>());
+        else
+        {
+            V ret;
+            for(int i = 0; i < N; ++i)
+                ret[i] = ktm::fast::sqrt(x[i]);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -389,7 +539,15 @@ struct ktm::detail::common_implement::fast_rsqrt
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
-        return call(x, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(x, std::make_index_sequence<N>());
+        else
+        {
+            V ret;
+            for(int i = 0; i < N; ++i)
+                ret[i] = ktm::fast::rsqrt(x[i]);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -407,7 +565,15 @@ struct ktm::detail::common_implement::fast_recip
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
-        return call(x, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(x, std::make_index_sequence<N>());
+        else
+        {
+            V ret;
+            for(int i = 0; i < N; ++i)
+                ret[i] = ktm::fast::recip(x[i]);
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
