@@ -120,21 +120,20 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 
     for(int i = 0; i < N - 1; ++i)
     {
-        T alpha = zero<T>;
+        T length = zero<T>;
         for(int j = i; j < N; ++j)
         {
-            alpha += r[i][j] * r[i][j];
+            length += r[i][j] * r[i][j];
         }
-        alpha = std::copysign(sqrt(alpha), -r[i][i]);
+        length = std::copysign(sqrt(length), -r[i][i]);
+        if(equal(length, zero<T>))
+            continue;
 
-        if(!equal(alpha, r[i][i]))
+        T r_rho = rsqrt(static_cast<T>(2) * length * (length - r[i][i]));
+        r[i][i] = (r[i][i] - length) * r_rho;
+        for(int j = i + 1; j < N; ++j)
         {
-            T r_rho = rsqrt(static_cast<T>(2) * alpha * (alpha - r[i][i]));
-            r[i][i] = (r[i][i] - alpha) * r_rho;
-            for(int j = i + 1; j < N; ++j)
-            {
-                r[i][j] *= r_rho;
-            }
+            r[i][j] *= r_rho;
         }
         
         for(int k = 0; k <= i; ++k)
@@ -144,9 +143,10 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
             {
                 tq += r[i][j] * q[k][j];
             }
+            tq *= static_cast<T>(2);
             for(int j = i; j < N; ++j)
             {
-                q[k][j] -= static_cast<T>(2) * tq * r[i][j];
+                q[k][j] -= tq * r[i][j];
             }
         }
         for(int k = i + 1; k < N; ++k)
@@ -158,18 +158,145 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
                 tq += r[i][j] * q[k][j];
                 tr += r[i][j] * r[k][j];
             }
+            tq *= static_cast<T>(2);
+            tr *= static_cast<T>(2);
             for(int j = i; j < N; ++j)
             {
-                q[k][j] -= static_cast<T>(2) * tq * r[i][j];
-                r[k][j] -= static_cast<T>(2) * tr * r[i][j];
+                q[k][j] -= tq * r[i][j];
+                r[k][j] -= tr * r[i][j];
             }
         }
 
-        r[i][i] = alpha;
+        r[i][i] = length;
         for(int j = i + 1; j < N; ++j)
         {
             r[i][j] = zero<T>;
         }
+    }
+    return { transpose(q), r };
+}
+
+
+template<class M>
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>> decompose_qr_householder_to_hessenberg(const M& m) noexcept
+{
+    constexpr size_t N = mat_traits_col_n<M>;
+    using T = mat_traits_base_t<M>;
+
+    // householder transformation for matrix qr decomposition(orthogonal * hessenberg * orthogonal^t)
+    M q = M::from_eye(), r { m };
+
+    for(int i = 0; i < N - 2; ++i)
+    {
+        T v_start = i + 1;
+        T length = zero<T>;
+        for(int j = v_start; j < N; ++j)
+        {
+            length += r[i][j] * r[i][j];
+        }
+        length = std::copysign(sqrt(length), -r[i][v_start]);
+        if(equal(length, zero<T>))
+            continue;
+
+        T r_rho = rsqrt(static_cast<T>(2) * length * (length - r[i][v_start]));
+        r[i][v_start] = (r[i][v_start] - length) * r_rho;
+        for(int j = v_start + 1; j < N; ++j)
+        {
+            r[i][j] *= r_rho;
+        }
+        
+        for(int k = 0; k <= i; ++k)
+        {
+            T tq = zero<T>;
+            for(int j = v_start; j < N; ++j)
+            {
+                tq += r[i][j] * q[k][j];
+            }
+            tq *= static_cast<T>(2);
+            for(int j = v_start; j < N; ++j)
+            {
+                q[k][j] -= tq * r[i][j];
+            }
+        }
+        for(int k = i + 1; k < N; ++k)
+        {
+            T tq = zero<T>;
+            T tr = zero<T>;
+            for(int j = v_start; j < N; ++j)
+            {
+                tq += r[i][j] * q[k][j];
+                tr += r[i][j] * r[k][j];
+            }
+            tq *= static_cast<T>(2);
+            tr *= static_cast<T>(2);
+            for(int j = v_start; j < N; ++j)
+            {
+                q[k][j] -= tq * r[i][j];
+                r[k][j] -= tr * r[i][j];
+            }
+        }
+        for(int k = 0; k < N; ++k)
+        {
+            T tr = zero<T>;
+            for(int j = v_start; j < N; ++j)
+            {
+                tr += r[i][j] * r[j][k];
+            }
+            tr *= static_cast<T>(2);
+            for(int j = v_start; j < N; ++j)
+            {
+                r[j][k] -= tr * r[i][j];
+            } 
+        }
+
+        r[i][v_start] = length;
+        for(int j = v_start + 1; j < N; ++j)
+        {
+            r[i][j] = zero<T>;
+        }
+    }
+    return { transpose(q), r };
+}
+
+template<class M>
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>> decompose_qr_householder_by_hessenberg(const M& m) noexcept
+{
+    constexpr size_t N = mat_traits_col_n<M>;
+    using T = mat_traits_base_t<M>;
+
+    // householder transformation for matrix qr decomposition(matrix must be hessenberg matrix)
+    M q = M::from_eye(), r { m };
+
+    for(int i = 0; i < N - 1; ++i)
+    {
+        T alpha = alpha = r[i][i] * r[i][i] + r[i][i + 1] * r[i][i + 1];
+        alpha = std::copysign(sqrt(alpha), -r[i][i]);
+
+        if(equal(alpha, zero<T>))
+            continue;
+
+        T r_rho = rsqrt(static_cast<T>(2) * alpha * (alpha - r[i][i]));
+        r[i][i] = (r[i][i] - alpha) * r_rho;
+        r[i][i + 1] = r[i][i + 1] * r_rho;
+        
+        for(int k = 0; k <= i; ++k)
+        {
+            T tq = static_cast<T>(2) * (r[i][i] * q[k][i] + r[i][i + 1] * q[k][i + 1]);
+            q[k][i] -= tq * r[i][i];
+            q[k][i + 1] -= tq * r[i][i + 1];
+        }
+        for(int k = i + 1; k < N; ++k)
+        {
+            T tq = static_cast<T>(2) * (r[i][i] * q[k][i] + r[i][i + 1] * q[k][i + 1]);
+            q[k][i] -= tq * r[i][i];
+            q[k][i + 1] -= tq * r[i][i + 1];
+            T tr = static_cast<T>(2) * (r[i][i] * r[k][i] + r[i][i + 1] * r[k][i + 1]);
+            r[k][i] -= tr * r[i][i];
+            r[k][i + 1] -= tr * r[i][i + 1];
+        }
+
+        r[i][i] = alpha;
+        r[i][i + 1] = zero<T>;
     }
     return { transpose(q), r };
 }
