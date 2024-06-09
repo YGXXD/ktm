@@ -25,6 +25,159 @@ namespace ktm
 {
 
 template<class M>
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, reduce_component<M>> reduce_hessenberg(const M& m) noexcept
+{
+    constexpr size_t N = mat_traits_col_n<M>;
+    using T = mat_traits_base_t<M>;
+
+    // reduce matrix to hessenberg by householder transformation
+    M trans = M::from_eye(), a { m };
+
+    for(int i = 0; i < N - 2; ++i)
+    {
+        T v_start = i + 1;
+        T length = zero<T>;
+        for(int j = v_start; j < N; ++j)
+        {
+            length += a[i][j] * a[i][j];
+        }
+        length = std::copysign(sqrt(length), -a[i][v_start]);
+        if(equal(length, zero<T>))
+            continue;
+
+        T r_h = recip(length * (length - a[i][v_start]));
+        a[i][v_start] = (a[i][v_start] - length);
+        
+        for(int k = 1; k <= i; ++k)
+        {
+            T tt = zero<T>;
+            for(int j = v_start; j < N; ++j)
+            {
+                tt += a[i][j] * trans[k][j];
+            }
+            tt *= r_h;
+            for(int j = v_start; j < N; ++j)
+            {
+                trans[k][j] -= tt * a[i][j];
+            }
+        }
+        for(int k = i + 1; k < N; ++k)
+        {
+            T tt = zero<T>;
+            T ta = zero<T>;
+            for(int j = v_start; j < N; ++j)
+            {
+                tt += a[i][j] * trans[k][j];
+                ta += a[i][j] * a[k][j];
+            }
+            tt *= r_h;
+            ta *= r_h;
+            for(int j = v_start; j < N; ++j)
+            {
+                trans[k][j] -= tt * a[i][j];
+                a[k][j] -= ta * a[i][j];
+            }
+        }
+        for(int k = 0; k < N; ++k)
+        {
+            T ta = zero<T>;
+            for(int j = v_start; j < N; ++j)
+            {
+                ta += a[i][j] * a[j][k];
+            }
+            ta *= r_h;
+            for(int j = v_start; j < N; ++j)
+            {
+                a[j][k] -= ta * a[i][j];
+            } 
+        }
+
+        a[i][v_start] = length;
+        for(int j = v_start + 1; j < N; ++j)
+        {
+            a[i][j] = zero<T>;
+        }
+    }
+    return { transpose(trans), a };
+}
+
+template<class M>
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, reduce_component<M>> reduce_tridiagonal(const M& m) noexcept
+{
+    constexpr size_t N = mat_traits_col_n<M>;
+    using T = mat_traits_base_t<M>;
+
+    // reduce matrix to tridiagonal by householder transformation(matrix must be symmetric matrix)
+    M trans = M::from_eye(), a { m };
+
+    for(int i = 0; i < N - 2; ++i)
+    {
+        T v_start = i + 1;
+        T length = zero<T>;
+        for(int j = v_start; j < N; ++j)
+        {
+            length += a[i][j] * a[i][j];
+        }
+        length = std::copysign(sqrt(length), -a[i][v_start]);
+
+        vec<N, T> u { };
+        u[v_start] = a[i][v_start] - length;
+        for(int j = v_start + 1; j < N; ++j)
+        {
+            u[j] = a[i][j];
+        }
+
+        T r_h = recip(length * (length - a[i][v_start]));
+        vec<N, T> q { };
+        for(int j = v_start; j < N; ++j)
+        {
+            q += a[j] * u[j];
+        }
+        q *= r_h;
+        
+        T dot_qu = zero<T>;
+        for(int j = v_start; j < N; ++j)
+        {
+            dot_qu += q[j] * u[j];
+        }
+        q -= dot_qu * static_cast<T>(0.5) * r_h * u;
+
+        a[i][v_start] = length;
+        a[v_start][i] = length;
+        for(int j = v_start + 1; j < N; ++j)
+        {
+            a[i][j] = zero<T>;
+            a[j][i] = zero<T>;
+        }
+        for(int k = i + 1; k < N; ++k)
+        {
+            a[k][k] -= u[k] * q[k] + q[k] * u[k];
+            for(int j = k + 1; j < N; ++j)
+            {
+                a[k][j] -= u[j] * q[k] + q[j] * u[k];
+                a[j][k] = a[k][j];
+            }
+        }
+
+        for(int k = 1; k < N; ++k)
+        {
+            T tt = zero<T>;
+            for(int j = v_start; j < N; ++j)
+            {
+                tt += u[j] * trans[k][j];
+            }
+            tt *= r_h;
+            for(int j = v_start; j < N; ++j)
+            {
+                trans[k][j] -= tt * u[j];
+            }
+        }
+
+    }
+    return { transpose(trans), a };
+}
+
+template<class M>
 KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, lu_component<M>> decompose_lu_doolittle(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_n<M>;
@@ -129,12 +282,8 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
         if(equal(length, zero<T>))
             continue;
 
-        T r_rho = rsqrt(static_cast<T>(2) * length * (length - r[i][i]));
-        r[i][i] = (r[i][i] - length) * r_rho;
-        for(int j = i + 1; j < N; ++j)
-        {
-            r[i][j] *= r_rho;
-        }
+        T r_h = recip(length * (length - r[i][i]));
+        r[i][i] = (r[i][i] - length);
         
         for(int k = 0; k <= i; ++k)
         {
@@ -143,7 +292,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
             {
                 tq += r[i][j] * q[k][j];
             }
-            tq *= static_cast<T>(2);
+            tq *= r_h;
             for(int j = i; j < N; ++j)
             {
                 q[k][j] -= tq * r[i][j];
@@ -158,8 +307,8 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
                 tq += r[i][j] * q[k][j];
                 tr += r[i][j] * r[k][j];
             }
-            tq *= static_cast<T>(2);
-            tr *= static_cast<T>(2);
+            tq *= r_h;
+            tr *= r_h;
             for(int j = i; j < N; ++j)
             {
                 q[k][j] -= tq * r[i][j];
@@ -172,131 +321,6 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
         {
             r[i][j] = zero<T>;
         }
-    }
-    return { transpose(q), r };
-}
-
-
-template<class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>> decompose_qr_householder_to_hessenberg(const M& m) noexcept
-{
-    constexpr size_t N = mat_traits_col_n<M>;
-    using T = mat_traits_base_t<M>;
-
-    // householder transformation for matrix qr decomposition(orthogonal * hessenberg * orthogonal^t)
-    M q = M::from_eye(), r { m };
-
-    for(int i = 0; i < N - 2; ++i)
-    {
-        T v_start = i + 1;
-        T length = zero<T>;
-        for(int j = v_start; j < N; ++j)
-        {
-            length += r[i][j] * r[i][j];
-        }
-        length = std::copysign(sqrt(length), -r[i][v_start]);
-        if(equal(length, zero<T>))
-            continue;
-
-        T r_rho = rsqrt(static_cast<T>(2) * length * (length - r[i][v_start]));
-        r[i][v_start] = (r[i][v_start] - length) * r_rho;
-        for(int j = v_start + 1; j < N; ++j)
-        {
-            r[i][j] *= r_rho;
-        }
-        
-        for(int k = 0; k <= i; ++k)
-        {
-            T tq = zero<T>;
-            for(int j = v_start; j < N; ++j)
-            {
-                tq += r[i][j] * q[k][j];
-            }
-            tq *= static_cast<T>(2);
-            for(int j = v_start; j < N; ++j)
-            {
-                q[k][j] -= tq * r[i][j];
-            }
-        }
-        for(int k = i + 1; k < N; ++k)
-        {
-            T tq = zero<T>;
-            T tr = zero<T>;
-            for(int j = v_start; j < N; ++j)
-            {
-                tq += r[i][j] * q[k][j];
-                tr += r[i][j] * r[k][j];
-            }
-            tq *= static_cast<T>(2);
-            tr *= static_cast<T>(2);
-            for(int j = v_start; j < N; ++j)
-            {
-                q[k][j] -= tq * r[i][j];
-                r[k][j] -= tr * r[i][j];
-            }
-        }
-        for(int k = 0; k < N; ++k)
-        {
-            T tr = zero<T>;
-            for(int j = v_start; j < N; ++j)
-            {
-                tr += r[i][j] * r[j][k];
-            }
-            tr *= static_cast<T>(2);
-            for(int j = v_start; j < N; ++j)
-            {
-                r[j][k] -= tr * r[i][j];
-            } 
-        }
-
-        r[i][v_start] = length;
-        for(int j = v_start + 1; j < N; ++j)
-        {
-            r[i][j] = zero<T>;
-        }
-    }
-    return { transpose(q), r };
-}
-
-template<class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>> decompose_qr_householder_by_hessenberg(const M& m) noexcept
-{
-    constexpr size_t N = mat_traits_col_n<M>;
-    using T = mat_traits_base_t<M>;
-
-    // householder transformation for matrix qr decomposition(matrix must be hessenberg matrix)
-    M q = M::from_eye(), r { m };
-
-    for(int i = 0; i < N - 1; ++i)
-    {
-        T alpha = alpha = r[i][i] * r[i][i] + r[i][i + 1] * r[i][i + 1];
-        alpha = std::copysign(sqrt(alpha), -r[i][i]);
-
-        if(equal(alpha, zero<T>))
-            continue;
-
-        T r_rho = rsqrt(static_cast<T>(2) * alpha * (alpha - r[i][i]));
-        r[i][i] = (r[i][i] - alpha) * r_rho;
-        r[i][i + 1] = r[i][i + 1] * r_rho;
-        
-        for(int k = 0; k <= i; ++k)
-        {
-            T tq = static_cast<T>(2) * (r[i][i] * q[k][i] + r[i][i + 1] * q[k][i + 1]);
-            q[k][i] -= tq * r[i][i];
-            q[k][i + 1] -= tq * r[i][i + 1];
-        }
-        for(int k = i + 1; k < N; ++k)
-        {
-            T tq = static_cast<T>(2) * (r[i][i] * q[k][i] + r[i][i + 1] * q[k][i + 1]);
-            q[k][i] -= tq * r[i][i];
-            q[k][i + 1] -= tq * r[i][i + 1];
-            T tr = static_cast<T>(2) * (r[i][i] * r[k][i] + r[i][i + 1] * r[k][i + 1]);
-            r[k][i] -= tr * r[i][i];
-            r[k][i + 1] -= tr * r[i][i + 1];
-        }
-
-        r[i][i] = alpha;
-        r[i][i + 1] = zero<T>;
     }
     return { transpose(q), r };
 }
@@ -316,7 +340,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
         {
             if(!equal_zero(r[i][j]))
             {
-                vec<2, T> cos_sin = normalize(vec<2, T>(r[i][j - 1], r[i][j]));       
+                vec<2, T> cos_sin = normalize(vec<2, T>(r[i][j - 1], r[i][j]));
                 for(int k = 0; k < N; ++k) 
                 {
                     T tmp = r[k][j - 1];
@@ -353,6 +377,77 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 			a[j] -= r[j][i] * q[i];
 		}
 	}
+    return { q, r };
+}
+
+template<class M>
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>> decompose_qr_on_hessenberg(const M& m) noexcept
+{
+    constexpr size_t N = mat_traits_col_n<M>;
+    using T = mat_traits_base_t<M>;
+
+    // householder transformation for matrix qr decomposition(matrix must be hessenberg matrix)
+    M q = M::from_eye(), r { m };
+
+    for(int i = 0; i < N - 1; ++i)
+    {
+        T length = length = r[i][i] * r[i][i] + r[i][i + 1] * r[i][i + 1];
+        length = std::copysign(sqrt(length), -r[i][i]);
+
+        if(equal(length, zero<T>))
+            continue;
+
+        T r_h = recip(length * (length - r[i][i]));
+        r[i][i] = (r[i][i] - length);
+        
+        for(int k = 0; k <= i + 1; ++k)
+        {
+            T tq = r_h * (r[i][i] * q[k][i] + r[i][i + 1] * q[k][i + 1]);
+            q[k][i] -= tq * r[i][i];
+            q[k][i + 1] -= tq * r[i][i + 1];
+        }
+        for(int k = i + 1; k < N; ++k)
+        {
+            T tr = r_h * (r[i][i] * r[k][i] + r[i][i + 1] * r[k][i + 1]);
+            r[k][i] -= tr * r[i][i];
+            r[k][i + 1] -= tr * r[i][i + 1];
+            std::cout << tr << std::endl;
+        }
+
+        r[i][i] = length;
+        r[i][i + 1] = zero<T>;
+    }
+    return { transpose(q), r };
+}
+
+template<class M>
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>> decompose_qr_on_tridiagonal(const M& m) noexcept
+{
+    constexpr size_t N = mat_traits_col_n<M>;
+    using T = mat_traits_base_t<M>;
+
+    // givens rotation for matrix qr decomposition(matrix must be tridiagonal matrix)
+    M q = M::from_eye(), r { m };
+
+    for(int i = 0; i < N - 1; ++i) 
+    {
+        if(!equal_zero(r[i][i + 1]))
+        {
+            vec<2, T> cos_sin = normalize(vec<2, T>(r[i][i], r[i][i + 1]));
+            for(int k = i; k < N && k < i + 3; ++k) 
+            {
+                T tmp = r[k][i];
+                r[k][i] = cos_sin[0] * tmp + cos_sin[1] * r[k][i + 1];
+                r[k][i + 1] = cos_sin[0] * r[k][i + 1] - cos_sin[1] * tmp;
+            }
+            for(int k = 0; k <= i + 1; ++k)
+            {
+                T tmp = q[i][k];
+                q[i][k] = cos_sin[0] * tmp + cos_sin[1] * q[i + 1][k];
+                q[i + 1][k] = cos_sin[0] * q[i + 1][k] - cos_sin[1] * tmp;
+            }
+        }
+    }
     return { q, r };
 }
 

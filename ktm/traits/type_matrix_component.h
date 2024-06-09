@@ -21,6 +21,19 @@ namespace ktm
 {
 
 template<class M>
+struct reduce_component;
+
+template<size_t N, typename T>
+struct reduce_component<mat<N, N, T>> : std::tuple<mat<N, N, T>, mat<N, N, T>>
+{
+    using type = std::tuple<mat<N, N, T>, mat<N, N, T>>;
+    using type::type;
+
+    KTM_MATRIX_COMPONENT_ELEMENT(transform, 0)
+    KTM_MATRIX_COMPONENT_ELEMENT(reduce, 1)
+};
+
+template<class M>
 struct lu_component;
 
 template<size_t N, typename T>
