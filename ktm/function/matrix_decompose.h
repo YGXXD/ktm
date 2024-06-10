@@ -210,7 +210,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
     using T = mat_traits_base_t<M>;
 
     // crout for matrix lu decomposition, col transform
-    M l = { m }, u = M::from_eye();
+    M l { m }, u = M::from_eye();
 
     for(int i = 0; i < N - 1; ++i)
     {
