@@ -411,7 +411,6 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
             T tr = r_h * (r[i][i] * r[k][i] + r[i][i + 1] * r[k][i + 1]);
             r[k][i] -= tr * r[i][i];
             r[k][i + 1] -= tr * r[i][i + 1];
-            std::cout << tr << std::endl;
         }
 
         r[i][i] = length;
@@ -452,30 +451,45 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 }
 
 template<class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, eigen_component<M>> decompose_eigen_qrit(const M& m) noexcept
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, edv_component<M>> decompose_edv_shiftqr(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_n<M>;
     using T = mat_traits_base_t<M>;
 
-    // qr iteration for calc matrix eigenvectors and eigenvalues
-    M a { m }, eigen_vec = M::from_eye();
-    mat_traits_col_t<M> eigen_value, last_eigen_value = diagonal(a);
+    // qr iteration for calc matrix eigenvectors and eigenvalues(matrix must be symmetric matrix)
+    reduce_component<M> tridiagonal = reduce_tridiagonal(m); 
+    M a { tridiagonal.get_reduce() }, eigen_vec = M::from_eye();
+    mat_traits_col_t<M> eigen_value;
+    int step = N - 1;
 
     for(int it = 0; it < KTM_MATRIX_DECOMPOSE_ITERATION_MAX; ++it) 
     {
-        qr_component<M> qr = decompose_qr_householder(a);
+        T step_value = a[step][step];
+        for(int i = 0; i < N; ++i)
+        {
+            a[i][i] -= step_value;
+        }
+        qr_component<M> qr = decompose_qr_on_tridiagonal(a);
         a = qr.get_r() * qr.get_q();
+        for(int i = 0; i < N; ++i)
+        {
+            a[i][i] += step_value;
+        }
         eigen_vec = eigen_vec * qr.get_q();
         eigen_value = diagonal(a);
-        if(equal(eigen_value, last_eigen_value))
-            break;
-        last_eigen_value = eigen_value;
+        if(equal_zero(a[step - 1][step]))
+        {
+            if(step > 1)
+                --step;
+            else
+                break;
+        }
     }
-    return { eigen_value, eigen_vec };
+    return { tridiagonal.get_transform() * eigen_vec, eigen_value };
 }
 
 template<class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, eigen_component<M>> decompose_eigen_jacobi(const M& m) noexcept
+KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, edv_component<M>> decompose_edv_jacobi(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_n<M>;
     using T = mat_traits_base_t<M>;
@@ -571,7 +585,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
         }
     }
     eigen_value = diagonal(a);
-    return { eigen_value, eigen_vec };
+    return { eigen_vec, eigen_value };
 }
 
 template<class M>
@@ -580,51 +594,54 @@ KTM_NOINLINE std::enable_if_t<is_floating_point_base_v<M>, svd_component<M>> dec
     using u_type = typename svd_component<M>::u_type;
     using s_type = typename svd_component<M>::s_type;
     using vt_type = typename svd_component<M>::vt_type;
-    constexpr size_t row_n = mat_traits_row_n<s_type>;
-    constexpr size_t col_n = mat_traits_col_n<s_type>;
+    constexpr size_t row_n = mat_traits_row_n<M>;
+    constexpr size_t col_n = mat_traits_col_n<M>;
 
-    // calc matrix svd decomposition(using decompose_eigen_jacobi to decompose matrix eigenvectors and eigenvalues)
+    // calc matrix svd decomposition(using decompose_edv_jacobi to decompose matrix eigenvectors and eigenvalues)
     if constexpr(row_n >= col_n)
     {
         // if row_n >= col_n, first calc v matrix
-        eigen_component<vt_type> ata_eigen = decompose_eigen_jacobi(transpose(m) * m);
-        mat_traits_col_t<s_type>& ata_eigen_value_ref = reinterpret_cast<mat_traits_col_t<s_type>&>(ata_eigen.get_value());
-        ata_eigen_value_ref = sqrt(abs(ata_eigen_value_ref));
-        s_type s; mat_traits_tp_t<s_type> inv_s;
+        edv_component<vt_type> ata_eigen = decompose_edv_jacobi(transpose(m) * m);
+        s_type s, inv_s;
         if constexpr(row_n == col_n)
         {
-            s = s_type::from_diag(ata_eigen_value_ref);
-            inv_s = s_type::from_diag(recip(ata_eigen_value_ref));
+            s = sqrt(abs(ata_eigen.get_value()));
+            inv_s = recip(s);
         }
         else
         {
-            s = { }; inv_s = { };
-            mat_traits_col_t<s_type> recip_diag_value = recip(ata_eigen_value_ref);
             for(int i = 0; i < col_n; ++i)
             {
-                s[i][i] = ata_eigen_value_ref[i];
-                inv_s[i][i] = recip_diag_value[i]; 
+                s[i] = sqrt(abs(ata_eigen.get_value()[i]));
+                inv_s[i] = recip(s[i]);
             }
         }
+        mat_traits_tp_t<M> inv_s_matrix = { };
+        for(int i = 0; i < col_n; ++i)
+        {
+            inv_s_matrix[i][i] = inv_s[i];
+        }
         vt_type& v = ata_eigen.get_vector();
-        u_type u = m * v * inv_s;
+        u_type u = m * v * inv_s_matrix;
         return { u, s, transpose(v) };
     }
     else
     {
         // if row_n < col_n, first calc u matrix
-        eigen_component<u_type> aat_eigen = decompose_eigen_jacobi(m * transpose(m));
-        u_type& u = aat_eigen.get_vector();
-        mat_traits_row_t<s_type>& aat_eigen_value_ref = reinterpret_cast<mat_traits_row_t<s_type>&>(aat_eigen.get_value());
-        aat_eigen_value_ref = sqrt(abs(aat_eigen_value_ref));
-        s_type s { }; mat_traits_tp_t<s_type> inv_s { }; 
-        mat_traits_row_t<s_type> recip_diag_value = recip(aat_eigen_value_ref);
+        edv_component<u_type> aat_eigen = decompose_edv_jacobi(m * transpose(m));
+        s_type s, inv_s; 
         for(int i = 0; i < row_n; ++i)
         {
-            s[i][i] = aat_eigen_value_ref[i];
-            inv_s[i][i] = recip_diag_value[i];
+            s[i] = sqrt(abs(aat_eigen.get_value()[i]));
+            inv_s[i] = recip(s[i]);
         }
-        vt_type vt = inv_s * transpose(u) * m;
+        mat_traits_tp_t<M> inv_s_matrix = { };
+        for(int i = 0; i < row_n; ++i)
+        {
+            inv_s_matrix[i][i] = inv_s[i];
+        } 
+        u_type& u = aat_eigen.get_vector();
+        vt_type vt = inv_s_matrix * transpose(u) * m;
         return { u, s, vt };
     }
 }
@@ -634,6 +651,8 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 {
     constexpr size_t N = mat_traits_col_n<M>;
     using T = mat_traits_base_t<M>;
+    
+    // calc matrix affine decomposition(translation * rotation * shear * scale)
     if constexpr(N == 2)
     {
         M translate_matrix = M::from_eye();
@@ -662,7 +681,6 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
             out_m[N - 1][N - 1] = one<T>;
         };
 
-        // calc matrix affine decomposition(translation * rotation * shear * scale)
         AffM affine_matrix;
         m_to_affm_lambda(m, affine_matrix);
         qr_component<AffM> affine_qr = decompose_qr_givens(affine_matrix);
