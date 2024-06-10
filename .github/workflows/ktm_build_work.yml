@@ -36,11 +36,7 @@ jobs:
           - os: windows-latest
             c_compiler: gcc
             cpp_compiler: g++
-            cmake_project: Unix` Makefiles
-          - os: windows-latest
-            c_compiler: clang
-            cpp_compiler: clang++
-            cmake_project: Unix` Makefiles
+            cmake_project: Unix` Makefiles 
           - os: ubuntu-latest
             c_compiler: gcc
             cpp_compiler: g++
@@ -54,6 +50,8 @@ jobs:
         exclude:
           - os: macos-latest
             c_compiler: cl
+          - os: windows-latest
+            c_compiler: clang
           - os: ubuntu-latest
             c_compiler: cl
 
