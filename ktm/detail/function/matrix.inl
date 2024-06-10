@@ -131,8 +131,8 @@ struct ktm::detail::matrix_implement::determinant<4, T>
     }
 };
 
-template<size_t N, typename T, typename Void>
-struct ktm::detail::matrix_implement::determinant
+template<size_t N, typename T>
+struct ktm::detail::matrix_implement::determinant<N, T, std::enable_if_t<!std::is_floating_point_v<T>>>
 {
     using M = mat<N, N, T>;
     static KTM_NOINLINE T call(const M& m) noexcept
@@ -154,6 +154,32 @@ struct ktm::detail::matrix_implement::determinant
             T sub_det = m[0][i] * determinant<N - 1, T>::call(sub_matrix);
             det += i & 0x1 ? -sub_det : sub_det;
         }
+        return det;
+    }
+};
+
+template<size_t N, typename T>
+struct ktm::detail::matrix_implement::determinant<N, T, std::enable_if_t<std::is_floating_point_v<T>>>
+{
+    using M = mat<N, N, T>;
+    static KTM_NOINLINE T call(const M& m) noexcept
+    {
+        M a = { m };
+        for(int i = 0; i < N - 1; ++i)
+        {
+            T one_over_diag = recip(a[i][i]);
+            for(int j = i + 1; j < N; ++j)
+            {
+                T factor = a[j][i] * one_over_diag;
+                for(int k = i + 1; k < N; ++k)
+                {
+                    a[j][k] -= a[i][k] * factor;
+                }
+            }
+        }
+        T det = one<T>;
+        for(int i = 0; i < N; ++i)
+            det *= a[i][i];
         return det;
     }
 };
@@ -275,8 +301,8 @@ struct ktm::detail::matrix_implement::inverse
                     for(int k = 0; k < N; ++k)
                     {
                         if(k >= i)
-                            left[k][j] = left[k][j] - factor * left[k][i];
-                        right[k][j] = right[k][j] - factor * right[k][i];
+                            left[k][j] -= factor * left[k][i];
+                        right[k][j] -= factor * right[k][i];
                     }
                 }
             }
