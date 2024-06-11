@@ -456,7 +456,9 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 
     for(int it = 0; it < KTM_MATRIX_DECOMPOSE_ITERATION_MAX; ++it) 
     {
-        T step_value = a[step][step];
+        T delta = (a[step - 1][step - 1] - a[step][step]) * static_cast<T>(0.5);
+        T diff = sqrt(delta * delta + a[step][step - 1] * a[step][step - 1]);
+        T step_value = a[step][step] + delta - std::copysign(diff, delta);
         for(int i = 0; i < N; ++i)
         {
             a[i][i] -= step_value;
