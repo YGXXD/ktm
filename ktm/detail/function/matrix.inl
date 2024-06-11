@@ -23,7 +23,16 @@ struct ktm::detail::matrix_implement::transpose
     using RowV = vec<Row, T>;
     static KTM_INLINE RetM call(const M& m) noexcept
     {
-        return call(m, std::make_index_sequence<Col>(), std::make_index_sequence<Row>());
+        if constexpr(Row <= 4 && Col <= 4)
+            return call(m, std::make_index_sequence<Col>(), std::make_index_sequence<Row>());
+        else
+        {
+            RetM ret;
+            for(int i = 0; i < Row; ++i)
+                for(int j = 0; j < Col; ++j)
+                    ret[j][i] = m[i][j];
+            return ret;
+        }
     }
 private:
     template<size_t ...Rs, size_t ...Cs>
@@ -42,7 +51,15 @@ struct ktm::detail::matrix_implement::trace
     using M = mat<N, N, T>;
     static KTM_INLINE T call(const M& m) noexcept
     {
-        return call(m, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(m, std::make_index_sequence<N>());
+        else
+        {
+            T ret = zero<T>;
+            for(int i = 0; i < N; ++i)
+                ret += m[i][i];
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -59,7 +76,15 @@ struct ktm::detail::matrix_implement::diagonal
     using ColV = vec<N, T>;
     static KTM_INLINE ColV call(const M& m) noexcept
     {
-        return call(m, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return call(m, std::make_index_sequence<N>());
+        else
+        {
+            ColV ret;
+            for(int i = 0; i < N; ++i)
+                ret[i] = m[i][i];
+            return ret;
+        }
     }
 private:
     template<size_t ...Ns>
@@ -121,22 +146,44 @@ struct ktm::detail::matrix_implement::determinant
     using M = mat<N, N, T>;
     static KTM_NOINLINE T call(const M& m) noexcept
     {
-        T det = zero<T>;
-        for(int i = 0; i < N; ++i) 
+        T det;
+        if constexpr(std::is_floating_point_v<T>)
         {
-            mat<N - 1, N - 1, T> sub_matrix;
-            for(int col = 1; col < N; ++col) 
+            det = one<T>; M a { m }; 
+            for(int i = 0; i < N - 1; ++i)
             {
-                for(int row = 0, sub_row = 0; row < N; ++row) 
+                T one_over_diag = recip(a[i][i]);
+                for(int j = i + 1; j < N; ++j)
                 {
-                    if(row == i) 
-                        continue;
-                    sub_matrix[col - 1][sub_row] = m[col][row];
-                    ++sub_row;
+                    T factor = a[j][i] * one_over_diag;
+                    for(int k = i + 1; k < N; ++k)
+                    {
+                        a[j][k] -= a[i][k] * factor;
+                    }
                 }
             }
-            T sub_det = m[0][i] * determinant<N - 1, T>::call(sub_matrix);
-            det += i & 0x1 ? -sub_det : sub_det;
+            for(int i = 0; i < N; ++i)
+                det *= a[i][i];
+        }
+        else
+        {
+            det = zero<T>;
+            for(int i = 0; i < N; ++i) 
+            {
+                mat<N - 1, N - 1, T> sub_matrix;
+                for(int col = 1; col < N; ++col) 
+                {
+                    for(int row = 0, sub_row = 0; row < N; ++row) 
+                    {
+                        if(row == i) 
+                            continue;
+                        sub_matrix[col - 1][sub_row] = m[col][row];
+                        ++sub_row;
+                    }
+                }
+                T sub_det = m[0][i] * determinant<N - 1, T>::call(sub_matrix);
+                det += i & 0x1 ? -sub_det : sub_det;
+            }
         }
         return det;
     }
@@ -259,8 +306,8 @@ struct ktm::detail::matrix_implement::inverse
                     for(int k = 0; k < N; ++k)
                     {
                         if(k >= i)
-                            left[k][j] = left[k][j] - factor * left[k][i];
-                        right[k][j] = right[k][j] - factor * right[k][i];
+                            left[k][j] -= factor * left[k][i];
+                        right[k][j] -= factor * right[k][i];
                     }
                 }
             }

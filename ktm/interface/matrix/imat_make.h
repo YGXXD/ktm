@@ -29,7 +29,15 @@ struct imat_make<Father, mat<Row, Col, T, std::enable_if_t<Row != Col>>> : Fathe
     static KTM_INLINE std::enable_if_t<sizeof...(RowVs) == Col && std::is_same_vs<vec<Row, T>, std::remove_const_t<std::remove_reference_t<RowVs>>...>, 
         mat<Row, Col, T>> from_row(RowVs&&... rows) noexcept
     {
-        return from_row(std::make_index_sequence<Row>(), std::forward<RowVs>(rows)...);
+        if constexpr(Row <= 4)
+            return from_row(std::make_index_sequence<Row>(), std::forward<RowVs>(rows)...);
+        else
+        {
+            mat<Row, Col, T> ret;
+            for(int i = 0; i < Row; ++i)
+                ret[i] = vec<Col, T>(rows[i]...);
+            return ret;
+        }
     }
 private:
     template<typename ...RowVs, size_t ...Ns>
@@ -51,18 +59,44 @@ struct imat_make<Father, mat<N, N, T>> : Father
     static KTM_INLINE std::enable_if_t<sizeof...(RowVs) == N && std::is_same_vs<vec<N, T>, std::remove_const_t<std::remove_reference_t<RowVs>>...>, 
         mat<N, N, T>> from_row(RowVs&&... rows) noexcept
     {
-        return from_row(std::make_index_sequence<N>(), std::forward<RowVs>(rows)...);
+        if constexpr(N <= 4)
+            return from_row(std::make_index_sequence<N>(), std::forward<RowVs>(rows)...);
+        else
+        {
+            mat<N, N, T> ret;
+            for(int i = 0; i < N; ++i)
+                ret[i] = vec<N, T>(rows[i]...);
+            return ret;
+        }
     }
 
     static KTM_INLINE mat<N, N, T> from_diag(const vec<N, T>& diag) noexcept
     {
-        return from_diag(diag, std::make_index_sequence<N>());
+        if constexpr(N <= 4)
+            return from_diag(diag, std::make_index_sequence<N>());
+        else
+        {
+            mat<N, N, T> ret { };
+            for(int i = 0; i < N; ++i)
+                ret[i][i] = diag[i];
+            return ret;
+        }
     }
 
     static KTM_INLINE mat<N, N, T> from_eye() noexcept
     {
-        static mat<N, N, T> eye = from_eye(std::make_index_sequence<N>());
-        return eye;
+        if constexpr(N <= 4)
+        {
+            static mat<N, N, T> eye = from_eye(std::make_index_sequence<N>());
+            return eye;
+        }
+        else
+        {
+            mat<N, N, T> eye { };
+            for(int i = 0; i < N; ++i)
+                eye[i][i] = one<T>;
+            return eye;
+        } 
     }
 private:
     template<typename ...RowVs, size_t ...Ns>
