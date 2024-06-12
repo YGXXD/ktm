@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
     std::cout << "floor: " << ktm::floor(t3) << std::endl;
     std::cout << "ceil: " << ktm::ceil(t3) << std::endl;
     std::cout << "round: " << ktm::round(t3) << std::endl;
-    std::cout << "mod" << ktm::mod(t3, {2.f, 3.f, 3.f}) << std::endl;
+    std::cout << "mod: " << ktm::mod(t3, {2.f, 3.f, 3.f}) << std::endl;
     std::cout << "sqrt: " << ktm::sqrt(t5) << std::endl;
     std::cout << "rsqrt: " << ktm::rsqrt(t5) << std::endl;
     std::cout << "recip: " << ktm::recip(t3) << std::endl;

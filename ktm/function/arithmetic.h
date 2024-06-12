@@ -57,7 +57,7 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> floor(T x) noexcept
 template<typename T>
 KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> ceil(T x) noexcept
 {
-    return std::ceil;
+    return std::ceil(x);
 }
 
 template<typename T>
