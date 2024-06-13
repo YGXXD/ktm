@@ -147,10 +147,10 @@ struct ktm::detail::matrix_implement::determinant
             det = one<T>; M a { m }; 
             for(int i = 0; i < N - 1; ++i)
             {
-                T one_over_diag = recip(a[i][i]);
+                T recip_diag = recip(a[i][i]);
                 for(int j = i + 1; j < N; ++j)
                 {
-                    T factor = a[j][i] * one_over_diag;
+                    T factor = a[j][i] * recip_diag;
                     for(int k = i + 1; k < N; ++k)
                     {
                         a[j][k] -= a[i][k] * factor;
@@ -190,12 +190,12 @@ struct ktm::detail::matrix_implement::inverse<2, T>
     using M = mat<2, 2, T>;
     static KTM_INLINE M call(const M& m) noexcept
     {
-        T one_over_det = one<T> / determinant<2, T>::call(m);
+        T recip_det = one<T> / determinant<2, T>::call(m);
         M ret;
-        ret[0][0] = m[1][1] * one_over_det;
-        ret[0][1] = - m[0][1] * one_over_det; 
-        ret[1][0] = - m[1][0] * one_over_det; 
-        ret[1][1] = m[0][0] * one_over_det;
+        ret[0][0] = m[1][1] * recip_det;
+        ret[0][1] = - m[0][1] * recip_det; 
+        ret[1][0] = - m[1][0] * recip_det; 
+        ret[1][1] = m[0][0] * recip_det;
         return ret;
     }
 };
@@ -206,17 +206,17 @@ struct ktm::detail::matrix_implement::inverse<3, T>
     using M = mat<3, 3, T>;
     static KTM_INLINE M call(const M& m) noexcept
     {
-        T one_over_det = one<T> / determinant<3, T>::call(m);
+        T recip_det = one<T> / determinant<3, T>::call(m);
         M ret;
-        ret[0][0] = one_over_det * (m[1][1] * m[2][2] - m[2][1] * m[1][2]);
-        ret[0][1] = one_over_det * (m[2][1] * m[0][2] - m[0][1] * m[2][2]);
-        ret[0][2] = one_over_det * (m[0][1] * m[1][2] - m[1][1] * m[0][2]);
-        ret[1][0] = one_over_det * (m[2][0] * m[1][2] - m[1][0] * m[2][2]);    
-        ret[1][1] = one_over_det * (m[0][0] * m[2][2] - m[2][0] * m[0][2]);
-        ret[1][2] = one_over_det * (m[1][0] * m[0][2] - m[0][0] * m[1][2]);
-        ret[2][0] = one_over_det * (m[1][0] * m[2][1] - m[2][0] * m[1][1]);
-        ret[2][1] = one_over_det * (m[2][0] * m[0][1] - m[0][0] * m[2][1]);
-        ret[2][2] = one_over_det * (m[0][0] * m[1][1] - m[1][0] * m[0][1]);
+        ret[0][0] = recip_det * (m[1][1] * m[2][2] - m[2][1] * m[1][2]);
+        ret[0][1] = recip_det * (m[2][1] * m[0][2] - m[0][1] * m[2][2]);
+        ret[0][2] = recip_det * (m[0][1] * m[1][2] - m[1][1] * m[0][2]);
+        ret[1][0] = recip_det * (m[2][0] * m[1][2] - m[1][0] * m[2][2]);    
+        ret[1][1] = recip_det * (m[0][0] * m[2][2] - m[2][0] * m[0][2]);
+        ret[1][2] = recip_det * (m[1][0] * m[0][2] - m[0][0] * m[1][2]);
+        ret[2][0] = recip_det * (m[1][0] * m[2][1] - m[2][0] * m[1][1]);
+        ret[2][1] = recip_det * (m[2][0] * m[0][1] - m[0][0] * m[2][1]);
+        ret[2][2] = recip_det * (m[0][0] * m[1][1] - m[1][0] * m[0][1]);
         return ret;
     }
 };
@@ -227,55 +227,55 @@ struct ktm::detail::matrix_implement::inverse<4, T>
     using M = mat<4, 4, T>;
     static KTM_INLINE M call(const M& m) noexcept
     {
-        T one_over_det = one<T> / determinant<4, T>::call(m);
+        T recip_det = one<T> / determinant<4, T>::call(m);
         M ret;
         ret[0][0] =
-            one_over_det * (m[1][1] * m[2][2] * m[3][3] - m[1][1] * m[2][3] * m[3][2] - m[2][1] * m[1][2] * m[3][3] +
+            recip_det * (m[1][1] * m[2][2] * m[3][3] - m[1][1] * m[2][3] * m[3][2] - m[2][1] * m[1][2] * m[3][3] +
                             m[2][1] * m[1][3] * m[3][2] + m[3][1] * m[1][2] * m[2][3] - m[3][1] * m[1][3] * m[2][2]);
         ret[0][1] =
-            one_over_det * (m[3][1] * m[0][3] * m[2][2] - m[3][1] * m[0][2] * m[2][3] - m[2][1] * m[0][3] * m[3][2] +
+            recip_det * (m[3][1] * m[0][3] * m[2][2] - m[3][1] * m[0][2] * m[2][3] - m[2][1] * m[0][3] * m[3][2] +
                             m[2][1] * m[0][2] * m[3][3] + m[0][1] * m[2][3] * m[3][2] - m[0][1] * m[2][2] * m[3][3]);
         ret[0][2] =
-            one_over_det * (m[0][1] * m[1][2] * m[3][3] - m[0][1] * m[1][3] * m[3][2] - m[1][1] * m[0][2] * m[3][3] +
+            recip_det * (m[0][1] * m[1][2] * m[3][3] - m[0][1] * m[1][3] * m[3][2] - m[1][1] * m[0][2] * m[3][3] +
                             m[1][1] * m[0][3] * m[3][2] + m[3][1] * m[0][2] * m[1][3] - m[3][1] * m[0][3] * m[1][2]);
         ret[0][3] =
-            one_over_det * (m[2][1] * m[0][3] * m[1][2] - m[2][1] * m[0][2] * m[1][3] - m[1][1] * m[0][3] * m[2][2] +
+            recip_det * (m[2][1] * m[0][3] * m[1][2] - m[2][1] * m[0][2] * m[1][3] - m[1][1] * m[0][3] * m[2][2] +
                             m[1][1] * m[0][2] * m[2][3] + m[0][1] * m[1][3] * m[2][2] - m[0][1] * m[1][2] * m[2][3]);
         ret[1][0] =
-            one_over_det * (m[3][0] * m[1][3] * m[2][2] - m[3][0] * m[1][2] * m[2][3] - m[2][0] * m[1][3] * m[3][2] +
+            recip_det * (m[3][0] * m[1][3] * m[2][2] - m[3][0] * m[1][2] * m[2][3] - m[2][0] * m[1][3] * m[3][2] +
                             m[2][0] * m[1][2] * m[3][3] + m[1][0] * m[2][3] * m[3][2] - m[1][0] * m[2][2] * m[3][3]);
         ret[1][1] =
-            one_over_det * (m[0][0] * m[2][2] * m[3][3] - m[0][0] * m[2][3] * m[3][2] - m[2][0] * m[0][2] * m[3][3] +
+            recip_det * (m[0][0] * m[2][2] * m[3][3] - m[0][0] * m[2][3] * m[3][2] - m[2][0] * m[0][2] * m[3][3] +
                             m[2][0] * m[0][3] * m[3][2] + m[3][0] * m[0][2] * m[2][3] - m[3][0] * m[0][3] * m[2][2]);
         ret[1][2] =
-            one_over_det * (m[3][0] * m[0][3] * m[1][2] - m[3][0] * m[0][2] * m[1][3] - m[1][0] * m[0][3] * m[3][2] +
+            recip_det * (m[3][0] * m[0][3] * m[1][2] - m[3][0] * m[0][2] * m[1][3] - m[1][0] * m[0][3] * m[3][2] +
                             m[1][0] * m[0][2] * m[3][3] + m[0][0] * m[1][3] * m[3][2] - m[0][0] * m[1][2] * m[3][3]);
         ret[1][3] =
-            one_over_det * (m[0][0] * m[1][2] * m[2][3] - m[0][0] * m[1][3] * m[2][2] - m[1][0] * m[0][2] * m[2][3] +
+            recip_det * (m[0][0] * m[1][2] * m[2][3] - m[0][0] * m[1][3] * m[2][2] - m[1][0] * m[0][2] * m[2][3] +
                             m[1][0] * m[0][3] * m[2][2] + m[2][0] * m[0][2] * m[1][3] - m[2][0] * m[0][3] * m[1][2]);
         ret[2][0] =
-            one_over_det * (m[1][0] * m[2][1] * m[3][3] - m[1][0] * m[2][3] * m[3][1] - m[2][0] * m[1][1] * m[3][3] +
+            recip_det * (m[1][0] * m[2][1] * m[3][3] - m[1][0] * m[2][3] * m[3][1] - m[2][0] * m[1][1] * m[3][3] +
                             m[2][0] * m[1][3] * m[3][1] + m[3][0] * m[1][1] * m[2][3] - m[3][0] * m[1][3] * m[2][1]);
         ret[2][1] =
-            one_over_det * (m[3][0] * m[0][3] * m[2][1] - m[3][0] * m[0][1] * m[2][3] - m[2][0] * m[0][3] * m[3][1] +
+            recip_det * (m[3][0] * m[0][3] * m[2][1] - m[3][0] * m[0][1] * m[2][3] - m[2][0] * m[0][3] * m[3][1] +
                             m[2][0] * m[0][1] * m[3][3] + m[0][0] * m[2][3] * m[3][1] - m[0][0] * m[2][1] * m[3][3]);
         ret[2][2] =
-            one_over_det * (m[0][0] * m[1][1] * m[3][3] - m[0][0] * m[1][3] * m[3][1] - m[1][0] * m[0][1] * m[3][3] +
+            recip_det * (m[0][0] * m[1][1] * m[3][3] - m[0][0] * m[1][3] * m[3][1] - m[1][0] * m[0][1] * m[3][3] +
                             m[1][0] * m[0][3] * m[3][1] + m[3][0] * m[0][1] * m[1][3] - m[3][0] * m[0][3] * m[1][1]);
         ret[2][3] =
-            one_over_det * (m[2][0] * m[0][3] * m[1][1] - m[2][0] * m[0][1] * m[1][3] - m[1][0] * m[0][3] * m[2][1] +
+            recip_det * (m[2][0] * m[0][3] * m[1][1] - m[2][0] * m[0][1] * m[1][3] - m[1][0] * m[0][3] * m[2][1] +
                             m[1][0] * m[0][1] * m[2][3] + m[0][0] * m[1][3] * m[2][1] - m[0][0] * m[1][1] * m[2][3]);
         ret[3][0] =
-            one_over_det * (m[3][0] * m[1][2] * m[2][1] - m[3][0] * m[1][1] * m[2][2] - m[2][0] * m[1][2] * m[3][1] +
+            recip_det * (m[3][0] * m[1][2] * m[2][1] - m[3][0] * m[1][1] * m[2][2] - m[2][0] * m[1][2] * m[3][1] +
                             m[2][0] * m[1][1] * m[3][2] + m[1][0] * m[2][2] * m[3][1] - m[1][0] * m[2][1] * m[3][2]);
         ret[3][1] =
-            one_over_det * (m[0][0] * m[2][1] * m[3][2] - m[0][0] * m[2][2] * m[3][1] - m[2][0] * m[0][1] * m[3][2] +
+            recip_det * (m[0][0] * m[2][1] * m[3][2] - m[0][0] * m[2][2] * m[3][1] - m[2][0] * m[0][1] * m[3][2] +
                             m[2][0] * m[0][2] * m[3][1] + m[3][0] * m[0][1] * m[2][2] - m[3][0] * m[0][2] * m[2][1]);
         ret[3][2] =
-            one_over_det * (m[3][0] * m[0][2] * m[1][1] - m[3][0] * m[0][1] * m[1][2] - m[1][0] * m[0][2] * m[3][1] +
+            recip_det * (m[3][0] * m[0][2] * m[1][1] - m[3][0] * m[0][1] * m[1][2] - m[1][0] * m[0][2] * m[3][1] +
                             m[1][0] * m[0][1] * m[3][2] + m[0][0] * m[1][2] * m[3][1] - m[0][0] * m[1][1] * m[3][2]);
         ret[3][3] =
-            one_over_det * (m[0][0] * m[1][1] * m[2][2] - m[0][0] * m[1][2] * m[2][1] - m[1][0] * m[0][1] * m[2][2] +
+            recip_det * (m[0][0] * m[1][1] * m[2][2] - m[0][0] * m[1][2] * m[2][1] - m[1][0] * m[0][1] * m[2][2] +
                             m[1][0] * m[0][2] * m[2][1] + m[2][0] * m[0][1] * m[1][2] - m[2][0] * m[0][2] * m[1][1]);
         return ret;
     }
@@ -292,12 +292,12 @@ struct ktm::detail::matrix_implement::inverse
 
         for(int i = 0; i < N; ++i) 
         {
-            T one_over_diag = recip(left[i][i]);
+            T recip_diag = recip(left[i][i]);
             for(int j = 0; j < N; ++j)
             {
                 if(i != j)
                 {
-                    T factor = left[i][j] * one_over_diag;
+                    T factor = left[i][j] * recip_diag;
                     for(int k = 0; k < N; ++k)
                     {
                         if(k >= i)
@@ -309,8 +309,8 @@ struct ktm::detail::matrix_implement::inverse
             for(int k = 0; k < N; ++k)
             {
                 if(k >= i)
-                    left[k][i] *= one_over_diag;
-                right[k][i] *= one_over_diag;
+                    left[k][i] *= recip_diag;
+                right[k][i] *= recip_diag;
             }
         }
         return right;
