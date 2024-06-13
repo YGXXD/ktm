@@ -50,18 +50,14 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
         
         for(int k = i + 1; k < N; ++k)
         {
-            T tt = zero<T>;
             T ta = zero<T>;
             for(int j = v_start; j < N; ++j)
             {
-                tt += a[i][j] * trans[j][k];
                 ta += a[i][j] * a[k][j];
             }
-            tt *= r_h;
             ta *= r_h;
             for(int j = v_start; j < N; ++j)
             {
-                trans[j][k] -= tt * a[i][j];
                 a[k][j] -= ta * a[i][j];
             }
         }
