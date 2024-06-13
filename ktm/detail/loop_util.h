@@ -18,92 +18,92 @@ namespace detail
 {
 
 template<typename R, typename A1, typename OP, size_t ...Ns>
-KTM_FUNC void loop_op(R& self, A1&& l1, OP&& op, std::index_sequence<Ns...>)
+KTM_FUNC void loop_op(R&& self, A1&& l0, OP&& op, std::index_sequence<Ns...>)
 {
-    ((self[Ns] = op(l1[Ns])), ...);
+    ((self[Ns] = op(l0[Ns])), ...);
 }
 
 template<size_t LoopN, typename R, typename A1, typename OP>
-KTM_FUNC void loop_op(R& self, A1&& l1, OP&& op)
+KTM_FUNC void loop_op(R&& self, A1&& l0, OP&& op)
 {
     if constexpr(LoopN <= 4)
-        return loop_op(self, std::forward<A1>(l1), std::forward<OP>(op), std::make_index_sequence<LoopN>());
+        return loop_op(self, std::forward<A1>(l0), std::forward<OP>(op), std::make_index_sequence<LoopN>());
     else
     {
         for(int i = 0; i < LoopN; ++i)
-            self[i] = op(l1[i]);
+            self[i] = op(l0[i]);
     }
 }
 
 template<typename R, typename A1, typename A2, typename OP, size_t ...Ns>
-KTM_FUNC void loop_op(R& self, A1&& l1, A2&& l2, OP&& op, std::index_sequence<Ns...>)
+KTM_FUNC void loop_op(R&& self, A1&& l0, A2&& l1, OP&& op, std::index_sequence<Ns...>)
 {
-    ((self[Ns] = op(l1[Ns], l2[Ns])), ...);
+    ((self[Ns] = op(l0[Ns], l1[Ns])), ...);
 }
 
 template<size_t LoopN, typename R, typename A1, typename A2, typename OP>
-KTM_FUNC void loop_op(R& self, A1&& l1, A2&& l2, OP&& op)
+KTM_FUNC void loop_op(R&& self, A1&& l0, A2&& l1, OP&& op)
 {
     if constexpr(LoopN <= 4)
-        return loop_op(self, std::forward<A1>(l1), std::forward<A2>(l2), std::forward<OP>(op), std::make_index_sequence<LoopN>());
+        return loop_op(self, std::forward<A1>(l0), std::forward<A2>(l1), std::forward<OP>(op), std::make_index_sequence<LoopN>());
     else
     {
         for(int i = 0; i < LoopN; ++i)
-            self[i] = op(l1[i], l2[i]);
+            self[i] = op(l0[i], l1[i]);
     }
 }
 
 template<typename R, typename A1, typename A2, typename A3, typename OP, size_t ...Ns>
-KTM_FUNC void loop_op(R& self, A1&& l1, A2&& l2, A3&& l3, OP&& op, std::index_sequence<Ns...>)
+KTM_FUNC void loop_op(R&& self, A1&& l0, A2&& l1, A3&& l2, OP&& op, std::index_sequence<Ns...>)
 {
-    ((self[Ns] = op(l1[Ns], l2[Ns], l3[Ns])), ...);
+    ((self[Ns] = op(l0[Ns], l1[Ns], l2[Ns])), ...);
 }
 
 template<size_t LoopN, typename R, typename A1, typename A2, typename A3, typename OP>
-KTM_FUNC void loop_op(R& self, A1&& l1, A2&& l2, A3&& l3, OP&& op)
+KTM_FUNC void loop_op(R&& self, A1&& l0, A2&& l1, A3&& l2, OP&& op)
 {
     if constexpr(LoopN <= 4)
-        return loop_op(self, std::forward<A1>(l1), std::forward<A2>(l2), std::forward<A3>(l3), std::forward<OP>(op), std::make_index_sequence<LoopN>());
+        return loop_op(self, std::forward<A1>(l0), std::forward<A2>(l1), std::forward<A3>(l2), std::forward<OP>(op), std::make_index_sequence<LoopN>());
     else
     {
         for(int i = 0; i < LoopN; ++i)
-            self[i] = op(l1[i], l2[i], l3[i]);
+            self[i] = op(l0[i], l1[i], l2[i]);
     }
 }
 
 template<typename R, typename A1, typename T, typename OP, size_t ...Ns>
-KTM_FUNC void loop_scalar(R& self, A1&& l1, const T& scalar, OP&& op, std::index_sequence<Ns...>)
+KTM_FUNC void loop_scalar(R&& self, A1&& l0, const T& scalar, OP&& op, std::index_sequence<Ns...>)
 {
-    ((self[Ns] = op(l1[Ns], scalar)), ...);
+    ((self[Ns] = op(l0[Ns], scalar)), ...);
 }
 
 template<size_t LoopN, typename R, typename A1, typename T, typename OP>
-KTM_FUNC void loop_scalar(R& self, A1&& l1, const T& scalar, OP&& op)
+KTM_FUNC void loop_scalar(R&& self, A1&& l0, const T& scalar, OP&& op)
 {
     if constexpr(LoopN <= 4)
-        return loop_scalar(self, std::forward<A1>(l1), scalar, std::forward<OP>(op), std::make_index_sequence<LoopN>());
+        return loop_scalar(self, std::forward<A1>(l0), scalar, std::forward<OP>(op), std::make_index_sequence<LoopN>());
     else
     {
         for(int i = 0; i < LoopN; ++i)
-            self[i] = op(l1[i], scalar);
+            self[i] = op(l0[i], scalar);
     }
 }
 
 template<typename R, typename A1, typename A2, typename T, typename OP, size_t ...Ns>
-KTM_FUNC void loop_scalar(R& self, A1&& l1, A2&& l2, const T& scalar, OP&& op, std::index_sequence<Ns...>)
+KTM_FUNC void loop_scalar(R&& self, A1&& l0, A2&& l1, const T& scalar, OP&& op, std::index_sequence<Ns...>)
 {
-    ((self[Ns] = op(l1[Ns], l2[Ns], scalar)), ...);
+    ((self[Ns] = op(l0[Ns], l1[Ns], scalar)), ...);
 }
 
 template<size_t LoopN, typename R, typename A1, typename A2, typename T, typename OP>
-KTM_FUNC void loop_scalar(R& self, A1&& l1, A2&& l2, const T& scalar, OP&& op)
+KTM_FUNC void loop_scalar(R&& self, A1&& l0, A2&& l1, const T& scalar, OP&& op)
 {
     if constexpr(LoopN <= 4)
-        return loop_scalar(self, std::forward<A1>(l1), std::forward<A2>(l2), scalar, std::forward<OP>(op), std::make_index_sequence<LoopN>());
+        return loop_scalar(self, std::forward<A1>(l0), std::forward<A2>(l1), scalar, std::forward<OP>(op), std::make_index_sequence<LoopN>());
     else
     {
         for(int i = 0; i < LoopN; ++i)
-            self[i] = op(l1[i], l2[i], scalar);
+            self[i] = op(l0[i], l1[i], scalar);
     }
 }
 
