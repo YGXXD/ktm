@@ -24,7 +24,7 @@ struct ktm::detail::matrix_implement::transpose
     static KTM_INLINE RetM call(const M& m) noexcept
     {
         if constexpr(Row <= 4 && Col <= 4)
-            return call(m, std::make_index_sequence<Col>(), std::make_index_sequence<Row>());
+            return call(m, std::make_index_sequence<Row>());
         else
         {
             RetM ret;
@@ -35,13 +35,10 @@ struct ktm::detail::matrix_implement::transpose
         }
     }
 private:
-    template<size_t ...Rs, size_t ...Cs>
-    static KTM_INLINE RetM call(const M& m, std::index_sequence<Rs...>, std::index_sequence<Cs...>) noexcept
+    template<size_t ...Ns>
+    static KTM_INLINE RetM call(const M& m, std::index_sequence<Ns...>) noexcept
     {
-        RetM ret;
-        size_t row_index;
-        ((row_index = Rs, ret[Rs] = RowV(m[Cs][row_index]...)), ...);
-        return ret;
+        return RetM::from_row(m[Ns]...);
     }
 };
 
@@ -55,8 +52,8 @@ struct ktm::detail::matrix_implement::trace
             return call(m, std::make_index_sequence<N>());
         else
         {
-            T ret = zero<T>;
-            for(int i = 0; i < N; ++i)
+            T ret = m[0][0];
+            for(int i = 1; i < N; ++i)
                 ret += m[i][i];
             return ret;
         }
@@ -76,23 +73,21 @@ struct ktm::detail::matrix_implement::diagonal
     using ColV = vec<N, T>;
     static KTM_INLINE ColV call(const M& m) noexcept
     {
+        ColV ret;
         if constexpr(N <= 4)
-            return call(m, std::make_index_sequence<N>());
+            call(ret, m, std::make_index_sequence<N>());
         else
         {
-            ColV ret;
             for(int i = 0; i < N; ++i)
                 ret[i] = m[i][i];
-            return ret;
         }
+        return ret;
     }
 private:
     template<size_t ...Ns>
-    static KTM_INLINE ColV call(const M& m, std::index_sequence<Ns...>) noexcept
+    static KTM_INLINE void call(ColV& ret, const M& m, std::index_sequence<Ns...>) noexcept
     {
-        ColV ret;
         ((ret[Ns] = m[Ns][Ns]), ...);
-        return ret;
     }
 };
 
