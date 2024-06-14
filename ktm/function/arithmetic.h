@@ -16,7 +16,7 @@ namespace ktm
 {
 
 template<typename T>
-KTM_INLINE std::enable_if_t<(std::is_arithmetic_v<T> && !std::is_unsigned_v<T>), T> abs(T x) noexcept
+KTM_INLINE std::enable_if_t<std::is_arithmetic_v<T> && !std::is_unsigned_v<T>, T> abs(T x) noexcept
 {
     if constexpr(std::is_floating_point_v<T>)
         return std::copysign(x, zero<T>);
