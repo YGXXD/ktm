@@ -45,23 +45,19 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
             continue;
         length = std::copysign(sqrt(length), -a[i][v_start]);
 
-        T r_h = recip(length * (length - a[i][v_start]));
+        T recip_h = recip(length * (length - a[i][v_start]));
         a[i][v_start] = (a[i][v_start] - length);
         
         for(int k = i + 1; k < N; ++k)
         {
-            T tt = zero<T>;
             T ta = zero<T>;
             for(int j = v_start; j < N; ++j)
             {
-                tt += a[i][j] * trans[j][k];
                 ta += a[i][j] * a[k][j];
             }
-            tt *= r_h;
-            ta *= r_h;
+            ta *= recip_h;
             for(int j = v_start; j < N; ++j)
             {
-                trans[j][k] -= tt * a[i][j];
                 a[k][j] -= ta * a[i][j];
             }
         }
@@ -74,8 +70,8 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
                 ta += a[i][j] * a[j][k];
                 tt += a[i][j] * trans[j][k];
             }
-            ta *= r_h;
-            tt *= r_h;
+            ta *= recip_h;
+            tt *= recip_h;
             for(int j = v_start; j < N; ++j)
             {
                 a[j][k] -= ta * a[i][j];
@@ -120,20 +116,20 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
             u[j] = a[i][j];
         }
 
-        T r_h = recip(length * (length - a[i][v_start]));
+        T recip_h = recip(length * (length - a[i][v_start]));
         vec<N, T> q { };
         for(int j = v_start; j < N; ++j)
         {
             q += a[j] * u[j];
         }
-        q *= r_h;
+        q *= recip_h;
         
         T dot_qu = zero<T>;
         for(int j = v_start; j < N; ++j)
         {
             dot_qu += q[j] * u[j];
         }
-        q -= dot_qu * static_cast<T>(0.5) * r_h * u;
+        q -= dot_qu * static_cast<T>(0.5) * recip_h * u;
 
         a[i][v_start] = length;
         a[v_start][i] = length;
@@ -159,7 +155,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
             {
                 tt += u[j] * trans[j][k];
             }
-            tt *= r_h;
+            tt *= recip_h;
             for(int j = v_start; j < N; ++j)
             {
                 trans[j][k] -= tt * u[j];
@@ -181,10 +177,10 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 
     for(int i = 0; i < N - 1; ++i)
     {
-        T r_uii = recip(u[i][i]);
+        T recip_uii = recip(u[i][i]);
         for(int j = i + 1; j < N; ++j)
         {
-            l[i][j] = u[i][j] * r_uii;
+            l[i][j] = u[i][j] * recip_uii;
             u[i][j] = zero<T>;
             for(int k = i + 1; k < N; ++k)
             {
@@ -207,10 +203,10 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 
     for(int i = 0; i < N - 1; ++i)
     {
-        T r_lii = recip(l[i][i]);
+        T recip_lii = recip(l[i][i]);
         for(int j = i + 1; j < N; ++j)
         {
-            u[j][i] = l[j][i] * r_lii;
+            u[j][i] = l[j][i] * recip_lii;
             l[j][i] = zero<T>;
             for(int k = i + 1; k < N; ++k)
             {
@@ -275,7 +271,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
             continue;
         length = std::copysign(sqrt(length), -r[i][i]); 
 
-        T r_h = recip(length * (length - r[i][i]));
+        T recip_h = recip(length * (length - r[i][i]));
         r[i][i] = (r[i][i] - length);
         
         for(int k = 0; k <= i; ++k)
@@ -285,7 +281,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
             {
                 tq += r[i][j] * q[j][k];
             }
-            tq *= r_h;
+            tq *= recip_h;
             for(int j = i; j < N; ++j)
             {
                 q[j][k] -= tq * r[i][j];
@@ -300,8 +296,8 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
                 tq += r[i][j] * q[j][k];
                 tr += r[i][j] * r[k][j];
             }
-            tq *= r_h;
-            tr *= r_h;
+            tq *= recip_h;
+            tr *= recip_h;
             for(int j = i; j < N; ++j)
             {
                 q[j][k] -= tq * r[i][j];
@@ -389,18 +385,18 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
             continue;
         length = std::copysign(sqrt(length), -r[i][i]);
 
-        T r_h = recip(length * (length - r[i][i]));
+        T recip_h = recip(length * (length - r[i][i]));
         r[i][i] = (r[i][i] - length);
         
         for(int k = 0; k <= i + 1; ++k)
         {
-            T tq = r_h * (r[i][i] * q[i][k] + r[i][i + 1] * q[i + 1][k]);
+            T tq = recip_h * (r[i][i] * q[i][k] + r[i][i + 1] * q[i + 1][k]);
             q[i][k] -= tq * r[i][i];
             q[i + 1][k] -= tq * r[i][i + 1];
         }
         for(int k = i + 1; k < N; ++k)
         {
-            T tr = r_h * (r[i][i] * r[k][i] + r[i][i + 1] * r[k][i + 1]);
+            T tr = recip_h * (r[i][i] * r[k][i] + r[i][i + 1] * r[k][i + 1]);
             r[k][i] -= tr * r[i][i];
             r[k][i + 1] -= tr * r[i][i + 1];
         }
@@ -525,15 +521,15 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
         {
             if(acr < 0)
             {
-                sin_theta = -rsqrt(static_cast<T>(2));
-                cos_theta = rsqrt(static_cast<T>(2));
+                sin_theta = -rsqrt_tow<T>;
+                cos_theta = rsqrt_tow<T>;
                 sin_two_theta = -one<T>;
                 cos_two_theta = zero<T>;
             }
             else 
             {
-                sin_theta = rsqrt(static_cast<T>(2));
-                cos_theta = rsqrt(static_cast<T>(2));
+                sin_theta = rsqrt_tow<T>;
+                cos_theta = rsqrt_tow<T>;
                 sin_two_theta = one<T>;
                 cos_two_theta = zero<T>;
             }

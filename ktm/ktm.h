@@ -21,6 +21,7 @@
 #include "function/common.h"
 #include "function/geometric.h"
 #include "function/compare.h"
+#include "function/random.h"
 #include "function/matrix.h"
 #include "function/matrix_decompose.h"
 #include "function/matrix_transform2d.h"

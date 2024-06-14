@@ -21,17 +21,13 @@ struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, float, std::enable_
     using RowV = vec<Row, float>;
     static KTM_INLINE ColV call(const M& m, const RowV& v) noexcept
     {
-        return call(m, v, std::make_index_sequence<Row - 1>());
-    }
-private:
-
-    template<size_t ...Ns>
-    static KTM_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
-    {
         ColV ret;
-        ret.st = _mul128_f32(m[0].st, _dup128_f32(v[0]));
-        ((ret.st = _madd128_f32(ret.st, m[Ns + 1].st, _dup128_f32(v[Ns + 1]))), ...);
-        return ret; 
+        loop_reduce<Row>(ret.st, m, v, _mul128_f32(m[0].st, _dup128_f32(v[0])), 
+        [](const skv::fv4& ret_st, const ColV& m_col, const float& v_val) -> skv::fv4 
+        {
+            return _madd128_f32(ret_st, m_col.st, _dup128_f32(v_val));
+        });
+        return ret;
     }
 };
 
@@ -43,21 +39,15 @@ struct ktm::detail::mat_opt_implement::vec_mul_mat<Row, Col, float, std::enable_
     using RowV = vec<Row, float>;
     static KTM_INLINE RowV call(const ColV& v, const M& m) noexcept
     {
-        return call(v, m, std::make_index_sequence<Row>());
-    }
-private:
-    template<size_t ...Ns>
-    static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
-    {
         RowV ret;
-        if constexpr(Col == 3) 
+        loop_scalar<Row>(ret, m, v, 
+        [](const ColV& m_col, const ColV& v) -> float
         {
-            ((ret[Ns] = skv::radd_fv3(_mul128_f32(v.st, m[Ns].st))), ...);
-        }
-        else 
-        {
-            ((ret[Ns] = skv::radd_fv4(_mul128_f32(v.st, m[Ns].st))), ...);
-        }
+            if constexpr(Col == 3)
+                return skv::radd_fv3(_mul128_f32(m_col.st, v.st));
+            else
+                return skv::radd_fv4(_mul128_f32(m_col.st, v.st));
+        });
         return ret;
     }
 };
@@ -69,14 +59,13 @@ struct ktm::detail::mat_opt_implement::add<Row, Col, float, std::enable_if_t<Col
     using ColV = vec<Col, float>;
     static KTM_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<Row>());
-    }
-private:
-    template<size_t ...Ns>
-    static KTM_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
-    {
         M ret;
-        ((ret[Ns].st = _add128_f32(m1[Ns].st, m2[Ns].st)), ...);
+        skv::fv4* p_fv4 = &ret[0].st;
+        loop_op<Row>(p_fv4, m1, m2, 
+        [](const ColV& m1_col, const ColV& m2_col) -> skv::fv4
+        {
+            return _add128_f32(m1_col.st, m2_col.st);
+        });
         return ret;
     }
 };
@@ -88,14 +77,13 @@ struct ktm::detail::mat_opt_implement::minus<Row, Col, float, std::enable_if_t<C
     using ColV = vec<Col, float>;
     static KTM_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<Row>());
-    }
-private:
-   template<size_t ...Ns>
-    static KTM_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
-    {
         M ret;
-        ((ret[Ns].st = _sub128_f32(m1[Ns].st, m2[Ns].st)), ...);
+        skv::fv4* p_fv4 = &ret[0].st;
+        loop_op<Row>(p_fv4, m1, m2, 
+        [](const ColV& m1_col, const ColV& m2_col) -> skv::fv4
+        {
+            return _sub128_f32(m1_col.st, m2_col.st);
+        });
         return ret;
     }
 };
@@ -107,14 +95,13 @@ struct ktm::detail::mat_opt_implement::opposite<Row, Col, float, std::enable_if_
     using ColV = vec<Col, float>;
     static KTM_INLINE M call(const M& m) noexcept
     {
-        return call(m, std::make_index_sequence<Row>());
-    }
-private:
-   template<size_t ...Ns>
-    static KTM_INLINE M call(const M& m, std::index_sequence<Ns...>) noexcept
-    {
         M ret;
-        ((ret[Ns].st = _neg128_f32(m[Ns].st)), ...);
+        skv::fv4* p_fv4 = &ret[0].st;
+        loop_op<Row>(p_fv4, m, 
+        [](const ColV& m_col) -> skv::fv4
+        {
+            return _neg128_f32(m_col.st);
+        });
         return ret;
     }
 };
@@ -130,14 +117,12 @@ struct ktm::detail::mat_opt_implement::add<Row, Col, int, std::enable_if_t<Col =
     using ColV = vec<Col, int>;
     static KTM_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<Row>());
-    }
-private:
-    template<size_t ...Ns>
-    static KTM_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
-    {
         M ret;
-        ((ret[Ns].st = _add128_s32(m1[Ns].st, m2[Ns].st)), ...);
+        loop_op<Row>(&ret[0].st, m1, m2, 
+        [](const ColV& m1_col, const ColV& m2_col) -> skv::sv4
+        {
+            return _add128_s32(m1_col.st, m2_col.st);
+        });
         return ret;
     }
 };
@@ -149,14 +134,12 @@ struct ktm::detail::mat_opt_implement::minus<Row, Col, int, std::enable_if_t<Col
     using ColV = vec<Col, int>;
     static KTM_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<Row>());
-    }
-private:
-   template<size_t ...Ns>
-    static KTM_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
-    {
         M ret;
-        ((ret[Ns].st = _sub128_s32(m1[Ns].st, m2[Ns].st)), ...);
+        loop_op<Row>(&ret[0].st, m1, m2, 
+        [](const ColV& m1_col, const ColV& m2_col) -> skv::sv4
+        {
+            return _sub128_s32(m1_col.st, m2_col.st);
+        });
         return ret;
     }
 };
@@ -168,14 +151,12 @@ struct ktm::detail::mat_opt_implement::opposite<Row, Col, int, std::enable_if_t<
     using ColV = vec<Col, int>;
     static KTM_INLINE M call(const M& m) noexcept
     {
-        return call(m, std::make_index_sequence<Row>());
-    }
-private:
-   template<size_t ...Ns>
-    static KTM_INLINE M call(const M& m, std::index_sequence<Ns...>) noexcept
-    {
         M ret;
-        ((ret[Ns].st = _neg128_s32(m[Ns].st)), ...);
+        loop_op<Row>(&ret[0].st, m, 
+        [](const ColV& m_col) -> skv::sv4
+        {
+            return _neg128_s32(m_col.st);
+        });
         return ret;
     }
 };
@@ -192,17 +173,13 @@ struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, Col, int, std::enable_if
     using RowV = vec<Row, int>;
     static KTM_INLINE ColV call(const M& m, const RowV& v) noexcept
     {
-        return call(m, v, std::make_index_sequence<Row - 1>());
-    }
-private:
-
-    template<size_t ...Ns>
-    static KTM_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
-    {
         ColV ret;
-        ret.st = _mul128_s32(m[0].st, _dup128_s32(v[0]));
-        ((ret.st = _madd128_s32(ret.st, m[Ns + 1].st, _dup128_s32(v[Ns + 1]))), ...);
-        return ret; 
+        loop_reduce<Row>(ret.st, m, v, _mul128_s32(m[0].st, _dup128_s32(v[0])), 
+        [](const skv::sv4& ret_st, const ColV& m_col, const int& v_val) -> skv::sv4 
+        {
+            return _madd128_s32(ret_st, m_col.st, _dup128_s32(v_val));
+        });
+        return ret;
     }
 };
 
@@ -214,21 +191,15 @@ struct ktm::detail::mat_opt_implement::vec_mul_mat<Row, Col, int, std::enable_if
     using RowV = vec<Row, int>;
     static KTM_INLINE RowV call(const ColV& v, const M& m) noexcept
     {
-        return call(v, m, std::make_index_sequence<Row>());
-    }
-private:
-    template<size_t ...Ns>
-    static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
-    {
         RowV ret;
-        if constexpr(Col == 3)
+        loop_scalar<Row>(ret, m, v, 
+        [](const ColV& m_col, const ColV& v) -> int
         {
-            ((ret[Ns] = skv::radd_sv3(_mul128_s32(v.st, m[Ns].st))), ...);
-        }
-        else 
-        {
-            ((ret[Ns] = skv::radd_sv4(_mul128_s32(v.st, m[Ns].st))), ...);
-        }
+            if constexpr(Col == 3)
+                return skv::radd_sv3(_mul128_s32(m_col.st, v.st));
+            else
+                return skv::radd_sv4(_mul128_s32(m_col.st, v.st));
+        });
         return ret;
     }
 };
@@ -245,16 +216,13 @@ struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, 2, float>
     using RowV = vec<Row, float>;
     static KTM_INLINE ColV call(const M& m, const RowV& v) noexcept
     {
-        return call(m, v, std::make_index_sequence<Row - 1>());
-    }
-private:
-    template<size_t ...Ns>
-    static KTM_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
-    {
         ColV ret;
-        ret.st = _mul64_f32(m[0].st, _dup64_f32(v[0]));
-        ((ret.st = _madd64_f32(ret.st, m[Ns + 1].st, _dup64_f32(v[Ns + 1]))), ...);
-        return ret; 
+        loop_reduce<Row>(ret.st, m, v, _mul64_f32(m[0].st, _dup64_f32(v[0])), 
+        [](const skv::fv2& ret_st, const ColV& m_col, const float& v_val) -> skv::fv2 
+        {
+            return _madd64_f32(ret_st, m_col.st, _dup64_f32(v_val));
+        });
+        return ret;
     }
 };
 
@@ -266,14 +234,12 @@ struct ktm::detail::mat_opt_implement::vec_mul_mat<Row, 2, float>
     using RowV = vec<Row, float>;
     static KTM_INLINE RowV call(const ColV& v, const M& m) noexcept
     {
-        return call(v, m, std::make_index_sequence<Row>());
-    }
-private:
-    template<size_t ...Ns>
-    static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
-    {
         RowV ret;
-        ((ret[Ns] = skv::radd_fv2(_mul64_f32(v.st, m[Ns].st))), ...);
+        loop_scalar<Row>(ret, m, v, 
+        [](const ColV& m_col, const ColV& v) -> float
+        {
+            return skv::radd_fv2(_mul64_f32(m_col.st, v.st));
+        });
         return ret;
     }
 };
@@ -285,14 +251,12 @@ struct ktm::detail::mat_opt_implement::add<Row, 2, float>
     using ColV = vec<2, float>;
     static KTM_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<Row>());
-    }
-private:
-    template<size_t ...Ns>
-    static KTM_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
-    {
         M ret;
-        ((ret[Ns].st = _add64_f32(m1[Ns].st, m2[Ns].st)), ...);
+        loop_op<Row>(&ret[0].st, m1, m2, 
+        [](const ColV& m1_col, const ColV& m2_col) -> skv::fv2
+        {
+            return _add64_f32(m1_col.st, m2_col.st);
+        });
         return ret;
     }
 };
@@ -304,14 +268,12 @@ struct ktm::detail::mat_opt_implement::minus<Row, 2, float>
     using ColV = vec<2, float>;
     static KTM_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<Row>());
-    }
-private:
-   template<size_t ...Ns>
-    static KTM_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
-    {
         M ret;
-        ((ret[Ns].st = _sub64_f32(m1[Ns].st, m2[Ns].st)), ...);
+        loop_op<Row>(&ret[0].st, m1, m2, 
+        [](const ColV& m1_col, const ColV& m2_col) -> skv::fv2
+        {
+            return _sub64_f32(m1_col.st, m2_col.st);
+        });
         return ret;
     }
 };
@@ -323,14 +285,12 @@ struct ktm::detail::mat_opt_implement::opposite<Row, 2, float>
     using ColV = vec<2, float>;
     static KTM_INLINE M call(const M& m) noexcept
     {
-        return call(m, std::make_index_sequence<Row>());
-    }
-private:
-   template<size_t ...Ns>
-    static KTM_INLINE M call(const M& m, std::index_sequence<Ns...>) noexcept
-    {
         M ret;
-        ((ret[Ns].st = _neg64_f32(m[Ns].st)), ...);
+        loop_op<Row>(&ret[0].st, m,  
+        [](const ColV& m_col) -> skv::fv2
+        {
+            return _neg64_f32(m_col.st);
+        });
         return ret;
     }
 };
@@ -343,16 +303,13 @@ struct ktm::detail::mat_opt_implement::mat_mul_vec<Row, 2, int>
     using RowV = vec<Row, int>;
     static KTM_INLINE ColV call(const M& m, const RowV& v) noexcept
     {
-        return call(m, v, std::make_index_sequence<Row - 1>());
-    }
-private:
-    template<size_t ...Ns>
-    static KTM_INLINE ColV call(const M& m, const RowV& v, std::index_sequence<Ns...>) noexcept
-    {
         ColV ret;
-        ret.st = _mul64_s32(m[0].st, _dup64_s32(v[0]));
-        ((ret.st = _madd64_s32(ret.st, m[Ns + 1].st, _dup64_s32(v[Ns + 1]))), ...);
-        return ret; 
+        loop_reduce<Row>(ret.st, m, v, _mul64_s32(m[0].st, _dup64_s32(v[0])), 
+        [](const skv::sv2& ret_st, const ColV& m_col, const int& v_val) -> skv::sv2 
+        {
+            return _madd64_s32(ret_st, m_col.st, _dup64_s32(v_val));
+        });
+        return ret;
     }
 };
 
@@ -364,14 +321,12 @@ struct ktm::detail::mat_opt_implement::vec_mul_mat<Row, 2, int>
     using RowV = vec<Row, int>;
     static KTM_INLINE RowV call(const ColV& v, const M& m) noexcept
     {
-        return call(v, m, std::make_index_sequence<Row>());
-    }
-private:
-    template<size_t ...Ns>
-    static KTM_INLINE RowV call(const ColV& v, const M& m, std::index_sequence<Ns...>) noexcept
-    {
         RowV ret;
-        ((ret[Ns] = skv::radd_sv2(_mul64_s32(v.st, m[Ns].st))), ...);
+        loop_scalar<Row>(ret, m, v, 
+        [](const ColV& m_col, const ColV& v) -> int 
+        {
+            return skv::radd_sv2(_mul64_s32(m_col.st, v.st));
+        });
         return ret;
     }
 };
@@ -383,14 +338,12 @@ struct ktm::detail::mat_opt_implement::add<Row, 2, int>
     using ColV = vec<2, int>;
     static KTM_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<Row>());
-    }
-private:
-    template<size_t ...Ns>
-    static KTM_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
-    {
         M ret;
-        ((ret[Ns].st = _add64_s32(m1[Ns].st, m2[Ns].st)), ...);
+        loop_op<Row>(&ret[0].st, m1, m2, 
+        [](const ColV& m1_col, const ColV& m2_col) -> skv::sv2
+        {
+            return _add64_s32(m1_col.st, m2_col.st);
+        });
         return ret;
     }
 };
@@ -402,14 +355,12 @@ struct ktm::detail::mat_opt_implement::minus<Row, 2, int>
     using ColV = vec<2, int>;
     static KTM_INLINE M call(const M& m1, const M& m2) noexcept
     {
-        return call(m1, m2, std::make_index_sequence<Row>());
-    }
-private:
-   template<size_t ...Ns>
-    static KTM_INLINE M call(const M& m1, const M& m2, std::index_sequence<Ns...>) noexcept
-    {
         M ret;
-        ((ret[Ns].st = _sub64_s32(m1[Ns].st, m2[Ns].st)), ...);
+        loop_op<Row>(&ret[0].st, m1, m2, 
+        [](const ColV& m1_col, const ColV& m2_col) -> skv::sv2
+        {
+            return _sub64_s32(m1_col.st, m2_col.st);
+        });
         return ret;
     }
 };
@@ -421,14 +372,12 @@ struct ktm::detail::mat_opt_implement::opposite<Row, 2, int>
     using ColV = vec<2, int>;
     static KTM_INLINE M call(const M& m) noexcept
     {
-        return call(m, std::make_index_sequence<Row>());
-    }
-private:
-   template<size_t ...Ns>
-    static KTM_INLINE M call(const M& m, std::index_sequence<Ns...>) noexcept
-    {
         M ret;
-        ((ret[Ns].st = _neg64_s32(m[Ns].st)), ...);
+        loop_op<Row>(&ret[0].st, m,  
+        [](const ColV& m_col) -> skv::sv2
+        {
+            return _neg64_s32(m_col.st);
+        });
         return ret;
     }
 };
