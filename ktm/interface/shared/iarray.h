@@ -23,7 +23,7 @@ struct iarray : Father
     using typename Father::array_type;
 
 #if defined(KTM_DEFAULT_CONSTRUCT_INIT)
-    KTM_FUNC iarray() noexcept { fill(typename array_type::value_type { }); }
+    KTM_FUNC iarray() noexcept { std::memset(data(), 0, sizeof(array_type)); }
 #endif
     KTM_FUNC iarray(std::initializer_list<typename array_type::value_type> li) noexcept
     {
@@ -104,7 +104,7 @@ struct iarray : Father
         o << *it;
         return o;
     }
-    friend KTM_FUNC std::istream& operator>>(std::istream& i, const Child& x) noexcept
+    friend KTM_FUNC std::istream& operator>>(std::istream& i, Child& x) noexcept
     {
         for(auto it = x.begin(); it != x.end(); ++it)
             i >> *it;

@@ -16,21 +16,20 @@ template<size_t N, typename T, typename Void>
 struct ktm::detail::vec_data_implement::vec_storage
 {
 private:
-    constexpr static KTM_INLINE size_t align() noexcept
-    {
-        if constexpr(N == 2)
-            return 2 * sizeof(T);
-        else if constexpr(N == 3 || N == 4)
-            return 4 * sizeof(T);
-        else
-            return sizeof(T);
-    }
     constexpr static KTM_INLINE size_t elem_num() noexcept
     {
         if constexpr(N == 3)
             return 4;
         else 
             return N;
+    }
+
+    constexpr static KTM_INLINE size_t align() noexcept
+    {
+        if constexpr(N <= 4)
+            return elem_num() * sizeof(T);
+        else
+            return sizeof(T);
     }
 public:
     struct alignas(align()) type 
