@@ -8,7 +8,7 @@
 #ifndef _KTM_TYPE_SINGLE_EXTEND_H_
 #define _KTM_TYPE_SINGLE_EXTEND_H_
 
-#include "type_traits_ext.h"
+#include "type_traits_function.h"
 
 namespace ktm 
 {
@@ -23,19 +23,6 @@ struct type_list
     using index = std::select_idx_t<N, Ts...>;
 };
 
-// type container instance
-template<typename TList, template<typename ...> class Tp>
-struct type_instance;
-
-template<template<typename ...> class Tp, typename ...Ts>
-struct type_instance<type_list<Ts...>, Tp>
-{
-	using type = Tp<Ts...>;
-};
-
-template<typename TList, template<typename ...> class Tp>
-using type_instance_t = typename type_instance<TList, Tp>::Type;
-
 // template container
 template<template<typename ...> class ...Tps>
 struct template_list 
@@ -46,7 +33,12 @@ struct template_list
 
 // single_extends's template
 template<class Child>
-struct empty_child { };
+struct empty_child 
+{ 
+protected:
+    inline constexpr Child* child_ptr() noexcept { return static_cast<Child*>(this); }
+    inline constexpr const Child* child_ptr() const noexcept { return static_cast<const Child*>(this); }
+};
 
 template<typename TpList, class Child, typename = std::enable_if_t<!TpList::is_exist_same>>
 struct single_extends;
@@ -70,9 +62,15 @@ using single_extends_t = typename single_extends<TpList, Child>::fater_type;
 
 // example:
 // struct D : SingleExtends_t<TemplateList<C, B, A>, D>::type { }
-// parent struct's child is D, A<D>, B<D>, C<D>
-// struct D's inheritance is { D : C : B : A : Nil }
+// struct D's inheritance is { D : C : B : A : empty_child }
 
 }
+
+#define KTM_CRTP_CHILD_IMPL_VALUE(class_name, implement) decltype(check_##implement<class_name>(0))::value
+#define KTM_CRTP_CHILD_IMPL_CHECK(interface, implement) \
+template <typename CheckT, typename T> \
+static inline constexpr auto check_##implement(T) \
+    -> std::enable_if_t<ktm::is_same_function_traits_v<decltype(&CheckT::interface), decltype(&CheckT::implement)>, std::true_type>; \
+template<typename CheckT> static inline constexpr std::false_type check_##implement(...);
 
 #endif

@@ -203,6 +203,7 @@ inline constexpr bool is_listing_type_v = is_listing_type<TList, T>::value;
 
 template<typename TList, typename T>
 inline constexpr bool is_listing_type_base_v = is_listing_type_base<TList, T>::value;
+
 }
 
 #endif
