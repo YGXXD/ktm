@@ -667,7 +667,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
                 std::copy(in_affm[i].begin(), in_affm[i].end(), out_m[i].begin());
                 out_m[i][N - 1] = zero<T>;
             }
-            out_m[N - 1].fill(zero<T>); 
+            std::fill(out_m[N - 1].begin(), out_m[N - 1].end(), zero<T>);
             out_m[N - 1][N - 1] = one<T>;
         };
 
