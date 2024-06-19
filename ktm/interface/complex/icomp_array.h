@@ -23,6 +23,19 @@ struct icomp_array<Father, comp<T>> : Father
 {
     using Father::Father;
     using array_type = std::array<T, 2>;
+private:
+    template<class F, class C>
+    friend class iarray_util;
+
+    KTM_FUNC auto& to_array_impl() noexcept
+    {
+        return reinterpret_cast<array_type&>(*this);
+    }
+    
+    KTM_FUNC const auto& to_array_impl() const noexcept
+    {
+        return reinterpret_cast<const array_type&>(*this);
+    }
 };
 
 }

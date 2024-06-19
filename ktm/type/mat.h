@@ -10,7 +10,9 @@
 
 #include "vec.h"
 #include "../traits/type_single_extend.h"
-#include "../interface/shared/iarray.h"
+#include "../interface/shared/iarray_util.h"
+#include "../interface/shared/iarray_io.h"
+#include "../interface/shared/iarray_init.h"
 #include "../interface/matrix/imat_data.h"
 #include "../interface/matrix/imat_make.h"
 #include "../interface/matrix/imat_array.h"
@@ -20,7 +22,7 @@ namespace ktm
 {
 
 template<class Child>
-using mat_father_type = single_extends_t<template_list<iarray, imat_data, imat_make, imat_array, imat_calc>, Child>;
+using mat_father_type = single_extends_t<template_list<iarray_init, imat_data, imat_make, imat_array, imat_calc, iarray_io, iarray_util>, Child>;
 
 template<size_t Row, size_t Col, typename T>
 struct mat<Row, Col, T> : mat_father_type<mat<Row, Col, T>>

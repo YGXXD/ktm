@@ -11,7 +11,9 @@
 #include "vec.h"
 #include "mat.h"
 #include "../traits/type_single_extend.h"
-#include "../interface/shared/iarray.h"
+#include "../interface/shared/iarray_util.h"
+#include "../interface/shared/iarray_io.h"
+#include "../interface/shared/iarray_init.h"
 #include "../interface/complex/icomp_data.h"
 #include "../interface/complex/icomp_make.h"
 #include "../interface/complex/icomp_array.h"
@@ -20,8 +22,9 @@
 namespace ktm
 {
 
-template<class Child>
-using comp_father_type = single_extends_t<template_list<iarray, icomp_data, icomp_make, icomp_array, icomp_calc>, Child>;
+template <class Child>
+using comp_father_type = single_extends_t<
+    template_list<iarray_init, icomp_data, icomp_make, icomp_array, icomp_calc, iarray_io, iarray_util>, Child>;
 
 template<typename T>
 struct comp<T> : comp_father_type<comp<T>>
