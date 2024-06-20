@@ -17,7 +17,7 @@
 namespace ktm
 {
 
-template<typename T> 
+template<typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>> 
 struct affine3d
 {
     mat<4, 3, T> m;

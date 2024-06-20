@@ -32,12 +32,7 @@ private:
             return sizeof(T);
     }
 public:
-    struct alignas(align()) type 
-    {
-    private:
-        T e[elem_num()];
-    };
-
+    struct alignas(align()) type { private: T e[elem_num()]; };
 };
 
 template<size_t OUT, size_t IN, typename T, typename Void>
