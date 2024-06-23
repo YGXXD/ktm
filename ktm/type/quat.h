@@ -10,7 +10,7 @@
 
 #include "vec.h"
 #include "mat.h"
-#include "../traits/type_single_extend.h"
+#include "../traits/type_single_extends.h"
 #include "../interface/shared/iarray_util.h"
 #include "../interface/shared/iarray_io.h"
 #include "../interface/shared/iarray_init.h"
@@ -23,7 +23,7 @@ namespace ktm
 {
 
 template<class Child>
-using quat_father_type = single_extends_t<template_list<iarray_init, iquat_data, iquat_make, iquat_array, iquat_calc, iarray_io, iarray_util>, Child>;
+using quat_father_type = single_extends_t<Child, iarray_init, iquat_data, iquat_make, iquat_array, iquat_calc, iarray_io, iarray_util>;
 
 template<typename T>
 struct quat<T> : quat_father_type<quat<T>>

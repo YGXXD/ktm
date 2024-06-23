@@ -12,7 +12,7 @@
 #include "../type/mat_fwd.h"
 #include "../type/quat_fwd.h"
 #include "../type/comp_fwd.h"
-#include "type_single_extend.h"
+#include "type_single_extends.h"
 
 namespace ktm
 {

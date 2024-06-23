@@ -10,7 +10,7 @@
 
 #include <iostream>
 #include "../../setup.h"
-#include "../../traits/type_single_extend.h"
+#include "../../traits/type_single_extends.h"
 
 namespace ktm
 {
