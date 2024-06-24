@@ -5,8 +5,8 @@
 //  Created by 有个小小杜
 //
 
-#ifndef _KTM_VEC_CALC_FWD_INL_ 
-#define _KTM_VEC_CALC_FWD_INL_
+#ifndef _KTM_VEC_CALC_FWD_H_ 
+#define _KTM_VEC_CALC_FWD_H_
 
 #include <cstddef>
 #include <type_traits>

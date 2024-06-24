@@ -14,6 +14,10 @@
 namespace std
 {
 
+// extract type from referenc and const
+template<typename T>
+using extract_type_t = std::remove_reference_t<std::remove_const_t<T>>;
+
 // select the type, if true select the former, otherwise select the latter
 template<bool E, typename TT, typename FT>
 struct select_if;
