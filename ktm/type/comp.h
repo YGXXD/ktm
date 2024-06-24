@@ -12,18 +12,20 @@
 #include "mat.h"
 #include "../traits/type_single_extends.h"
 #include "../interface/shared/iarray_util.h"
+#include "../interface/shared/iarray_calc.h"
 #include "../interface/shared/iarray_io.h"
 #include "../interface/shared/iarray_init.h"
 #include "../interface/complex/icomp_data.h"
 #include "../interface/complex/icomp_make.h"
 #include "../interface/complex/icomp_array.h"
-#include "../interface/complex/icomp_calc.h"
+#include "../interface/complex/icomp_mul.h"
 
 namespace ktm
 {
 
 template <class Child>
-using comp_father_type = single_extends_t<Child, iarray_init, icomp_data, icomp_make, icomp_array, icomp_calc, iarray_io, iarray_util>;
+using comp_father_type = single_extends_t<Child, iarray_init, icomp_data, icomp_make, icomp_array, icomp_mul, 
+    iarray_io, iarray_mul_scalar, iarray_add, iarray_util>;
 
 template<typename T>
 struct comp<T> : comp_father_type<comp<T>>
@@ -34,7 +36,7 @@ struct comp<T> : comp_father_type<comp<T>>
 
 }
 
-#include "../detail/complex/comp_calc.inl"
-#include "../detail/complex/comp_calc_simd.inl"
+#include "../detail/complex/comp_mul.inl"
+#include "../detail/complex/comp_mul_simd.inl"
 
 #endif

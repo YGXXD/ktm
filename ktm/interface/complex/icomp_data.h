@@ -36,13 +36,25 @@ struct icomp_data<Father, comp<T>> : Father
     KTM_INLINE T real() const noexcept { return r; }
     KTM_INLINE T imag() const noexcept { return i; } 
     KTM_INLINE T angle() const noexcept { return atan2(imag(), real()); }
+    
     KTM_INLINE mat<2, 2, T> matrix2x2() const noexcept 
     {
         return mat<2, 2, T>(vec<2, T>(r, i), vec<2, T>(-i, r));
     }
+
     KTM_INLINE mat<3, 3, T> matrix3x3() const noexcept
     {
         return mat<3, 3, T>(vec<3, T>(r, i, zero<T>), vec<3, T>(-i, r, zero<T>), vec<3, T>(zero<T>, zero<T>, one<T>));
+    }
+
+    KTM_INLINE vec<2, T>& operator*() noexcept
+    {
+        return reinterpret_cast<vec<2, T>&>(*this);
+    }
+
+    KTM_INLINE const vec<2, T>& operator*() const noexcept
+    {
+        return reinterpret_cast<const vec<2, T>&>(*this);
     }
 };
 

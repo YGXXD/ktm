@@ -11,6 +11,7 @@
 #include "basic.h"
 #include "../traits/type_single_extends.h"
 #include "../interface/shared/iarray_util.h"
+#include "../interface/shared/iarray_calc.h"
 #include "../interface/shared/iarray_io.h"
 #include "../interface/shared/iarray_init.h"
 #include "../interface/vector/ivec_data.h"
@@ -21,7 +22,8 @@ namespace ktm
 {
 
 template<class Child>
-using vec_fater_type = single_extends_t<Child, iarray_init, ivec_data, ivec_array, ivec_calc, iarray_io, iarray_util>;
+using vec_fater_type = single_extends_t<Child, iarray_init, ivec_data, ivec_array, ivec_calc, 
+    iarray_io, iarray_calc, iarray_util>;
 
 template<size_t N, typename T>
 struct vec<N, T> : vec_fater_type<vec<N, T>>

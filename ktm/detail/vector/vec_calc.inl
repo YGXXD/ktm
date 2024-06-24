@@ -9,204 +9,84 @@
 #define _KTM_VEC_CALC_INL_
 
 #include "vec_calc_fwd.h"
-#include "../loop_util.h"
 #include "../../type/basic.h"
 #include "../../type/vec_fwd.h"
 
-template<size_t N, typename T, typename Void>
-struct ktm::detail::vec_calc_implement::add
+template<typename T>
+KTM_INLINE void ktm::detail::vec_calc_implement_new::add(vec<3, T>& out, const vec<3, T>& x, const vec<3, T>& y) noexcept
 {
-    using V = vec<N, T>;
-    static KTM_INLINE V call(const V& x, const V& y) noexcept
-    {
-        V ret;
-        loop_op<N>(ret, x, y, std::plus<T>());
-        return ret;
-    }
-};
+    out.x = x.x + y.x;
+    out.y = x.y + y.y;
+    out.z = x.z + y.z;
+}
 
-template<size_t N, typename T, typename Void>
-struct ktm::detail::vec_calc_implement::add_to_self
+template<typename T>
+KTM_INLINE void ktm::detail::vec_calc_implement_new::sub(vec<3, T>& out, const vec<3, T>& x, const vec<3, T>& y) noexcept
 {
-    using V = vec<N, T>;
-    static KTM_INLINE void call(V& x, const V& y) noexcept
-    {
-        loop_op<N>(x, x, y, std::plus<T>());
-    }
-};
+    out.x = x.x - y.x;
+    out.y = x.y - y.y;
+    out.z = x.z - y.z;
+}
 
-template<size_t N, typename T, typename Void>
-struct ktm::detail::vec_calc_implement::minus
+template<typename T>
+KTM_INLINE void ktm::detail::vec_calc_implement_new::neg(vec<3, T>& out, const vec<3, T>& x) noexcept
 {
-    using V = vec<N, T>;
-    static KTM_INLINE V call(const V& x, const V& y) noexcept
-    {
-        V ret;
-        loop_op<N>(ret, x, y, std::minus<T>());
-        return ret;
-    }
-};
+    out.x = -x.x;
+    out.y = -x.y;
+    out.z = -x.z;
+}
 
-template<size_t N, typename T, typename Void>
-struct ktm::detail::vec_calc_implement::minus_to_self
+template<typename T>
+KTM_INLINE void ktm::detail::vec_calc_implement_new::mul(vec<3, T>& out, const vec<3, T>& x, const vec<3, T>& y) noexcept
 {
-    using V = vec<N, T>;
-    static KTM_INLINE void call(V& x, const V& y) noexcept
-    {
-        loop_op<N>(x, x, y, std::minus<T>());
-    }
-};
+    out.x = x.x * y.x;
+    out.y = x.y * y.y;
+    out.z = x.z * y.z;
+}
 
-template<size_t N, typename T, typename Void>
-struct ktm::detail::vec_calc_implement::mul
+template<typename T>
+KTM_INLINE void ktm::detail::vec_calc_implement_new::div(vec<3, T>& out, const vec<3, T>& x, const vec<3, T>& y) noexcept
 {
-    using V = vec<N, T>;
-    static KTM_INLINE V call(const V& x, const V& y) noexcept
-    {
-        V ret;
-        loop_op<N>(ret, x, y, std::multiplies<T>());
-        return ret;
-    }
-};
+    out.x = x.x / y.x;
+    out.y = x.y / y.y;
+    out.z = x.z / y.z; 
+}
 
-template<size_t N, typename T, typename Void>
-struct ktm::detail::vec_calc_implement::mul_to_self
+template<typename T>
+KTM_INLINE void ktm::detail::vec_calc_implement_new::add_scalar(vec<3, T>& out, const vec<3, T>& x, T scalar) noexcept
 {
-    using V = vec<N, T>;
-    static KTM_INLINE void call(V& x, const V& y) noexcept
-    {
-        loop_op<N>(x, x, y, std::multiplies<T>());
-    }
-};
+    out.x = x.x + scalar;
+    out.y = x.y + scalar;
+    out.z = x.z + scalar;
+}
 
-template<size_t N, typename T, typename Void>
-struct ktm::detail::vec_calc_implement::div
+template<typename T>
+KTM_INLINE void ktm::detail::vec_calc_implement_new::sub_scalar(vec<3, T>& out, const vec<3, T>& x, T scalar) noexcept
 {
-    using V = vec<N, T>;
-    static KTM_INLINE V call(const V& x, const V& y) noexcept
-    {
-        V ret;
-        loop_op<N>(ret, x, y, std::divides<T>());
-        return ret;
-    }
-};
+    out.x = x.x - scalar;
+    out.y = x.y - scalar;
+    out.z = x.z - scalar;
+}
 
-template<size_t N, typename T, typename Void>
-struct ktm::detail::vec_calc_implement::div_to_self
+template<typename T>
+KTM_INLINE void ktm::detail::vec_calc_implement_new::mul_scalar(vec<3, T>& out, const vec<3, T>& x, T scalar) noexcept
 {
-    using V = vec<N, T>;
-    static KTM_INLINE void call(V& x, const V& y) noexcept
-    {
-        loop_op<N>(x, x, y, std::divides<T>());
-    }
-};
+    out.x = x.x * scalar;
+    out.y = x.y * scalar;
+    out.z = x.z * scalar;
+}
 
-template<size_t N, typename T, typename Void>
-struct ktm::detail::vec_calc_implement::opposite
+template<typename T>
+KTM_INLINE void ktm::detail::vec_calc_implement_new::div_scalar(vec<3, T>& out, const vec<3, T>& x, T scalar) noexcept
 {
-    using V = vec<N, T>;
-    static KTM_INLINE V call(const V& x) noexcept
+    if constexpr(std::is_floating_point_v<T>)
+        mul(out, x, one<T> / scalar);
+    else
     {
-        V ret;
-        loop_op<N>(ret, x, std::negate<T>());
-        return ret;
+        out.x = x.x / scalar;
+        out.y = x.y / scalar;
+        out.z = x.z / scalar;
     }
-};
-
-template<size_t N, typename T, typename Void>
-struct ktm::detail::vec_calc_implement::add_scalar
-{
-    using V = vec<N, T>;
-    static KTM_INLINE V call(const V& x, T scalar) noexcept
-    {
-        V ret;
-        loop_scalar<N>(ret, x, scalar, std::plus<T>());
-        return ret;
-    }
-};
-
-template<size_t N, typename T, typename Void>
-struct ktm::detail::vec_calc_implement::add_scalar_to_self
-{
-    using V = vec<N, T>;
-    static KTM_INLINE void call(V& x, T scalar) noexcept
-    {
-        loop_scalar<N>(x, x, scalar, std::plus<T>());
-    }
-};
-
-template<size_t N, typename T, typename Void>
-struct ktm::detail::vec_calc_implement::minus_scalar
-{
-    using V = vec<N, T>;
-    static KTM_INLINE V call(const V& x, T scalar) noexcept
-    {
-        V ret;
-        loop_scalar<N>(ret, x, scalar, std::minus<T>());
-        return ret;
-    }
-};
-
-template<size_t N, typename T, typename Void>
-struct ktm::detail::vec_calc_implement::minus_scalar_to_self
-{
-    using V = vec<N, T>;
-    static KTM_INLINE void call(V& x, T scalar) noexcept
-    {
-        loop_scalar<N>(x, x, scalar, std::minus<T>());
-    }
-};
-
-template<size_t N, typename T, typename Void>
-struct ktm::detail::vec_calc_implement::mul_scalar
-{
-    using V = vec<N, T>;
-    static KTM_INLINE V call(const V& x, T scalar) noexcept
-    {
-        V ret;
-        loop_scalar<N>(ret, x, scalar, std::multiplies<T>());
-        return ret; 
-    }
-};
-
-template<size_t N, typename T, typename Void>
-struct ktm::detail::vec_calc_implement::mul_scalar_to_self
-{
-    using V = vec<N, T>;
-    static KTM_INLINE void call(V& x, T scalar) noexcept
-    {
-        loop_scalar<N>(x, x, scalar, std::multiplies<T>());
-    }
-};
-
-template<size_t N, typename T, typename Void>
-struct ktm::detail::vec_calc_implement::div_scalar
-{
-    using V = vec<N, T>;
-    static KTM_INLINE V call(const V& x, T scalar) noexcept
-    {   
-        if constexpr(std::is_floating_point_v<T>)
-            return mul_scalar<N, T>::call(x, one<T> / scalar);
-        else
-        {
-            V ret;
-            loop_scalar<N>(ret, x, scalar, std::divides<T>());
-            return ret;
-        }
-    }
-};
-
-template<size_t N, typename T, typename Void>
-struct ktm::detail::vec_calc_implement::div_scalar_to_self
-{
-    using V = vec<N, T>;
-    static KTM_INLINE void call(V& x, T scalar) noexcept
-    {
-        if constexpr(std::is_floating_point_v<T>)
-            mul_scalar_to_self<N, T>::call(x, one<T> / scalar);
-        else
-            loop_scalar<N>(x, x, scalar, std::divides<T>());
-    }
-};
+}
 
 #endif

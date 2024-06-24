@@ -38,18 +38,30 @@ struct iquat_data<Father, quat<T>> : Father
     KTM_INLINE vec<3, T> imag() const noexcept { return vec<3, T>(i, j, k); } 
     KTM_INLINE T angle() const noexcept { return static_cast<T>(2) * atan2(length(imag()), real()); }
     KTM_INLINE vec<3, T> axis() const noexcept { return normalize(imag()); }
+
     KTM_INLINE mat<3, 3, T> matrix3x3() const noexcept 
     {
         mat<3, 3, T> ret;
         matrix(ret);
         return ret;
     }
+    
     KTM_INLINE mat<4, 4, T> matrix4x4() const noexcept 
     {
         mat<4, 4, T> ret { };
         matrix(reinterpret_cast<mat<3, 3, T>&>(ret));
         ret[3][3] = one<T>;
         return ret;
+    }
+
+    KTM_INLINE vec<4, T>& operator*() noexcept
+    {
+        return reinterpret_cast<vec<4, T>&>(*this);
+    }
+
+    KTM_INLINE const vec<4, T>& operator*() const noexcept
+    {
+        return reinterpret_cast<const vec<4, T>&>(*this);
     }
 private:
     KTM_NOINLINE void matrix(mat<3, 3, T>& m) const noexcept

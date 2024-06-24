@@ -12,18 +12,20 @@
 #include "mat.h"
 #include "../traits/type_single_extends.h"
 #include "../interface/shared/iarray_util.h"
+#include "../interface/shared/iarray_calc.h"
 #include "../interface/shared/iarray_io.h"
 #include "../interface/shared/iarray_init.h"
 #include "../interface/quaternion/iquat_data.h"
 #include "../interface/quaternion/iquat_make.h"
 #include "../interface/quaternion/iquat_array.h"
-#include "../interface/quaternion/iquat_calc.h"
+#include "../interface/quaternion/iquat_mul.h"
 
 namespace ktm
 {
 
 template<class Child>
-using quat_father_type = single_extends_t<Child, iarray_init, iquat_data, iquat_make, iquat_array, iquat_calc, iarray_io, iarray_util>;
+using quat_father_type = single_extends_t<Child, iarray_init, iquat_data, iquat_make, iquat_array, iquat_mul, 
+    iarray_io, iarray_mul_scalar, iarray_add, iarray_util>;
 
 template<typename T>
 struct quat<T> : quat_father_type<quat<T>>
@@ -34,7 +36,7 @@ struct quat<T> : quat_father_type<quat<T>>
 
 }
 
-#include "../detail/quaternion/quat_calc.inl"
-#include "../detail/quaternion/quat_calc_simd.inl"
+#include "../detail/quaternion/quat_mul.inl"
+#include "../detail/quaternion/quat_mul_simd.inl"
 
 #endif
