@@ -26,11 +26,11 @@ struct iarray_add : Father
     using Father::Father;
     using Father::child_ptr;
 
-    KTM_FUNC Child operator+(const Child& y) const noexcept { return add(y); }
-    KTM_FUNC Child& operator+=(const Child& y) noexcept { return add_to_self(y); }
-    KTM_FUNC Child operator-(const Child& y) const noexcept { return sub(y); }
-    KTM_FUNC Child& operator-=(const Child& y) noexcept { return sub_to_self(y); }
-    KTM_FUNC Child operator-() const noexcept { return neg(); }
+    friend KTM_FUNC Child operator+(const Child& x, const Child& y) noexcept { return x.add(y); }
+    friend KTM_FUNC Child& operator+=(Child& x, const Child& y) noexcept { return x.add_to_self(y); }
+    friend KTM_FUNC Child operator-(const Child& x, const Child& y) noexcept { return x.sub(y); }
+    friend KTM_FUNC Child& operator-=(Child& x, const Child& y) noexcept { return x.sub_to_self(y); }
+    friend KTM_FUNC Child operator-(const Child& x) noexcept { return x.neg(); }
 private:
     KTM_FUNC Child add(const Child& y) const noexcept
     {
@@ -103,15 +103,15 @@ struct iarray_mul : Father
     using Father::Father;
     using Father::child_ptr;
 
-    KTM_FUNC Child operator*(const Child& y) const noexcept { return mul(y); }
-    KTM_FUNC Child& operator*=(const Child& y) noexcept { return mul_to_self(y); }
-    KTM_FUNC Child operator/(const Child& y) const noexcept { return div(y); }
-    KTM_FUNC Child& operator/=(const Child& y) noexcept { return div_to_self(y); }
+    friend KTM_FUNC Child operator*(const Child& x, const Child& y) noexcept { return x.mul(y); }
+    friend KTM_FUNC Child& operator*=(Child& x, const Child& y) noexcept { return x.mul_to_self(y); }
+    friend KTM_FUNC Child operator/(const Child& x, const Child& y) noexcept { return x.div(y); }
+    friend KTM_FUNC Child& operator/=(Child& x, const Child& y) noexcept { return x.div_to_self(y); }
 private:
     KTM_FUNC Child mul(const Child& y) const noexcept
     {
         if constexpr(KTM_CRTP_CHILD_IMPL_VALUE(Child, mul_impl))
-            return child_ptr()->mul(y);
+            return child_ptr()->mul_impl(y);
         else
         {
             Child ret;
@@ -167,10 +167,10 @@ struct iarray_add_scalar : Father
     using Father::child_ptr;
     using ScalarT = typename math_traits<Child>::base_type;
 
-    KTM_FUNC Child operator+(ScalarT scalar) const noexcept { return add_scalar(scalar); }
-    KTM_FUNC Child& operator+=(ScalarT scalar) noexcept { return add_scalar_to_self(scalar); }
-    KTM_FUNC Child operator-(ScalarT scalar) const noexcept { return sub_scalar(scalar); }
-    KTM_FUNC Child& operator-=(ScalarT scalar) noexcept { return sub_scalar_to_self(scalar); }
+    friend KTM_FUNC Child operator+(const Child& x, ScalarT scalar) noexcept { return x.add_scalar(scalar); }
+    friend KTM_FUNC Child& operator+=(Child& x, ScalarT scalar) noexcept { return x.add_scalar_to_self(scalar); }
+    friend KTM_FUNC Child operator-(const Child& x, ScalarT scalar) noexcept { return x.sub_scalar(scalar); }
+    friend KTM_FUNC Child& operator-=(Child& x, ScalarT scalar) noexcept { return x.sub_scalar_to_self(scalar); }
     friend KTM_FUNC Child operator+(ScalarT scalar, const Child& x) noexcept { return x + scalar; }
 private:
     KTM_FUNC Child add_scalar(ScalarT scalar) const noexcept
@@ -232,10 +232,10 @@ struct iarray_mul_scalar : Father
     using Father::child_ptr;
     using ScalarT = typename math_traits<Child>::base_type;
 
-    KTM_FUNC Child operator*(ScalarT scalar) const noexcept { return mul_scalar(scalar); }
-    KTM_FUNC Child& operator*=(ScalarT scalar) noexcept { return mul_scalar_to_self(scalar); }
-    KTM_FUNC Child operator/(ScalarT scalar) const noexcept { return div_scalar(scalar); }
-    KTM_FUNC Child& operator/=(ScalarT scalar) noexcept { return div_scalar_to_self(scalar); }
+    friend KTM_FUNC Child operator*(const Child& x, ScalarT scalar) noexcept { return x.mul_scalar(scalar); }
+    friend KTM_FUNC Child& operator*=(Child& x, ScalarT scalar) noexcept { return x.mul_scalar_to_self(scalar); }
+    friend KTM_FUNC Child operator/(const Child& x, ScalarT scalar) noexcept { return x.div_scalar(scalar); }
+    friend KTM_FUNC Child& operator/=(Child& x, ScalarT scalar) noexcept { return x.div_scalar_to_self(scalar); }
     friend KTM_FUNC Child operator*(ScalarT scalar, const Child& x) noexcept { return x * scalar; }
 private:
     KTM_FUNC Child mul_scalar(ScalarT scalar) const noexcept
