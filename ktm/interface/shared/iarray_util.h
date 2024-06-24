@@ -10,6 +10,7 @@
 
 #include <array>
 #include "../../setup.h"
+#include "../../traits/type_traits_ext.h"
 
 namespace ktm
 {
@@ -38,9 +39,9 @@ struct iarray_util : Father
     KTM_FUNC const auto* crbegin() const noexcept { return rbegin(); }
     KTM_FUNC const auto* crend() const noexcept { return rend(); }
 
-    KTM_FUNC constexpr size_t size() const noexcept { return to_array().size(); }
-    KTM_FUNC constexpr size_t max_size() const noexcept { return to_array().max_size(); }
-    KTM_FUNC constexpr bool empty() const noexcept { return false; }
+    KTM_FUNC constexpr size_t size() const noexcept { return std::extract_type_t<decltype(to_array())>().size(); }
+    KTM_FUNC constexpr size_t max_size() const noexcept { return std::extract_type_t<decltype(to_array())>().max_size(); }
+    KTM_FUNC constexpr bool empty() const noexcept { return std::extract_type_t<decltype(to_array())>().empty(); }
 
     KTM_FUNC auto& at(size_t i) { return to_array().at(i); }
     KTM_FUNC const auto& at(size_t i) const { return to_array().at(i); }
