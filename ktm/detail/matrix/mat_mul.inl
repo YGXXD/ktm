@@ -5,17 +5,17 @@
 //  Created by 有个小小杜
 //
 
-#ifndef _KTM_MAT_CALC_INL_
-#define _KTM_MAT_CALC_INL_
+#ifndef _KTM_MAT_MUL_INL_
+#define _KTM_MAT_MUL_INL_
 
-#include "mat_calc_fwd.h"
+#include "mat_mul_fwd.h"
 #include "../loop_util.h"
 #include "../../type/vec_fwd.h"
 #include "../../type/mat_fwd.h"
 #include "../../function/common.h"
 
 template<size_t Row, size_t Col, typename T, typename Void>
-struct ktm::detail::mat_opt_implement::mat_mul_vec
+struct ktm::detail::mat_mul_implement::mat_mul_vec
 {
 	using M = mat<Row, Col, T>;
     using ColV = vec<Col, T>;
@@ -33,7 +33,7 @@ struct ktm::detail::mat_opt_implement::mat_mul_vec
 };
 
 template<size_t Row, size_t Col, typename T, typename Void>
-struct ktm::detail::mat_opt_implement::vec_mul_mat
+struct ktm::detail::mat_mul_implement::vec_mul_mat
 {
     using M = mat<Row, Col, T>;
     using ColV = vec<Col, T>;
@@ -51,7 +51,7 @@ struct ktm::detail::mat_opt_implement::vec_mul_mat
 };
 
 template<size_t Row, size_t Col, typename T, typename Void>
-struct ktm::detail::mat_opt_implement::mat_mul_mat
+struct ktm::detail::mat_mul_implement::mat_mul_mat
 {
     using M = mat<Row, Col, T>;
     using ColV = vec<Col, T>;
@@ -72,45 +72,6 @@ struct ktm::detail::mat_opt_implement::mat_mul_mat
         {
             return mat_mul_vec<Row, Col, T>::call(m1, m2_col);
         });
-        return ret;
-    }
-};
-
-template<size_t Row, size_t Col, typename T, typename Void>
-struct ktm::detail::mat_opt_implement::add
-{
-	using M = mat<Row, Col, T>;
-    using ColV = vec<Col, T>;
-    static KTM_INLINE M call(const M& m1, const M& m2) noexcept
-    {
-        M ret;
-        loop_op<Row>(ret, m1, m2, std::plus<ColV>());
-        return ret;
-    }
-};
-
-template<size_t Row, size_t Col, typename T, typename Void>
-struct ktm::detail::mat_opt_implement::minus
-{
-	using M = mat<Row, Col, T>;
-    using ColV = vec<Col, T>;
-    static KTM_INLINE M call(const M& m1, const M& m2) noexcept
-    {
-        M ret;
-        loop_op<Row>(ret, m1, m2, std::minus<ColV>());
-        return ret;
-    }
-};
-
-template<size_t Row, size_t Col, typename T, typename Void>
-struct ktm::detail::mat_opt_implement::opposite
-{
-	using M = mat<Row, Col, T>;
-    using ColV = vec<Col, T>;
-    static KTM_INLINE M call(const M& m) noexcept
-    {
-        M ret;
-        loop_op<Row>(ret, m, std::negate<ColV>());
         return ret;
     }
 };

@@ -15,7 +15,7 @@
 
 #define KTM_ARRAY_CALC_CALL(calc_name, ...) \
 using ArrayT = std::extract_type_t<decltype(child_ptr()->to_array())>; \
-detail::array_calc_implement::calc_name<typename ArrayT::value_type, ArrayT().size()>::call(__VA_ARGS__);
+detail::array_calc_implement::calc_name<typename ArrayT::value_type, std::tuple_size_v<ArrayT>>::call(__VA_ARGS__);
 
 namespace ktm
 {
