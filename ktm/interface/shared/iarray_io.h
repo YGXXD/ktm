@@ -21,13 +21,13 @@ struct iarray_io : Father
     using Father::Father;
     using Father::child_ptr;
 
-    friend KTM_FUNC std::ostream& operator<<(std::ostream& out, const Child& x) noexcept { return x.stdout(out); }
-    friend KTM_FUNC std::istream& operator>>(std::istream& in, Child& x) noexcept { return x.stdin(in); }
+    friend KTM_FUNC std::ostream& operator<<(std::ostream& out, const Child& x) noexcept { return x.std_out(out); }
+    friend KTM_FUNC std::istream& operator>>(std::istream& in, Child& x) noexcept { return x.std_in(in); }
 private:
-    KTM_FUNC std::ostream& stdout(std::ostream& o) const noexcept
+    KTM_FUNC std::ostream& std_out(std::ostream& o) const noexcept
     {
-        if constexpr(KTM_CRTP_CHILD_IMPL_VALUE(Child, stdout_impl))
-            return child_ptr()->stdout_impl(o);
+        if constexpr(KTM_CRTP_CHILD_IMPL_VALUE(Child, std_out_impl))
+            return child_ptr()->std_out_impl(o);
         else
         {
             auto it = child_ptr()->begin();
@@ -38,10 +38,10 @@ private:
         }
     }
 
-    KTM_FUNC std::istream& stdin(std::istream& i) noexcept
+    KTM_FUNC std::istream& std_in(std::istream& i) noexcept
     {
-        if constexpr(KTM_CRTP_CHILD_IMPL_VALUE(Child, stdin_impl))
-            return child_ptr()->stdin_impl(i);
+        if constexpr(KTM_CRTP_CHILD_IMPL_VALUE(Child, std_in_impl))
+            return child_ptr()->std_in_impl(i);
         else
         {
             for(auto it = child_ptr()->begin(); it != child_ptr()->end(); ++it)
@@ -50,8 +50,8 @@ private:
         }
     }
 
-    KTM_CRTP_CHILD_IMPL_CHECK(stdout, stdout_impl)
-    KTM_CRTP_CHILD_IMPL_CHECK(stdin, stdin_impl)
+    KTM_CRTP_CHILD_IMPL_CHECK(std_out, std_out_impl)
+    KTM_CRTP_CHILD_IMPL_CHECK(std_in, std_in_impl)
 };
 
 }
