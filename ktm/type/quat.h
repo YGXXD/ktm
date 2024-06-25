@@ -14,7 +14,6 @@
 #include "../interface/shared/iarray_util.h"
 #include "../interface/shared/iarray_calc.h"
 #include "../interface/shared/iarray_io.h"
-#include "../interface/shared/iarray_init.h"
 #include "../interface/quaternion/iquat_data.h"
 #include "../interface/quaternion/iquat_make.h"
 #include "../interface/quaternion/iquat_array.h"
@@ -24,7 +23,7 @@ namespace ktm
 {
 
 template<class Child>
-using quat_father_type = single_extends_t<Child, iarray_init, iquat_data, iquat_make, iquat_array, iquat_mul, 
+using quat_father_type = single_extends_t<Child, iquat_data, iquat_make, iquat_array, iquat_mul, 
     iarray_io, iarray_mul_scalar, iarray_add, iarray_util>;
 
 template<typename T>

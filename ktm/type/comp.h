@@ -14,7 +14,6 @@
 #include "../interface/shared/iarray_util.h"
 #include "../interface/shared/iarray_calc.h"
 #include "../interface/shared/iarray_io.h"
-#include "../interface/shared/iarray_init.h"
 #include "../interface/complex/icomp_data.h"
 #include "../interface/complex/icomp_make.h"
 #include "../interface/complex/icomp_array.h"
@@ -24,7 +23,7 @@ namespace ktm
 {
 
 template <class Child>
-using comp_father_type = single_extends_t<Child, iarray_init, icomp_data, icomp_make, icomp_array, icomp_mul, 
+using comp_father_type = single_extends_t<Child, icomp_data, icomp_make, icomp_array, icomp_mul, 
     iarray_io, iarray_mul_scalar, iarray_add, iarray_util>;
 
 template<typename T>

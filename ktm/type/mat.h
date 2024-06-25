@@ -13,7 +13,6 @@
 #include "../interface/shared/iarray_util.h"
 #include "../interface/shared/iarray_calc.h"
 #include "../interface/shared/iarray_io.h"
-#include "../interface/shared/iarray_init.h"
 #include "../interface/matrix/imat_data.h"
 #include "../interface/matrix/imat_make.h"
 #include "../interface/matrix/imat_array.h"
@@ -23,7 +22,7 @@ namespace ktm
 {
 
 template<class Child>
-using mat_father_type = single_extends_t<Child, iarray_init, imat_data, imat_make, imat_array, imat_mul, 
+using mat_father_type = single_extends_t<Child, imat_data, imat_make, imat_array, imat_mul, 
     iarray_io, iarray_mul_scalar, iarray_add, iarray_util>;
 
 template<size_t Row, size_t Col, typename T>
