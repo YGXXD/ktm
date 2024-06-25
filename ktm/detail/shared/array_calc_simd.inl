@@ -139,7 +139,7 @@ struct ktm::detail::array_calc_implement::neg<int, 4>
     static KTM_INLINE void call(A& out, const A& x) noexcept
     {
         skv::sv4 x_st = _cast128_s32_f32(_load128_f32(x.data()));
-        _store128_f32(out.data(), _cast128_f32_s32(_neg128_f32(x_st)));
+        _store128_f32(out.data(), _cast128_f32_s32(_neg128_s32(x_st)));
     }
 };
 
@@ -317,7 +317,7 @@ struct ktm::detail::array_calc_implement::neg<int, 2>
     static KTM_INLINE void call(A& out, const A& x) noexcept
     {
         skv::sv2 x_st = _cast64_s32_f32(_load64_f32(x.data()));
-        _store64_f32(out.data(), _cast64_f32_s32(_neg64_f32(x_st)));
+        _store64_f32(out.data(), _cast64_f32_s32(_neg64_s32(x_st)));
     }
 };
 
