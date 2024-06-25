@@ -27,12 +27,12 @@ private:
     template<class F, class C>
     friend class iarray_util;
 
-    KTM_FUNC auto& to_array_impl() noexcept
+    KTM_FUNC array_type& to_array_impl() noexcept
     {
         return reinterpret_cast<array_type&>(*this);
     }
     
-    KTM_FUNC const auto& to_array_impl() const noexcept
+    KTM_FUNC const array_type& to_array_impl() const noexcept
     {
         return reinterpret_cast<const array_type&>(*this);
     }
