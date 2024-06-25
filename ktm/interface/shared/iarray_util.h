@@ -8,7 +8,7 @@
 #ifndef _KTM_I_ARRAY_UTIL_H_
 #define _KTM_I_ARRAY_UTIL_H_
 
-#include <array>
+#include <tuple>
 #include "../../setup.h"
 #include "../../traits/type_traits_ext.h"
 

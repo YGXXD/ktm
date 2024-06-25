@@ -8,6 +8,7 @@
 #ifndef _KTM_I_ARRAY_CALC_H_
 #define _KTM_I_ARRAY_CALC_H_
 
+#include <tuple>
 #include "../../setup.h"
 #include "../../traits/type_traits_math.h"
 #include "../../traits/type_single_extends.h"

@@ -8,8 +8,8 @@
 #ifndef _KTM_ARM_INTRIN_H_
 #define _KTM_ARM_INTRIN_H_
 
-#include "arch_def.h"
 #include <cstddef>
+#include "arch_def.h"
 
 namespace intrin 
 {

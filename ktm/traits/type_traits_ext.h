@@ -8,8 +8,8 @@
 #ifndef _STD_TYPE_TRAITS_EXT_H_
 #define _STD_TYPE_TRAITS_EXT_H_
 
-#include <type_traits>
 #include <cstddef>
+#include <type_traits>
 
 namespace std
 {

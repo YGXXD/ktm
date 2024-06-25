@@ -8,10 +8,10 @@
 #ifndef _KTM_I_MAT_ARRAY_H_
 #define _KTM_I_MAT_ARRAY_H_
 
+#include <array>
 #include "../../setup.h"
 #include "../../type/vec_fwd.h"
 #include "../../type/mat_fwd.h"
-#include <array>
 
 namespace ktm
 {
