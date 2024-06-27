@@ -26,18 +26,24 @@ struct imat_mul<Father, mat<Row, Col, T>> : Father
 
     friend KTM_INLINE vec<Col, T> operator*(const mat<Row, Col, T>& m, const vec<Row, T>& v) noexcept
     {
-        return detail::mat_mul_implement::mat_mul_vec<Row, Col, T>::call(m, v); 
+        vec<Col, T> ret;
+        detail::mat_mul_implement::mat_mul_vec<Row, Col, T>::call(ret, m, v);
+        return ret;
     }
 
     friend KTM_INLINE vec<Row, T> operator*(const vec<Col, T>& v, const mat<Row, Col, T>& m) noexcept
     {
-        return detail::mat_mul_implement::vec_mul_mat<Row, Col, T>::call(v, m); 
+        vec<Row, T> ret;
+        detail::mat_mul_implement::vec_mul_mat<Row, Col, T>::call(ret, v, m);
+        return ret;
     }
 
     template<size_t U>
     friend KTM_INLINE mat<U, Col, T> operator*(const mat<Row, Col, T>& m1, const mat<U, Row, T>& m2) noexcept
     {
-        return detail::mat_mul_implement::mat_mul_mat<Row, Col, T>::template call<U>(m1, m2); 
+        mat<U, Col, T> ret; 
+        detail::mat_mul_implement::mat_mul_mat<Row, Col, T>::template call<U>(ret, m1, m2);
+        return ret;
     }
 };
 
