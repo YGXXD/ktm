@@ -23,15 +23,15 @@ KTM_INLINE std::enable_if_t<is_matrix_v<M>, mat_traits_tp_t<M>> transpose(const 
 } 
 
 template<class M>
-KTM_INLINE std::enable_if_t<is_square_matrix_v<M>, mat_traits_base_t<M>> trace(const M& m)
-{
-    return detail::matrix_implement::trace<mat_traits_col_v<M>, mat_traits_base_t<M>>::call(m);
-}
-
-template<class M>
 KTM_INLINE std::enable_if_t<is_square_matrix_v<M>, mat_traits_col_t<M>> diagonal(const M& m)
 {
     return detail::matrix_implement::diagonal<mat_traits_col_v<M>, mat_traits_base_t<M>>::call(m);
+}
+
+template<class M>
+KTM_INLINE std::enable_if_t<is_square_matrix_v<M>, mat_traits_base_t<M>> trace(const M& m)
+{
+    return reduce_add(detail::matrix_implement::diagonal<mat_traits_col_v<M>, mat_traits_base_t<M>>::call(m));
 }
 
 template<class M>
