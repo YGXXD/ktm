@@ -20,8 +20,9 @@ struct ktm::detail::common_implement::reduce_add
     using V = vec<N, T>;
     static KTM_INLINE T call(const V& x) noexcept
     {
-        T ret;
-        loop_reduce<N>(ret, x, x[0], std::plus<T>());
+        T ret = x[0];
+        loop_op_new<N - 1, void>::call(
+            [&ret](const T& x) -> void { ret += x; }, &x[1]);
         return ret;
     }
 };
@@ -32,8 +33,9 @@ struct ktm::detail::common_implement::reduce_min
     using V = vec<N, T>;
     static KTM_INLINE T call(const V& x) noexcept
     {
-        T ret;
-        loop_reduce<N>(ret, x, x[0], ktm::min<T>);
+        T ret = x[0];
+        loop_op_new<N - 1, void>::call(
+            [&ret](const T& x) -> void { ret = ktm::min<T>(ret, x); }, &x[1]);
         return ret;
     }
 };
@@ -44,8 +46,9 @@ struct ktm::detail::common_implement::reduce_max
     using V = vec<N, T>;
     static KTM_INLINE T call(const V& x) noexcept
     {
-        T ret;
-        loop_reduce<N>(ret, x, x[0], ktm::max<T>);
+        T ret = x[0];
+        loop_op_new<N - 1, void>::call(
+            [&ret](const T& x) -> void { ret = ktm::max<T>(ret, x); }, &x[1]);
         return ret;
     }
 };
@@ -57,7 +60,7 @@ struct ktm::detail::common_implement::abs
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N>(ret, x, ktm::abs<T>);
+        loop_op_new<N, V>::call(ret, ktm::abs<T>, x);
         return ret;
     }
 };
@@ -69,7 +72,7 @@ struct ktm::detail::common_implement::min
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
-        loop_op<N>(ret, x, y, ktm::min<T>);
+        loop_op_new<N, V>::call(ret, ktm::min<T>, x, y);
         return ret;
     }
 };
@@ -81,7 +84,7 @@ struct ktm::detail::common_implement::max
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
-        loop_op<N>(ret, x, y, ktm::max<T>);
+        loop_op_new<N, V>::call(ret, ktm::max<T>, x, y);
         return ret;
     }
 };
@@ -93,7 +96,7 @@ struct ktm::detail::common_implement::clamp
     static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
         V ret;
-        loop_op<N>(ret, v, min, max, ktm::clamp<T>);
+        loop_op_new<N, V>::call(ret, ktm::clamp<T>, v, min, max);
         return ret;
     }
 };
@@ -105,7 +108,7 @@ struct ktm::detail::common_implement::floor
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N>(ret, x, ktm::floor<T>);
+        loop_op_new<N, V>::call(ret, ktm::floor<T>, x);
         return ret;
     }
 };
@@ -117,7 +120,7 @@ struct ktm::detail::common_implement::ceil
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N>(ret, x, ktm::ceil<T>);
+        loop_op_new<N, V>::call(ret, ktm::ceil<T>, x);
         return ret;
     }
 };
@@ -129,7 +132,7 @@ struct ktm::detail::common_implement::round
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N>(ret, x, ktm::round<T>);
+        loop_op_new<N, V>::call(ret, ktm::round<T>, x);
         return ret;
     }
 };
@@ -141,7 +144,7 @@ struct ktm::detail::common_implement::fract
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N>(ret, x, ktm::fract<T>);
+        loop_op_new<N, V>::call(ret, ktm::fract<T>, x);
         return ret;
     }
 };
@@ -153,7 +156,7 @@ struct ktm::detail::common_implement::mod
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
-        loop_op<N>(ret, x, y, ktm::mod<T>);
+        loop_op_new<N, V>::call(ret, ktm::mod<T>, x, y);
         return ret;
     }
 };
@@ -165,7 +168,8 @@ struct ktm::detail::common_implement::lerp
     static KTM_INLINE V call(const V& x, const V& y, T t) noexcept
     {
         V ret;
-        loop_scalar<N>(ret, x, y, t, ktm::lerp<T>);
+        loop_op_new<N, V>::call(ret, 
+            [&t](const T& x, const T& y) -> T { return ktm::lerp<T>(x, y, t); }, x, y);
         return ret;
     }
 };
@@ -177,7 +181,7 @@ struct ktm::detail::common_implement::mix
     static KTM_INLINE V call(const V& x, const V& y, const V& t) noexcept
     {
         V ret;
-        loop_op<N>(ret, x, y, t, ktm::lerp<T>);
+        loop_op_new<N, V>::call(ret, ktm::lerp<T>, x, y, t);
         return ret;
     }
 };
@@ -189,7 +193,7 @@ struct ktm::detail::common_implement::step
     static KTM_INLINE V call(const V& edge, const V& x) noexcept
     {
         V ret;
-        loop_op<N>(ret, edge, x, ktm::step<T>);
+        loop_op_new<N, V>::call(ret, ktm::step<T>, edge, x);
         return ret;
     }
 };
@@ -201,7 +205,7 @@ struct ktm::detail::common_implement::smoothstep
     static KTM_INLINE V call(const V& edge0, const V& edge1, const V& x) noexcept
     {
         V ret;
-        loop_op<N>(ret, edge0, edge1, x, ktm::smoothstep<T>);
+        loop_op_new<N, V>::call(ret, ktm::smoothstep<T>, edge0, edge1, x);
         return ret;
     }
 };
@@ -213,7 +217,7 @@ struct ktm::detail::common_implement::sqrt
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N>(ret, x, ktm::sqrt<T>);
+        loop_op_new<N, V>::call(ret, ktm::sqrt<T>, x);
         return ret;
     }
 };
@@ -225,7 +229,7 @@ struct ktm::detail::common_implement::rsqrt
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N>(ret, x, ktm::rsqrt<T>);
+        loop_op_new<N, V>::call(ret, ktm::rsqrt<T>, x);
         return ret;
     }
 };
@@ -237,7 +241,7 @@ struct ktm::detail::common_implement::recip
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N>(ret, x, ktm::recip<T>);
+        loop_op_new<N, V>::call(ret, ktm::recip<T>, x);
         return ret;
     }
 };
@@ -249,7 +253,7 @@ struct ktm::detail::common_implement::fast_sqrt
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N>(ret, x, ktm::fast::sqrt<T>);
+        loop_op_new<N, V>::call(ret, ktm::fast::sqrt<T>, x);
         return ret;
     }
 };
@@ -261,7 +265,7 @@ struct ktm::detail::common_implement::fast_rsqrt
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N>(ret, x, ktm::fast::rsqrt<T>);
+        loop_op_new<N, V>::call(ret, ktm::fast::rsqrt<T>, x);
         return ret;
     }
 };
@@ -273,7 +277,7 @@ struct ktm::detail::common_implement::fast_recip
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N>(ret, x, ktm::fast::recip<T>);
+        loop_op_new<N, V>::call(ret, ktm::fast::recip<T>, x);
         return ret;
     }
 };

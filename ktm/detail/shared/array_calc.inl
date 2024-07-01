@@ -18,7 +18,7 @@ struct ktm::detail::array_calc_implement::add
     using A = std::array<T, N>;
     static KTM_INLINE void call(A& out, const A& x, const A& y) noexcept
     {
-        loop_op<N>(out, x, y, std::plus<T>());
+        loop_op_new<N, A>::call(out, std::plus<T>(), x, y);
     }
 };
 
@@ -28,7 +28,7 @@ struct ktm::detail::array_calc_implement::sub
     using A = std::array<T, N>;
     static KTM_INLINE void call(A& out, const A& x, const A& y) noexcept
     {
-        loop_op<N>(out, x, y, std::minus<T>());
+        loop_op_new<N, A>::call(out, std::minus<T>(), x, y);
     }
 };
 
@@ -38,7 +38,7 @@ struct ktm::detail::array_calc_implement::neg
     using A = std::array<T, N>;
     static KTM_INLINE void call(A& out, const A& x) noexcept
     {
-        loop_op<N>(out, x, std::negate<T>());
+        loop_op_new<N, A>::call(out, std::negate<T>(), x);
     }
 };
 
@@ -48,7 +48,7 @@ struct ktm::detail::array_calc_implement::mul
     using A = std::array<T, N>;
     static KTM_INLINE void call(A& out, const A& x, const A& y) noexcept
     {
-        loop_op<N>(out, x, y, std::multiplies<T>());
+        loop_op_new<N, A>::call(out, std::multiplies<T>(), x, y);
     }
 };
 
@@ -58,7 +58,7 @@ struct ktm::detail::array_calc_implement::div
     using A = std::array<T, N>;
     static KTM_INLINE void call(A& out, const A& x, const A& y) noexcept
     {
-        loop_op<N>(out, x, y, std::divides<T>());
+        loop_op_new<N, A>::call(out, std::divides<T>(), x, y);
     }
 };
 
@@ -69,7 +69,7 @@ struct ktm::detail::array_calc_implement::add_scalar
     template<typename S>
     static KTM_INLINE std::enable_if_t<std::is_arithmetic_v<S>> call(A& out, const A& x, S scalar) noexcept
     {
-        loop_scalar<N>(out, x, scalar, std::plus<T>());
+        loop_op_new<N, A>::call(out, [&scalar](const T& x) -> T { return x + scalar; }, x);
     }
 };
 
@@ -80,7 +80,7 @@ struct ktm::detail::array_calc_implement::sub_scalar
     template<typename S>
     static KTM_INLINE std::enable_if_t<std::is_arithmetic_v<S>> call(A& out, const A& x, S scalar) noexcept
     {
-        loop_scalar<N>(out, x, scalar, std::minus<T>());
+        loop_op_new<N, A>::call(out, [&scalar](const T& x) -> T { return x - scalar; }, x);
     }
 };
 
@@ -91,7 +91,7 @@ struct ktm::detail::array_calc_implement::mul_scalar
     template<typename S> 
     static KTM_INLINE std::enable_if_t<std::is_arithmetic_v<S>> call(A& out, const A& x, S scalar) noexcept
     {
-        loop_scalar<N>(out, x, scalar, std::multiplies<T>());
+        loop_op_new<N, A>::call(out, [&scalar](const T& x) -> T { return x * scalar; }, x);
     }
 };
 
@@ -105,7 +105,7 @@ struct ktm::detail::array_calc_implement::div_scalar
         if constexpr(std::is_floating_point_v<S>)
             ktm::detail::array_calc_implement::mul_scalar<T, N>::call(out, x, one<T> / scalar);
         else
-            loop_scalar<N>(out, x, scalar, std::divides<T>());
+            loop_op_new<N, A>::call(out, [&scalar](const T& x) -> T { return x / scalar; }, x);
     }
 };
 

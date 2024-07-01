@@ -37,8 +37,8 @@ struct ktm::detail::mat_mul_implement::vec_mul_mat<Row, Col, float, std::enable_
     using RowV = vec<Row, float>;
     static KTM_INLINE void call(RowV& out, const ColV& v, const M& m) noexcept
     {
-        loop_scalar<Row>(out, m, v, 
-        [](const ColV& m_col, const ColV& v) -> float
+        loop_op<Row>(out, m, 
+        [&v](const ColV& m_col) -> float
         {
             if constexpr(Col == 3)
                 return skv::radd_fv3(_mul128_f32(m_col.st, v.st));
@@ -76,8 +76,8 @@ struct ktm::detail::mat_mul_implement::vec_mul_mat<Row, Col, int, std::enable_if
     using RowV = vec<Row, int>;
     static KTM_INLINE void call(RowV& out, const ColV& v, const M& m) noexcept
     {
-        loop_scalar<Row>(out, m, v, 
-        [](const ColV& m_col, const ColV& v) -> int
+        loop_op<Row>(out, m, 
+        [&v](const ColV& m_col) -> int
         {
             if constexpr(Col == 3)
                 return skv::radd_sv3(_mul128_s32(m_col.st, v.st));
@@ -115,8 +115,8 @@ struct ktm::detail::mat_mul_implement::vec_mul_mat<Row, 2, float>
     using RowV = vec<Row, float>;
     static KTM_INLINE void call(RowV& out, const ColV& v, const M& m) noexcept
     {
-        loop_scalar<Row>(out, m, v, 
-        [](const ColV& m_col, const ColV& v) -> float
+        loop_op<Row>(out, m,  
+        [&v](const ColV& m_col) -> float
         {
             return skv::radd_fv2(_mul64_f32(m_col.st, v.st));
         });
@@ -130,7 +130,7 @@ struct ktm::detail::mat_mul_implement::mat_mul_vec<Row, 2, int>
     using ColV = vec<2, int>;
     using RowV = vec<Row, int>;
     static KTM_INLINE void call(ColV& out, const M& m, const RowV& v) noexcept
-    {
+    { 
         loop_reduce<Row>(out.st, m, v, _mul64_s32(m[0].st, _dup64_s32(v[0])), 
         [](const skv::sv2& out_st, const ColV& m_col, const int& v_val) -> skv::sv2 
         {
@@ -147,8 +147,8 @@ struct ktm::detail::mat_mul_implement::vec_mul_mat<Row, 2, int>
     using RowV = vec<Row, int>;
     static KTM_INLINE void call(RowV& out, const ColV& v, const M& m) noexcept
     {
-        loop_scalar<Row>(out, m, v, 
-        [](const ColV& m_col, const ColV& v) -> int 
+        loop_op<Row>(out, m, 
+        [&v](const ColV& m_col) -> int 
         {
             return skv::radd_sv2(_mul64_s32(m_col.st, v.st));
         });

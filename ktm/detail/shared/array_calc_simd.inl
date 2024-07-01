@@ -9,8 +9,46 @@
 #define _KTM_ARRAY_CALC_SIMD_INL_
 
 #include "array_calc_fwd.h"
-#include "../../setup.h"
+#include "../loop_util.h"
 #include "../../simd/skv.h"
+
+#define KTM_DETAIL_ARRAY_CALC_ENUM_BINARY(...) A& out, const A& x, const A& y
+#define KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_BINARY(cast_type, index, ...) \
+reinterpret_cast<cast_type&>(out[index]), reinterpret_cast<const cast_type&>(x[index]), reinterpret_cast<const cast_type&>(y[index])
+#define KTM_DETAIL_ARRAY_CALC_LOOP_OPERATION_ENUM_BINARY(impl_name, type, num, ...) impl_name<type, num>::call
+#define KTM_DETAIL_ARRAY_CALC_LAST_PARAMS_ENUM_BINARY(cast_type, index, ...) KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_BINARY(cast_type, index)
+
+#define KTM_DETAIL_ARRAY_CALC_ENUM_UNARY(...) A& out, const A& x
+#define KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_UNARY(cast_type, index, ...) \
+reinterpret_cast<cast_type&>(out[index]), reinterpret_cast<const cast_type&>(x[index])
+#define KTM_DETAIL_ARRAY_CALC_LOOP_OPERATION_ENUM_UNARY(impl_name, type, num, ...) impl_name<type, num>::call
+#define KTM_DETAIL_ARRAY_CALC_LAST_PARAMS_ENUM_UNARY(cast_type, index, ...) KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_UNARY(cast_type, index)
+
+#define KTM_DETAIL_ARRAY_CALC_ENUM_SCALAR(type, ...) A& out, const A& x, type scalar
+#define KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_SCALAR(cast_type, index, ...) \
+reinterpret_cast<cast_type&>(out[index]), reinterpret_cast<const cast_type&>(x[index])
+#define KTM_DETAIL_ARRAY_CALC_LOOP_OPERATION_ENUM_SCALAR(impl_name, type, num, ...) \
+[&scalar](std::array<type, num>& out, const std::array<type, num>& x) -> void { impl_name<type, num>::call(out, x, scalar); }
+#define KTM_DETAIL_ARRAY_CALC_LAST_PARAMS_ENUM_SCALAR(cast_type, index, ...) KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_SCALAR(cast_type, index), scalar
+
+#define KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(impl_name, type, enum) \
+template<size_t N> \
+struct ktm::detail::array_calc_implement::impl_name<type, N, std::enable_if_t<(N > 4)>> \
+{ \
+    using A = std::array<type, N>; \
+    static KTM_INLINE void call(KTM_DETAIL_ARRAY_CALC_ENUM_##enum(type)) noexcept \
+    { \
+        constexpr size_t K = N / 4; \
+        using AA4K = std::array<std::array<type, 4>, K>; \
+        loop_op_new<K, void>::call(KTM_DETAIL_ARRAY_CALC_LOOP_OPERATION_ENUM_##enum(impl_name, type, 4), \
+                                   KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_##enum(AA4K, 0)); \
+        if constexpr(constexpr size_t J = N % 4) \
+        { \
+            using ATJ = std::array<type, J>; \
+            impl_name<type, J>::call(KTM_DETAIL_ARRAY_CALC_LAST_PARAMS_ENUM_##enum(ATJ, K * 4)); \
+        } \
+    } \
+};
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
@@ -24,6 +62,8 @@ struct ktm::detail::array_calc_implement::add<float, 4>
     }
 };
 
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(add, float, BINARY)
+
 template<>
 struct ktm::detail::array_calc_implement::sub<float, 4>
 {
@@ -33,6 +73,8 @@ struct ktm::detail::array_calc_implement::sub<float, 4>
         _store128_f32(out.data(), _sub128_f32(_load128_f32(x.data()), _load128_f32(y.data())));
     }
 };
+
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(sub, float, BINARY)
 
 template<>
 struct ktm::detail::array_calc_implement::neg<float, 4>
@@ -44,6 +86,8 @@ struct ktm::detail::array_calc_implement::neg<float, 4>
     }
 };
 
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(neg, float, UNARY)
+
 template<>
 struct ktm::detail::array_calc_implement::mul<float, 4>
 {
@@ -53,6 +97,8 @@ struct ktm::detail::array_calc_implement::mul<float, 4>
         _store128_f32(out.data(), _mul128_f32(_load128_f32(x.data()), _load128_f32(y.data())));
     }
 };
+
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(mul, float, BINARY)
 
 template<>
 struct ktm::detail::array_calc_implement::div<float, 4>
@@ -64,6 +110,8 @@ struct ktm::detail::array_calc_implement::div<float, 4>
     }
 };
 
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(div, float, BINARY)
+
 template<>
 struct ktm::detail::array_calc_implement::add_scalar<float, 4>
 {
@@ -73,6 +121,8 @@ struct ktm::detail::array_calc_implement::add_scalar<float, 4>
         _store128_f32(out.data(), _add128_f32(_load128_f32(x.data()), _dup128_f32(scalar)));
     }
 };
+
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(add_scalar, float, SCALAR)
 
 template<>
 struct ktm::detail::array_calc_implement::sub_scalar<float, 4>
@@ -84,6 +134,8 @@ struct ktm::detail::array_calc_implement::sub_scalar<float, 4>
     }
 };
 
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(sub_scalar, float, SCALAR)
+
 template<>
 struct ktm::detail::array_calc_implement::mul_scalar<float, 4>
 {
@@ -94,6 +146,8 @@ struct ktm::detail::array_calc_implement::mul_scalar<float, 4>
     }
 };
 
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(mul_scalar, float, SCALAR)
+
 template<>
 struct ktm::detail::array_calc_implement::div_scalar<float, 4>
 {
@@ -103,6 +157,8 @@ struct ktm::detail::array_calc_implement::div_scalar<float, 4>
         _store128_f32(out.data(), _div128_f32(_load128_f32(x.data()), _dup128_f32(scalar)));
     }
 };
+
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(div_scalar, float, SCALAR)
 
 #endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE)
 
@@ -120,6 +176,8 @@ struct ktm::detail::array_calc_implement::add<int, 4>
     }
 };
 
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(add, int, BINARY)
+
 template<>
 struct ktm::detail::array_calc_implement::sub<int, 4>
 {
@@ -132,6 +190,8 @@ struct ktm::detail::array_calc_implement::sub<int, 4>
     }
 };
 
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(sub, int, BINARY)
+
 template<>
 struct ktm::detail::array_calc_implement::neg<int, 4>
 {
@@ -142,6 +202,8 @@ struct ktm::detail::array_calc_implement::neg<int, 4>
         _store128_f32(out.data(), _cast128_f32_s32(_neg128_s32(x_st)));
     }
 };
+
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(neg, int, UNARY)
 
 template<>
 struct ktm::detail::array_calc_implement::add_scalar<int, 4>
@@ -154,6 +216,8 @@ struct ktm::detail::array_calc_implement::add_scalar<int, 4>
     }
 };
 
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(add_scalar, int, SCALAR)
+
 template<>
 struct ktm::detail::array_calc_implement::sub_scalar<int, 4>
 {
@@ -164,6 +228,8 @@ struct ktm::detail::array_calc_implement::sub_scalar<int, 4>
         _store128_f32(out.data(), _cast128_f32_s32(_sub128_s32(x_st, _dup128_s32(scalar))));
     }
 };
+
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(sub_scalar, int, SCALAR)
 
 #endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2)
 
@@ -181,6 +247,8 @@ struct ktm::detail::array_calc_implement::mul<int, 4>
     }
 };
 
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(mul, int, BINARY)
+
 template<>
 struct ktm::detail::array_calc_implement::mul_scalar<int, 4>
 {
@@ -191,6 +259,8 @@ struct ktm::detail::array_calc_implement::mul_scalar<int, 4>
         _store128_f32(out.data(), _cast128_f32_s32(_mul128_s32(x_st, _dup128_s32(scalar))));
     }
 };
+
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(mul_scalar, int, SCALAR)
 
 #endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1 | KTM_SIMD_WASM)
 
