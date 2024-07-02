@@ -93,6 +93,22 @@ private:
     }
 
     template<class F, class C>
+    friend class iarray_madd;
+
+    KTM_INLINE vec<3, T> madd_impl(const vec<3, T>& y, const vec<3, T>& z) const noexcept
+    {
+        vec<3, T> ret;
+        detail::vec_calc_implement::madd<T>(ret, *child_ptr(), y, z);
+        return ret;
+    }
+
+    KTM_INLINE vec<3, T>& madd_to_self_impl(const vec<3, T>& y, const vec<3, T>& z) noexcept
+    {
+        detail::vec_calc_implement::madd<T>(*child_ptr(), *child_ptr(), y, z);
+        return *child_ptr();
+    }
+
+    template<class F, class C>
     friend class iarray_add_scalar;
 
     KTM_INLINE vec<3, T> add_scalar_impl(T scalar) const noexcept
@@ -147,6 +163,22 @@ private:
     KTM_INLINE vec<3, T>& div_scalar_to_self_impl(T scalar) noexcept
     {
         detail::vec_calc_implement::div_scalar<T>(*child_ptr(), *child_ptr(), scalar);
+        return *child_ptr();
+    }
+
+    template<class F, class C>
+    friend class iarray_madd_scalar;
+
+    KTM_INLINE vec<3, T> madd_scalar_impl(const vec<3, T>& y, T scalar) const noexcept
+    {
+        vec<3, T> ret;
+        detail::vec_calc_implement::madd_scalar<T>(ret, *child_ptr(), y, scalar);
+        return ret;
+    }
+
+    KTM_INLINE vec<3, T>& madd_scalar_to_self_impl(const vec<3, T>& y, T scalar) noexcept
+    {
+        detail::vec_calc_implement::madd_scalar<T>(*child_ptr(), *child_ptr(), y, scalar);
         return *child_ptr();
     }
 };

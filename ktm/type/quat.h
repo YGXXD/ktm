@@ -24,7 +24,7 @@ namespace ktm
 
 template<class Child>
 using quat_father_type = single_extends_t<Child, iquat_data, iquat_make, iquat_array, iquat_mul, 
-    iarray_io, iarray_mul_scalar, iarray_add, iarray_util>;
+    iarray_io, iarray_madd_scalar, iarray_mul_scalar, iarray_add, iarray_util>;
 
 template<typename T>
 struct quat<T> : quat_father_type<quat<T>>

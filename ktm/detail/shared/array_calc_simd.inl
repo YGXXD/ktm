@@ -12,24 +12,35 @@
 #include "../loop_util.h"
 #include "../../simd/skv.h"
 
-#define KTM_DETAIL_ARRAY_CALC_ENUM_BINARY(...) A& out, const A& x, const A& y
-#define KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_BINARY(cast_type, index, ...) \
-reinterpret_cast<cast_type&>(out[index]), reinterpret_cast<const cast_type&>(x[index]), reinterpret_cast<const cast_type&>(y[index])
-#define KTM_DETAIL_ARRAY_CALC_LOOP_OPERATION_ENUM_BINARY(impl_name, type, num, ...) impl_name<type, num>::call
-#define KTM_DETAIL_ARRAY_CALC_LAST_PARAMS_ENUM_BINARY(cast_type, index, ...) KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_BINARY(cast_type, index)
-
 #define KTM_DETAIL_ARRAY_CALC_ENUM_UNARY(...) A& out, const A& x
+#define KTM_DETAIL_ARRAY_CALC_LOOP_OPERATION_ENUM_UNARY(impl_name, type, num, ...) impl_name<type, num>::call
 #define KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_UNARY(cast_type, index, ...) \
 reinterpret_cast<cast_type&>(out[index]), reinterpret_cast<const cast_type&>(x[index])
-#define KTM_DETAIL_ARRAY_CALC_LOOP_OPERATION_ENUM_UNARY(impl_name, type, num, ...) impl_name<type, num>::call
 #define KTM_DETAIL_ARRAY_CALC_LAST_PARAMS_ENUM_UNARY(cast_type, index, ...) KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_UNARY(cast_type, index)
 
-#define KTM_DETAIL_ARRAY_CALC_ENUM_SCALAR(type, ...) A& out, const A& x, type scalar
-#define KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_SCALAR(cast_type, index, ...) \
-reinterpret_cast<cast_type&>(out[index]), reinterpret_cast<const cast_type&>(x[index])
-#define KTM_DETAIL_ARRAY_CALC_LOOP_OPERATION_ENUM_SCALAR(impl_name, type, num, ...) \
+#define KTM_DETAIL_ARRAY_CALC_ENUM_BINARY(...) KTM_DETAIL_ARRAY_CALC_ENUM_UNARY(), const A& y
+#define KTM_DETAIL_ARRAY_CALC_LOOP_OPERATION_ENUM_BINARY(impl_name, type, num, ...) impl_name<type, num>::call
+#define KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_BINARY(cast_type, index, ...) \
+KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_UNARY(cast_type, index), reinterpret_cast<const cast_type&>(y[index])
+#define KTM_DETAIL_ARRAY_CALC_LAST_PARAMS_ENUM_BINARY(cast_type, index, ...) KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_BINARY(cast_type, index)
+
+#define KTM_DETAIL_ARRAY_CALC_ENUM_TERNARY(...) KTM_DETAIL_ARRAY_CALC_ENUM_BINARY(), const A& z
+#define KTM_DETAIL_ARRAY_CALC_LOOP_OPERATION_ENUM_TERNARY(impl_name, type, num, ...) impl_name<type, num>::call
+#define KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_TERNARY(cast_type, index, ...) \
+KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_BINARY(cast_type, index), reinterpret_cast<const cast_type&>(z[index])
+#define KTM_DETAIL_ARRAY_CALC_LAST_PARAMS_ENUM_TERNARY(cast_type, index, ...) KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_TERNARY(cast_type, index)
+
+#define KTM_DETAIL_ARRAY_CALC_ENUM_BINARY_SCALAR(type, ...) KTM_DETAIL_ARRAY_CALC_ENUM_UNARY(), type scalar
+#define KTM_DETAIL_ARRAY_CALC_LOOP_OPERATION_ENUM_BINARY_SCALAR(impl_name, type, num, ...) \
 [&scalar](std::array<type, num>& out, const std::array<type, num>& x) -> void { impl_name<type, num>::call(out, x, scalar); }
-#define KTM_DETAIL_ARRAY_CALC_LAST_PARAMS_ENUM_SCALAR(cast_type, index, ...) KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_SCALAR(cast_type, index), scalar
+#define KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_BINARY_SCALAR(cast_type, index, ...) KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_UNARY(cast_type, index)
+#define KTM_DETAIL_ARRAY_CALC_LAST_PARAMS_ENUM_BINARY_SCALAR(cast_type, index, ...) KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_BINARY_SCALAR(cast_type, index), scalar
+
+#define KTM_DETAIL_ARRAY_CALC_ENUM_TERNARY_SCALAR(type, ...) KTM_DETAIL_ARRAY_CALC_ENUM_BINARY(), type scalar
+#define KTM_DETAIL_ARRAY_CALC_LOOP_OPERATION_ENUM_TERNARY_SCALAR(impl_name, type, num, ...) \
+[&scalar](std::array<type, num>& out, const std::array<type, num>& x, const std::array<type, num>& y) -> void { impl_name<type, num>::call(out, x, y, scalar); }
+#define KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_TERNARY_SCALAR(cast_type, index, ...) KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_BINARY(cast_type, index)
+#define KTM_DETAIL_ARRAY_CALC_LAST_PARAMS_ENUM_TERNARY_SCALAR(cast_type, index, ...) KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_TERNARY_SCALAR(cast_type, index), scalar
 
 #define KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(impl_name, type, enum) \
 template<size_t N> \
@@ -40,7 +51,7 @@ struct ktm::detail::array_calc_implement::impl_name<type, N, std::enable_if_t<(N
     { \
         constexpr size_t K = N / 4; \
         using AA4K = std::array<std::array<type, 4>, K>; \
-        loop_op_new<K, void>::call(KTM_DETAIL_ARRAY_CALC_LOOP_OPERATION_ENUM_##enum(impl_name, type, 4), \
+        loop_op<K, void>::call(KTM_DETAIL_ARRAY_CALC_LOOP_OPERATION_ENUM_##enum(impl_name, type, 4), \
                                    KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_ENUM_##enum(AA4K, 0)); \
         if constexpr(constexpr size_t J = N % 4) \
         { \
@@ -101,6 +112,18 @@ struct ktm::detail::array_calc_implement::mul<float, 4>
 KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(mul, float, BINARY)
 
 template<>
+struct ktm::detail::array_calc_implement::madd<float, 4>
+{
+    using A = std::array<float, 4>;
+    static KTM_INLINE void call(A& out, const A& x, const A& y, const A& z) noexcept
+    {
+        _store128_f32(out.data(), _madd128_f32(_load128_f32(x.data()), _load128_f32(y.data()), _load128_f32(z.data())));
+    }
+};
+
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(madd, float, TERNARY)
+
+template<>
 struct ktm::detail::array_calc_implement::div<float, 4>
 {
     using A = std::array<float, 4>;
@@ -122,7 +145,7 @@ struct ktm::detail::array_calc_implement::add_scalar<float, 4>
     }
 };
 
-KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(add_scalar, float, SCALAR)
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(add_scalar, float, BINARY_SCALAR)
 
 template<>
 struct ktm::detail::array_calc_implement::sub_scalar<float, 4>
@@ -134,7 +157,7 @@ struct ktm::detail::array_calc_implement::sub_scalar<float, 4>
     }
 };
 
-KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(sub_scalar, float, SCALAR)
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(sub_scalar, float, BINARY_SCALAR)
 
 template<>
 struct ktm::detail::array_calc_implement::mul_scalar<float, 4>
@@ -146,7 +169,7 @@ struct ktm::detail::array_calc_implement::mul_scalar<float, 4>
     }
 };
 
-KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(mul_scalar, float, SCALAR)
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(mul_scalar, float, BINARY_SCALAR)
 
 template<>
 struct ktm::detail::array_calc_implement::div_scalar<float, 4>
@@ -158,7 +181,19 @@ struct ktm::detail::array_calc_implement::div_scalar<float, 4>
     }
 };
 
-KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(div_scalar, float, SCALAR)
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(div_scalar, float, BINARY_SCALAR)
+
+template<>
+struct ktm::detail::array_calc_implement::madd_scalar<float, 4>
+{
+    using A = std::array<float, 4>;
+    static KTM_INLINE void call(A& out, const A& x, const A& y, float scalar) noexcept
+    {
+        _store128_f32(out.data(), _madd128_f32(_load128_f32(x.data()), _load128_f32(y.data()), _dup128_f32(scalar)));
+    }
+};
+
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(madd_scalar, float, TERNARY_SCALAR)
 
 #endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE)
 
@@ -216,7 +251,7 @@ struct ktm::detail::array_calc_implement::add_scalar<int, 4>
     }
 };
 
-KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(add_scalar, int, SCALAR)
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(add_scalar, int, BINARY_SCALAR)
 
 template<>
 struct ktm::detail::array_calc_implement::sub_scalar<int, 4>
@@ -229,7 +264,7 @@ struct ktm::detail::array_calc_implement::sub_scalar<int, 4>
     }
 };
 
-KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(sub_scalar, int, SCALAR)
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(sub_scalar, int, BINARY_SCALAR)
 
 #endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2)
 
@@ -250,6 +285,21 @@ struct ktm::detail::array_calc_implement::mul<int, 4>
 KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(mul, int, BINARY)
 
 template<>
+struct ktm::detail::array_calc_implement::madd<int, 4>
+{
+    using A = std::array<int, 4>;
+    static KTM_INLINE void call(A& out, const A& x, const A& y, const A& z) noexcept
+    {
+        skv::sv4 x_st = _cast128_s32_f32(_load128_f32(x.data()));
+        skv::sv4 y_st = _cast128_s32_f32(_load128_f32(y.data())); 
+        skv::sv4 z_st = _cast128_s32_f32(_load128_f32(z.data())); 
+        _store128_f32(out.data(), _cast128_f32_s32(_madd128_s32(x_st, y_st, z_st)));
+    }
+};
+
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(madd, int, TERNARY)
+
+template<>
 struct ktm::detail::array_calc_implement::mul_scalar<int, 4>
 {
     using A = std::array<int, 4>;
@@ -260,7 +310,21 @@ struct ktm::detail::array_calc_implement::mul_scalar<int, 4>
     }
 };
 
-KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(mul_scalar, int, SCALAR)
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(mul_scalar, int, BINARY_SCALAR)
+
+template<>
+struct ktm::detail::array_calc_implement::madd_scalar<int, 4>
+{
+    using A = std::array<int, 4>;
+    static KTM_INLINE void call(A& out, const A& x, const A& y, int scalar) noexcept
+    {
+        skv::sv4 x_st = _cast128_s32_f32(_load128_f32(x.data()));
+        skv::sv4 y_st = _cast128_s32_f32(_load128_f32(y.data())); 
+        _store128_f32(out.data(), _cast128_f32_s32(_madd128_s32(x_st, y_st, _dup128_s32(scalar))));
+    }
+};
+
+KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(madd_scalar, int, TERNARY_SCALAR)
 
 #endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1 | KTM_SIMD_WASM)
 
@@ -317,6 +381,16 @@ struct ktm::detail::array_calc_implement::div<float, 2>
 };
 
 template<>
+struct ktm::detail::array_calc_implement::madd<float, 2>
+{
+    using A = std::array<float, 2>;
+    static KTM_INLINE void call(A& out, const A& x, const A& y, const A& z) noexcept
+    {
+        _store64_f32(out.data(), _madd64_f32(_load64_f32(x.data()), _load64_f32(y.data()), _load64_f32(z.data())));
+    }
+};
+
+template<>
 struct ktm::detail::array_calc_implement::add_scalar<float, 2>
 {
     using A = std::array<float, 2>;
@@ -353,6 +427,16 @@ struct ktm::detail::array_calc_implement::div_scalar<float, 2>
     static KTM_INLINE void call(A& out, const A& x, float scalar) noexcept
     {
         _store64_f32(out.data(), _div64_f32(_load64_f32(x.data()), _dup64_f32(scalar)));
+    }
+};
+
+template<>
+struct ktm::detail::array_calc_implement::madd_scalar<float, 2>
+{
+    using A = std::array<float, 2>;
+    static KTM_INLINE void call(A& out, const A& x, const A& y, float scalar) noexcept
+    {
+        _store64_f32(out.data(), _madd64_f32(_load64_f32(x.data()), _load64_f32(y.data()), _dup64_f32(scalar)));
     }
 };
 
@@ -404,6 +488,19 @@ struct ktm::detail::array_calc_implement::mul<int, 2>
 };
 
 template<>
+struct ktm::detail::array_calc_implement::madd<int, 2>
+{
+    using A = std::array<int, 2>;
+    static KTM_INLINE void call(A& out, const A& x, const A& y, const A& z) noexcept
+    {
+        skv::sv2 x_st = _cast64_s32_f32(_load64_f32(x.data()));
+        skv::sv2 y_st = _cast64_s32_f32(_load64_f32(y.data()));
+        skv::sv2 z_st = _cast64_s32_f32(_load64_f32(z.data())); 
+        _store64_f32(out.data(), _cast64_f32_s32(_madd64_s32(x_st, y_st, z_st))); 
+    }
+};
+
+template<>
 struct ktm::detail::array_calc_implement::add_scalar<int, 2>
 {
     using A = std::array<int, 2>;
@@ -433,6 +530,18 @@ struct ktm::detail::array_calc_implement::mul_scalar<int, 2>
     {
         skv::sv2 x_st = _cast64_s32_f32(_load64_f32(x.data()));
         _store64_f32(out.data(), _cast64_f32_s32(_mul64_s32(x_st, _dup64_s32(scalar))));
+    }
+};
+
+template<>
+struct ktm::detail::array_calc_implement::madd_scalar<int, 2>
+{
+    using A = std::array<int, 2>;
+    static KTM_INLINE void call(A& out, const A& x, const A& y, int scalar) noexcept
+    {
+        skv::sv2 x_st = _cast64_s32_f32(_load64_f32(x.data()));
+        skv::sv2 y_st = _cast64_s32_f32(_load64_f32(y.data()));
+        _store64_f32(out.data(), _cast64_f32_s32(_madd64_s32(x_st, y_st, _dup64_s32(scalar)))); 
     }
 };
 

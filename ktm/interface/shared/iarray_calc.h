@@ -292,13 +292,91 @@ private:
 };
 
 template<class Father, class Child>
+struct iarray_madd : Father
+{
+    using Father::Father;
+    using Father::child_ptr;
+
+    friend KTM_FUNC Child ktm_operator_madd(const Child& x, const Child& y, const Child& z) noexcept { return x.madd(y, z); }
+    friend KTM_FUNC Child ktm_operator_smadd(Child& x, const Child& y, const Child& z) noexcept { return x.madd_to_self(y, z); }
+private:
+    KTM_FUNC Child madd(const Child& y, const Child& z) const noexcept
+    {
+        if constexpr(KTM_CRTP_CHILD_IMPL_VALUE(Child, madd_impl))
+            return child_ptr()->madd_impl(y, z);
+        else
+        {
+            Child ret;
+            KTM_ARRAY_CALC_CALL(madd, ret.to_array(), child_ptr()->to_array(), y.to_array(), z.to_array());
+            return ret;
+        }
+    }
+
+    KTM_FUNC Child& madd_to_self(const Child& y, const Child& z) noexcept
+    {
+        if constexpr(KTM_CRTP_CHILD_IMPL_VALUE(Child, madd_to_self_impl))
+            return child_ptr()->madd_to_self_impl(y, z);
+        else
+        {
+            KTM_ARRAY_CALC_CALL(madd, child_ptr()->to_array(), child_ptr()->to_array(), y.to_array(), z.to_array());
+            return *child_ptr(); 
+        }
+    }
+
+    KTM_CRTP_CHILD_IMPL_CHECK(madd, madd_impl)
+    KTM_CRTP_CHILD_IMPL_CHECK(madd_to_self, madd_to_self_impl)
+};
+
+template<class Father, class Child>
+struct iarray_madd_scalar : Father
+{
+    using Father::Father;
+    using Father::child_ptr;
+    using ScalarT = typename math_traits<Child>::base_type;
+
+    friend KTM_FUNC Child ktm_operator_madd(const Child& x, const Child& y, ScalarT scalar) noexcept { return x.madd_scalar(y, scalar); }
+    friend KTM_FUNC Child ktm_operator_madd(const Child& x, ScalarT scalar, const Child& z) noexcept { return x.madd_scalar(z, scalar); }
+    friend KTM_FUNC Child ktm_operator_smadd(Child& x, const Child& y, ScalarT scalar) noexcept { return x.madd_scalar_to_self(y, scalar); }
+    friend KTM_FUNC Child ktm_operator_smadd(Child& x, ScalarT scalar, const Child& z) noexcept { return x.madd_scalar_to_self(z, scalar); }
+private:
+    KTM_FUNC Child madd_scalar(const Child& y, ScalarT scalar) const noexcept
+    {
+        if constexpr(KTM_CRTP_CHILD_IMPL_VALUE(Child, madd_scalar_impl))
+            return child_ptr()->madd_scalar_impl(y, scalar);
+        else
+        {
+            Child ret;
+            KTM_ARRAY_CALC_CALL(madd_scalar, ret.to_array(), child_ptr()->to_array(), y.to_array(), scalar);
+            return ret;
+        }
+    }
+
+    KTM_FUNC Child& madd_scalar_to_self(const Child& y, ScalarT scalar) noexcept
+    {
+        if constexpr(KTM_CRTP_CHILD_IMPL_VALUE(Child, madd_scalar_to_self_impl))
+            return child_ptr()->madd_scalar_to_self_impl(y, scalar);
+        else
+        {
+            KTM_ARRAY_CALC_CALL(madd_scalar, child_ptr()->to_array(), child_ptr()->to_array(), y.to_array(), scalar);
+            return *child_ptr(); 
+        }
+    }
+
+    KTM_CRTP_CHILD_IMPL_CHECK(madd_scalar, madd_scalar_impl)
+    KTM_CRTP_CHILD_IMPL_CHECK(madd_scalar_to_self, madd_scalar_to_self_impl)
+};
+
+template<class Father, class Child>
 using iarray_add_calc = combine_interface<iarray_add, iarray_add_scalar>::type<Father, Child>;
 
 template<class Father, class Child>
 using iarray_mul_calc = combine_interface<iarray_mul, iarray_mul_scalar>::type<Father, Child>;
 
 template<class Father, class Child>
-using iarray_calc = combine_interface<iarray_add_calc, iarray_mul_calc>::type<Father, Child>;
+using iarray_madd_calc = combine_interface<iarray_madd, iarray_madd_scalar>::type<Father, Child>;
+
+template<class Father, class Child>
+using iarray_calc = combine_interface<iarray_add_calc, iarray_mul_calc, iarray_madd_calc>::type<Father, Child>;
 
 }
 

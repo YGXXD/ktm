@@ -45,6 +45,14 @@ KTM_INLINE void ktm::detail::vec_calc_implement::mul(vec<3, T>& out, const vec<3
 }
 
 template<typename T>
+KTM_INLINE void ktm::detail::vec_calc_implement::madd(vec<3, T>& out, const vec<3, T>& x, const vec<3, T>& y, const vec<3, T>& z) noexcept
+{
+    out.x = ktm_operator_madd(x.x, y.x, z.x);
+    out.y = ktm_operator_madd(x.y, y.y, z.y);
+    out.z = ktm_operator_madd(x.z, y.z, z.z); 
+}
+
+template<typename T>
 KTM_INLINE void ktm::detail::vec_calc_implement::div(vec<3, T>& out, const vec<3, T>& x, const vec<3, T>& y) noexcept
 {
     out.x = x.x / y.x;
@@ -87,6 +95,14 @@ KTM_INLINE void ktm::detail::vec_calc_implement::div_scalar(vec<3, T>& out, cons
         out.y = x.y / scalar;
         out.z = x.z / scalar;
     }
+}
+
+template<typename T>
+KTM_INLINE void ktm::detail::vec_calc_implement::madd_scalar(vec<3, T>& out, const vec<3, T>& x, const vec<3, T>& y, T scalar) noexcept
+{
+    out.x = ktm_operator_madd(x.x, y.x, scalar);
+    out.y = ktm_operator_madd(x.y, y.y, scalar);
+    out.z = ktm_operator_madd(x.z, y.z, scalar); 
 }
 
 #endif

@@ -24,7 +24,7 @@ namespace ktm
 
 template <class Child>
 using comp_father_type = single_extends_t<Child, icomp_data, icomp_make, icomp_array, icomp_mul, 
-    iarray_io, iarray_mul_scalar, iarray_add, iarray_util>;
+    iarray_io, iarray_madd_scalar, iarray_mul_scalar, iarray_add, iarray_util>;
 
 template<typename T>
 struct comp<T> : comp_father_type<comp<T>>

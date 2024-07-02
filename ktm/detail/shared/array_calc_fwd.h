@@ -33,6 +33,9 @@ template<typename T, size_t N, typename = void>
 struct div;
 
 template<typename T, size_t N, typename = void>
+struct madd;
+
+template<typename T, size_t N, typename = void>
 struct add_scalar;
 
 template<typename T, size_t N, typename = void>
@@ -43,6 +46,9 @@ struct mul_scalar;
 
 template<typename T, size_t N, typename = void>
 struct div_scalar;
+
+template<typename T, size_t N, typename = void>
+struct madd_scalar;
 
 }
 }

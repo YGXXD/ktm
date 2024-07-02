@@ -44,6 +44,12 @@ KTM_INLINE void ktm::detail::vec_calc_implement::div<float>(vec<3, float>& out, 
 }
 
 template<>
+KTM_INLINE void ktm::detail::vec_calc_implement::madd<float>(vec<3, float>& out, const vec<3, float>& x, const vec<3, float>& y, const vec<3, float>& z) noexcept
+{
+    out.st = _madd128_f32(x.st, y.st, z.st);
+}
+
+template<>
 KTM_INLINE void ktm::detail::vec_calc_implement::add_scalar<float>(vec<3, float>& out, const vec<3, float>& x, float scalar) noexcept
 {
     out.st = _add128_f32(x.st, _dup128_f32(scalar));
@@ -65,6 +71,12 @@ template<>
 KTM_INLINE void ktm::detail::vec_calc_implement::div_scalar<float>(vec<3, float>& out, const vec<3, float>& x, float scalar) noexcept
 {
     out.st = _div128_f32(x.st, _dup128_f32(scalar));
+}
+
+template<>
+KTM_INLINE void ktm::detail::vec_calc_implement::madd_scalar<float>(vec<3, float>& out, const vec<3, float>& x, const vec<3, float>& y, float scalar) noexcept
+{
+    out.st = _madd128_f32(x.st, y.st, _dup128_f32(scalar));
 }
 
 #endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE)
@@ -112,9 +124,21 @@ KTM_INLINE void ktm::detail::vec_calc_implement::mul<int>(vec<3, int>& out, cons
 }
 
 template<>
+KTM_INLINE void ktm::detail::vec_calc_implement::madd<int>(vec<3, int>& out, const vec<3, int>& x, const vec<3, int>& y, const vec<3, int>& z) noexcept
+{
+    out.st = _madd128_s32(x.st, y.st, z.st);
+}
+
+template<>
 KTM_INLINE void ktm::detail::vec_calc_implement::mul_scalar<int>(vec<3, int>& out, const vec<3, int>& x, int scalar) noexcept
 {
     out.st = _mul128_s32(x.st, _dup128_s32(scalar));
+}
+
+template<>
+KTM_INLINE void ktm::detail::vec_calc_implement::madd_scalar<int>(vec<3, int>& out, const vec<3, int>& x, const vec<3, int>& y, int scalar) noexcept
+{
+    out.st = _madd128_s32(x.st, y.st, _dup128_s32(scalar));
 }
 
 #endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1 | KTM_SIMD_WASM)

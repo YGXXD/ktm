@@ -34,6 +34,9 @@ template<typename T>
 KTM_INLINE void div(vec<3, T>& out, const vec<3, T>& x, const vec<3, T>& y) noexcept;
 
 template<typename T>
+KTM_INLINE void madd(vec<3, T>& out, const vec<3, T>& x, const vec<3, T>& y, const vec<3, T>& z) noexcept;
+
+template<typename T>
 KTM_INLINE void add_scalar(vec<3, T>& out, const vec<3, T>& x, T scalar) noexcept;
 
 template<typename T>
@@ -44,6 +47,9 @@ KTM_INLINE void mul_scalar(vec<3, T>& out, const vec<3, T>& x, T scalar) noexcep
 
 template<typename T>
 KTM_INLINE void div_scalar(vec<3, T>& out, const vec<3, T>& x, T scalar) noexcept;
+
+template<typename T>
+KTM_INLINE void madd_scalar(vec<3, T>& out, const vec<3, T>& x, const vec<3, T>& y, T scalar) noexcept;
 
 }
 }
