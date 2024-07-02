@@ -15,7 +15,7 @@ namespace ktm
 {
 namespace detail
 {
-namespace vec_calc_implement_new
+namespace vec_calc_implement
 {
 
 template<typename T>

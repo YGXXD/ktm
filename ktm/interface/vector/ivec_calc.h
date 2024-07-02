@@ -33,33 +33,33 @@ private:
     KTM_INLINE vec<3, T> add_impl(const vec<3, T>& y) const noexcept
     {
         vec<3, T> ret;
-        detail::vec_calc_implement_new::add<T>(ret, *child_ptr(), y);
+        detail::vec_calc_implement::add<T>(ret, *child_ptr(), y);
         return ret;
     }
 
     KTM_INLINE vec<3, T>& add_to_self_impl(const vec<3, T>& y) noexcept
     {
-        detail::vec_calc_implement_new::add<T>(*child_ptr(), *child_ptr(), y);
+        detail::vec_calc_implement::add<T>(*child_ptr(), *child_ptr(), y);
         return *child_ptr();
     }
 
     KTM_INLINE vec<3, T> sub_impl(const vec<3, T>& y) const noexcept
     {
         vec<3, T> ret;
-        detail::vec_calc_implement_new::sub<T>(ret, *child_ptr(), y);
+        detail::vec_calc_implement::sub<T>(ret, *child_ptr(), y);
         return ret;
     }
 
     KTM_INLINE vec<3, T>& sub_to_self_impl(const vec<3, T>& y) noexcept
     {
-        detail::vec_calc_implement_new::sub<T>(*child_ptr(), *child_ptr(), y);
+        detail::vec_calc_implement::sub<T>(*child_ptr(), *child_ptr(), y);
         return *child_ptr();
     }
 
     KTM_INLINE vec<3, T> neg_impl() const noexcept
     {
         vec<3, T> ret; 
-        detail::vec_calc_implement_new::neg<T>(ret, *child_ptr());
+        detail::vec_calc_implement::neg<T>(ret, *child_ptr());
         return ret;
     }
     
@@ -69,26 +69,26 @@ private:
     KTM_INLINE vec<3, T> mul_impl(const vec<3, T>& y) const noexcept
     {
         vec<3, T> ret; 
-        detail::vec_calc_implement_new::mul<T>(ret, *child_ptr(), y);
+        detail::vec_calc_implement::mul<T>(ret, *child_ptr(), y);
         return ret;
     }
 
     KTM_INLINE vec<3, T>& mul_to_self_impl(const vec<3, T>& y) noexcept
     {
-        detail::vec_calc_implement_new::mul<T>(*child_ptr(), *child_ptr(), y);
+        detail::vec_calc_implement::mul<T>(*child_ptr(), *child_ptr(), y);
         return *child_ptr();
     }
 
     KTM_INLINE vec<3, T> div_impl(const vec<3, T>& y) const noexcept
     {
         vec<3, T> ret; 
-        detail::vec_calc_implement_new::div<T>(ret, *child_ptr(), y);
+        detail::vec_calc_implement::div<T>(ret, *child_ptr(), y);
         return ret;
     }
 
     KTM_INLINE vec<3, T>& div_to_self_impl(const vec<3, T>& y) noexcept
     {
-        detail::vec_calc_implement_new::div<T>(*child_ptr(), *child_ptr(), y);
+        detail::vec_calc_implement::div<T>(*child_ptr(), *child_ptr(), y);
         return *child_ptr();
     }
 
@@ -98,26 +98,26 @@ private:
     KTM_INLINE vec<3, T> add_scalar_impl(T scalar) const noexcept
     {
         vec<3, T> ret;
-        detail::vec_calc_implement_new::add_scalar<T>(ret, *child_ptr(), scalar);
+        detail::vec_calc_implement::add_scalar<T>(ret, *child_ptr(), scalar);
         return ret;
     }
 
     KTM_INLINE vec<3, T>& add_scalar_to_self_impl(T scalar) noexcept
     {
-        detail::vec_calc_implement_new::add_scalar<T>(*child_ptr(), *child_ptr(), scalar);
+        detail::vec_calc_implement::add_scalar<T>(*child_ptr(), *child_ptr(), scalar);
         return *child_ptr();
     }
 
     KTM_INLINE vec<3, T> sub_scalar_impl(T scalar) const noexcept
     {
         vec<3, T> ret;
-        detail::vec_calc_implement_new::sub_scalar<T>(ret, *child_ptr(), scalar);
+        detail::vec_calc_implement::sub_scalar<T>(ret, *child_ptr(), scalar);
         return ret;
     }
 
     KTM_INLINE vec<3, T>& sub_scalar_to_self_impl(T scalar) noexcept
     {
-        detail::vec_calc_implement_new::sub_scalar<T>(*child_ptr(), *child_ptr(), scalar);
+        detail::vec_calc_implement::sub_scalar<T>(*child_ptr(), *child_ptr(), scalar);
         return *child_ptr();
     }
 
@@ -127,26 +127,26 @@ private:
     KTM_INLINE vec<3, T> mul_scalar_impl(T scalar) const noexcept
     {
         vec<3, T> ret;
-        detail::vec_calc_implement_new::mul_scalar<T>(ret, *child_ptr(), scalar);
+        detail::vec_calc_implement::mul_scalar<T>(ret, *child_ptr(), scalar);
         return ret;
     }
 
     KTM_INLINE vec<3, T>& mul_scalar_to_self_impl(T scalar) noexcept
     {
-        detail::vec_calc_implement_new::mul_scalar<T>(*child_ptr(), *child_ptr(), scalar);
+        detail::vec_calc_implement::mul_scalar<T>(*child_ptr(), *child_ptr(), scalar);
         return *child_ptr();
     }
     
     KTM_INLINE vec<3, T> div_scalar_impl(T scalar) const noexcept
     {
         vec<3, T> ret;
-        detail::vec_calc_implement_new::div_scalar<T>(ret, *child_ptr(), scalar);
+        detail::vec_calc_implement::div_scalar<T>(ret, *child_ptr(), scalar);
         return ret;
     }
 
     KTM_INLINE vec<3, T>& div_scalar_to_self_impl(T scalar) noexcept
     {
-        detail::vec_calc_implement_new::div_scalar<T>(*child_ptr(), *child_ptr(), scalar);
+        detail::vec_calc_implement::div_scalar<T>(*child_ptr(), *child_ptr(), scalar);
         return *child_ptr();
     }
 };
