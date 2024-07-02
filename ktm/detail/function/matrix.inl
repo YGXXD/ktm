@@ -43,30 +43,6 @@ private:
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::matrix_implement::trace
-{
-    using M = mat<N, N, T>;
-    static KTM_INLINE T call(const M& m) noexcept
-    {
-        if constexpr(N <= 4)
-            return call(m, std::make_index_sequence<N>());
-        else
-        {
-            T ret = m[0][0];
-            for(int i = 1; i < N; ++i)
-                ret += m[i][i];
-            return ret;
-        }
-    }
-private:
-    template<size_t ...Ns>
-    static KTM_INLINE T call(const M& m, std::index_sequence<Ns...>) noexcept
-    {
-        return ((m[Ns][Ns])+ ...);
-    }
-};
-
-template<size_t N, typename T, typename Void>
 struct ktm::detail::matrix_implement::diagonal
 {
     using M = mat<N, N, T>;
