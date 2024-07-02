@@ -12,8 +12,7 @@
 #include "../../function/geometric.h"
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>> 
-    ktm::detail::quat_mul_implement::mul(quat<T>& out, const quat<T>& x, const quat<T>& y) noexcept
+KTM_INLINE void ktm::detail::quat_mul_implement::mul(quat<T>& out, const quat<T>& x, const quat<T>& y) noexcept
 {
     quat<T> tmp;
     tmp[0] = x[3] * y[0] + y[3] * x[0] + x[1] * y[2] - x[2] * y[1];
@@ -24,8 +23,7 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>>
 }
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>> 
-    ktm::detail::quat_mul_implement::act(vec<3, T>& out, const quat<T>& q, const vec<3, T>& v) noexcept
+KTM_INLINE void ktm::detail::quat_mul_implement::act(vec<3, T>& out, const quat<T>& q, const vec<3, T>& v) noexcept
 {
     vec<3, T> t = static_cast<T>(2) * ktm::cross(q.imag(), v);
     out = v + (q.real() * t) + ktm::cross(q.imag(), t);

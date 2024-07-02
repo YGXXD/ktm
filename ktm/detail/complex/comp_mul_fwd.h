@@ -20,10 +20,10 @@ namespace comp_mul_implement
 {
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>> mul(comp<T>& out, const comp<T>& x, const comp<T>& y) noexcept;
+KTM_INLINE void mul(comp<T>& out, const comp<T>& x, const comp<T>& y) noexcept;
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>> act(vec<2, T>& out, const comp<T>& c, const vec<2, T>& v) noexcept;
+KTM_INLINE void act(vec<2, T>& out, const comp<T>& c, const vec<2, T>& v) noexcept;
 
 }
 }

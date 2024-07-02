@@ -20,10 +20,10 @@ namespace quat_mul_implement
 {
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>> mul(quat<T>& out, const quat<T>& x, const quat<T>& y) noexcept;
+KTM_INLINE void mul(quat<T>& out, const quat<T>& x, const quat<T>& y) noexcept;
 
 template<typename T>
-KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>> act(vec<3, T>& out, const quat<T>& q, const vec<3, T>& v) noexcept;
+KTM_INLINE void act(vec<3, T>& out, const quat<T>& q, const vec<3, T>& v) noexcept;
 
 }
 }
