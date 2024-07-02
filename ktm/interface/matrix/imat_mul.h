@@ -9,8 +9,6 @@
 #define _KTM_I_MAT_MUL_H_
 
 #include "../../setup.h"
-#include "../../type/vec_fwd.h"
-#include "../../type/mat_fwd.h"
 #include "../../detail/matrix/mat_mul_fwd.h"
 
 namespace ktm
@@ -27,14 +25,14 @@ struct imat_mul<Father, mat<Row, Col, T>> : Father
     friend KTM_INLINE vec<Col, T> operator*(const mat<Row, Col, T>& m, const vec<Row, T>& v) noexcept
     {
         vec<Col, T> ret;
-        detail::mat_mul_implement::mat_mul_vec<Row, Col, T>::call(ret, m, v);
+        detail::mat_mul_implement::mat_mul_vec<Row, Col, T>(ret, m, v);
         return ret;
     }
 
     friend KTM_INLINE vec<Row, T> operator*(const vec<Col, T>& v, const mat<Row, Col, T>& m) noexcept
     {
         vec<Row, T> ret;
-        detail::mat_mul_implement::vec_mul_mat<Row, Col, T>::call(ret, v, m);
+        detail::mat_mul_implement::vec_mul_mat<Row, Col, T>(ret, v, m);
         return ret;
     }
 
@@ -42,7 +40,7 @@ struct imat_mul<Father, mat<Row, Col, T>> : Father
     friend KTM_INLINE mat<U, Col, T> operator*(const mat<Row, Col, T>& m1, const mat<U, Row, T>& m2) noexcept
     {
         mat<U, Col, T> ret; 
-        detail::mat_mul_implement::mat_mul_mat<Row, Col, T>::template call<U>(ret, m1, m2);
+        detail::mat_mul_implement::mat_mul_mat<U, Row, Col, T>(ret, m1, m2);
         return ret;
     }
 };

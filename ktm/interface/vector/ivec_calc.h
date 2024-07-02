@@ -9,7 +9,6 @@
 #define _KTM_I_VEC_CALC_H_
 
 #include "../../setup.h"
-#include "../../type/vec_fwd.h"
 #include "../../detail/vector/vec_calc_fwd.h"
 
 namespace ktm
