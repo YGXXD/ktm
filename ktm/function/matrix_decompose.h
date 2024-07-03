@@ -27,7 +27,7 @@ namespace ktm
 template<class M>
 KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, reduce_component<M>> reduce_hessenberg(const M& m) noexcept
 {
-    constexpr size_t N = mat_traits_col_n<M>;
+    constexpr size_t N = mat_traits_col_v<M>;
     using T = mat_traits_base_t<M>;
 
     // reduce matrix to hessenberg by householder transformation
@@ -91,7 +91,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 template<class M>
 KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, reduce_component<M>> reduce_tridiagonal(const M& m) noexcept
 {
-    constexpr size_t N = mat_traits_col_n<M>;
+    constexpr size_t N = mat_traits_col_v<M>;
     using T = mat_traits_base_t<M>;
 
     // reduce matrix to tridiagonal by householder transformation(matrix must be symmetric matrix)
@@ -169,7 +169,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 template<class M>
 KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, lu_component<M>> decompose_lu_doolittle(const M& m) noexcept
 {
-    constexpr size_t N = mat_traits_col_n<M>;
+    constexpr size_t N = mat_traits_col_v<M>;
     using T = mat_traits_base_t<M>;
 
     // doolittle for matrix lu decomposition, row transfrom
@@ -195,7 +195,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 template<class M>
 KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, lu_component<M>> decompose_lu_crout(const M& m) noexcept
 {
-    constexpr size_t N = mat_traits_col_n<M>;
+    constexpr size_t N = mat_traits_col_v<M>;
     using T = mat_traits_base_t<M>;
 
     // crout for matrix lu decomposition, col transform
@@ -221,7 +221,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 template<class M>
 KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, lu_component<M>> decompose_lu_cholesky(const M& m) noexcept
 {
-    constexpr size_t N = mat_traits_col_n<M>;
+    constexpr size_t N = mat_traits_col_v<M>;
     using T = mat_traits_base_t<M>;
 
     // cholesky for matrix lu decomposition(matrix must be positive definite matrix)
@@ -254,7 +254,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 template<class M>
 KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>> decompose_qr_householder(const M& m) noexcept
 {
-    constexpr size_t N = mat_traits_col_n<M>;
+    constexpr size_t N = mat_traits_col_v<M>;
     using T = mat_traits_base_t<M>;
 
     // householder transformation for matrix qr decomposition
@@ -317,7 +317,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 template<class M>
 KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>> decompose_qr_givens(const M& m) noexcept
 {
-    constexpr size_t N = mat_traits_col_n<M>;
+    constexpr size_t N = mat_traits_col_v<M>;
     using T = mat_traits_base_t<M>;
 
     // givens rotation for matrix qr decomposition
@@ -349,7 +349,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 template<class M>
 KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>> decompose_qr_schmitd(const M& m) noexcept
 {
-    constexpr size_t N = mat_traits_col_n<M>;
+    constexpr size_t N = mat_traits_col_v<M>;
     using T = mat_traits_base_t<M>;
 
     // gram-schmidt orthogonalization for matrix qr decomposition
@@ -372,7 +372,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 template<class M>
 KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>> decompose_qr_on_hessenberg(const M& m) noexcept
 {
-    constexpr size_t N = mat_traits_col_n<M>;
+    constexpr size_t N = mat_traits_col_v<M>;
     using T = mat_traits_base_t<M>;
 
     // householder transformation for matrix qr decomposition(matrix must be hessenberg matrix)
@@ -410,7 +410,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 template<class M>
 KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>> decompose_qr_on_tridiagonal(const M& m) noexcept
 {
-    constexpr size_t N = mat_traits_col_n<M>;
+    constexpr size_t N = mat_traits_col_v<M>;
     using T = mat_traits_base_t<M>;
 
     // givens rotation for matrix qr decomposition(matrix must be tridiagonal matrix)
@@ -441,7 +441,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 template<class M>
 KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, edv_component<M>> decompose_edv_shiftqr(const M& m) noexcept
 {
-    constexpr size_t N = mat_traits_col_n<M>;
+    constexpr size_t N = mat_traits_col_v<M>;
     using T = mat_traits_base_t<M>;
 
     // qr iteration for calc matrix eigenvectors and eigenvalues(matrix must be symmetric matrix)
@@ -481,7 +481,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
 template<class M>
 KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, edv_component<M>> decompose_edv_jacobi(const M& m) noexcept
 {
-    constexpr size_t N = mat_traits_col_n<M>;
+    constexpr size_t N = mat_traits_col_v<M>;
     using T = mat_traits_base_t<M>;
 
     // jacobi iteration for matrix eigenvectors and eigenvalues(matrix must be symmetric matrix)
@@ -584,8 +584,8 @@ KTM_NOINLINE std::enable_if_t<is_floating_point_base_v<M>, svd_component<M>> dec
     using u_type = typename svd_component<M>::u_type;
     using s_type = typename svd_component<M>::s_type;
     using vt_type = typename svd_component<M>::vt_type;
-    constexpr size_t row_n = mat_traits_row_n<M>;
-    constexpr size_t col_n = mat_traits_col_n<M>;
+    constexpr size_t row_n = mat_traits_row_v<M>;
+    constexpr size_t col_n = mat_traits_col_v<M>;
 
     // calc matrix svd decomposition(using decompose_edv_jacobi to decompose matrix eigenvectors and eigenvalues)
     if constexpr(row_n >= col_n)
@@ -639,7 +639,7 @@ KTM_NOINLINE std::enable_if_t<is_floating_point_base_v<M>, svd_component<M>> dec
 template<class M>
 KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, affine_component<M>> decompose_affine(const M& m) noexcept
 {
-    constexpr size_t N = mat_traits_col_n<M>;
+    constexpr size_t N = mat_traits_col_v<M>;
     using T = mat_traits_base_t<M>;
     
     // calc matrix affine decomposition(translation * rotation * shear * scale)
@@ -667,7 +667,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
                 std::copy(in_affm[i].begin(), in_affm[i].end(), out_m[i].begin());
                 out_m[i][N - 1] = zero<T>;
             }
-            out_m[N - 1].fill(zero<T>); 
+            std::fill(out_m[N - 1].begin(), out_m[N - 1].end(), zero<T>);
             out_m[N - 1][N - 1] = one<T>;
         };
 

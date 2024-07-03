@@ -26,7 +26,7 @@ struct imat_make<Father, mat<Row, Col, T, std::enable_if_t<Row != Col>>> : Fathe
     using Father::Father;
 
     template<typename ...RowVs>
-    static KTM_INLINE std::enable_if_t<sizeof...(RowVs) == Col && std::is_same_vs<vec<Row, T>, std::remove_const_t<std::remove_reference_t<RowVs>>...>, 
+    static KTM_INLINE std::enable_if_t<sizeof...(RowVs) == Col && std::is_same_vs<vec<Row, T>, std::extract_type_t<RowVs>...>, 
         mat<Row, Col, T>> from_row(RowVs&&... rows) noexcept
     {
         mat<Row, Col, T> ret;
@@ -54,7 +54,7 @@ struct imat_make<Father, mat<N, N, T>> : Father
     using Father::Father;
 
     template<typename ...RowVs>
-    static KTM_INLINE std::enable_if_t<sizeof...(RowVs) == N && std::is_same_vs<vec<N, T>, std::remove_const_t<std::remove_reference_t<RowVs>>...>, 
+    static KTM_INLINE std::enable_if_t<sizeof...(RowVs) == N && std::is_same_vs<vec<N, T>, std::extract_type_t<RowVs>...>, 
         mat<N, N, T>> from_row(RowVs&&... rows) noexcept
     {
         mat<N, N, T> ret;
