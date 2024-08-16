@@ -6,6 +6,7 @@
 //
 
 #include "../ktm/ktm.h"
+#include <iostream>
 
 using namespace ktm;
 using namespace std;

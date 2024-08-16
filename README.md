@@ -36,6 +36,7 @@ cmake --install ./build --config Release
 
 ```c++
 #include <ktm/ktm.h>
+#include <iostream>
 
 using namespace ktm;
 using namespace std;
