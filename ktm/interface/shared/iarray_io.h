@@ -10,7 +10,7 @@
 
 #include <iosfwd>
 #include "../../setup.h"
-#include "../../traits/type_single_extends.h"
+#include "../../traits/type_traits_ext.h"
 
 namespace ktm
 {
