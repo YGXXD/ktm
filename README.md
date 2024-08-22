@@ -78,7 +78,7 @@ int main() {
 **共享组件**
 
 |组件|功能|
-|-|-|
+|:-|:-|
 |[iarray_add](ktm/interface/shared/iarray_calc.h)|数组和数组之间的加减运算|
 |[iarray_mul](ktm/interface/shared/iarray_calc.h)|数组和数组之间的乘除运算|
 |[iarray_madd](ktm/interface/shared/iarray_calc.h)|数组和数组之间的乘加复合运算|
@@ -91,7 +91,7 @@ int main() {
 **向量组件** 
 
 |组件|功能|
-|-|-|
+|:-|:-|
 |[ivec_calc](ktm/interface/vector/ivec_calc.h)|三维向量和三维向量，三位向量和标量之间的加减乘除运算|
 |[ivec_calc](ktm/interface/vector/ivec_array.h)|支持向量强制转化为数组|
 |[ivec_calc](ktm/interface/vector/ivec_data.h)|包含向量的数据，构造函数，向量混洗|
@@ -99,7 +99,7 @@ int main() {
 **矩阵组件** 
 
 |组件|功能|
-|-|-|
+|:-|:-|
 |[imat_mul](ktm/interface/matrix/imat_mul.h)|矩阵和矩阵，矩阵和向量之间的乘法运算|
 |[imat_array](ktm/interface/matrix/imat_array.h)|支持矩阵强制转化为数组|
 |[imat_make](ktm/interface/matrix/imat_make.h)|提供了构造矩阵的静态方法|
@@ -108,7 +108,7 @@ int main() {
 **四元数组件** 
 
 |组件|功能|
-|-|-|
+|:-|:-|
 |[iquat_mul](ktm/interface/quaternion/iquat_mul.h)|四元数和四元数，四元数和三维向量之间的乘法运算|
 |[iquat_array](ktm/interface/quaternion/iquat_array.h)|支持四元数强制转化为数组|
 |[iquat_make](ktm/interface/quaternion/iquat_make.h)|提供了构造四元数的静态方法|
@@ -117,21 +117,30 @@ int main() {
 **复数组件** 
 
 |组件|功能|
-|-|-|
+|:-|:-|
 |[icomp_mul](ktm/interface/complex/icomp_mul.h)|复数和复数，复数和二维向量之间的乘法运算|
 |[icomp_array](ktm/interface/complex/icomp_array.h)|支持复数强制转化为数组|
 |[icomp_make](ktm/interface/complex/icomp_make.h)|提供了构造复数的静态方法|
 |[icomp_data](ktm/interface/complex/icomp_data.h)|包含复数的数据，构造函数，获取复数旋转信息的方法|
 
+**复合组件** 
+
+|组件|组成部分|
+|:-|:-|
+|[iarray_add_calc](ktm/interface/shared/iarray_calc.h)|iarray_add，iarray_add_scalar|
+|[iarray_mul_calc](ktm/interface/shared/iarray_calc.h)|iarray_mul，iarray_mul_scalar|
+|[iarray_madd_calc](ktm/interface/shared/iarray_calc.h)|iarray_madd，iarray_madd_scalar|
+|[iarray_calc](ktm/interface/shared/iarray_calc.h)|iarray_add_calc，iarray_mul_calc，iarray_madd_calc|
+
 **基本数学类** 
 
-|类|类型|组件列表|
-|-|-|-|
-|[vec](ktm/type/vec.h)|向量|ivec_data，ivec_array，ivec_calc，iarray_io，iarray_add，iarray_mul，iarray_madd，iarray_add_scalar，iarray_mul_scalar，iarray_madd_scalar，iarray_util|
-|[mat](ktm/type/mat.h)|矩阵|imat_data，imat_make，imat_array，imat_mul，iarray_io，iarray_add，iarray_madd_scalar，iarray_mul_scalar，iarray_util|
-|[quat](ktm/type/quat.h)|四元数|iquat_data，iquat_make，iquat_array，iquat_mul，iarray_io，iarray_add，iarray_madd_scalar，iarray_mul_scalar，iarray_util|
-|[comp](ktm/type/comp.h)|复数|icomp_data，icomp_make，icomp_array，icomp_mul，iarray_io，iarray_add，iarray_madd_scalar，iarray_mul_scalar，iarray_util|
+|类|组成部分|
+|:-|:-|
+|[vec](ktm/type/vec.h)|ivec_data，ivec_array，ivec_calc，iarray_io，iarray_calc，iarray_util|
+|[mat](ktm/type/mat.h)|imat_data，imat_make，imat_array，imat_mul，iarray_io，iarray_add，iarray_madd_scalar，iarray_mul_scalar，iarray_util|
+|[quat](ktm/type/quat.h)|iquat_data，iquat_make，iquat_array，iquat_mul，iarray_io，iarray_add，iarray_madd_scalar，iarray_mul_scalar，iarray_util|
+|[comp](ktm/type/comp.h)|icomp_data，icomp_make，icomp_array，icomp_mul，iarray_io，iarray_add，iarray_madd_scalar，iarray_mul_scalar，iarray_util|
 
 ### 许可证
 
-&emsp;&emsp;ktm使用[MIT许可证](LICENSE)。
+&emsp;&emsp;ktm使用MIT许可证，详细信息请参见[LICENSE](LICENSE)文件。
