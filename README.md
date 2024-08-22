@@ -1,25 +1,25 @@
 <img align='top' src='img/logo.png' width="128"></img>
 
-> **k**u**t**ori **m**ath，珂朵莉数学库，属于珂学家开发游戏的3D数学库
-
-<img align='right' src='img/kutori.png' width="192"></img>
+> **k**u**t**ori **m**ath，珂朵莉数学库，属于珂学家的图形数学库
 
 ✨**如果你喜欢珂朵莉，给我点一点小星星**✨
 
+<img align='right' src='img/kutori.png' width="192"></img>
+
 [![code-size](https://img.shields.io/github/languages/code-size/YGXXD/ktm?style=flat)](https://github.com/YGXXD/ktm/archive/main.zip) [![license](https://img.shields.io/github/license/YGXXD/ktm)](LICENSE) [![tag](https://img.shields.io/github/v/tag/YGXXD/ktm)](https://github.com/YGXXD/ktm/tags)
 
-**环境**
+### 环境
 
-- 编译器：cl，clang，gcc
-- c++版本：c++17及以上
+- 编译器：cl，clang，gcc；
+- c++版本：c++17及以上；
 
-**特性**
+### 特性
 
-- head-only，引入头文件即可使用
-- 支持simd指令集，sse，sse2，sse3，sse4.1，sse4.2，neon，wasm
-- 代码结构清晰，使用模板实现数学类组件化
+- head-only，api层次清晰，包含头文件即可接入项目；
+- 代码结构优雅，基本数学类由[模版继承组件化](#组件设计)实现静态ECS；
+- 高性能跨平台，simd指令集加速提供计算性能优化；
 
-**构建和安装**
+### 构建和安装
 
 ```shell
 # unix
@@ -32,7 +32,7 @@ cmake -S . -B ./build
 cmake --install ./build --config Release
 ```
 
-**示例** 
+### 示例 
 
 ```c++
 #include <ktm/ktm.h>
@@ -72,3 +72,66 @@ int main() {
     return 0;
 }
 ```
+
+### 组件设计
+
+**共享组件**
+
+|组件|功能|
+|-|-|
+|[iarray_add](ktm/interface/shared/iarray_calc.h)|数组和数组之间的加减运算|
+|[iarray_mul](ktm/interface/shared/iarray_calc.h)|数组和数组之间的乘除运算|
+|[iarray_madd](ktm/interface/shared/iarray_calc.h)|数组和数组之间的乘加复合运算|
+|[iarray_add_scalar](ktm/interface/shared/iarray_calc.h)|数组和标量之间的加减运算|
+|[iarray_mul_scalar](ktm/interface/shared/iarray_calc.h)|数组和标量之间的乘除运算|
+|[iarray_madd_scalar](ktm/interface/shared/iarray_calc.h)|数组和标量之间的乘加复合运算|
+|[iarray_io](ktm/interface/shared/iarray_io.h)|数组的输入输出，集成std标准IO流|
+|[iarray_util](ktm/interface/shared/iarray_util.h)|支持std::array的特性的包装组件|
+
+**向量组件** 
+
+|组件|功能|
+|-|-|
+|[ivec_calc](ktm/interface/vector/ivec_calc.h)|三维向量和三维向量，三位向量和标量之间的加减乘除运算|
+|[ivec_calc](ktm/interface/vector/ivec_array.h)|支持向量强制转化为数组|
+|[ivec_calc](ktm/interface/vector/ivec_data.h)|包含向量的数据，构造函数，向量混洗|
+
+**矩阵组件** 
+
+|组件|功能|
+|-|-|
+|[imat_mul](ktm/interface/matrix/imat_mul.h)|矩阵和矩阵，矩阵和向量之间的乘法运算|
+|[imat_array](ktm/interface/matrix/imat_array.h)|支持矩阵强制转化为数组|
+|[imat_make](ktm/interface/matrix/imat_make.h)|提供了构造矩阵的静态方法|
+|[imat_data](ktm/interface/matrix/imat_data.h)|包含矩阵的数据和构造函数|
+
+**四元数组件** 
+
+|组件|功能|
+|-|-|
+|[iquat_mul](ktm/interface/quaternion/iquat_mul.h)|四元数和四元数，四元数和三维向量之间的乘法运算|
+|[iquat_array](ktm/interface/quaternion/iquat_array.h)|支持四元数强制转化为数组|
+|[iquat_make](ktm/interface/quaternion/iquat_make.h)|提供了构造四元数的静态方法|
+|[iquat_data](ktm/interface/quaternion/iquat_data.h)|包含四元数的数据，构造函数，获取四元数旋转信息的方法|
+
+**复数组件** 
+
+|组件|功能|
+|-|-|
+|[icomp_mul](ktm/interface/complex/icomp_mul.h)|复数和复数，复数和二维向量之间的乘法运算|
+|[icomp_array](ktm/interface/complex/icomp_array.h)|支持复数强制转化为数组|
+|[icomp_make](ktm/interface/complex/icomp_make.h)|提供了构造复数的静态方法|
+|[icomp_data](ktm/interface/complex/icomp_data.h)|包含复数的数据，构造函数，获取复数旋转信息的方法|
+
+**基本数学类** 
+
+|类|类型|组件列表|
+|-|-|-|
+|[vec](ktm/type/vec.h)|向量|ivec_data，ivec_array，ivec_calc，iarray_io，iarray_add，iarray_mul，iarray_madd，iarray_add_scalar，iarray_mul_scalar，iarray_madd_scalar，iarray_util|
+|[mat](ktm/type/mat.h)|矩阵|imat_data，imat_make，imat_array，imat_mul，iarray_io，iarray_add，iarray_madd_scalar，iarray_mul_scalar，iarray_util|
+|[quat](ktm/type/quat.h)|四元数|iquat_data，iquat_make，iquat_array，iquat_mul，iarray_io，iarray_add，iarray_madd_scalar，iarray_mul_scalar，iarray_util|
+|[comp](ktm/type/comp.h)|复数|icomp_data，icomp_make，icomp_array，icomp_mul，iarray_io，iarray_add，iarray_madd_scalar，iarray_mul_scalar，iarray_util|
+
+### 许可证
+
+&emsp;&emsp;ktm使用[MIT许可证](LICENSE)。
