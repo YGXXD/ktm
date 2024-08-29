@@ -41,7 +41,8 @@ cmake --install ./build --config Release
 using namespace ktm;
 using namespace std;
 
-int main() {
+int main(int argv, char* argc[])
+{
     // 构造向量vector
     fvec3 vector { 5.f, -5.f, 1.f };
 
