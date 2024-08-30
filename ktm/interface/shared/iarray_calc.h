@@ -14,12 +14,12 @@
 #include "../../traits/type_single_extends.h"
 #include "../../detail/shared/array_calc_fwd.h"
 
-#define KTM_ARRAY_CALC_CALL(calc_name, ...) \
-using ArrayT = std::extract_type_t<decltype(child_ptr()->to_array())>; \
-detail::array_calc_implement::calc_name<typename ArrayT::value_type, std::tuple_size_v<ArrayT>>::call(__VA_ARGS__);
-
 namespace ktm
 {
+
+#define KTM_ARRAY_CALC_CALL(calc_name, ...) \
+    using ArrayT = std::extract_type_t<decltype(child_ptr()->to_array())>; \
+    detail::array_calc_implement::calc_name<typename ArrayT::value_type, std::tuple_size_v<ArrayT>>::call(__VA_ARGS__);
 
 template<class Father, class Child>
 struct iarray_add : Father
@@ -359,6 +359,8 @@ private:
         }
     }
 };
+
+#undef KTM_ARRAY_CALC_CALL
 
 template<class Father, class Child>
 using iarray_add_calc = combine_interface<iarray_add, iarray_add_scalar>::type<Father, Child>;
