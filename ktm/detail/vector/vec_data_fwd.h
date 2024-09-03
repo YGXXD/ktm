@@ -21,7 +21,7 @@ namespace vec_data_implement
 template<size_t N, typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
 struct vec_storage;
 
-template<size_t OUT, size_t IN, typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && OUT <= IN>>
+template<size_t OSize, size_t ISize, typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && OSize <= ISize>>
 struct vec_swizzle;
 
 };
