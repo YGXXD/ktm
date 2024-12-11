@@ -35,7 +35,7 @@ struct imat_data<Father, mat<Row, Col, T>> : Father
     KTM_FUNC imat_data(std::initializer_list<vec<Col, T>> li) { std::memcpy(columns, li.begin(), li.size() * sizeof(vec<Col, T>)); }
     template<typename... ColVs, typename = std::enable_if_t<sizeof...(ColVs) == Row &&
                   std::is_same_vs<vec<Col, T>, std::extract_type_t<ColVs>...>>>
-    KTM_FUNC explicit imat_data(ColVs&&... cols) noexcept : columns{ std::forward<ColVs>(cols)... } { }
+    KTM_FUNC imat_data(ColVs&&... cols) noexcept : columns{ std::forward<ColVs>(cols)... } { }
 private:
     vec<Col, T> columns[Row];
 };

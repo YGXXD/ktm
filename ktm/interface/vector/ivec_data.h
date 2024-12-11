@@ -129,7 +129,7 @@ struct ivec_data<Father, vec<N, T>> : Father
     }
 
     template<typename U, typename = std::enable_if_t<!std::is_same_v<U, T>>>
-    KTM_FUNC explicit ivec_data(const vec<N, U>& v) noexcept
+    KTM_FUNC ivec_data(const vec<N, U>& v) noexcept
     {
         T* st_ptr = reinterpret_cast<T*>(&st);
         const U* v_ptr = reinterpret_cast<const U*>(&v.st);
