@@ -36,8 +36,8 @@ struct icomp_data<Father, comp<T>> : Father
     icomp_data(icomp_data&&) = default;
     icomp_data& operator=(const icomp_data&) = default;
     icomp_data& operator=(icomp_data&&) = default;
-    KTM_FUNC icomp_data(T x, T y) noexcept : i(x), r(y) { }
-    KTM_FUNC icomp_data(const vec<2, T> vec) noexcept : i(vec.x), r(vec.y) { }
+    KTM_FUNC constexpr icomp_data(T x, T y) noexcept : i(x), r(y) { }
+    KTM_FUNC constexpr icomp_data(const vec<2, T> vec) noexcept : i(vec.x), r(vec.y) { }
 
     KTM_FUNC T real() const noexcept { return r; }
     KTM_FUNC T imag() const noexcept { return i; } 

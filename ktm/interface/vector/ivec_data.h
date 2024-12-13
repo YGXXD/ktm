@@ -8,6 +8,7 @@
 #ifndef _KTM_I_VEC_DATA_H_
 #define _KTM_I_VEC_DATA_H_
 
+#include <utility>
 #include "../../setup.h"
 #include "../../type/vec_fwd.h"
 #include "../../detail/vector/vec_data_fwd.h"
@@ -121,21 +122,10 @@ struct ivec_data<Father, vec<N, T>> : Father
     ivec_data& operator=(ivec_data&&) = default;
 
     template<typename ...Ts, typename = std::enable_if_t<sizeof...(Ts) == N>>
-    KTM_FUNC ivec_data(Ts... elems) noexcept 
-    {
-        T* st_ptr = reinterpret_cast<T*>(&st);
-        int i = 0;
-        ((st_ptr[i++] = static_cast<T>(elems)), ...);
-    }
+    KTM_FUNC constexpr ivec_data(Ts... elems) noexcept : st{ static_cast<T>(elems)... } { }
 
     template<typename U, typename = std::enable_if_t<!std::is_same_v<U, T>>>
-    KTM_FUNC ivec_data(const vec<N, U>& v) noexcept
-    {
-        T* st_ptr = reinterpret_cast<T*>(&st);
-        const U* v_ptr = reinterpret_cast<const U*>(&v.st);
-        for(int i = 0; i < N; ++i)
-            st_ptr[i] = static_cast<T>(v_ptr[i]);
-    }
+    KTM_FUNC constexpr ivec_data(const vec<N, U>& v) noexcept : ivec_data(v, std::make_index_sequence<N>()) { }
 
     template<size_t ...Ns, typename = std::enable_if_t<((Ns < N) && ...)>>
     KTM_FUNC std::enable_if_t<sizeof...(Ns) <= N, vec<sizeof...(Ns), T>> swizzle() noexcept
@@ -143,6 +133,10 @@ struct ivec_data<Father, vec<N, T>> : Father
         return detail::vec_data_implement::vec_swizzle<sizeof...(Ns), N, T>::template call<Ns...>(
             reinterpret_cast<const vec<N, T> &>(*this));
     }
+
+private:
+    template<typename U, size_t ...Ns>
+    KTM_FUNC constexpr ivec_data(const vec<N, U>& v, std::index_sequence<Ns...>) noexcept : st{ static_cast<T>(v.st.e[Ns])... } { }
 };
 
 template<class Father, typename T>
@@ -161,9 +155,9 @@ struct ivec_data<Father, vec<2, T>> : Father
     ivec_data(ivec_data&&) = default;
     ivec_data& operator=(const ivec_data&) = default;
     ivec_data& operator=(ivec_data&&) = default;
-    KTM_FUNC ivec_data(T xi, T yi) noexcept : x(xi), y(yi) { }
+    KTM_FUNC constexpr ivec_data(T xi, T yi) noexcept : x(xi), y(yi) { }
     template<typename U, typename = std::enable_if_t<!std::is_same_v<U, T>>>
-    KTM_FUNC ivec_data(const vec<2, U>& v) noexcept : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)) { }
+    KTM_FUNC constexpr ivec_data(const vec<2, U>& v) noexcept : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)) { }
 
     KTM_SWIZZLE_VEC2(x, y)
     KTM_SWIZZLE_VEC2(r, g)
@@ -185,10 +179,10 @@ struct ivec_data<Father, vec<3, T>> : Father
     ivec_data(ivec_data&&) = default;
     ivec_data& operator=(const ivec_data&) = default;
     ivec_data& operator=(ivec_data&&) = default;
-    KTM_FUNC ivec_data(T xi, T yi, T zi) noexcept : x(xi), y(yi), z(zi) { }
-    KTM_FUNC ivec_data(const vec<2, T>& v, T zi) noexcept : x(v.x), y(v.y), z(zi) { }
+    KTM_FUNC constexpr ivec_data(T xi, T yi, T zi) noexcept : x(xi), y(yi), z(zi) { }
+    KTM_FUNC constexpr ivec_data(const vec<2, T>& v, T zi) noexcept : x(v.x), y(v.y), z(zi) { }
     template<typename U, typename = std::enable_if_t<!std::is_same_v<U, T>>>
-    KTM_FUNC ivec_data(const vec<3, U>& v) noexcept : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(static_cast<T>(v.z)) { }
+    KTM_FUNC constexpr ivec_data(const vec<3, U>& v) noexcept : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(static_cast<T>(v.z)) { }
 
     KTM_SWIZZLE_VEC3(x, y, z)
     KTM_SWIZZLE_VEC3(r, g, b) 
@@ -210,10 +204,10 @@ struct ivec_data<Father, vec<4, T>> : Father
     ivec_data(ivec_data&&) = default;
     ivec_data& operator=(const ivec_data&) = default;
     ivec_data& operator=(ivec_data&&) = default;
-    KTM_FUNC ivec_data(T xi, T yi, T zi, T wi) noexcept : x(xi), y(yi), z(zi), w(wi) { }
-    KTM_FUNC ivec_data(const vec<3, T>& v, T wi) noexcept : x(v.x), y(v.y), z(v.z), w(wi) { }
+    KTM_FUNC constexpr ivec_data(T xi, T yi, T zi, T wi) noexcept : x(xi), y(yi), z(zi), w(wi) { }
+    KTM_FUNC constexpr ivec_data(const vec<3, T>& v, T wi) noexcept : x(v.x), y(v.y), z(v.z), w(wi) { }
     template<typename U, typename = std::enable_if_t<!std::is_same_v<U, T>>>
-    KTM_FUNC ivec_data(const vec<4, U>& v) noexcept : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(static_cast<T>(v.z)), w(static_cast<T>(v.w)) { }
+    KTM_FUNC constexpr ivec_data(const vec<4, U>& v) noexcept : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(static_cast<T>(v.z)), w(static_cast<T>(v.w)) { }
 
     KTM_SWIZZLE_VEC4(x, y, z, w)
     KTM_SWIZZLE_VEC4(r, g, b, a)
