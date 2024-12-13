@@ -31,11 +31,11 @@ struct icomp_data<Father, comp<T>> : Father
         typename detail::vec_data_implement::vec_storage<2, T>::type st;
     };
 
-    KTM_FUNC constexpr icomp_data() noexcept : st{} { }
-    KTM_FUNC icomp_data(const icomp_data& copy) : st(copy.st) { }
-    KTM_FUNC icomp_data(icomp_data&& copy) : st(copy.st) { }
-    KTM_FUNC icomp_data& operator=(const icomp_data& copy) { st = copy.st; return *this; };
-    KTM_FUNC icomp_data& operator=(icomp_data&& copy) { st = copy.st; return *this; };
+    icomp_data() = default;
+    icomp_data(const icomp_data&) = default;
+    icomp_data(icomp_data&&) = default;
+    icomp_data& operator=(const icomp_data&) = default;
+    icomp_data& operator=(icomp_data&&) = default;
     KTM_FUNC icomp_data(T x, T y) noexcept : i(x), r(y) { }
     KTM_FUNC icomp_data(const vec<2, T> vec) noexcept : i(vec.x), r(vec.y) { }
 
