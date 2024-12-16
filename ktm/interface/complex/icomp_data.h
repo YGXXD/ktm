@@ -31,7 +31,7 @@ struct icomp_data<Father, comp<T>> : Father
         typename detail::vec_data_implement::vec_storage<2, T>::type st;
     };
 
-    icomp_data() = default;
+    KTM_FUNC constexpr icomp_data() noexcept : i(zero<T>), r(zero<T>) { };
     icomp_data(const icomp_data&) = default;
     icomp_data(icomp_data&&) = default;
     icomp_data& operator=(const icomp_data&) = default;

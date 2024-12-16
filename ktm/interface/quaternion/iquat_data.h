@@ -32,7 +32,7 @@ struct iquat_data<Father, quat<T>> : Father
         typename detail::vec_data_implement::vec_storage<4, T>::type st;
     };
 
-    iquat_data() = default;
+    KTM_FUNC constexpr iquat_data() noexcept : i(zero<T>), j(zero<T>), k(zero<T>), r(zero<T>) { };
     iquat_data(const iquat_data&) = default;
     iquat_data(iquat_data&&) = default;
     iquat_data& operator=(const iquat_data&) = default;

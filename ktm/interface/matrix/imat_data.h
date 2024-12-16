@@ -26,7 +26,7 @@ struct imat_data<Father, mat<Row, Col, T>> : Father
 {
     using Father::Father;
 
-    imat_data() = default;
+    KTM_FUNC constexpr imat_data() noexcept : columns{} { };
     imat_data(const imat_data&) = default;
     imat_data(imat_data&&) = default;
     imat_data& operator=(const imat_data&) = default;

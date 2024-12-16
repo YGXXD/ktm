@@ -10,6 +10,7 @@
 
 #include <utility>
 #include "../../setup.h"
+#include "../../type/basic.h"
 #include "../../type/vec_fwd.h"
 #include "../../detail/vector/vec_data_fwd.h"
 
@@ -115,7 +116,7 @@ struct ivec_data<Father, vec<N, T>> : Father
     using Father::Father;
     typename detail::vec_data_implement::vec_storage<N, T>::type st;
 
-    ivec_data() = default;
+    KTM_FUNC constexpr ivec_data() noexcept : st{} { };
     ivec_data(const ivec_data&) = default;
     ivec_data(ivec_data&&) = default;
     ivec_data& operator=(const ivec_data&) = default;
@@ -150,7 +151,7 @@ struct ivec_data<Father, vec<2, T>> : Father
         typename detail::vec_data_implement::vec_storage<2, T>::type st;
     };
     
-    ivec_data() = default;
+    KTM_FUNC constexpr ivec_data() noexcept : x(zero<T>), y(zero<T>) { };
     ivec_data(const ivec_data&) = default;
     ivec_data(ivec_data&&) = default;
     ivec_data& operator=(const ivec_data&) = default;
@@ -174,7 +175,7 @@ struct ivec_data<Father, vec<3, T>> : Father
         typename detail::vec_data_implement::vec_storage<3, T>::type st;
     };
     
-    ivec_data() = default;
+    KTM_FUNC constexpr ivec_data() noexcept : x(zero<T>), y(zero<T>), z(zero<T>) { };
     ivec_data(const ivec_data&) = default;
     ivec_data(ivec_data&&) = default;
     ivec_data& operator=(const ivec_data&) = default;
@@ -199,7 +200,7 @@ struct ivec_data<Father, vec<4, T>> : Father
         typename detail::vec_data_implement::vec_storage<4, T>::type st;
     };
 
-    ivec_data() = default;
+    KTM_FUNC constexpr ivec_data() noexcept : x(zero<T>), y(zero<T>), z(zero<T>), w(zero<T>) { };
     ivec_data(const ivec_data&) = default;
     ivec_data(ivec_data&&) = default;
     ivec_data& operator=(const ivec_data&) = default;
