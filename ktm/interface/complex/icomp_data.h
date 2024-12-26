@@ -13,7 +13,7 @@
 #include "../../type/comp_fwd.h"
 #include "../../type/mat_fwd.h"
 #include "../../detail/vector/vec_data_fwd.h"
-#include "../../function/trigonometric.h"
+#include "../../function/common.h"
 
 namespace ktm
 {

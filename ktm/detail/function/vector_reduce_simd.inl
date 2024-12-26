@@ -5,16 +5,16 @@
 //  Created by 有个小小杜
 //
 
-#ifndef _KTM_VECTOR_SIMD_INL_
-#define _KTM_VECTOR_SIMD_INL_
+#ifndef _KTM_VECTOR_REDUCE_SIMD_INL_
+#define _KTM_VECTOR_REDUCE_SIMD_INL_
 
-#include "vector_fwd.h"
+#include "vector_reduce_fwd.h"
 #include "../../simd/skv.h"
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
 template<>
-struct ktm::detail::vector_implement::reduce_add<4, float>
+struct ktm::detail::vector_reduce_implement::reduce_add<4, float>
 {
     using V = vec<4, float>;
     static KTM_INLINE float call(const V& x) noexcept
@@ -24,7 +24,7 @@ struct ktm::detail::vector_implement::reduce_add<4, float>
 };
 
 template<>
-struct ktm::detail::vector_implement::reduce_min<4, float>
+struct ktm::detail::vector_reduce_implement::reduce_min<4, float>
 {
     using V = vec<4, float>;
     static KTM_INLINE float call(const V& x) noexcept
@@ -34,7 +34,7 @@ struct ktm::detail::vector_implement::reduce_min<4, float>
 };
 
 template<>
-struct ktm::detail::vector_implement::reduce_max<4, float>
+struct ktm::detail::vector_reduce_implement::reduce_max<4, float>
 {
     using V = vec<4, float>;
     static KTM_INLINE float call(const V& x) noexcept
@@ -48,7 +48,7 @@ struct ktm::detail::vector_implement::reduce_max<4, float>
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2 | KTM_SIMD_WASM)
 
 template<>
-struct ktm::detail::vector_implement::reduce_add<4, int>
+struct ktm::detail::vector_reduce_implement::reduce_add<4, int>
 {
     using V = vec<4, int>;
     static KTM_INLINE int call(const V& x) noexcept
@@ -62,7 +62,7 @@ struct ktm::detail::vector_implement::reduce_add<4, int>
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1 | KTM_SIMD_WASM)
 
 template<>
-struct ktm::detail::vector_implement::reduce_min<4, int>
+struct ktm::detail::vector_reduce_implement::reduce_min<4, int>
 {
     using V = vec<4, int>;
     static KTM_INLINE int call(const V& x) noexcept
@@ -72,7 +72,7 @@ struct ktm::detail::vector_implement::reduce_min<4, int>
 };
 
 template<>
-struct ktm::detail::vector_implement::reduce_max<4, int>
+struct ktm::detail::vector_reduce_implement::reduce_max<4, int>
 {
     using V = vec<4, int>;
     static KTM_INLINE int call(const V& x) noexcept

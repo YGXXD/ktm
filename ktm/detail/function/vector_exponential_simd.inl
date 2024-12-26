@@ -10,7 +10,6 @@
 
 #include "vector_exponential_fwd.h"
 #include "../../simd/skv.h"
-#include "../../type/vec.h"
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 

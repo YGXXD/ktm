@@ -5,8 +5,8 @@
 //  Created by 有个小小杜
 //
 
-#ifndef _KTM_VECTOR_EXPONENTIAL_FWD_H_
-#define _KTM_VECTOR_EXPONENTIAL_FWD_H_
+#ifndef _KTM_VECTOR_TRIGNOMETRIC_FWD_H_
+#define _KTM_VECTOR_TRIGNOMETRIC_FWD_H_
 
 #include <cstddef>
 #include "../../traits/type_traits_ext.h"
@@ -15,56 +15,50 @@ namespace ktm
 {
 namespace detail
 {
-namespace vector_exponential_implement
+namespace vector_trigonometric_implement
 {
 
 template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
-struct sqrt;
+struct acos;
 
 template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
-struct rsqrt;
+struct asin;
 
 template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
-struct recip;
+struct atan;
 
 template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
-struct cbrt;
+struct atan2;
 
 template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
-struct pow;
+struct cos;
 
 template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
-struct exp;
+struct sin;
 
 template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
-struct exp2;
+struct tan;
 
 template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
-struct expm1;
+struct sinc;
 
 template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
-struct log;
+struct acosh;
 
 template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
-struct log10;
+struct asinh;
 
 template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
-struct log2;
+struct atanh;
 
 template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
-struct log1p;
+struct cosh;
 
 template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
-struct logb;
+struct sinh;
 
-template<size_t N, typename T, typename = std::enable_if_t<std::is_exist_same_vs<float, double, T>>>
-struct fast_sqrt;
-
-template<size_t N, typename T, typename = std::enable_if_t<std::is_exist_same_vs<float, double, T>>>
-struct fast_rsqrt;
-
-template<size_t N, typename T, typename = std::enable_if_t<std::is_exist_same_vs<float, double, T>>>
-struct fast_recip;
+template<size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
+struct tanh;
 
 }
 }

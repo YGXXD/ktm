@@ -9,10 +9,10 @@
 #define _KTM_EXPONENTIAL_H_
 
 #include <cmath>
-#include "../setup.h"
-#include "../type/basic.h"
-#include "../traits/type_traits_math.h"
-#include "../detail/function/exponential_fwd.h"
+#include "../../setup.h"
+#include "../../type/basic.h"
+#include "../../traits/type_traits_math.h"
+#include "../../detail/function/exponential_fwd.h"
 
 namespace ktm
 {
@@ -141,7 +141,7 @@ KTM_INLINE std::enable_if_t<is_listing_type_v<type_list<float, double>, T>, T> r
 
 }
 
-#include "../detail/function/exponential.inl"
-#include "../detail/function/exponential_simd.inl"
+#include "../../detail/function/exponential.inl"
+#include "../../detail/function/exponential_simd.inl"
 
 #endif

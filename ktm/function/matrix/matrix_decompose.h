@@ -8,16 +8,14 @@
 #ifndef _KTM_MATRIX_DECOMPOSE_H_
 #define _KTM_MATRIX_DECOMPOSE_H_
 
-#include <cstring>
-#include "../setup.h"
-#include "../type/basic.h"
-#include "../traits/type_traits_math.h"
-#include "../traits/type_matrix_component.h"
-#include "exponential.h"
-#include "trigonometric.h"
-#include "compare.h"
-#include "geometric.h"
-#include "matrix.h"
+#include "../../setup.h"
+#include "../../type/basic.h"
+#include "../../traits/type_traits_math.h"
+#include "../../traits/type_matrix_component.h"
+#include "../common.h"
+#include "../compare.h"
+#include "../geometric.h"
+#include "matrix_algebra.h"
 
 namespace ktm
 {

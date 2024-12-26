@@ -5,202 +5,178 @@
 //  Created by 有个小小杜
 //
 
-#ifndef _KTM_VECTOR_EXPONENTIAL_INL_
-#define _KTM_VECTOR_EXPONENTIAL_INL_
+#ifndef _KTM_VECTOR_TRIGNOMETRIC_INL_
+#define _KTM_VECTOR_TRIGNOMETRIC_INL_
 
-#include "vector_exponential_fwd.h"
+#include "vector_trigonometric_fwd.h"
 #include "../loop_util.h"
 #include "../../type/vec_fwd.h"
-#include "../../function/common/exponential.h"
+#include "../../function/common/trigonometric.h"
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::vector_exponential_implement::sqrt
+struct ktm::detail::vector_trigonometric_implement::acos
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::sqrt<T>, x);
+        loop_op<N, V>::call(ret, ktm::acos<T>, x);
         return ret;
     }
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::vector_exponential_implement::rsqrt
+struct ktm::detail::vector_trigonometric_implement::asin
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::rsqrt<T>, x);
+        loop_op<N, V>::call(ret, ktm::asin<T>, x);
         return ret;
     }
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::vector_exponential_implement::recip
+struct ktm::detail::vector_trigonometric_implement::atan
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::recip<T>, x);
+        loop_op<N, V>::call(ret, ktm::atan<T>, x);
         return ret;
     }
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::vector_exponential_implement::cbrt
-{
-    using V = vec<N, T>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        loop_op<N, V>::call(ret, ktm::cbrt<T>, x);
-        return ret;
-    }
-};
-
-template<size_t N, typename T, typename Void>
-struct ktm::detail::vector_exponential_implement::pow
+struct ktm::detail::vector_trigonometric_implement::atan2
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::pow<T>, x, y);
+        loop_op<N, V>::call(ret, ktm::atan2<T>, x, y);
         return ret;
     }
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::vector_exponential_implement::exp
+struct ktm::detail::vector_trigonometric_implement::cos
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::exp<T>, x);
+        loop_op<N, V>::call(ret, ktm::cos<T>, x);
         return ret;
     }
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::vector_exponential_implement::exp2
+struct ktm::detail::vector_trigonometric_implement::sin
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::exp2<T>, x);
+        loop_op<N, V>::call(ret, ktm::sin<T>, x);
         return ret;
     }
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::vector_exponential_implement::expm1
+struct ktm::detail::vector_trigonometric_implement::tan
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::expm1<T>, x);
+        loop_op<N, V>::call(ret, ktm::tan<T>, x);
         return ret;
     }
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::vector_exponential_implement::log
+struct ktm::detail::vector_trigonometric_implement::sinc
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::log<T>, x);
+        loop_op<N, V>::call(ret, ktm::sinc<T>, x);
         return ret;
     }
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::vector_exponential_implement::log10
+struct ktm::detail::vector_trigonometric_implement::acosh
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::log10<T>, x);
+        loop_op<N, V>::call(ret, ktm::acosh<T>, x);
         return ret;
     }
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::vector_exponential_implement::log2
+struct ktm::detail::vector_trigonometric_implement::asinh
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::log2<T>, x);
+        loop_op<N, V>::call(ret, ktm::asinh<T>, x);
         return ret;
     }
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::vector_exponential_implement::log1p
+struct ktm::detail::vector_trigonometric_implement::atanh
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::log1p<T>, x);
+        loop_op<N, V>::call(ret, ktm::atanh<T>, x);
         return ret;
     }
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::vector_exponential_implement::logb
+struct ktm::detail::vector_trigonometric_implement::cosh
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::logb<T>, x);
+        loop_op<N, V>::call(ret, ktm::cosh<T>, x);
         return ret;
     }
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::vector_exponential_implement::fast_sqrt
+struct ktm::detail::vector_trigonometric_implement::sinh
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::fast::sqrt<T>, x);
+        loop_op<N, V>::call(ret, ktm::sinh<T>, x);
         return ret;
     }
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::vector_exponential_implement::fast_rsqrt
+struct ktm::detail::vector_trigonometric_implement::tanh
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::fast::rsqrt<T>, x);
-        return ret;
-    }
-};
-
-template<size_t N, typename T, typename Void>
-struct ktm::detail::vector_exponential_implement::fast_recip
-{
-    using V = vec<N, T>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        loop_op<N, V>::call(ret, ktm::fast::recip<T>, x);
+        loop_op<N, V>::call(ret, ktm::tanh<T>, x);
         return ret;
     }
 };

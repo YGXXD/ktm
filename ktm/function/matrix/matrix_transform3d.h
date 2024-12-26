@@ -8,13 +8,12 @@
 #ifndef _KTM_MATRIX_TRANSFORM_3D_H_
 #define _KTM_MATRIX_TRANSFORM_3D_H_
 
-#include "../setup.h"
-#include "../type/vec.h"
-#include "../type/mat.h"
-#include "exponential.h"
-#include "trigonometric.h"
-#include "geometric.h"
-#include "../detail/function/matrix_transform3d_fwd.h"
+#include "../../setup.h"
+#include "../../type/vec.h"
+#include "../../type/mat.h"
+#include "../common.h"
+#include "../geometric.h"
+#include "../../detail/function/matrix_transform3d_fwd.h"
 
 namespace ktm
 {
@@ -239,6 +238,6 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> shear3d_z
 
 }
 
-#include "../detail/function/matrix_transform3d.inl"
+#include "../../detail/function/matrix_transform3d.inl"
 
 #endif

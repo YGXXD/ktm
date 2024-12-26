@@ -9,8 +9,8 @@
 #define _KTM_ARITHMETIC_H_
 
 #include <cmath>
-#include "../setup.h"
-#include "../type/basic.h"
+#include "../../setup.h"
+#include "../../type/basic.h"
 
 namespace ktm
 {

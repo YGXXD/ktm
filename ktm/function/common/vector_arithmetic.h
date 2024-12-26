@@ -8,10 +8,10 @@
 #ifndef _KTM_VECTOR_ARITHMETIC_H_
 #define _KTM_VECTOR_ARITHMETIC_H_
 
-#include "../setup.h"
-#include "../type/vec.h"
-#include "../traits/type_traits_math.h"
-#include "../detail/function/vector_arithmetic_fwd.h"
+#include "../../setup.h"
+#include "../../type/vec.h"
+#include "../../traits/type_traits_math.h"
+#include "../../detail/function/vector_arithmetic_fwd.h"
 
 namespace ktm
 {
@@ -96,7 +96,7 @@ KTM_INLINE std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> sm
 
 }
 
-#include "../detail/function/vector_arithmetic.inl"
-#include "../detail/function/vector_arithmetic_simd.inl"
+#include "../../detail/function/vector_arithmetic.inl"
+#include "../../detail/function/vector_arithmetic_simd.inl"
 
 #endif

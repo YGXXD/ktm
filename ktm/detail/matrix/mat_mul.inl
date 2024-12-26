@@ -10,7 +10,7 @@
 
 #include "mat_mul_fwd.h"
 #include "../loop_util.h"
-#include "../../function/vector.h"
+#include "../../function/common.h"
 
 template<size_t Row, size_t Col, typename T>
 KTM_INLINE void ktm::detail::mat_mul_implement::mat_mul_vec(vec<Col, T>& out, const mat<Row, Col, T>& m, const vec<Row, T>& v) noexcept

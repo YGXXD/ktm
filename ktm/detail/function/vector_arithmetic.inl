@@ -11,7 +11,7 @@
 #include "vector_arithmetic_fwd.h"
 #include "../loop_util.h"
 #include "../../type/vec_fwd.h"
-#include "../../function/arithmetic.h"
+#include "../../function/common/arithmetic.h"
 
 template<size_t N, typename T, typename Void>
 struct ktm::detail::vector_arithmetic_implement::abs

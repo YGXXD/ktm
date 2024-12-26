@@ -5,16 +5,16 @@
 //  Created by 有个小小杜
 //
 
-#ifndef _KTM_VECTOR_INL_
-#define _KTM_VECTOR_INL_
+#ifndef _KTM_VECTOR_REDUCE_INL_
+#define _KTM_VECTOR_REDUCE_INL_
 
-#include "vector_fwd.h"
+#include "vector_reduce_fwd.h"
 #include "../loop_util.h"
 #include "../../type/vec_fwd.h"
-#include "../../function/arithmetic.h"
+#include "../../function/common/arithmetic.h"
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::vector_implement::reduce_add
+struct ktm::detail::vector_reduce_implement::reduce_add
 {
     using V = vec<N, T>;
     static KTM_INLINE T call(const V& x) noexcept
@@ -27,7 +27,7 @@ struct ktm::detail::vector_implement::reduce_add
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::vector_implement::reduce_min
+struct ktm::detail::vector_reduce_implement::reduce_min
 {
     using V = vec<N, T>;
     static KTM_INLINE T call(const V& x) noexcept
@@ -40,7 +40,7 @@ struct ktm::detail::vector_implement::reduce_min
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::vector_implement::reduce_max
+struct ktm::detail::vector_reduce_implement::reduce_max
 {
     using V = vec<N, T>;
     static KTM_INLINE T call(const V& x) noexcept

@@ -8,11 +8,11 @@
 #ifndef _KTM_MATRIX_TRANSFORM_2D_H_
 #define _KTM_MATRIX_TRANSFORM_2D_H_
 
-#include "../setup.h"
-#include "../type/vec.h"
-#include "../type/mat.h"
-#include "trigonometric.h"
-#include "geometric.h"
+#include "../../setup.h"
+#include "../../type/vec.h"
+#include "../../type/mat.h"
+#include "../common.h"
+#include "../geometric.h"
 
 namespace ktm
 {

@@ -5,18 +5,18 @@
 //  Created by 有个小小杜
 //
 
-#ifndef _KTM_MATRIX_INL_
-#define _KTM_MATRIX_INL_
+#ifndef _KTM_MATRIX_ALGEBRA_INL_
+#define _KTM_MATRIX_ALGEBRA_INL_
 
 #include <utility>
-#include "matrix_fwd.h"
+#include "matrix_algebra_fwd.h"
 #include "../../setup.h"
 #include "../../type/basic.h"
 #include "../../type/vec_fwd.h"
 #include "../../type/mat_fwd.h"
 
 template<size_t Row, size_t Col, typename T, typename Void>
-struct ktm::detail::matrix_implement::transpose
+struct ktm::detail::matrix_algebra_implement::transpose
 {
 	using M = mat<Row, Col, T>;
     using RetM = mat<Col, Row, T>;
@@ -43,7 +43,7 @@ private:
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::matrix_implement::diagonal
+struct ktm::detail::matrix_algebra_implement::diagonal
 {
     using M = mat<N, N, T>;
     using ColV = vec<N, T>;
@@ -68,7 +68,7 @@ private:
 };
 
 template<typename T>
-struct ktm::detail::matrix_implement::determinant<2, T>
+struct ktm::detail::matrix_algebra_implement::determinant<2, T>
 {
     using M = mat<2, 2, T>;
     static KTM_INLINE T call(const M& m) noexcept
@@ -78,7 +78,7 @@ struct ktm::detail::matrix_implement::determinant<2, T>
 };
 
 template<typename T>
-struct ktm::detail::matrix_implement::determinant<3, T>
+struct ktm::detail::matrix_algebra_implement::determinant<3, T>
 {
     using M = mat<3, 3, T>;
     static KTM_INLINE T call(const M& m) noexcept
@@ -90,7 +90,7 @@ struct ktm::detail::matrix_implement::determinant<3, T>
 };
 
 template<typename T>
-struct ktm::detail::matrix_implement::determinant<4, T>
+struct ktm::detail::matrix_algebra_implement::determinant<4, T>
 {
     using M = mat<4, 4, T>;
     static KTM_INLINE T call(const M& m) noexcept
@@ -112,7 +112,7 @@ struct ktm::detail::matrix_implement::determinant<4, T>
 };
 
 template<size_t N, typename T>
-struct ktm::detail::matrix_implement::determinant<N, T, std::enable_if_t<std::is_floating_point_v<T> && (N > 4)>>
+struct ktm::detail::matrix_algebra_implement::determinant<N, T, std::enable_if_t<std::is_floating_point_v<T> && (N > 4)>>
 {
     using M = mat<N, N, T>;
     static KTM_NOINLINE T call(const M& m) noexcept
@@ -137,7 +137,7 @@ struct ktm::detail::matrix_implement::determinant<N, T, std::enable_if_t<std::is
 };
 
 template<size_t N, typename T>
-struct ktm::detail::matrix_implement::determinant<N, T, std::enable_if_t<!std::is_floating_point_v<T> && (N > 4)>>
+struct ktm::detail::matrix_algebra_implement::determinant<N, T, std::enable_if_t<!std::is_floating_point_v<T> && (N > 4)>>
 {
     using M = mat<N, N, T>;
     static KTM_NOINLINE T call(const M& m) noexcept
@@ -164,7 +164,7 @@ struct ktm::detail::matrix_implement::determinant<N, T, std::enable_if_t<!std::i
 };
 
 template<typename T>
-struct ktm::detail::matrix_implement::inverse<2, T>
+struct ktm::detail::matrix_algebra_implement::inverse<2, T>
 {
     using M = mat<2, 2, T>;
     static KTM_INLINE M call(const M& m) noexcept
@@ -180,7 +180,7 @@ struct ktm::detail::matrix_implement::inverse<2, T>
 };
 
 template<typename T>
-struct ktm::detail::matrix_implement::inverse<3, T>
+struct ktm::detail::matrix_algebra_implement::inverse<3, T>
 {
     using M = mat<3, 3, T>;
     static KTM_INLINE M call(const M& m) noexcept
@@ -201,7 +201,7 @@ struct ktm::detail::matrix_implement::inverse<3, T>
 };
 
 template<typename T>
-struct ktm::detail::matrix_implement::inverse<4, T>
+struct ktm::detail::matrix_algebra_implement::inverse<4, T>
 {
     using M = mat<4, 4, T>;
     static KTM_INLINE M call(const M& m) noexcept
@@ -261,7 +261,7 @@ struct ktm::detail::matrix_implement::inverse<4, T>
 };
 
 template<size_t N, typename T>
-struct ktm::detail::matrix_implement::inverse<N, T, std::enable_if_t<(N > 4)>>
+struct ktm::detail::matrix_algebra_implement::inverse<N, T, std::enable_if_t<(N > 4)>>
 {
     using M = mat<N, N, T>;
     static KTM_NOINLINE M call(const M& m) noexcept

@@ -5,16 +5,16 @@
 //  Created by 有个小小杜
 //
 
-#ifndef _KTM_MATRIX_SIMD_INL_
-#define _KTM_MATRIX_SIMD_INL_
+#ifndef _KTM_MATRIX_ALGEBRA_SIMD_INL_
+#define _KTM_MATRIX_ALGEBRA_SIMD_INL_
 
-#include "matrix_fwd.h"
+#include "matrix_algebra_fwd.h"
 #include "../../simd/skv.h"
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
 template<>
-struct ktm::detail::matrix_implement::transpose<2, 2, float>
+struct ktm::detail::matrix_algebra_implement::transpose<2, 2, float>
 {
     using M = mat<2, 2, float>;
     using RetM = M;
@@ -29,7 +29,7 @@ struct ktm::detail::matrix_implement::transpose<2, 2, float>
 };
 
 template<>
-struct ktm::detail::matrix_implement::transpose<3, 3, float>
+struct ktm::detail::matrix_algebra_implement::transpose<3, 3, float>
 {
     using M = mat<3, 3, float>;
     using RetM = M;
@@ -50,7 +50,7 @@ struct ktm::detail::matrix_implement::transpose<3, 3, float>
 };
 
 template<>
-struct ktm::detail::matrix_implement::transpose<4, 4, float>
+struct ktm::detail::matrix_algebra_implement::transpose<4, 4, float>
 {
     using M = mat<4, 4, float>;
     using RetM = M;
@@ -74,7 +74,7 @@ struct ktm::detail::matrix_implement::transpose<4, 4, float>
 };
 
 template<size_t N, typename T>
-struct ktm::detail::matrix_implement::transpose<N, N, T, std::enable_if_t<sizeof(T) == sizeof(float) && !std::is_same_v<T, float> && N >= 2 && N <=4>>
+struct ktm::detail::matrix_algebra_implement::transpose<N, N, T, std::enable_if_t<sizeof(T) == sizeof(float) && !std::is_same_v<T, float> && N >= 2 && N <=4>>
 {
     using M = mat<N, N, T>;
     using RetM = M;
@@ -88,7 +88,7 @@ struct ktm::detail::matrix_implement::transpose<N, N, T, std::enable_if_t<sizeof
 };
 
 template<>
-struct ktm::detail::matrix_implement::determinant<3, float>
+struct ktm::detail::matrix_algebra_implement::determinant<3, float>
 {
     using M = mat<3, 3, float>;
     static KTM_INLINE float call(const M& m) noexcept
@@ -105,7 +105,7 @@ struct ktm::detail::matrix_implement::determinant<3, float>
 };
 
 template<>
-struct ktm::detail::matrix_implement::determinant<4, float>
+struct ktm::detail::matrix_algebra_implement::determinant<4, float>
 {
     using M = mat<4, 4, float>;
     static KTM_INLINE float call(const M& m) noexcept
@@ -145,7 +145,7 @@ struct ktm::detail::matrix_implement::determinant<4, float>
 };
 
 template<>
-struct ktm::detail::matrix_implement::inverse<4, float>
+struct ktm::detail::matrix_algebra_implement::inverse<4, float>
 {
     using M = mat<4, 4, float>;
     static KTM_INLINE M call(const M& m) noexcept
@@ -350,7 +350,7 @@ struct ktm::detail::matrix_implement::inverse<4, float>
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1 | KTM_SIMD_WASM)
 
 template<>
-struct ktm::detail::matrix_implement::determinant<3, int>
+struct ktm::detail::matrix_algebra_implement::determinant<3, int>
 {
     using M = mat<3, 3, int>;
     static KTM_INLINE int call(const M& m) noexcept
@@ -366,7 +366,7 @@ struct ktm::detail::matrix_implement::determinant<3, int>
 };
 
 template<>
-struct ktm::detail::matrix_implement::determinant<4, int>
+struct ktm::detail::matrix_algebra_implement::determinant<4, int>
 {
     using M = mat<4, 4, int>;
     static KTM_INLINE int call(const M& m) noexcept
