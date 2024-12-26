@@ -11,9 +11,7 @@
 #include <cstdlib>
 #include "../setup.h"
 #include "../type/basic.h"
-#include "arithmetic.h"
-#include "exponential.h"
-#include "trigonometric.h"
+#include "common.h"
 
 namespace ktm
 {

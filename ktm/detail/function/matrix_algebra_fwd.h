@@ -5,8 +5,8 @@
 //  Created by 有个小小杜
 //
 
-#ifndef _KTM_MATRIX_FWD_H_
-#define _KTM_MATRIX_FWD_H_
+#ifndef _KTM_MATRIX_ALGEBRA_FWD_H_
+#define _KTM_MATRIX_ALGEBRA_FWD_H_
 
 #include <cstddef>
 #include <type_traits>
@@ -15,7 +15,7 @@ namespace ktm
 {
 namespace detail
 {
-namespace matrix_implement
+namespace matrix_algebra_implement
 {
 
 template<size_t Row, size_t Col, typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>

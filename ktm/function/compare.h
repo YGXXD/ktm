@@ -11,7 +11,6 @@
 #include "../setup.h"
 #include "../type/basic.h"
 #include "../traits/type_traits_math.h"
-#include "arithmetic.h"
 #include "common.h"
 
 namespace ktm

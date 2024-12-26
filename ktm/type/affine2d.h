@@ -10,7 +10,7 @@
 
 #include "mat.h"
 #include "comp.h"
-#include "../function/trigonometric.h"
+#include "../function/common.h"
 #include "../function/matrix.h"
 
 namespace ktm

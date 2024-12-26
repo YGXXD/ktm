@@ -10,9 +10,8 @@
 
 #include "mat.h"
 #include "quat.h"
-#include "../function/trigonometric.h"
+#include "../function/common.h"
 #include "../function/matrix.h"
-#include "../function/matrix_transform3d.h"
 
 namespace ktm
 {

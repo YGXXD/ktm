@@ -42,5 +42,17 @@ int main(int argc, char* argv[])
     std::cout << "fast_rsqrt: " << ktm::fast::rsqrt(t5) << std::endl;
     std::cout << "fast_recip: " << ktm::fast::recip(t3) << std::endl;
 
+    std::cout << "sin: " << ktm::sin(2.8f) << ", " << ktm::sin(t5) << std::endl;
+    std::cout << "cos: " << ktm::cos(2.8f) << ", " << ktm::cos(t5) << std::endl;
+    std::cout << "atan: " << ktm::atan(2.8f) << ", " << ktm::atan(t5) << std::endl;
+    std::cout << "atan2: " << ktm::atan2(2.8f, 4.f) << ", " << ktm::atan2(t5, {4.f, 4.f, 4.f}) << std::endl;
+    std::cout << "sinc: " << ktm::sinc(2.8f) << ", " << ktm::sinc(t5) << std::endl;
+    std::cout << "cosh: " << ktm::cosh(2.8f) << ", " << ktm::cosh(t5) << std::endl;
+
+    std::cout << "pow: " << ktm::pow(8.9f, 5.f) << ", " << ktm::pow(t5, {10.f, 10.f, 5.f}) << std::endl;
+    std::cout << "log: " << ktm::log(3.5f) << ", " << ktm::log(t5) << std::endl;
+    std::cout << "exp2: " << ktm::exp2(2.8f) << ", " << ktm::exp2(t5) << std::endl;
+    std::cout << "exp: " << ktm::exp(3.5f) << ", " << ktm::exp(t5) << std::endl;
+
     return 0;
 }
