@@ -12,7 +12,7 @@
 #include "../../type/basic.h"
 #include "../../type/vec_fwd.h"
 #include "../../function/exponential.h"
-#include "../../function/common.h"
+#include "../../function/vector.h"
 
 template<size_t N, typename T, typename Void>
 struct ktm::detail::geometric_implement::dot

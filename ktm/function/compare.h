@@ -12,7 +12,7 @@
 #include "../type/basic.h"
 #include "../traits/type_traits_math.h"
 #include "arithmetic.h"
-#include "common.h"
+#include "vector.h"
 
 namespace ktm
 {

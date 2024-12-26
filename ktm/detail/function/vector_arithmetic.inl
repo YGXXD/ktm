@@ -5,56 +5,16 @@
 //  Created by 有个小小杜
 //
 
-#ifndef _KTM_COMMON_INL_
-#define _KTM_COMMON_INL_
+#ifndef _KTM_VECTOR_ARITHMETIC_INL_
+#define _KTM_VECTOR_ARITHMETIC_INL_
 
-#include "common_fwd.h"
+#include "vector_arithmetic_fwd.h"
 #include "../loop_util.h"
 #include "../../type/vec_fwd.h"
 #include "../../function/arithmetic.h"
-#include "../../function/exponential.h"
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::reduce_add
-{
-    using V = vec<N, T>;
-    static KTM_INLINE T call(const V& x) noexcept
-    {
-        T ret = x[0];
-        loop_op<N - 1, void>::call(
-            [&ret](const T& x) -> void { ret += x; }, &x[1]);
-        return ret;
-    }
-};
-
-template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::reduce_min
-{
-    using V = vec<N, T>;
-    static KTM_INLINE T call(const V& x) noexcept
-    {
-        T ret = x[0];
-        loop_op<N - 1, void>::call(
-            [&ret](const T& x) -> void { ret = ktm::min<T>(ret, x); }, &x[1]);
-        return ret;
-    }
-};
-
-template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::reduce_max
-{
-    using V = vec<N, T>;
-    static KTM_INLINE T call(const V& x) noexcept
-    {
-        T ret = x[0];
-        loop_op<N - 1, void>::call(
-            [&ret](const T& x) -> void { ret = ktm::max<T>(ret, x); }, &x[1]);
-        return ret;
-    }
-};
-
-template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::abs
+struct ktm::detail::vector_arithmetic_implement::abs
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -66,7 +26,7 @@ struct ktm::detail::common_implement::abs
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::min
+struct ktm::detail::vector_arithmetic_implement::min
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -78,7 +38,7 @@ struct ktm::detail::common_implement::min
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::max
+struct ktm::detail::vector_arithmetic_implement::max
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -90,7 +50,7 @@ struct ktm::detail::common_implement::max
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::clamp
+struct ktm::detail::vector_arithmetic_implement::clamp
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
@@ -102,7 +62,7 @@ struct ktm::detail::common_implement::clamp
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::floor
+struct ktm::detail::vector_arithmetic_implement::floor
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -114,7 +74,7 @@ struct ktm::detail::common_implement::floor
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::ceil
+struct ktm::detail::vector_arithmetic_implement::ceil
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -126,7 +86,7 @@ struct ktm::detail::common_implement::ceil
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::round
+struct ktm::detail::vector_arithmetic_implement::round
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -138,7 +98,7 @@ struct ktm::detail::common_implement::round
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::fract
+struct ktm::detail::vector_arithmetic_implement::fract
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x) noexcept
@@ -150,7 +110,7 @@ struct ktm::detail::common_implement::fract
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::mod
+struct ktm::detail::vector_arithmetic_implement::mod
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x, const V& y) noexcept
@@ -162,7 +122,7 @@ struct ktm::detail::common_implement::mod
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::lerp
+struct ktm::detail::vector_arithmetic_implement::lerp
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x, const V& y, T t) noexcept
@@ -175,7 +135,7 @@ struct ktm::detail::common_implement::lerp
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::mix
+struct ktm::detail::vector_arithmetic_implement::mix
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& x, const V& y, const V& t) noexcept
@@ -187,7 +147,7 @@ struct ktm::detail::common_implement::mix
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::step
+struct ktm::detail::vector_arithmetic_implement::step
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& edge, const V& x) noexcept
@@ -199,85 +159,13 @@ struct ktm::detail::common_implement::step
 };
 
 template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::smoothstep
+struct ktm::detail::vector_arithmetic_implement::smoothstep
 {
     using V = vec<N, T>;
     static KTM_INLINE V call(const V& edge0, const V& edge1, const V& x) noexcept
     {
         V ret;
         loop_op<N, V>::call(ret, ktm::smoothstep<T>, edge0, edge1, x);
-        return ret;
-    }
-};
-
-template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::sqrt
-{
-    using V = vec<N, T>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        loop_op<N, V>::call(ret, ktm::sqrt<T>, x);
-        return ret;
-    }
-};
-
-template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::rsqrt
-{
-    using V = vec<N, T>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        loop_op<N, V>::call(ret, ktm::rsqrt<T>, x);
-        return ret;
-    }
-};
-
-template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::recip
-{
-    using V = vec<N, T>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        loop_op<N, V>::call(ret, ktm::recip<T>, x);
-        return ret;
-    }
-};
-
-template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::fast_sqrt
-{
-    using V = vec<N, T>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        loop_op<N, V>::call(ret, ktm::fast::sqrt<T>, x);
-        return ret;
-    }
-};
-
-template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::fast_rsqrt
-{
-    using V = vec<N, T>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        loop_op<N, V>::call(ret, ktm::fast::rsqrt<T>, x);
-        return ret;
-    }
-};
-
-template<size_t N, typename T, typename Void>
-struct ktm::detail::common_implement::fast_recip
-{
-    using V = vec<N, T>;
-    static KTM_INLINE V call(const V& x) noexcept
-    {
-        V ret;
-        loop_op<N, V>::call(ret, ktm::fast::recip<T>, x);
         return ret;
     }
 };
