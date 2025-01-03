@@ -14,12 +14,10 @@
 template<typename T>
 KTM_INLINE void ktm::detail::quat_mul_implement::mul(quat<T>& out, const quat<T>& x, const quat<T>& y) noexcept
 {
-    quat<T> tmp;
-    tmp[0] = x[3] * y[0] + y[3] * x[0] + x[1] * y[2] - x[2] * y[1];
-    tmp[1] = x[3] * y[1] + y[3] * x[1] + x[2] * y[0] - x[0] * y[2];
-    tmp[2] = x[3] * y[2] + y[3] * x[2] + x[0] * y[1] - x[1] * y[0];
-    tmp[3] = x[3] * y[3] - x[0] * y[0] - x[1] * y[1] - x[2] * y[2];
-    out = tmp;
+    out = quat<T>(x[3] * y[0] + y[3] * x[0] + x[1] * y[2] - x[2] * y[1],
+                  x[3] * y[1] + y[3] * x[1] + x[2] * y[0] - x[0] * y[2],
+                  x[3] * y[2] + y[3] * x[2] + x[0] * y[1] - x[1] * y[0],
+                  x[3] * y[3] - x[0] * y[0] - x[1] * y[1] - x[2] * y[2]);
 }
 
 template<typename T>

@@ -22,7 +22,7 @@ template<typename T>
 struct is_vector : std::false_type { };
 
 template<size_t N, typename T>
-struct is_vector<vec<N, T>> : std::true_type{ };
+struct is_vector<vec<N, T>> : std::true_type { };
 
 template<typename T>
 struct is_matrix : std::false_type { };
