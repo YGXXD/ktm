@@ -57,7 +57,7 @@ int main(int argv, char* argc[])
     cout << rotate * vector << endl;
 
     // 构建仿射变换affine, 定义矩阵model
-    faffine3d affine {}; fmat4x4 model;
+    faffine3d affine { }; fmat4x4 model;
     // 仿射变换affine进行平移旋转缩放后, 输入到矩阵model
     affine.translate(2.f, 1.f, -3.f).rotate(quaternion).scale(2.f, 2.f, 4.f) >> model;
     // 利用矩阵model变换向量vector

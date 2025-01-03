@@ -223,7 +223,7 @@ KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<
     using T = mat_traits_base_t<M>;
 
     // cholesky for matrix lu decomposition(matrix must be positive definite matrix)
-    M u = { };
+    M u { };
 
     for(int i = 0; i < N; ++i)
     {
@@ -604,7 +604,7 @@ KTM_NOINLINE std::enable_if_t<is_floating_point_base_v<M>, svd_component<M>> dec
                 inv_s[i] = recip(s[i]);
             }
         }
-        mat_traits_tp_t<M> inv_s_matrix = { };
+        mat_traits_tp_t<M> inv_s_matrix { };
         for(int i = 0; i < col_n; ++i)
         {
             inv_s_matrix[i][i] = inv_s[i];
@@ -623,7 +623,7 @@ KTM_NOINLINE std::enable_if_t<is_floating_point_base_v<M>, svd_component<M>> dec
             s[i] = sqrt(abs(aat_eigen.get_value()[i]));
             inv_s[i] = recip(s[i]);
         }
-        mat_traits_tp_t<M> inv_s_matrix = { };
+        mat_traits_tp_t<M> inv_s_matrix { };
         for(int i = 0; i < row_n; ++i)
         {
             inv_s_matrix[i][i] = inv_s[i];

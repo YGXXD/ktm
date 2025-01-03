@@ -43,6 +43,12 @@ struct imat_mul<Father, mat<Row, Col, T>> : Father
         detail::mat_mul_implement::mat_mul_mat<U, Row, Col, T>(ret, m1, m2);
         return ret;
     }
+
+    template<size_t U, typename = std::enable_if_t<U == Row && U == Col>>
+    friend KTM_INLINE mat<U, Col, T>& operator*=(mat<Row, Col, T>& m1, const mat<U, Row, T>& m2) noexcept
+    {
+        return m1 = m1 * m2;
+    }
 };
 
 }

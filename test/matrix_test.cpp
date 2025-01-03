@@ -44,6 +44,7 @@ int main(int argc, char* argv[])
 
     std::cout << "transpose test:" << std::endl; 
     ktm::fmat3x3 mt7_1 = { { 2, -1, 207 }, {-1, 2, -1}, { 20, -1, 2 } };
+    mt7_1 *= mt7_1;
     std::cout << mt7_1 << std::endl;
     std::cout << ktm::transpose(mt7_1) << std::endl; 
     ktm::fmat2x2 mt7_2 = { { 2, -1 }, { 50, 20 } };
@@ -57,6 +58,8 @@ int main(int argc, char* argv[])
 
     std::cout << "inverse test:" << std::endl;  
     ktm::fmat4x4 mt9 = { {2, -1, 9, 9}, {-1, 2, -1, -8}, { 20, -1, 2, 2}, { 1, 3, 2, 77 }};
+    mt9 *= mt9;
+    std::cout << mt9 << std::endl;
     std::cout << ktm::inverse(mt9) * mt9 * mt8 << std::endl; 
 
     return 0;

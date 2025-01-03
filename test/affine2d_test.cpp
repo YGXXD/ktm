@@ -12,23 +12,23 @@ int main(int argc, char* argv[])
 {
     ktm::fmat3x3 affine_mat;
     std::cout << "affine2d construct matrix test:" << std::endl;
-    ktm::faffine2d a1{};
+    ktm::faffine2d a1 { };
     a1.rotate(0.6f * ktm::pi<float>);
     a1 >> affine_mat;
     std::cout << affine_mat << "\n" << ktm::rotate2d(0.6f * ktm::pi<float>) << std::endl;
 
-    ktm::faffine2d a2{};
+    ktm::faffine2d a2 { };
     a2.shear_x(0.5f * ktm::half_pi<float>);
     a2 >> affine_mat;
     std::cout << affine_mat << "\n" << ktm::shear2d_x(0.5f * ktm::half_pi<float>) << std::endl;
 
-    ktm::faffine2d a3{};
+    ktm::faffine2d a3 { };
     a3.translate(9.f, -7.f);
     a3 >> affine_mat;
     std::cout << affine_mat << "\n" << ktm::translate2d(ktm::fvec2(9.f, -7.f)) << std::endl;
 
     std::cout << "affine2d transform and matrix transform test:" << std::endl;
-    ktm::faffine2d a4{};
+    ktm::faffine2d a4 { };
     a4.translate(2.f, 2.f).
         rotate(0.7f * ktm::pi<float>).
             shear_y(0.3 * ktm::pi<float>).
