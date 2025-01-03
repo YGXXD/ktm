@@ -12,23 +12,23 @@ int main(int argc, char* argv[])
 {
     ktm::fmat4x4 affine_mat;
     std::cout << "affine3d construct matrix test:" << std::endl;
-    ktm::faffine3d a1{};
+    ktm::faffine3d a1 { };
     a1.rotate_axis(0.6f * ktm::pi<float>, {0.6f, 0.8f, 0.f});
     a1 >> affine_mat;
     std::cout << affine_mat << "\n" << ktm::rotate3d_axis(0.6f * ktm::pi<float>, {0.6f, 0.8f, 0.f}) << std::endl;
 
-    ktm::faffine3d a2{};
+    ktm::faffine3d a2 { };
     a2.rotate_from_to({0.6f, 0.8f, 0.f}, {-1.f, 0.f, 0.f});
     a2 >> affine_mat;
     std::cout << affine_mat << "\n" << rotate3d_from_to(ktm::fvec3{0.6f, 0.8f, 0.f}, ktm::fvec3{-1.f, 0.f, 0.f}) << std::endl;
 
-    ktm::faffine3d a3{};
+    ktm::faffine3d a3 { };
     a3.shear_y(0.3 * ktm::pi<float>, 0.7 * ktm::pi<float>);
     a3 >> affine_mat;
     std::cout << affine_mat << "\n" << ktm::shear3d_y(0.3f * ktm::pi<float>, 0.7f * ktm::pi<float>) << std::endl;
 
     std::cout << "affine3d transform and matrix transform test:" << std::endl;
-    ktm::faffine3d a4{};
+    ktm::faffine3d a4 { };
     a4.translate(2.f, 2.f, 5.f).
         rotate_axis(0.7f * ktm::pi<float>, {0.f, 0.8f, 0.6f}).
             shear_y(0.3 * ktm::pi<float>, 0.7 * ktm::pi<float>).
