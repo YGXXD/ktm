@@ -9,7 +9,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-test:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -57,17 +57,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Set reusable strings
       id: strings
-      shell: bash
       run: |
-        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
-        echo "build-output-test-dir=${{ github.workspace }}/build/test" >> "$GITHUB_OUTPUT" 
+        echo "build_output_dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+        echo "build_output_test_dir=${{ github.workspace }}/build/test" >> "$GITHUB_OUTPUT" 
 
     - name: Configure CMake
       run: >
-        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        cmake -B ${{ steps.strings.outputs.build_output_dir }}
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DKTM_BUILD_TESTING=ON
@@ -75,11 +76,11 @@ jobs:
         -G ${{ matrix.cmake_project }}
 
     - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+      run: cmake --build ${{ steps.strings.outputs.build_output_dir }} --config ${{ matrix.build_type }}
 
     - name: Test
-      working-directory: ${{ steps.strings.outputs.build-output-test-dir }}
+      working-directory: ${{ steps.strings.outputs.build_output_test_dir }}
       run: ctest --build-config ${{ matrix.build_type }}
 
     - name: Install
-      run: ${{ matrix.root }} cmake --install ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+      run: ${{ matrix.root }} cmake --install ${{ steps.strings.outputs.build_output_dir }} --config ${{ matrix.build_type }}

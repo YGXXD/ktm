@@ -20,9 +20,8 @@ SpaceInEmptyBlock: false
 SeparateDefinitionBlocks: Always
 SpacesInAngles: Never
 SortIncludes: Never
-SkipMacroDefinitionBody: true
 DerivePointerAlignment: true
-AlignEscapedNewlines: LeftWithLastLine
+AlignEscapedNewlines: Left
 AlignAfterOpenBracket: Align
 AlignConsecutiveDeclarations: false
 AlignConsecutiveMacros: None 
