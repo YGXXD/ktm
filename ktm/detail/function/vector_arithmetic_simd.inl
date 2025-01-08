@@ -13,10 +13,11 @@
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_arithmetic_implement::abs<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -25,10 +26,11 @@ struct ktm::detail::vector_arithmetic_implement::abs<N, float, std::enable_if_t<
     }
 };
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_arithmetic_implement::min<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
+
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
@@ -37,10 +39,11 @@ struct ktm::detail::vector_arithmetic_implement::min<N, float, std::enable_if_t<
     }
 };
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_arithmetic_implement::max<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
+
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
@@ -49,22 +52,24 @@ struct ktm::detail::vector_arithmetic_implement::max<N, float, std::enable_if_t<
     }
 };
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_arithmetic_implement::clamp<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
+
     static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
         V ret;
         ret.st = _clamp128_f32(v.st, min.st, max.st);
-        return ret; 
+        return ret;
     }
 };
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_arithmetic_implement::floor<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -73,10 +78,11 @@ struct ktm::detail::vector_arithmetic_implement::floor<N, float, std::enable_if_
     }
 };
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_arithmetic_implement::ceil<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -85,10 +91,11 @@ struct ktm::detail::vector_arithmetic_implement::ceil<N, float, std::enable_if_t
     }
 };
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_arithmetic_implement::round<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -97,10 +104,11 @@ struct ktm::detail::vector_arithmetic_implement::round<N, float, std::enable_if_
     }
 };
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_arithmetic_implement::fract<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -110,10 +118,11 @@ struct ktm::detail::vector_arithmetic_implement::fract<N, float, std::enable_if_
     }
 };
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_arithmetic_implement::mod<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
+
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
@@ -124,10 +133,11 @@ struct ktm::detail::vector_arithmetic_implement::mod<N, float, std::enable_if_t<
     }
 };
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_arithmetic_implement::lerp<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
+
     static KTM_INLINE V call(const V& x, const V& y, float t) noexcept
     {
         V ret;
@@ -137,10 +147,11 @@ struct ktm::detail::vector_arithmetic_implement::lerp<N, float, std::enable_if_t
     }
 };
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_arithmetic_implement::mix<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
+
     static KTM_INLINE V call(const V& x, const V& y, const V& t) noexcept
     {
         V ret;
@@ -149,10 +160,11 @@ struct ktm::detail::vector_arithmetic_implement::mix<N, float, std::enable_if_t<
     }
 };
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_arithmetic_implement::step<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
+
     static KTM_INLINE V call(const V& edge, const V& x) noexcept
     {
         V ret;
@@ -162,10 +174,11 @@ struct ktm::detail::vector_arithmetic_implement::step<N, float, std::enable_if_t
     }
 };
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_arithmetic_implement::smoothstep<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
+
     static KTM_INLINE V call(const V& edge0, const V& edge1, const V& x) noexcept
     {
         V ret;
@@ -180,10 +193,11 @@ struct ktm::detail::vector_arithmetic_implement::smoothstep<N, float, std::enabl
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2 | KTM_SIMD_WASM)
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_arithmetic_implement::abs<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -196,10 +210,11 @@ struct ktm::detail::vector_arithmetic_implement::abs<N, int, std::enable_if_t<N 
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE4_1 | KTM_SIMD_WASM)
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_arithmetic_implement::min<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
+
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
@@ -208,10 +223,11 @@ struct ktm::detail::vector_arithmetic_implement::min<N, int, std::enable_if_t<N 
     }
 };
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_arithmetic_implement::max<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
+
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
@@ -220,15 +236,16 @@ struct ktm::detail::vector_arithmetic_implement::max<N, int, std::enable_if_t<N 
     }
 };
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_arithmetic_implement::clamp<N, int, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, int>;
+
     static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
         V ret;
         ret.st = _clamp128_s32(v.st, min.st, max.st);
-        return ret; 
+        return ret;
     }
 };
 
@@ -236,10 +253,11 @@ struct ktm::detail::vector_arithmetic_implement::clamp<N, int, std::enable_if_t<
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON)
 
-template<>
+template <>
 struct ktm::detail::vector_arithmetic_implement::abs<2, float>
 {
     using V = vec<2, float>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -248,10 +266,11 @@ struct ktm::detail::vector_arithmetic_implement::abs<2, float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::vector_arithmetic_implement::min<2, float>
 {
     using V = vec<2, float>;
+
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
@@ -260,10 +279,11 @@ struct ktm::detail::vector_arithmetic_implement::min<2, float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::vector_arithmetic_implement::max<2, float>
 {
     using V = vec<2, float>;
+
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
@@ -272,10 +292,11 @@ struct ktm::detail::vector_arithmetic_implement::max<2, float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::vector_arithmetic_implement::clamp<2, float>
 {
     using V = vec<2, float>;
+
     static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
         V ret;
@@ -284,10 +305,11 @@ struct ktm::detail::vector_arithmetic_implement::clamp<2, float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::vector_arithmetic_implement::floor<2, float>
 {
     using V = vec<2, float>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -296,10 +318,11 @@ struct ktm::detail::vector_arithmetic_implement::floor<2, float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::vector_arithmetic_implement::ceil<2, float>
 {
     using V = vec<2, float>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -308,10 +331,11 @@ struct ktm::detail::vector_arithmetic_implement::ceil<2, float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::vector_arithmetic_implement::round<2, float>
 {
     using V = vec<2, float>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -320,10 +344,11 @@ struct ktm::detail::vector_arithmetic_implement::round<2, float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::vector_arithmetic_implement::fract<2, float>
 {
     using V = vec<2, float>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -333,10 +358,11 @@ struct ktm::detail::vector_arithmetic_implement::fract<2, float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::vector_arithmetic_implement::mod<2, float>
 {
     using V = vec<2, float>;
+
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
@@ -347,10 +373,11 @@ struct ktm::detail::vector_arithmetic_implement::mod<2, float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::vector_arithmetic_implement::lerp<2, float>
 {
     using V = vec<2, float>;
+
     static KTM_INLINE V call(const V& x, const V& y, float t) noexcept
     {
         V ret;
@@ -360,10 +387,11 @@ struct ktm::detail::vector_arithmetic_implement::lerp<2, float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::vector_arithmetic_implement::mix<2, float>
 {
     using V = vec<2, float>;
+
     static KTM_INLINE V call(const V& x, const V& y, const V& t) noexcept
     {
         V ret;
@@ -372,10 +400,11 @@ struct ktm::detail::vector_arithmetic_implement::mix<2, float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::vector_arithmetic_implement::step<2, float>
 {
     using V = vec<2, float>;
+
     static KTM_INLINE V call(const V& edge, const V& x) noexcept
     {
         V ret;
@@ -385,10 +414,11 @@ struct ktm::detail::vector_arithmetic_implement::step<2, float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::vector_arithmetic_implement::smoothstep<2, float>
 {
     using V = vec<2, float>;
+
     static KTM_INLINE V call(const V& edge0, const V& edge1, const V& x) noexcept
     {
         V ret;
@@ -399,10 +429,11 @@ struct ktm::detail::vector_arithmetic_implement::smoothstep<2, float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::vector_arithmetic_implement::abs<2, int>
 {
     using V = vec<2, int>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -411,10 +442,11 @@ struct ktm::detail::vector_arithmetic_implement::abs<2, int>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::vector_arithmetic_implement::min<2, int>
 {
     using V = vec<2, int>;
+
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
@@ -423,10 +455,11 @@ struct ktm::detail::vector_arithmetic_implement::min<2, int>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::vector_arithmetic_implement::max<2, int>
 {
     using V = vec<2, int>;
+
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
@@ -435,10 +468,11 @@ struct ktm::detail::vector_arithmetic_implement::max<2, int>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::vector_arithmetic_implement::clamp<2, int>
 {
     using V = vec<2, int>;
+
     static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
     {
         V ret;

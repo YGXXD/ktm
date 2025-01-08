@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
     std::cout << "effect (quat mul quat) rotate vec" << std::endl;
     std::cout << v2 << std::endl;
 
-    ktm::fquat q3 = ktm::fquat::from_to(ktm::fvec3(1.f, 0.f, 0.f), ktm::fvec3(0.f, 0.f, 1.f)); 
+    ktm::fquat q3 = ktm::fquat::from_to(ktm::fvec3(1.f, 0.f, 0.f), ktm::fvec3(0.f, 0.f, 1.f));
     std::cout << "effect quat mul vec" << std::endl;
     std::cout << q3 * v1 << std::endl;
 
@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
 
     ktm::fmat4x4 q4_mat = ktm::rotate3d_axis(ktm::half_pi<float>, ktm::fvec3(0.f, 0.6f, 0.8f));
     ktm::fquat q5 = ktm::fquat::from_matrix(q4_mat);
-    std::cout << "mat cvt quat" << std::endl; 
+    std::cout << "mat cvt quat" << std::endl;
     std::cout << q4 << "\n" << q5 << std::endl;
 
     ktm::fmat4x4 q5_mat = q5.matrix4x4();
@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
     ktm::fquat q7 = ktm::fquat::angle_axis(ktm::tow_pi<float>, ktm::fvec3(0.6f, -0.8f, 0.f));
     ktm::fvec3 v3 = { 1.f, 1.f, 1.f };
     std::cout << "slerp comp rotate vec" << std::endl;
-    for(float i = 0.f; i <= 1.00005f; i += 0.1f)
+    for (float i = 0.f; i <= 1.00005f; i += 0.1f)
     {
         ktm::fquat q = slerp(q6, q7, i);
         ktm::fmat3x3 m = q.matrix3x3();

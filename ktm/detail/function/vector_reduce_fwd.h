@@ -18,17 +18,17 @@ namespace detail
 namespace vector_reduce_implement
 {
 
-template<size_t N, typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+template <size_t N, typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
 struct reduce_add;
 
-template<size_t N, typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+template <size_t N, typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
 struct reduce_min;
 
-template<size_t N, typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+template <size_t N, typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
 struct reduce_max;
 
-}
-}
-}
+} // namespace vector_reduce_implement
+} // namespace detail
+} // namespace ktm
 
 #endif
