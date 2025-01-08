@@ -1,0 +1,56 @@
+# This starter workflow is for a CMake project running on multiple platforms. There is a different starter workflow if you just want a single platform.
+# See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
+name: format ktm cpp code
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  format-code-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Setup clang-format
+      run: |
+        sudo apt install clang-format 
+        clang-format --version
+
+    - name: Set reusable strings
+      id: strings
+      run: |
+        echo "branch_name=${{ github.head_ref || github.ref_name }}" >> "$GITHUB_OUTPUT"
+        echo "clang-format-file=${{ github.workspace }}/.clang-format" >> "$GITHUB_OUTPUT"
+
+    - name: Run clang-format
+      run: >
+        find . -name "*.cpp" -o -name "*.inl" -o -name "*.h" 
+        | xargs clang-format -assume-filename=${{ steps.strings.outputs.clang-format-file }} -i
+
+    - name: Check changes and create PR
+      run: |
+        if [ $(git status --porcelain | wc -l) -eq 0 ]; then
+          echo "no changes to commit - code is already formatted"
+          exit 0
+        else
+          echo "changes detected - creating PR with formatted code"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b format-${{ steps.strings.outputs.branch_name }}
+          git add .
+          git commit -m "style: format code using clang-format"
+          git push -u origin format-${{ steps.strings.outputs.branch_name }}
+          gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+          gh pr create \
+            --title "gitHub action bot: auto format code" \
+            --body "auto create PR by gitHub action
+
+            - using clang-format software to format code
+            - depend on .clang-format config file" \
+            --base ${{ steps.strings.outputs.branch_name }} \
+            --head format-${{ steps.strings.outputs.branch_name }}
+        fi
