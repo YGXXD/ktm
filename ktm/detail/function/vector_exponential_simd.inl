@@ -13,10 +13,11 @@
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_exponential_implement::sqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -25,10 +26,11 @@ struct ktm::detail::vector_exponential_implement::sqrt<N, float, std::enable_if_
     }
 };
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_exponential_implement::rsqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -37,10 +39,11 @@ struct ktm::detail::vector_exponential_implement::rsqrt<N, float, std::enable_if
     }
 };
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_exponential_implement::recip<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -49,10 +52,11 @@ struct ktm::detail::vector_exponential_implement::recip<N, float, std::enable_if
     }
 };
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_exponential_implement::fast_sqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -61,10 +65,11 @@ struct ktm::detail::vector_exponential_implement::fast_sqrt<N, float, std::enabl
     }
 };
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_exponential_implement::fast_rsqrt<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -73,10 +78,11 @@ struct ktm::detail::vector_exponential_implement::fast_rsqrt<N, float, std::enab
     }
 };
 
-template<size_t N>
+template <size_t N>
 struct ktm::detail::vector_exponential_implement::fast_recip<N, float, std::enable_if_t<N == 3 || N == 4>>
 {
     using V = vec<N, float>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -89,10 +95,11 @@ struct ktm::detail::vector_exponential_implement::fast_recip<N, float, std::enab
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON)
 
-template<>
+template <>
 struct ktm::detail::vector_exponential_implement::sqrt<2, float>
 {
     using V = vec<2, float>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -101,10 +108,11 @@ struct ktm::detail::vector_exponential_implement::sqrt<2, float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::vector_exponential_implement::rsqrt<2, float>
 {
     using V = vec<2, float>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -113,10 +121,11 @@ struct ktm::detail::vector_exponential_implement::rsqrt<2, float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::vector_exponential_implement::recip<2, float>
 {
     using V = vec<2, float>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -125,10 +134,11 @@ struct ktm::detail::vector_exponential_implement::recip<2, float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::vector_exponential_implement::fast_sqrt<2, float>
 {
     using V = vec<2, float>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -137,10 +147,11 @@ struct ktm::detail::vector_exponential_implement::fast_sqrt<2, float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::vector_exponential_implement::fast_rsqrt<2, float>
 {
     using V = vec<2, float>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -149,10 +160,11 @@ struct ktm::detail::vector_exponential_implement::fast_rsqrt<2, float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::vector_exponential_implement::fast_recip<2, float>
 {
     using V = vec<2, float>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
