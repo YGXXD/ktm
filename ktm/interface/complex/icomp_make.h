@@ -17,10 +17,10 @@
 namespace ktm
 {
 
-template<class Father, class Child>
+template <class Father, class Child>
 struct icomp_make;
 
-template<class Father,typename T>
+template <class Father, typename T>
 struct icomp_make<Father, comp<T>> : Father
 {
     using Father::Father;
@@ -52,10 +52,10 @@ struct icomp_make<Father, comp<T>> : Father
 
     static KTM_INLINE comp<T> from_matrix(const mat<3, 3, T>& matrix) noexcept
     {
-        return comp<T>(matrix[0].yx()); 
+        return comp<T>(matrix[0].yx());
     }
 };
 
-}
+} // namespace ktm
 
 #endif
