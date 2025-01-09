@@ -5,7 +5,7 @@ name: ktm auto format
 on: workflow_dispatch
 
 jobs:
-  format-check:
+  auto-format:
     runs-on: ubuntu-latest
 
     steps:
@@ -45,7 +45,7 @@ jobs:
           else
             echo "code formatting PR does not exist, creating PR"
             gh pr create \
-              --title "bot[github action]: auto code formatting" \
+              --title "Bot[Github Action]: Auto Code Formatting" \
               --body "this PR is auto created by bot!!!
               using clang-format software and depend on .clang-format file!!!
               \`\`\`
