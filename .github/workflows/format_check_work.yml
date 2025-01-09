@@ -1,0 +1,58 @@
+# This starter workflow is for a CMake project running on multiple platforms. There is a different starter workflow if you just want a single platform.
+# See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
+name: ktm cpp format check
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  format-check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup clang-format
+      run: |
+        sudo apt install clang-format 
+        clang-format --version
+
+    - name: Set reusable strings
+      id: strings
+      shell: bash
+      run: |
+        echo "branch-name=${{ github.head_ref || github.ref_name }}" >> "$GITHUB_OUTPUT"
+        echo "clang-format-file=${{ github.workspace }}/.clang-format" >> "$GITHUB_OUTPUT"
+
+    - name: Run clang-format
+      run: >
+        find . -name "*.cpp" -o -name "*.inl" -o -name "*.h" 
+        | xargs clang-format -assume-filename=${{ steps.strings.outputs.clang-format-file }} -i
+
+    - name: Check changes
+      run: |
+        if [ $(git status --porcelain | wc -l) -eq 0 ]; then
+          echo "no changes detected, codes are already formatted"
+          exit 0
+        else
+          echo "changes detected, auto create PR with formatting codes"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b ${{ steps.strings.outputs.branch-name }}_format
+          git add .
+          git commit -m "style: format code using clang-format"
+          git push -u origin ${{ steps.strings.outputs.branch-name }}_format
+          gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+          gh pr create \
+            --title "bot[github action]: auto formatting code" \
+            --body "this PR is auto created by bot!!!
+              using clang-format software and depend on .clang-format file!!!
+              \`\`\`
+                $(cat .clang-format)
+              \`\`\`
+              " \
+            --base ${{ steps.strings.outputs.branch-name }} \
+            --head ${{ steps.strings.outputs.branch-name }}_format
+          exit 0
+        fi
