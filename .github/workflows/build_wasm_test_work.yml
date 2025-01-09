@@ -9,7 +9,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-wasm-test:
     runs-on: ${{ matrix.os }}
 
     strategy:
