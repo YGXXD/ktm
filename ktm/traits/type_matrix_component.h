@@ -76,9 +76,9 @@ template<class M>
 struct svd_component;
 
 template<size_t Row, size_t Col, typename T>
-struct svd_component<mat<Row, Col, T>> : std::tuple<mat<Col, Col, T>, vec<Row < Col ? Row : Col, T>, mat<Row, Row, T>>
+struct svd_component<mat<Row, Col, T>> : std::tuple<mat<Col, Col, T>, vec<(Row < Col) ? Row : Col, T>, mat<Row, Row, T>>
 {
-    using type = std::tuple<mat<Col, Col, T>, vec<Row < Col ? Row : Col, T>, mat<Row, Row, T>>;
+    using type = std::tuple<mat<Col, Col, T>, vec<(Row < Col) ? Row : Col, T>, mat<Row, Row, T>>;
     using type::type;
 
     KTM_MATRIX_COMPONENT_ELEMENT(u, 0)
