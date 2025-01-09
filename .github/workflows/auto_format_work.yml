@@ -46,7 +46,12 @@ jobs:
             echo "code formatting PR does not exist, creating PR"
             gh pr create \
               --title "Bot[Github Action]: Auto Code Formatting" \
-              --body "this PR is auto created by bot!!!\nusing clang-format software and depend on .clang-format file!!!\n\`\`\`\n$(cat .clang-format)\n\`\`\`\n" \
+              --body "this PR is auto created by bot!!!
+        using clang-format software and depend on .clang-format file!!!
+        \`\`\`
+        $(cat .clang-format)
+        \`\`\`
+        " \
               --base ${{ steps.strings.outputs.branch_name }} \
               --head _auto_format_${{ steps.strings.outputs.branch_name }}
           fi
