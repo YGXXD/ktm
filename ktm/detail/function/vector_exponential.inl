@@ -13,10 +13,11 @@
 #include "../../type/vec_fwd.h"
 #include "../../function/common/exponential.h"
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_exponential_implement::sqrt
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -25,10 +26,11 @@ struct ktm::detail::vector_exponential_implement::sqrt
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_exponential_implement::rsqrt
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -37,10 +39,11 @@ struct ktm::detail::vector_exponential_implement::rsqrt
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_exponential_implement::recip
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -49,10 +52,11 @@ struct ktm::detail::vector_exponential_implement::recip
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_exponential_implement::cbrt
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -61,10 +65,11 @@ struct ktm::detail::vector_exponential_implement::cbrt
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_exponential_implement::pow
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
@@ -73,10 +78,11 @@ struct ktm::detail::vector_exponential_implement::pow
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_exponential_implement::exp
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -85,10 +91,11 @@ struct ktm::detail::vector_exponential_implement::exp
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_exponential_implement::exp2
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -97,10 +104,11 @@ struct ktm::detail::vector_exponential_implement::exp2
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_exponential_implement::expm1
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -109,10 +117,11 @@ struct ktm::detail::vector_exponential_implement::expm1
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_exponential_implement::log
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -121,10 +130,11 @@ struct ktm::detail::vector_exponential_implement::log
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_exponential_implement::log10
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -133,10 +143,11 @@ struct ktm::detail::vector_exponential_implement::log10
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_exponential_implement::log2
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -145,10 +156,11 @@ struct ktm::detail::vector_exponential_implement::log2
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_exponential_implement::log1p
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -157,10 +169,11 @@ struct ktm::detail::vector_exponential_implement::log1p
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_exponential_implement::logb
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -169,10 +182,11 @@ struct ktm::detail::vector_exponential_implement::logb
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_exponential_implement::fast_sqrt
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -181,10 +195,11 @@ struct ktm::detail::vector_exponential_implement::fast_sqrt
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_exponential_implement::fast_rsqrt
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -193,10 +208,11 @@ struct ktm::detail::vector_exponential_implement::fast_rsqrt
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_exponential_implement::fast_recip
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
