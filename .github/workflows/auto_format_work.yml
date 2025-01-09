@@ -16,6 +16,12 @@ jobs:
         sudo apt install clang-format 
         clang-format --version
 
+    - name: Set branch name
+      id: strings
+      shell: bash
+      run: |
+        echo "branch_name=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+
     - name: Run clang-format
       run: >
         find . -name "*.cpp" -o -name "*.inl" -o -name "*.h" 
@@ -29,12 +35,12 @@ jobs:
           echo "changes detected, auto commit with formatting codes"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b _auto_format
+          git checkout -b _auto_format_${{ steps.strings.outputs.branch_name }}
           git add .
           git commit -m "style: format code using clang-format"
-          git push -f origin _auto_format
+          git push -f origin _auto_format_${{ steps.strings.outputs.branch_name }}
           gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
-          if gh pr list --head _auto_format --json number | grep -q "number"; then
+          if gh pr list --head _auto_format_${{ steps.strings.outputs.branch_name }} --json number | grep -q "number"; then
             echo "code formatting PR already exists, skipping PR creation"
           else
             echo "code formatting PR does not exist, creating PR"
@@ -46,8 +52,8 @@ jobs:
                 $(cat .clang-format)
               \`\`\`
               " \
-              --base main \
-              --head _auto_format
+              --base ${{ steps.strings.outputs.branch_name }} \
+              --head _auto_format_${{ steps.strings.outputs.branch_name }}
           fi
         fi
         exit 0
