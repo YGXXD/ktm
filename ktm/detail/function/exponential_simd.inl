@@ -13,7 +13,7 @@
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
-template<>
+template <>
 struct ktm::detail::exponential_implement::sqrt<float>
 {
     static KTM_INLINE float call(float x) noexcept
@@ -22,7 +22,7 @@ struct ktm::detail::exponential_implement::sqrt<float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::exponential_implement::rsqrt<float>
 {
     static KTM_INLINE float call(float x) noexcept
@@ -31,7 +31,7 @@ struct ktm::detail::exponential_implement::rsqrt<float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::exponential_implement::recip<float>
 {
     static KTM_INLINE float call(float x) noexcept
@@ -40,7 +40,7 @@ struct ktm::detail::exponential_implement::recip<float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::exponential_implement::fast_sqrt<float>
 {
     static KTM_INLINE float call(float x) noexcept
@@ -49,7 +49,7 @@ struct ktm::detail::exponential_implement::fast_sqrt<float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::exponential_implement::fast_rsqrt<float>
 {
     static KTM_INLINE float call(float x) noexcept
@@ -58,7 +58,7 @@ struct ktm::detail::exponential_implement::fast_rsqrt<float>
     }
 };
 
-template<>
+template <>
 struct ktm::detail::exponential_implement::fast_recip<float>
 {
     static KTM_INLINE float call(float x) noexcept
