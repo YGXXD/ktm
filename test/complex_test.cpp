@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
     std::cout << "effect (comp mul comp) rotate vec" << std::endl;
     std::cout << v2 << std::endl;
 
-    ktm::fcomp c3 = ktm::fcomp::from_to(ktm::fvec2(0.6f, 0.8f), ktm::fvec2(1.f, 0.f)); 
+    ktm::fcomp c3 = ktm::fcomp::from_to(ktm::fvec2(0.6f, 0.8f), ktm::fvec2(1.f, 0.f));
     std::cout << "effect comp mul vec" << std::endl;
     std::cout << c3 * v1 << std::endl;
 
@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
     ktm::fcomp c6 = ktm::fcomp::from_angle(ktm::tow_pi<float>);
     ktm::fvec2 v3 = { 1.f, 1.f };
     std::cout << "slerp comp rotate vec" << std::endl;
-    for(float i = 0.f; i <= 1.00005f; i += 0.1f)
+    for (float i = 0.f; i <= 1.00005f; i += 0.1f)
     {
         ktm::fcomp c = slerp(c5, c6, i);
         ktm::fmat2x2 m = c.matrix2x2();
