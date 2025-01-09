@@ -1,0 +1,55 @@
+# This starter workflow is for a CMake project running on multiple platforms. There is a different starter workflow if you just want a single platform.
+# See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
+name: ktm cpp format check
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  format-check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup clang-format
+      run: |
+        sudo apt install clang-format 
+        clang-format --version
+
+    - name: Run clang-format
+      run: >
+        find . -name "*.cpp" -o -name "*.inl" -o -name "*.h" 
+        | xargs clang-format -i
+
+    - name: Check changes
+      run: |
+        if [ $(git status --porcelain | wc -l) -eq 0 ]; then
+          echo "no changes detected, codes are already formatted"
+        else
+          echo "changes detected, auto commit with formatting codes"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b _auto_format
+          git add .
+          git commit -m "style: format code using clang-format"
+          git push -f origin _auto_format
+          gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+          if gh pr list --head _auto_format --json number | grep -q "number"; then
+            echo "code formatting PR already exists, skipping PR creation"
+          else
+            echo "code formatting PR does not exist, creating PR"
+            gh pr create \
+              --title "bot[github action]: auto code formatting" \
+              --body "this PR is auto created by bot!!!
+              using clang-format software and depend on .clang-format file!!!
+              \`\`\`
+                $(cat .clang-format)
+              \`\`\`
+              " \
+              --base main \
+              --head _auto_format
+          fi
+        fi
+        exit 0
