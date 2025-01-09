@@ -13,10 +13,11 @@
 #include "../../type/vec_fwd.h"
 #include "../../function/common/trigonometric.h"
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_trigonometric_implement::acos
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -25,10 +26,11 @@ struct ktm::detail::vector_trigonometric_implement::acos
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_trigonometric_implement::asin
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -37,10 +39,11 @@ struct ktm::detail::vector_trigonometric_implement::asin
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_trigonometric_implement::atan
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -49,10 +52,11 @@ struct ktm::detail::vector_trigonometric_implement::atan
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_trigonometric_implement::atan2
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
@@ -61,10 +65,11 @@ struct ktm::detail::vector_trigonometric_implement::atan2
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_trigonometric_implement::cos
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -73,10 +78,11 @@ struct ktm::detail::vector_trigonometric_implement::cos
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_trigonometric_implement::sin
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -85,10 +91,11 @@ struct ktm::detail::vector_trigonometric_implement::sin
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_trigonometric_implement::tan
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -97,10 +104,11 @@ struct ktm::detail::vector_trigonometric_implement::tan
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_trigonometric_implement::sinc
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -109,10 +117,11 @@ struct ktm::detail::vector_trigonometric_implement::sinc
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_trigonometric_implement::acosh
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -121,10 +130,11 @@ struct ktm::detail::vector_trigonometric_implement::acosh
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_trigonometric_implement::asinh
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -133,10 +143,11 @@ struct ktm::detail::vector_trigonometric_implement::asinh
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_trigonometric_implement::atanh
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -145,10 +156,11 @@ struct ktm::detail::vector_trigonometric_implement::atanh
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_trigonometric_implement::cosh
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -157,10 +169,11 @@ struct ktm::detail::vector_trigonometric_implement::cosh
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_trigonometric_implement::sinh
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
@@ -169,10 +182,11 @@ struct ktm::detail::vector_trigonometric_implement::sinh
     }
 };
 
-template<size_t N, typename T, typename Void>
+template <size_t N, typename T, typename Void>
 struct ktm::detail::vector_trigonometric_implement::tanh
 {
     using V = vec<N, T>;
+
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
