@@ -124,7 +124,7 @@ struct ktm::detail::array_calc_implement::div_scalar
     static KTM_INLINE std::enable_if_t<std::is_arithmetic_v<S>> call(A& out, const A& x, S scalar) noexcept
     {
         if constexpr (std::is_floating_point_v<S>)
-            ktm::detail::array_calc_implement::mul_scalar<T, N>::call(out, x, one<T> / scalar);
+            ktm::detail::array_calc_implement::mul_scalar<T, N>::call(out, x, one<S> / scalar);
         else
             loop_op<N, A>::call(
                 out, [&scalar](const T& x) -> T { return x / scalar; }, x);
