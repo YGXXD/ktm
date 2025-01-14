@@ -408,7 +408,7 @@ struct ktm::detail::vector_arithmetic_implement::step<2, float>
     static KTM_INLINE V call(const V& edge, const V& x) noexcept
     {
         V ret;
-        skv::fv2 cmp = _cmplt64_f32(x.st, edge.st);
+        skv::fv2 cmp = _cmpge64_f32(x.st, edge.st);
         ret.st = _and64_f32(_dup64_f32(1.f), cmp);
         return ret;
     }
