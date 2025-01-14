@@ -93,7 +93,7 @@ KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> mix(T x, T y, T t) n
 template <typename T>
 KTM_INLINE std::enable_if_t<std::is_floating_point_v<T>, T> step(T edge, T x) noexcept
 {
-    return x < edge ? one<T> : zero<T>;
+    return x < edge ? zero<T> : one<T>;
 }
 
 template <typename T>
