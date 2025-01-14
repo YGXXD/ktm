@@ -5,43 +5,98 @@
 //  Created by 有个小小杜
 //
 
-#include "../ktm/ktm.h"
-#include <iostream>
+#include "ktm_test.h"
 
 int main(int argc, char* argv[])
 {
+    TEST_EQUAL(ktm::length(ktm::fvec2(3.0f, 4.0f)), 5.0f);
+    TEST_EQUAL(ktm::length(ktm::fvec3(2.0f, 2.0f, 1.0f)), 3.0f);
+    TEST_EQUAL(ktm::length(ktm::fvec4(2.0f, 2.0f, 2.0f, 2.0f)), 4.0f);
+    TEST_EQUAL(ktm::length(ktm::fvec2(5.0f, 12.0f)), 13.0f);
+    TEST_EQUAL(ktm::length(ktm::fvec3(3.0f, 4.0f, 5.0f)), 7.071067811865475f);
+    TEST_EQUAL(ktm::length(ktm::fvec4(1.0f, 2.0f, 2.0f, 1.0f)), 3.1622776601683795f);
 
-    ktm::fvec2 a = { 1.1f, 2.5f };
-    ktm::fvec2 b = { 6.9f, 2.3f };
+    TEST_EQUAL(ktm::distance(ktm::fvec2(0.0f, 0.0f), ktm::fvec2(3.0f, 4.0f)), 5.0f);
+    TEST_EQUAL(ktm::distance(ktm::fvec2(-1.0f, -1.0f), ktm::fvec2(2.0f, 3.0f)), 5.0f);
+    TEST_EQUAL(ktm::distance(ktm::fvec2(1.0f, 1.0f), ktm::fvec2(4.0f, 5.0f)), 5.0f);
+    TEST_EQUAL(ktm::distance(ktm::fvec2(-2.0f, -2.0f), ktm::fvec2(1.0f, 2.0f)), 5.0f);
+    TEST_EQUAL(ktm::distance(ktm::fvec2(2.0f, 2.0f), ktm::fvec2(5.0f, 6.0f)), 5.0f);
+    TEST_EQUAL(ktm::distance(ktm::fvec2(-3.0f, -3.0f), ktm::fvec2(0.0f, 1.0f)), 5.0f);
 
-    std::cout << "dot: " << ktm::dot(a, b) << std::endl;
-    std::cout << "cross: " << ktm::cross(a, b) << std::endl;
-    std::cout << "length: " << ktm::length(a) << " " << ktm::length(b) << std::endl;
-    std::cout << "fast_length: " << ktm::fast::length(a) << " " << ktm::fast::length(b) << std::endl;
-    std::cout << "distance: " << ktm::distance(a, b) << std::endl;
-    std::cout << "fast_distance: " << ktm::fast::distance(a, b) << std::endl;
-    std::cout << "project: " << ktm::project(a, b) << std::endl;
-    std::cout << "fast_project: " << ktm::fast::project(a, b) << std::endl;
-    std::cout << "normalize: " << ktm::normalize(b) << std::endl;
-    std::cout << "fast_normalize: " << ktm::fast::normalize(b) << std::endl;
-    std::cout << "reflect: " << ktm::reflect(a, b) << std::endl;
-    std::cout << "refract: " << ktm::refract(a, b, 1.3) << std::endl;
+    TEST_EQUAL(ktm::dot(ktm::fvec2(1.0f, 0.0f), ktm::fvec2(0.0f, 1.0f)), 0.0f);
+    TEST_EQUAL(ktm::dot(ktm::fvec2(2.0f, 1.0f), ktm::fvec2(-1.0f, 2.0f)), 0.0f);
+    TEST_EQUAL(ktm::dot(ktm::fvec2(3.0f, -1.0f), ktm::fvec2(1.0f, 3.0f)), 0.0f);
+    TEST_EQUAL(ktm::dot(ktm::fvec2(1.0f, 2.0f), ktm::fvec2(-2.0f, 1.0f)), 0.0f);
+    TEST_EQUAL(ktm::dot(ktm::fvec2(2.0f, 3.0f), ktm::fvec2(-3.0f, 2.0f)), 0.0f);
+    TEST_EQUAL(ktm::dot(ktm::fvec2(3.0f, 4.0f), ktm::fvec2(-4.0f, 3.0f)), 0.0f);
 
-    ktm::fvec3 c = { 1.1f, 2.5f, 3.8f };
-    ktm::fvec3 d = { 6.9f, 2.3f, -3.1f };
+    TEST_EQUAL(ktm::normalize(ktm::fvec2(3.0f, 4.0f)), ktm::fvec2(0.6f, 0.8f));
+    TEST_EQUAL(ktm::normalize(ktm::fvec2(5.0f, 0.0f)), ktm::fvec2(1.0f, 0.0f));
+    TEST_EQUAL(ktm::normalize(ktm::fvec2(0.0f, 5.0f)), ktm::fvec2(0.0f, 1.0f));
+    TEST_EQUAL(ktm::normalize(ktm::fvec2(1.0f, 1.0f)), ktm::fvec2(0.7071067811865475f, 0.7071067811865475f));
+    TEST_EQUAL(ktm::normalize(ktm::fvec2(2.0f, 2.0f)), ktm::fvec2(0.7071067811865475f, 0.7071067811865475f));
+    TEST_EQUAL(ktm::normalize(ktm::fvec2(3.0f, 3.0f)), ktm::fvec2(0.7071067811865475f, 0.7071067811865475f));
 
-    std::cout << "dot: " << ktm::dot(c, d) << std::endl;
-    std::cout << "cross: " << ktm::cross(c, d) << std::endl;
-    std::cout << "length: " << ktm::length(c) << " " << ktm::length(d) << std::endl;
-    std::cout << "fast_length: " << ktm::fast::length(c) << " " << ktm::fast::length(d) << std::endl;
-    std::cout << "distance: " << ktm::distance(c, d) << std::endl;
-    std::cout << "fast_distance: " << ktm::fast::distance(c, d) << std::endl;
-    std::cout << "project: " << ktm::project(c, d) << std::endl;
-    std::cout << "fast_project: " << ktm::fast::project(c, d) << std::endl;
-    std::cout << "normalize: " << ktm::normalize(d) << std::endl;
-    std::cout << "fast_normalize: " << ktm::fast::normalize(d) << std::endl;
-    std::cout << "reflect: " << ktm::reflect(c, d) << std::endl;
-    std::cout << "refract: " << ktm::refract(c, d, 1.3) << std::endl;
+    TEST_EQUAL(ktm::cross(ktm::fvec3(1.0f, 0.0f, 0.0f), ktm::fvec3(0.0f, 1.0f, 0.0f)), ktm::fvec3(0.0f, 0.0f, 1.0f));
+    TEST_EQUAL(ktm::cross(ktm::fvec3(0.0f, 1.0f, 0.0f), ktm::fvec3(0.0f, 0.0f, 1.0f)), ktm::fvec3(1.0f, 0.0f, 0.0f));
+    TEST_EQUAL(ktm::cross(ktm::fvec3(1.0f, 1.0f, 0.0f), ktm::fvec3(0.0f, 1.0f, 1.0f)), ktm::fvec3(1.0f, -1.0f, 1.0f));
+    TEST_EQUAL(ktm::cross(ktm::fvec3(2.0f, 0.0f, 0.0f), ktm::fvec3(0.0f, 2.0f, 0.0f)), ktm::fvec3(0.0f, 0.0f, 4.0f));
+    TEST_EQUAL(ktm::cross(ktm::fvec3(0.0f, 2.0f, 0.0f), ktm::fvec3(0.0f, 0.0f, 2.0f)), ktm::fvec3(4.0f, 0.0f, 0.0f));
+    TEST_EQUAL(ktm::cross(ktm::fvec3(2.0f, 2.0f, 0.0f), ktm::fvec3(0.0f, 2.0f, 2.0f)), ktm::fvec3(4.0f, -4.0f, 4.0f));
+
+    TEST_EQUAL(ktm::reflect(ktm::fvec3(1.0f, -1.0f, 0.0f), ktm::fvec3(0.0f, 1.0f, 0.0f)), ktm::fvec3(1.0f, 1.0f, 0.0f));
+    TEST_EQUAL(ktm::reflect(ktm::fvec3(1.0f, 0.0f, -1.0f), ktm::fvec3(0.0f, 0.0f, 1.0f)), ktm::fvec3(1.0f, 0.0f, 1.0f));
+    TEST_EQUAL(ktm::reflect(ktm::fvec3(-1.0f, 1.0f, 0.0f), ktm::fvec3(1.0f, 0.0f, 0.0f)), ktm::fvec3(1.0f, 1.0f, 0.0f));
+    TEST_EQUAL(ktm::reflect(ktm::fvec3(2.0f, -2.0f, 0.0f), ktm::fvec3(0.0f, 1.0f, 0.0f)), ktm::fvec3(2.0f, 2.0f, 0.0f));
+    TEST_EQUAL(ktm::reflect(ktm::fvec3(2.0f, 0.0f, -2.0f), ktm::fvec3(0.0f, 0.0f, 1.0f)), ktm::fvec3(2.0f, 0.0f, 2.0f));
+    TEST_EQUAL(ktm::reflect(ktm::fvec3(-2.0f, 2.0f, 0.0f), ktm::fvec3(1.0f, 0.0f, 0.0f)), ktm::fvec3(2.0f, 2.0f, 0.0f));
+
+    TEST_EQUAL(ktm::refract(ktm::fvec3(1.0f, -1.0f, 0.0f), ktm::fvec3(0.0f, 1.0f, 0.0f), 0.5f),
+               ktm::fvec3(0.5f, -1.0f, 0.0f));
+    TEST_EQUAL(ktm::refract(ktm::fvec3(1.0f, 0.0f, -1.0f), ktm::fvec3(0.0f, 0.0f, 1.0f), 0.6f),
+               ktm::fvec3(0.6f, 0.0f, -1.0f));
+    TEST_EQUAL(ktm::refract(ktm::fvec3(-1.0f, 1.0f, 0.0f), ktm::fvec3(1.0f, 0.0f, 0.0f), 0.7f),
+               ktm::fvec3(-1.0f, 0.7f, 0.0f));
+    TEST_EQUAL(ktm::refract(ktm::fvec3(2.0f, -2.0f, 0.0f), ktm::fvec3(0.0f, 1.0f, 0.0f), 0.8f),
+               ktm::fvec3(1.6f, -1.70880079f, 0.0f));
+    TEST_EQUAL(ktm::refract(ktm::fvec3(2.0f, 0.0f, -2.0f), ktm::fvec3(0.0f, 0.0f, 1.0f), 0.9f),
+               ktm::fvec3(1.8f, 0.0f, -1.85202587f));
+    TEST_EQUAL(ktm::refract(ktm::fvec3(-2.0f, 2.0f, 0.0f), ktm::fvec3(1.0f, 0.0f, 0.0f), 0.75f),
+               ktm::fvec3(-1.63935959f, 1.5f, 0.0f));
+
+    TEST_EQUAL_FAST(ktm::fast::length(ktm::fvec2(3.0f, 4.0f)), 5.0f);
+    TEST_EQUAL_FAST(ktm::fast::length(ktm::fvec2(5.0f, 12.0f)), 13.0f);
+    TEST_EQUAL_FAST(ktm::fast::length(ktm::fvec2(6.0f, 8.0f)), 10.0f);
+    TEST_EQUAL_FAST(ktm::fast::length(ktm::fvec2(8.0f, 15.0f)), 17.0f);
+    TEST_EQUAL_FAST(ktm::fast::length(ktm::fvec2(9.0f, 12.0f)), 15.0f);
+    TEST_EQUAL_FAST(ktm::fast::length(ktm::fvec2(12.0f, 16.0f)), 20.0f);
+
+    TEST_EQUAL_FAST(ktm::fast::distance(ktm::fvec2(0.0f, 0.0f), ktm::fvec2(3.0f, 4.0f)), 5.0f);
+    TEST_EQUAL_FAST(ktm::fast::distance(ktm::fvec2(-1.0f, -1.0f), ktm::fvec2(2.0f, 3.0f)), 5.0f);
+    TEST_EQUAL_FAST(ktm::fast::distance(ktm::fvec2(1.0f, 1.0f), ktm::fvec2(4.0f, 5.0f)), 5.0f);
+    TEST_EQUAL_FAST(ktm::fast::distance(ktm::fvec2(-2.0f, -2.0f), ktm::fvec2(1.0f, 2.0f)), 5.0f);
+    TEST_EQUAL_FAST(ktm::fast::distance(ktm::fvec2(2.0f, 2.0f), ktm::fvec2(5.0f, 6.0f)), 5.0f);
+    TEST_EQUAL_FAST(ktm::fast::distance(ktm::fvec2(-3.0f, -3.0f), ktm::fvec2(0.0f, 1.0f)), 5.0f);
+
+    TEST_EQUAL_FAST(ktm::fast::normalize(ktm::fvec2(3.0f, 4.0f)), ktm::fvec2(0.6f, 0.8f));
+    TEST_EQUAL_FAST(ktm::fast::normalize(ktm::fvec2(5.0f, 0.0f)), ktm::fvec2(1.0f, 0.0f));
+    TEST_EQUAL_FAST(ktm::fast::normalize(ktm::fvec2(0.0f, 5.0f)), ktm::fvec2(0.0f, 1.0f));
+    TEST_EQUAL_FAST(ktm::fast::normalize(ktm::fvec2(1.0f, 1.0f)), ktm::fvec2(0.7071067811865475f, 0.7071067811865475f));
+    TEST_EQUAL_FAST(ktm::fast::normalize(ktm::fvec2(2.0f, 2.0f)), ktm::fvec2(0.7071067811865475f, 0.7071067811865475f));
+    TEST_EQUAL_FAST(ktm::fast::normalize(ktm::fvec2(3.0f, 3.0f)), ktm::fvec2(0.7071067811865475f, 0.7071067811865475f));
+
+    TEST_EQUAL_FAST(ktm::fast::project(ktm::fvec3(1.0f, 0.0f, 0.0f), ktm::fvec3(2.0f, 0.0f, 0.0f)),
+                    ktm::fvec3(1.0f, 0.0f, 0.0f));
+    TEST_EQUAL_FAST(ktm::fast::project(ktm::fvec3(0.0f, 1.0f, 0.0f), ktm::fvec3(0.0f, 2.0f, 0.0f)),
+                    ktm::fvec3(0.0f, 1.0f, 0.0f));
+    TEST_EQUAL_FAST(ktm::fast::project(ktm::fvec3(0.0f, 0.0f, 1.0f), ktm::fvec3(0.0f, 0.0f, 2.0f)),
+                    ktm::fvec3(0.0f, 0.0f, 1.0f));
+    TEST_EQUAL_FAST(ktm::fast::project(ktm::fvec3(1.0f, 1.0f, 0.0f), ktm::fvec3(2.0f, 0.0f, 0.0f)),
+                    ktm::fvec3(1.0f, 0.0f, 0.0f));
+    TEST_EQUAL_FAST(ktm::fast::project(ktm::fvec3(0.0f, 1.0f, 1.0f), ktm::fvec3(0.0f, 2.0f, 0.0f)),
+                    ktm::fvec3(0.0f, 1.0f, 0.0f));
+    TEST_EQUAL_FAST(ktm::fast::project(ktm::fvec3(1.0f, 0.0f, 1.0f), ktm::fvec3(0.0f, 0.0f, 2.0f)),
+                    ktm::fvec3(0.0f, 0.0f, 1.0f));
 
     return 0;
 }
