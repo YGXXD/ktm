@@ -8,7 +8,8 @@ AccessModifierOffset: -4
 ConstructorInitializerIndentWidth: 4
 UseTab: Never
 SortIncludes: Never
-DerivePointerAlignment: true
+DerivePointerAlignment: false
+PointerAlignment: Left
 Cpp11BracedListStyle: false
 BreakBeforeBraces: Allman
 SpaceBeforeParens: ControlStatements
