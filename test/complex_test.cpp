@@ -22,7 +22,8 @@ int main()
     TEST_EQUAL_COMPLEX(ktm::normalize(ktm::fcomp()), ktm::fcomp(0.0f, 1.0f));
     TEST_EQUAL_COMPLEX(ktm::exp(ktm::fcomp(2.0f, 1.0f)), ktm::fcomp(2.47172667f, -1.13120438f));
     TEST_EQUAL_COMPLEX(ktm::log(ktm::fcomp(3.0f, 1.0f)), ktm::fcomp(1.249045772f, 1.151292546f));
-    TEST_EQUAL_COMPLEX(ktm::log(ktm::exp(ktm::fcomp(ktm::half_pi<float>, 5.0f))), ktm::fcomp(ktm::half_pi<float>, 5.0f));
+    TEST_EQUAL_COMPLEX(ktm::log(ktm::exp(ktm::fcomp(ktm::half_pi<float>, 5.0f))),
+                       ktm::fcomp(ktm::half_pi<float>, 5.0f));
 
     ktm::fmat3x3 m = ktm::rotate2d(1.0f);
     ktm::fcomp c1 = ktm::fcomp::from_matrix(m);
