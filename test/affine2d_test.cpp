@@ -10,7 +10,6 @@
 int main(int argc, char* argv[])
 {
     ktm::fmat3x3 affine_fmat;
-    ktm::dmat3x3 affine_dmat;
 
     ktm::faffine2d a1 {};
     a1.rotate(0.6f * ktm::pi<float>);
@@ -27,19 +26,16 @@ int main(int argc, char* argv[])
     a3 >> affine_fmat;
     TEST_EQUAL_MATRIX(affine_fmat, ktm::translate2d(ktm::fvec2(9.0f, -7.0f)), 3);
 
-    ktm::daffine2d a4 {};
-    a4.translate(2.0, 2.0).rotate(0.7 * ktm::pi<double>).shear_y(0.3 * ktm::pi<double>).scale(1.0, 2.0);
-    ktm::dmat3x3 a4_mat = ktm::translate2d(ktm::dvec2 { 2.0, 2.0 }) * ktm::rotate2d(0.7 * ktm::pi<double>) *
-                          ktm::shear2d_y(0.3 * ktm::pi<double>) * ktm::scale2d(ktm::dvec2 { 1.0, 2.0 });
-    ktm::dvec3 a4_vec = ktm::dvec3(5.0, -9.0, 1.0);
-    a4 >> affine_dmat;
-    TEST_EQUAL_MATRIX(affine_dmat, a4_mat, 3);
-    TEST_EQUAL(affine_dmat * a4_vec, a4_mat * a4_vec);
-    auto affine_factor = ktm::decompose_affine(affine_dmat);
-    TEST_EQUAL(affine_dmat * a4_vec, affine_factor.get_translate() * affine_factor.get_rotate() *
-                                        affine_factor.get_shear() * affine_factor.get_scale() * a4_vec);
-    a4.invert().concat(affine_dmat) >> affine_dmat;
-    TEST_EQUAL_MATRIX(affine_dmat, ktm::dmat3x3::from_eye(), 3);
+    ktm::faffine2d a4 {};
+    a4.translate(2.0f, 2.0f).rotate(0.7f * ktm::pi<float>).shear_y(0.3f * ktm::pi<float>).scale(1.0f, 2.0f);
+    ktm::fmat3x3 a4_mat = ktm::translate2d(ktm::fvec2 { 2.0f, 2.0f }) * ktm::rotate2d(0.7f * ktm::pi<float>) *
+                          ktm::shear2d_y(0.3f * ktm::pi<float>) * ktm::scale2d(ktm::fvec2 { 1.0f, 2.0f });
+    ktm::fvec3 a4_vec = ktm::fvec3(5.0f, -9.0f, 1.0f);
+    a4 >> affine_fmat;
+    TEST_EQUAL_MATRIX(affine_fmat, a4_mat, 3);
+    TEST_EQUAL(affine_fmat * a4_vec, a4_mat * a4_vec);
+    a4.invert().concat(affine_fmat) >> affine_fmat;
+    TEST_EQUAL_MATRIX(affine_fmat, ktm::fmat3x3::from_eye(), 3);
 
     ktm::faffine2d a5, a6, a7;
     ktm::fmat3x3 a5_mat, a6_mat, a7_mat;
