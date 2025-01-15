@@ -73,21 +73,30 @@ int main(int argc, char* argv[])
     TEST_EQUAL(ktm::atanh(0.8f), 1.098612289f);
     TEST_EQUAL(ktm::fvec2(1.0f, 2.0f) + ktm::fvec2(3.0f, 4.0f), ktm::fvec2(4.0f, 6.0f));
     TEST_EQUAL(ktm::fvec3(1.0f, 2.0f, 3.0f) + ktm::fvec3(4.0f, 5.0f, 6.0f), ktm::fvec3(5.0f, 7.0f, 9.0f));
-    TEST_EQUAL(ktm::fvec4(1.0f, 2.0f, 3.0f, 4.0f) + ktm::fvec4(5.0f, 6.0f, 7.0f, 8.0f), ktm::fvec4(6.0f, 8.0f, 10.0f, 12.0f));
+    TEST_EQUAL(ktm::fvec4(1.0f, 2.0f, 3.0f, 4.0f) + ktm::fvec4(5.0f, 6.0f, 7.0f, 8.0f),
+               ktm::fvec4(6.0f, 8.0f, 10.0f, 12.0f));
 
     TEST_EQUAL(ktm::fvec2(4.0f, 6.0f) - ktm::fvec2(1.0f, 2.0f), ktm::fvec2(3.0f, 4.0f));
     TEST_EQUAL(ktm::fvec3(5.0f, 7.0f, 9.0f) - ktm::fvec3(1.0f, 2.0f, 3.0f), ktm::fvec3(4.0f, 5.0f, 6.0f));
-    TEST_EQUAL(ktm::fvec4(6.0f, 8.0f, 10.0f, 12.0f) - ktm::fvec4(1.0f, 2.0f, 3.0f, 4.0f), ktm::fvec4(5.0f, 6.0f, 7.0f, 8.0f));
+    TEST_EQUAL(ktm::fvec4(6.0f, 8.0f, 10.0f, 12.0f) - ktm::fvec4(1.0f, 2.0f, 3.0f, 4.0f),
+               ktm::fvec4(5.0f, 6.0f, 7.0f, 8.0f));
     TEST_EQUAL(ktm::fvec2(2.0f, 3.0f) * ktm::fvec2(3.0f, 4.0f), ktm::fvec2(6.0f, 12.0f));
     TEST_EQUAL(ktm::fvec3(2.0f, 3.0f, 4.0f) * ktm::fvec3(3.0f, 4.0f, 5.0f), ktm::fvec3(6.0f, 12.0f, 20.0f));
-    TEST_EQUAL(ktm::fvec4(2.0f, 3.0f, 4.0f, 5.0f) * ktm::fvec4(3.0f, 4.0f, 5.0f, 6.0f), ktm::fvec4(6.0f, 12.0f, 20.0f, 30.0f));
+    TEST_EQUAL(ktm::fvec4(2.0f, 3.0f, 4.0f, 5.0f) * ktm::fvec4(3.0f, 4.0f, 5.0f, 6.0f),
+               ktm::fvec4(6.0f, 12.0f, 20.0f, 30.0f));
     TEST_EQUAL(ktm::fvec2(6.0f, 12.0f) / ktm::fvec2(2.0f, 3.0f), ktm::fvec2(3.0f, 4.0f));
     TEST_EQUAL(ktm::fvec3(6.0f, 12.0f, 20.0f) / ktm::fvec3(2.0f, 3.0f, 4.0f), ktm::fvec3(3.0f, 4.0f, 5.0f));
-    TEST_EQUAL(ktm::fvec4(6.0f, 12.0f, 20.0f, 30.0f) / ktm::fvec4(2.0f, 3.0f, 4.0f, 5.0f), ktm::fvec4(3.0f, 4.0f, 5.0f, 6.0f));
-    TEST_EQUAL(ktm_operator_madd(ktm::fvec2(1.0f, 2.0f), ktm::fvec2(2.0f, 3.0f), ktm::fvec2(3.0f, 4.0f)), ktm::fvec2(7.0f, 14.0f));
-    TEST_EQUAL(ktm_operator_madd(ktm::fvec3(1.0f, 2.0f, 3.0f), ktm::fvec3(2.0f, 3.0f, 4.0f), ktm::fvec3(3.0f, 4.0f, 5.0f)), ktm::fvec3(7.0f, 14.0f, 23.0f));
-    TEST_EQUAL(ktm_operator_madd(ktm::fvec4(1.0f, 2.0f, 3.0f, 4.0f), ktm::fvec4(2.0f, 3.0f, 4.0f, 5.0f), ktm::fvec4(3.0f, 4.0f, 5.0f, 6.0f)), ktm::fvec4(7.0f, 14.0f, 23.0f, 34.0f));
-    
+    TEST_EQUAL(ktm::fvec4(6.0f, 12.0f, 20.0f, 30.0f) / ktm::fvec4(2.0f, 3.0f, 4.0f, 5.0f),
+               ktm::fvec4(3.0f, 4.0f, 5.0f, 6.0f));
+    TEST_EQUAL(ktm_operator_madd(ktm::fvec2(1.0f, 2.0f), ktm::fvec2(2.0f, 3.0f), ktm::fvec2(3.0f, 4.0f)),
+               ktm::fvec2(7.0f, 14.0f));
+    TEST_EQUAL(
+        ktm_operator_madd(ktm::fvec3(1.0f, 2.0f, 3.0f), ktm::fvec3(2.0f, 3.0f, 4.0f), ktm::fvec3(3.0f, 4.0f, 5.0f)),
+        ktm::fvec3(7.0f, 14.0f, 23.0f));
+    TEST_EQUAL(ktm_operator_madd(ktm::fvec4(1.0f, 2.0f, 3.0f, 4.0f), ktm::fvec4(2.0f, 3.0f, 4.0f, 5.0f),
+                                 ktm::fvec4(3.0f, 4.0f, 5.0f, 6.0f)),
+               ktm::fvec4(7.0f, 14.0f, 23.0f, 34.0f));
+
     TEST_EQUAL(ktm::reduce_add(ktm::fvec2(1.0f, 2.0f)), 3.0f);
     TEST_EQUAL(ktm::reduce_add(ktm::fvec3(1.0f, 2.0f, 3.0f)), 6.0f);
     TEST_EQUAL(ktm::reduce_add(ktm::fvec4(1.0f, 2.0f, 3.0f, 4.0f)), 10.0f);

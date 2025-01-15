@@ -61,7 +61,7 @@ template <class... Tps>
 inline bool is_same_vs;
 
 template <class Tp1, class Tp2, class... Tps>
-inline constexpr bool is_same_vs<Tp1, Tp2, Tps...> = is_same_vs<Tp1, Tp2>&& is_same_vs<Tp2, Tps...>;
+inline constexpr bool is_same_vs<Tp1, Tp2, Tps...> = is_same_vs<Tp1, Tp2> && is_same_vs<Tp2, Tps...>;
 
 template <class Tp, class Up>
 inline constexpr bool is_same_vs<Tp, Up> = is_same_v<Tp, Up>;
@@ -105,7 +105,7 @@ inline bool is_template_same_vs;
 
 template <template <typename...> class Tp1, template <typename...> class Tp2, template <typename...> class... Tps>
 inline constexpr bool is_template_same_vs<Tp1, Tp2, Tps...> =
-    is_template_same_vs<Tp1, Tp2>&& is_template_same_vs<Tp2, Tps...>;
+    is_template_same_vs<Tp1, Tp2> && is_template_same_vs<Tp2, Tps...>;
 
 template <template <typename...> class Tp, template <typename...> class Up>
 inline constexpr bool is_template_same_vs<Tp, Up> = is_template_same_v<Tp, Up>;
@@ -121,8 +121,8 @@ template <template <typename...> class... Tps>
 inline bool is_template_exist_same_vs;
 
 template <template <typename...> class Tp, template <typename...> class... Tps>
-inline constexpr bool
-    is_template_exist_same_vs<Tp, Tps...> = (is_template_same_v<Tp, Tps> || ...) || is_template_exist_same_vs<Tps...>;
+inline constexpr bool is_template_exist_same_vs<Tp, Tps...> =
+    (is_template_same_v<Tp, Tps> || ...) || is_template_exist_same_vs<Tps...>;
 
 template <template <typename...> class Tp>
 inline constexpr bool is_template_exist_same_vs<Tp> = false;
