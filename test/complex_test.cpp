@@ -5,45 +5,47 @@
 //  Created by 有个小小杜
 //
 
-#include "../ktm/ktm.h"
-#include <iostream>
+#include "ktm_test.h"
 
-int main(int argc, char* argv[])
+int main()
 {
-    ktm::fvec2 v1 = { 2.f, 2.f };
-    ktm::fcomp c1 = ktm::fcomp::from_to(ktm::fvec2(1.f, 0.f), ktm::fvec2(0.f, 1.f));
-    ktm::fcomp c2 = ktm::fcomp::from_to(ktm::fvec2(0.f, 1.f), ktm::fvec2(1.f, 0.f));
+    TEST_EQUAL_COMPLEX(ktm::fcomp(1.0f, 2.0f) + ktm::fcomp(2.0f, -1.0f), ktm::fcomp(3.0f, 1.0f));
+    TEST_EQUAL_COMPLEX(ktm::fcomp(1.0f, 2.0f) - ktm::fcomp(2.0f, -1.0f), ktm::fcomp(-1.0f, 3.0f));
+    TEST_EQUAL_COMPLEX(ktm::fcomp(1.0f, 2.0f) * 2.0f, ktm::fcomp(2.0f, 4.0f));
+    TEST_EQUAL_COMPLEX(-ktm::fcomp(1.0f, 2.0f), ktm::fcomp(-1.0f, -2.0f));
 
-    ktm::fvec2 v2 = c1 * c2 * v1;
-    std::cout << "effect (comp mul comp) rotate vec" << std::endl;
-    std::cout << v2 << std::endl;
+    TEST_EQUAL_COMPLEX(ktm::conjugate(ktm::fcomp(3.0f, 2.0f)), ktm::fcomp(-3.0f, 2.0f));
+    TEST_EQUAL_COMPLEX(ktm::inverse(ktm::fcomp(1.0f)) * ktm::fcomp(1.0f), ktm::fcomp::identity());
+    TEST_EQUAL_COMPLEX(ktm::fcomp(1.5f) * ktm::inverse(ktm::fcomp(1.5f)), ktm::fcomp::identity());
+    TEST_EQUAL(ktm::sqrt(ktm::dot(ktm::fcomp(2.7f), ktm::fcomp(2.7f))), ktm::length(ktm::fcomp(2.7f)));
+    TEST_EQUAL(ktm::length(ktm::normalize(ktm::fcomp(2.7f, 1.3f))), 1.0f);
+    TEST_EQUAL_COMPLEX(ktm::normalize(ktm::fcomp()), ktm::fcomp(0.0f, 1.0f));
+    TEST_EQUAL_COMPLEX(ktm::exp(ktm::fcomp(2.0f, 1.0f)), ktm::fcomp(2.47172667f, -1.13120438f));
+    TEST_EQUAL_COMPLEX(ktm::log(ktm::fcomp(3.0f, 1.0f)), ktm::fcomp(1.249045772f, 1.151292546f));
+    TEST_EQUAL_COMPLEX(ktm::log(ktm::exp(ktm::fcomp(ktm::half_pi<float>, 5.0f))), ktm::fcomp(ktm::half_pi<float>, 5.0f));
 
-    ktm::fcomp c3 = ktm::fcomp::from_to(ktm::fvec2(0.6f, 0.8f), ktm::fvec2(1.f, 0.f));
-    std::cout << "effect comp mul vec" << std::endl;
-    std::cout << c3 * v1 << std::endl;
+    ktm::fmat3x3 m = ktm::rotate2d(1.0f);
+    ktm::fcomp c1 = ktm::fcomp::from_matrix(m);
+    ktm::fcomp c2 = ktm::fcomp::from_angle(1.0f);
+    ktm::fvec2 v1(1.0f, 1.0f);
+    TEST_EQUAL_COMPLEX(c1, c2);
+    TEST_EQUAL(c2 * v1, c2.matrix2x2() * v1);
 
-    ktm::fcomp c4 = ktm::fcomp::from_angle(ktm::half_pi<float>);
-    std::cout << "from_angle rotate vec" << std::endl;
-    std::cout << c4 * v2 << std::endl;
+    ktm::fcomp c3 = ktm::fcomp::from_angle(ktm::half_pi<float>);
+    ktm::fcomp c4 = ktm::fcomp::from_angle(ktm::pi<float>);
+    TEST_EQUAL(ktm::dot(c3, c4), std::cos(ktm::half_pi<float>));
 
-    ktm::fcomp c5 = ktm::fcomp::from_angle(ktm::half_pi<float>);
-    ktm::fcomp c6 = ktm::fcomp::from_angle(ktm::tow_pi<float>);
-    ktm::fvec2 v3 = { 1.f, 1.f };
-    std::cout << "slerp comp rotate vec" << std::endl;
-    for (float i = 0.f; i <= 1.00005f; i += 0.1f)
+    for (float t = 0.0f; t <= 1.0f; t += 0.05f)
     {
-        ktm::fcomp c = slerp(c5, c6, i);
-        ktm::fmat2x2 m = c.matrix2x2();
-        std::cout << c * v3 << std::endl;
-        std::cout << m * v3 << std::endl;
-    }
+        ktm::fcomp lerp_c = ktm::lerp(c2, c3, t);
+        TEST_EQUAL(*lerp_c, ktm::lerp(*c2, *c3, t));
 
-    std::cout << "inverse: " << ktm::inverse(c5) << std::endl;
-    std::cout << "negate: " << -c5 << std::endl;
-    std::cout << "normalize: " << ktm::normalize(c5) << std::endl;
-    std::cout << "log(exp): " << ktm::log(ktm::exp(c3)) << std::endl;
-    std::cout << "slerp: " << ktm::slerp(c5, c3, 0.5f) << std::endl;
-    std::cout << "slerp_longest: " << ktm::slerp_longest(c5, c3, 0.5f) << std::endl;
+        ktm::fcomp slerp_c = ktm::slerp(c2, c3, t);
+        TEST_EQUAL(slerp_c * v1, slerp_c.matrix2x2() * v1);
+
+        ktm::fcomp slerp_longest_c = ktm::slerp_longest(c2, c3, t);
+        TEST_EQUAL(slerp_longest_c * v1, slerp_longest_c.matrix2x2() * v1);
+    }
 
     return 0;
 }
