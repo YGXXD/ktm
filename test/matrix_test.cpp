@@ -5,62 +5,95 @@
 //  Created by 有个小小杜
 //
 
-#include "../ktm/ktm.h"
-#include <iostream>
+#include "ktm_test.h"
 
-int main(int argc, char* argv[])
+int main()
 {
-    std::cout << "mat_mul_vec test:" << std::endl;
-    ktm::fmat3x2 mt1 = { { 1, 2 }, { 1, 2 }, { 3, 4 } };
-    ktm::fvec3 v1 = { 2, 2, 2 };
+    ktm::fmat2x2 m1 = { { 1.0f, 2.0f }, { 3.0f, 4.0f } };
+    ktm::fmat2x2 m2 = { { 4.0f, 3.0f }, { 2.0f, 1.0f } };
+    TEST_EQUAL_MATRIX(m1 + m2, ktm::fmat2x2({ { 5.0f, 5.0f }, { 5.0f, 5.0f } }), 2);
+    TEST_EQUAL_MATRIX(m1 - m2, ktm::fmat2x2({ { -3.0f, -1.0f }, { 1.0f, 3.0f } }), 2);
+    TEST_EQUAL_MATRIX(m1 * 2.0f, ktm::fmat2x2({ { 2.0f, 4.0f }, { 6.0f, 8.0f } }), 2);
+    TEST_EQUAL_MATRIX(m1 * m2, ktm::fmat2x2({ { 13.0f, 20.0f }, { 5.0f, 8.0f } }), 2);
+    TEST_EQUAL_MATRIX(m1 / 2.0f, ktm::fmat2x2({ { 0.5f, 1.0f }, { 1.5f, 2.0f } }), 2);
+    ktm::fmat2x2 m3 = { { 2.0f, 1.0f }, { 1.0f, 2.0f } };
+    TEST_EQUAL_MATRIX(ktm::transpose(m3), ktm::fmat2x2({ { 2.0f, 1.0f }, { 1.0f, 2.0f } }), 2);
+    TEST_EQUAL(ktm::trace(m3), 4.0f);
+    TEST_EQUAL(ktm::diagonal(m3), ktm::fvec2(2.0f, 2.0f));
+    TEST_EQUAL(ktm::determinant(m3), 3.0f);
+    TEST_EQUAL_MATRIX(ktm::inverse(m3) * m3, ktm::fmat2x2::from_eye(), 2);
+    TEST_EQUAL_MATRIX(m3 * ktm::inverse(m3), ktm::fmat2x2::from_eye(), 2);
 
-    std::cout << mt1 << std::endl;
-    std::cout << v1 << std::endl;
-    std::cout << mt1 * v1 << std::endl;
+    ktm::fmat3x3 m4 = { { 1.0f, 2.0f, 3.0f }, { 4.0f, 5.0f, 6.0f }, { 7.0f, 8.0f, 9.0f } };
+    ktm::fmat3x3 m5 = { { 9.0f, 8.0f, 7.0f }, { 6.0f, 5.0f, 4.0f }, { 3.0f, 2.0f, 1.0f } };
+    TEST_EQUAL_MATRIX(m4 + m5,
+                      ktm::fmat3x3({ { 10.0f, 10.0f, 10.0f }, { 10.0f, 10.0f, 10.0f }, { 10.0f, 10.0f, 10.0f } }), 3);
+    TEST_EQUAL_MATRIX(m4 - m5, ktm::fmat3x3({ { -8.0f, -6.0f, -4.0f }, { -2.0f, 0.0f, 2.0f }, { 4.0f, 6.0f, 8.0f } }),
+                      3);
+    TEST_EQUAL_MATRIX(m4 * 2.0f,
+                      ktm::fmat3x3({ { 2.0f, 4.0f, 6.0f }, { 8.0f, 10.0f, 12.0f }, { 14.0f, 16.0f, 18.0f } }), 3);
+    TEST_EQUAL_MATRIX(m4 * m5,
+                      ktm::fmat3x3({ { 90.0f, 114.0f, 138.0f }, { 54.0f, 69.0f, 84.0f }, { 18.0f, 24.0f, 30.0f } }), 3);
+    TEST_EQUAL_MATRIX(m4 / 2.0f, ktm::fmat3x3({ { 0.5f, 1.0f, 1.5f }, { 2.0f, 2.5f, 3.0f }, { 3.5f, 4.0f, 4.5f } }), 3);
+    ktm::fmat3x3 m6 = { { 2.0f, 1.0f, 3.0f }, { 1.0f, 2.0f, 1.0f }, { 3.0f, 4.0f, 1.0f } };
+    TEST_EQUAL_MATRIX(ktm::transpose(m6),
+                      ktm::fmat3x3({ { 2.0f, 1.0f, 3.0f }, { 1.0f, 2.0f, 4.0f }, { 3.0f, 1.0f, 1.0f } }), 3);
+    TEST_EQUAL(ktm::trace(m6), 5.0f);
+    TEST_EQUAL(ktm::diagonal(m6), ktm::fvec3(2.0f, 2.0f, 1.0f));
+    TEST_EQUAL(ktm::determinant(m6), -8.0f);
+    TEST_EQUAL_MATRIX(ktm::inverse(m6) * m6, ktm::fmat3x3::from_eye(), 3);
+    TEST_EQUAL_MATRIX(m6 * ktm::inverse(m6), ktm::fmat3x3::from_eye(), 3);
 
-    std::cout << "vec_mul_mat test:" << std::endl;
-    ktm::fmat3x2 mt2 = { { 3, 2 }, { 1, 2 }, { 3, 4 } };
-    ktm::fvec2 v2 = { 2, 1 };
-
-    std::cout << mt2 << std::endl;
-    std::cout << v2 << std::endl;
-    std::cout << v2 * mt2 << std::endl;
-
-    std::cout << "mat_mul_mat test:" << std::endl;
-    ktm::fmat3x2 mt3 = { { 3, 2 }, { 1, 2 }, { 3, 4 } };
-    ktm::fmat2x3 mt4 = { { 3, 3, 3 }, { 1, 1, 1 } };
-    std::cout << mt3 << std::endl;
-    std::cout << mt4 << std::endl;
-    std::cout << mt3 * mt4 << std::endl;
-
-    std::cout << "add test:" << std::endl;
-    ktm::fmat4x3 mt5 = { { 3, 3, 3 }, { 1, 1, 1 }, { 2, 3, 3 }, {} };
-    std::cout << mt5 << std::endl;
-    std::cout << mt5 + mt5 << std::endl;
-
-    std::cout << "equal test:" << std::endl;
-    ktm::fmat4x3 mt6 = mt5;
-    std::cout << (mt5 == mt6) << "," << (mt5 == ktm::fmat4x3()) << std::endl;
-
-    std::cout << "transpose test:" << std::endl;
-    ktm::fmat3x3 mt7_1 = { { 2, -1, 207 }, { -1, 2, -1 }, { 20, -1, 2 } };
-    mt7_1 *= mt7_1;
-    std::cout << mt7_1 << std::endl;
-    std::cout << ktm::transpose(mt7_1) << std::endl;
-    ktm::fmat2x2 mt7_2 = { { 2, -1 }, { 50, 20 } };
-    std::cout << mt7_2 << std::endl;
-    std::cout << ktm::transpose(mt7_2) << std::endl;
-
-    std::cout << "determinant test:" << std::endl;
-    ktm::fmat4x4 mt8 = { { 2, -1, 9, 9 }, { -1, 2, -1, -8 }, { 20, -1, 2, 2 }, { 1, 3, 2, 77 } };
-    ktm::smat4x4 smt8 = { { 2, -1, 9, 9 }, { -1, 2, -1, -8 }, { 20, -1, 2, 2 }, { 1, 3, 2, 77 } };
-    std::cout << ktm::determinant(mt8) << "\n" << ktm::determinant(smt8) << std::endl;
-
-    std::cout << "inverse test:" << std::endl;
-    ktm::fmat4x4 mt9 = { { 2, -1, 9, 9 }, { -1, 2, -1, -8 }, { 20, -1, 2, 2 }, { 1, 3, 2, 77 } };
-    mt9 *= mt9;
-    std::cout << mt9 << std::endl;
-    std::cout << ktm::inverse(mt9) * mt9 * mt8 << std::endl;
+    ktm::fmat4x4 m7 = {
+        { 1.0f, 2.0f, 3.0f, 4.9f }, { 4.0f, 5.0f, 6.0f, 1.0f }, { 7.0f, 8.0f, 9.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f }
+    };
+    ktm::fmat4x4 m8 = {
+        { 9.0f, 8.0f, 7.0f, 2.8f }, { 6.0f, 5.0f, 4.0f, 1.0f }, { 3.0f, 2.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f }
+    };
+    TEST_EQUAL_MATRIX(m7 + m8,
+                      ktm::fmat4x4({ { 10.0f, 10.0f, 10.0f, 7.7f },
+                                     { 10.0f, 10.0f, 10.0f, 2.0f },
+                                     { 10.0f, 10.0f, 10.0f, 2.0f },
+                                     { 2.0f, 2.0f, 2.0f, 2.0f } }),
+                      4);
+    TEST_EQUAL_MATRIX(m7 - m8,
+                      ktm::fmat4x4({ { -8.0f, -6.0f, -4.0f, 2.1f },
+                                     { -2.0f, 0.0f, 2.0f, 0.0f },
+                                     { 4.0f, 6.0f, 8.0f, 0.0f },
+                                     { 0.0f, 0.0f, 0.0f, 0.0f } }),
+                      4);
+    TEST_EQUAL_MATRIX(m7 * 2.0f,
+                      ktm::fmat4x4({ { 2.0f, 4.0f, 6.0f, 9.8f },
+                                     { 8.0f, 10.0f, 12.0f, 2.0f },
+                                     { 14.0f, 16.0f, 18.0f, 2.0f },
+                                     { 2.0f, 2.0f, 2.0f, 2.0f } }),
+                      4);
+    TEST_EQUAL_MATRIX(m7 * m8,
+                      ktm::fmat4x4({ { 92.8f, 116.8f, 140.8f, 61.9f },
+                                     { 55.0f, 70.0f, 85.0f, 39.4f },
+                                     { 19.0f, 25.0f, 31.0f, 18.7f },
+                                     { 13.0f, 16.0f, 19.0f, 7.9f } }),
+                      4);
+    TEST_EQUAL_MATRIX(m7 / 2.0f,
+                      ktm::fmat4x4({ { 0.5f, 1.0f, 1.5f, 2.45f },
+                                     { 2.0f, 2.5f, 3.0f, 0.5f },
+                                     { 3.5f, 4.0f, 4.5f, 0.5f },
+                                     { 0.5f, 0.5f, 0.5f, 0.5f } }),
+                      4);
+    ktm::fmat4x4 m9 = {
+        { 2.0f, 1.0f, 3.0f, 4.0f }, { 1.0f, 2.0f, 1.0f, -3.0f }, { 3.0f, 4.0f, 1.0f, 2.0f }, { 2.0f, 1.0f, -2.0f, 3.0f }
+    };
+    TEST_EQUAL_MATRIX(ktm::transpose(m9),
+                      ktm::fmat4x4({ { 2.0f, 1.0f, 3.0f, 2.0f },
+                                     { 1.0f, 2.0f, 4.0f, 1.0f },
+                                     { 3.0f, 1.0f, 1.0f, -2.0f },
+                                     { 4.0f, -3.0f, 2.0f, 3.0f } }),
+                      4);
+    TEST_EQUAL(ktm::trace(m9), 8.0f);
+    TEST_EQUAL(ktm::diagonal(m9), ktm::fvec4(2.0f, 2.0f, 1.0f, 3.0f));
+    TEST_EQUAL(ktm::determinant(m9), 73.0f);
+    TEST_EQUAL_MATRIX(ktm::inverse(m9) * m9, ktm::fmat4x4::from_eye(), 4);
+    TEST_EQUAL_MATRIX(m9 * ktm::inverse(m9), ktm::fmat4x4::from_eye(), 4);
 
     return 0;
 }
