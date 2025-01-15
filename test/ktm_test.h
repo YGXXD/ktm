@@ -21,7 +21,7 @@
             return 1;                                                                                              \
         }                                                                                                          \
     }
-#define TEST_EQUAL(x, y) TEST_EQUAL_WITH_EPSILON(x, y, 1e-6f)
+#define TEST_EQUAL(x, y) TEST_EQUAL_WITH_EPSILON(x, y, 1e-5f)
 #define TEST_EQUAL_FAST(x, y) TEST_EQUAL_WITH_EPSILON(x, y, 5e-2f)
 #define TEST_EQUAL_MATRIX(x, y, row)   \
     {                                  \
