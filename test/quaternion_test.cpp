@@ -23,9 +23,9 @@ int main()
     TEST_EQUAL(ktm::length(ktm::normalize(ktm::fquat(1.0f, 2.0f, 3.0f, 4.0f))), 1.0f);
     TEST_EQUAL_QUATERNION(ktm::normalize(ktm::fquat()), ktm::fquat(0.0f, 0.0f, 0.0f, 1.0f));
     TEST_EQUAL_QUATERNION(ktm::exp(ktm::fquat(1.0f, 2.0f, -1.0f, 1.0f)),
-                          ktm::fquat(0.708185017f, 1.41637003f, -0.708185017f, -2.09282088f));
+                          ktm::fquat(0.708185f, 1.416370f, -0.708185f, -2.092821f));
     TEST_EQUAL_QUATERNION(ktm::log(ktm::fquat(0.5f, 1.0f, -0.5f, 2.0f)),
-                          ktm::fquat(0.224319041f, 0.448638082f, -0.224319041f, 0.852374017f));
+                          ktm::fquat(0.224319f, 0.448638f, -0.224319f, 0.852374f));
     TEST_EQUAL_QUATERNION(ktm::log(ktm::exp(ktm::fquat(0.5f, 1.5f, -0.5f, 2.5f))), ktm::fquat(0.5f, 1.5f, -0.5f, 2.5f));
 
     ktm::fmat4x4 m = ktm::rotate3d_axis(1.0f, ktm::normalize(ktm::fvec3(0.0f, 0.6f, 0.8f)));

@@ -116,7 +116,7 @@ int main(int argc, char* argv[])
         s3[i][i] = usv3.get_s()[i];
     TEST_EQUAL_MATRIX(usv3.get_u() * s3 * usv3.get_vt(), ktm::transpose(m11), 4);
 
-    ktm::fmat2x2 m12 = { { -5.f, 0.f }, { 3.f, 1.f } };
+    ktm::fmat2x2 m12 = { { -5.0f, 0.0f }, { 3.0f, 1.0f } };
     ktm::mat<6, 6, float> mt13 = { { 1.0f, 4.0f, 7.0f, 2.0f, 5.0f, 0.0f },    { 4.0f, 5.0f, -1.0f, 4.0f, 3.0f, 0.0f },
                                    { 7.2f, -1.6f, -2.0f, -5.0f, 4.0f, 0.0f }, { 2.0f, 4.0f, 5.0f, 7.5f, 0.8f, 0.0f },
                                    { 3.8f, -1.0f, 4.0f, -5.4f, 4.6f, 0.0f },  { 8.0f, 9.0f, -2.0f, 7.6f, 9.1f, 1.0f } };
