@@ -1,6 +1,5 @@
 enable_testing()
 
-find_program(NODE node)
 file(GLOB KTM_TEST_CPP_FILES *.cpp)
 
 foreach(KTM_TEST_CPP_FILE ${KTM_TEST_CPP_FILES})
