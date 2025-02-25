@@ -79,7 +79,7 @@ jobs:
 
     - name: Test
       working-directory: ${{ steps.strings.outputs.build-output-test-dir }}
-      run: ctest --build-config ${{ matrix.build_type }}
+      run: ctest --output-on-failure --build-config ${{ matrix.build_type }}
 
     - name: Install
       run: ${{ matrix.root }} cmake --install ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
