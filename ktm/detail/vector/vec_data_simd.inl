@@ -14,12 +14,6 @@
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
 template <>
-struct ktm::detail::vec_data_implement::vec_storage<2, float>
-{
-    typedef skv::fv2 type;
-};
-
-template <>
 struct ktm::detail::vec_data_implement::vec_storage<3, float>
 {
     typedef skv::fv4 type;
@@ -95,12 +89,6 @@ struct ktm::detail::vec_data_implement::vec_swizzle<
     }
 };
 
-template <>
-struct ktm::detail::vec_data_implement::vec_storage<2, int>
-{
-    typedef skv::sv2 type;
-};
-
 #endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2 | KTM_SIMD_WASM)
@@ -120,6 +108,18 @@ struct ktm::detail::vec_data_implement::vec_storage<4, int>
 #endif // KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE2 | KTM_SIMD_WASM)
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON)
+
+template <>
+struct ktm::detail::vec_data_implement::vec_storage<2, float>
+{
+    typedef skv::fv2 type;
+};
+
+template <>
+struct ktm::detail::vec_data_implement::vec_storage<2, int>
+{
+    typedef skv::sv2 type;
+};
 
 template <>
 struct ktm::detail::vec_data_implement::vec_swizzle<2, 2, float>
