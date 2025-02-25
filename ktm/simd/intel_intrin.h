@@ -36,7 +36,9 @@ KTM_FUNC __m128 shuffle128_f32(__m128 a, __m128 b) noexcept
 template <size_t N3, size_t N2, size_t N1, size_t N0>
 KTM_FUNC __m128 shuffle128_f32(__m128 a) noexcept
 {
-#    if KTM_SIMD_ENABLE(KTM_SIMD_SSE2)
+#    if KTM_SIMD_ENABLE(KTM_SIMD_AVX)
+    return _mm_permute_ps(a, _MM_SHUFFLE(N3, N2, N1, N0));
+#    elif KTM_SIMD_ENABLE(KTM_SIMD_SSE2)
     return _mm_castsi128_ps(_mm_shuffle_epi32(_mm_castps_si128(a), _MM_SHUFFLE(N3, N2, N1, N0)));
 #    else
     return _mm_shuffle_ps(a, a, _MM_SHUFFLE(N3, N2, N1, N0));
@@ -57,7 +59,14 @@ KTM_FUNC __m128 mul128_f32(__m128 a, __m128 b) noexcept { return _mm_mul_ps(a, b
 
 KTM_FUNC __m128 div128_f32(__m128 a, __m128 b) noexcept { return _mm_div_ps(a, b); }
 
-KTM_FUNC __m128 madd128_f32(__m128 a, __m128 b, __m128 c) noexcept { return _mm_add_ps(a, _mm_mul_ps(b, c)); }
+KTM_FUNC __m128 madd128_f32(__m128 a, __m128 b, __m128 c) noexcept
+{
+#    if KTM_SIMD_ENABLE(KTM_SIMD_FMA)
+    return _mm_fmadd_ps(b, c, a);
+#    else
+    return _mm_add_ps(a, _mm_mul_ps(b, c));
+#    endif
+}
 
 KTM_FUNC __m128 neg128_f32(__m128 a) noexcept
 {
