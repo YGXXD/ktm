@@ -11,8 +11,8 @@
 #include "matrix_transform3d_fwd.h"
 #include "../../type/basic.h"
 
-template <typename T, typename StartV>
-KTM_NOINLINE std::enable_if_t<std::is_floating_point_v<T> && std::is_exist_same_vs<StartV, ktm::vec<3, T>, int>>
+template <typename T, typename StartV, typename Void>
+KTM_NOINLINE std::enable_if_t<std::is_floating_point_v<T>>
 ktm::detail::matrix_transform3d_implement::rotate3d_normal(ktm::mat<4, 4, T>& out, T sin_theta, T cos_theta,
                                                            const vec<3, T>& normal, StartV&& normal_start) noexcept
 {
