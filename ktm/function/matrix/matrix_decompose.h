@@ -549,14 +549,14 @@ decompose_edv_jacobi(const M& m) noexcept
             sin_theta = sin(theta);
             cos_theta = cos(theta);
             sin_two_theta = static_cast<T>(2) * sin_theta * cos_theta;
-            cos_two_theta = cos_theta * cos_theta - sin_theta * sin_theta;
+            cos_two_theta = std::fma(cos_theta, cos_theta, -sin_theta * sin_theta);
         }
 
         T sin_theta_square = pow2(sin_theta);
         T cos_theta_square = pow2(cos_theta);
-        a[col][col] = acc * cos_theta_square + arr * sin_theta_square + acr * sin_two_theta;
-        a[row][row] = acc * sin_theta_square + arr * cos_theta_square - acr * sin_two_theta;
-        a[col][row] = static_cast<T>(0.5) * (arr - acc) * sin_two_theta + acr * cos_two_theta;
+        a[col][col] = std::fma(acc, cos_theta_square, std::fma(arr, sin_theta_square, acr * sin_two_theta));
+        a[row][row] = std::fma(acc, sin_theta_square, std::fma(arr, cos_theta_square, -acr * sin_two_theta));
+        a[col][row] = std::fma(static_cast<T>(0.5) * (arr - acc), sin_two_theta, acr * cos_two_theta);
         a[row][col] = a[col][row];
 
         // givens rotate
@@ -567,8 +567,8 @@ decompose_edv_jacobi(const M& m) noexcept
                 T aci = a[col][i];
                 T ari = a[row][i];
 
-                a[col][i] = cos_theta * aci + sin_theta * ari;
-                a[row][i] = cos_theta * ari - sin_theta * aci;
+                a[col][i] = std::fma(cos_theta, aci, sin_theta * ari);
+                a[row][i] = std::fma(cos_theta, ari, -sin_theta * aci);
                 a[i][col] = a[col][i];
                 a[i][row] = a[row][i];
             }
@@ -579,8 +579,8 @@ decompose_edv_jacobi(const M& m) noexcept
             T eci = eigen_vec[col][i];
             T eri = eigen_vec[row][i];
 
-            eigen_vec[col][i] = cos_theta * eci + sin_theta * eri;
-            eigen_vec[row][i] = cos_theta * eri - sin_theta * eci;
+            eigen_vec[col][i] = std::fma(cos_theta, eci, sin_theta * eri);
+            eigen_vec[row][i] = std::fma(cos_theta, eri, -sin_theta * eci);
         }
     }
     eigen_value = diagonal(a);
