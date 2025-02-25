@@ -10,15 +10,15 @@
 
 #include "../setup.h"
 
-#define KTM_SIMD_NEON 0x00000001
-#define KTM_SIMD_NEON64 0x00000002
-#define KTM_SIMD_SSE 0x00000004
-#define KTM_SIMD_SSE2 0x00000008
-#define KTM_SIMD_SSE3 0x00000010
-#define KTM_SIMD_SSSE3 0x00000020
-#define KTM_SIMD_SSE4_1 0x00000040
-#define KTM_SIMD_SSE4_2 0x00000080
-#define KTM_SIMD_WASM 0x00000100
+#define KTM_SIMD_NEON 0x1
+#define KTM_SIMD_NEON64 0x2
+#define KTM_SIMD_SSE 0x4
+#define KTM_SIMD_SSE2 0x8
+#define KTM_SIMD_SSE3 0x10
+#define KTM_SIMD_SSSE3 0x20
+#define KTM_SIMD_SSE4_1 0x40
+#define KTM_SIMD_SSE4_2 0x80
+#define KTM_SIMD_WASM 0x100
 #define KTM_SIMD_ENABLE(flags) (KTM_SIMD_SUPPORT & (flags))
 
 #include <cstddef>
@@ -59,18 +59,6 @@
 #elif defined(__SSE__)
 #    define KTM_SIMD_SUPPORT KTM_SIMD_SSE
 #    include <xmmintrin.h>
-#endif
-
-#if KTM_SIMD_ENABLE(KTM_SIMD_SSE)
-#    if defined(KTM_COMPILER_MSVC)
-#        if defined(_M_IX86_FP)
-#            define KTM_SIMD_SSE_X86 0xffffffff
-#        endif
-#    else
-#        if defined(__i386__) || defined(__x86_64__)
-#            define KTM_SIMD_SSE_X86 0xffffffff
-#        endif
-#    endif
 #endif
 
 #if defined(KTM_COMPILER_MSVC)
