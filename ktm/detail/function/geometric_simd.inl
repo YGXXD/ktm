@@ -44,7 +44,6 @@ struct ktm::detail::geometric_implement::length<2, float>
     static KTM_INLINE float call(const V& x) noexcept
     {
         skv::fv2 len_sq = skv::dot1_fv2(x.st, x.st);
-        ;
         return _cast64to32_f32(_sqrth64_f32(len_sq));
     }
 };
@@ -71,7 +70,6 @@ struct ktm::detail::geometric_implement::normalize<2, float>
     {
         V ret;
         skv::fv2 dot = skv::dot_fv2(x.st, x.st);
-        ;
         skv::fv2 rsq = _rsqrth64_f32(dot);
         ret.st = _mul64_f32(rsq, x.st);
         return ret;
@@ -87,7 +85,6 @@ struct ktm::detail::geometric_implement::reflect<2, float>
     {
         V ret;
         skv::fv2 dot = skv::dot_fv2(x.st, n.st);
-        ;
         skv::fv2 mul_0 = _mul64_f32(n.st, dot);
         skv::fv2 mul_1 = _mul64_f32(mul_0, _dup64_f32(2.0f));
         ret.st = _sub64_f32(x.st, mul_1);
@@ -105,7 +102,6 @@ struct ktm::detail::geometric_implement::refract<2, float>
         skv::fv2 t_eta = _dup64_f32(eta);
         skv::fv2 one = _dup64_f32(1.f);
         skv::fv2 dot = skv::dot_fv2(n.st, x.st);
-        ;
         skv::fv2 eta2 = _mul64_f32(t_eta, t_eta);
         skv::fv2 one_minus_cos2 = _sub64_f32(one, _mul64_f32(dot, dot));
         skv::fv2 k = _sub64_f32(one, _mul64_f32(eta2, one_minus_cos2));
