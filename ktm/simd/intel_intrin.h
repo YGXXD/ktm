@@ -305,23 +305,14 @@ KTM_FUNC __m256 shuffle256_f32(__m256 a) noexcept
         }
         else
         {
-            constexpr int n7 = N7 % 4;
-            constexpr int n6 = N6 % 4;
-            constexpr int n5 = N5 % 4;
-            constexpr int n4 = N4 % 4;
-            constexpr int n3 = N3 % 4;
-            constexpr int n2 = N2 % 4;
-            constexpr int n1 = N1 % 4;
-            constexpr int n0 = N0 % 4;
-
-            __m256 low = _mm256_permute2f128_ps(a, a, 0x00);
-            __m256 high = _mm256_permute2f128_ps(a, a, 0x11);
-            low = _mm256_permutevar_ps(low, _mm256_set_epi32(n7, n6, n5, n4, n3, n2, n1, n0));
-            high = _mm256_permutevar_ps(high, _mm256_set_epi32(n7, n6, n5, n4, n3, n2, n1, n0));
+            __m256i shuff = _mm256_set_epi32(N7 % 4, N6 % 4, N5 % 4, N4 % 4, N3 % 4, N2 % 4, N1 % 4, N0 % 4);
+            __m256 shuff_ra = _mm256_permute2f128_ps(a, a, 0x01);
+            __m256 shuff_a = _mm256_permutevar_ps(a, shuff);
+            shuff_ra = _mm256_permutevar_ps(shuff_ra, shuff);
 
             constexpr int blend_mask = (N0 >= 4) | ((N1 >= 4) << 1) | ((N2 >= 4) << 2) | ((N3 >= 4) << 3) |
-                                       ((N4 >= 4) << 4) | ((N5 >= 4) << 5) | ((N6 >= 4) << 6) | ((N7 >= 4) << 7);
-            return _mm256_blend_ps(low, high, blend_mask);
+                                       ((N4 < 4) << 4) | ((N5 < 4) << 5) | ((N6 < 4) << 6) | ((N7 < 4) << 7);
+            return _mm256_blend_ps(shuff_a, shuff_ra, blend_mask);
         }
 #    endif
     }
