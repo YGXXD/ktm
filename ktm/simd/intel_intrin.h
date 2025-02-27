@@ -94,15 +94,50 @@ KTM_FUNC __m128 max128_f32(__m128 a, __m128 b) noexcept { return _mm_max_ps(a, b
 
 KTM_FUNC __m128 min128_f32(__m128 a, __m128 b) noexcept { return _mm_min_ps(a, b); }
 
-KTM_FUNC __m128 cmpeq128_f32(__m128 a, __m128 b) noexcept { return _mm_cmpeq_ps(a, b); }
+KTM_FUNC __m128 cmpeq128_f32(__m128 a, __m128 b) noexcept
+{
+#    if KTM_SIMD_ENABLE(KTM_SIMD_AVX)
+    return _mm_cmp_ps(a, b, _CMP_EQ_OQ);
+#    else
+    return _mm_cmpeq_ps(a, b);
+#    endif
+}
 
-KTM_FUNC __m128 cmplt128_f32(__m128 a, __m128 b) noexcept { return _mm_cmplt_ps(a, b); }
+KTM_FUNC __m128 cmplt128_f32(__m128 a, __m128 b) noexcept
+{
+#    if KTM_SIMD_ENABLE(KTM_SIMD_AVX)
+    return _mm_cmp_ps(a, b, _CMP_LT_OQ);
+#    else
+    return _mm_cmplt_ps(a, b);
+#    endif
+}
 
-KTM_FUNC __m128 cmpgt128_f32(__m128 a, __m128 b) noexcept { return _mm_cmpgt_ps(a, b); }
+KTM_FUNC __m128 cmpgt128_f32(__m128 a, __m128 b) noexcept
+{
+#    if KTM_SIMD_ENABLE(KTM_SIMD_AVX)
+    return _mm_cmp_ps(a, b, _CMP_GT_OQ);
+#    else
+    return _mm_cmpgt_ps(a, b);
+#    endif
+}
 
-KTM_FUNC __m128 cmple128_f32(__m128 a, __m128 b) noexcept { return _mm_cmple_ps(a, b); }
+KTM_FUNC __m128 cmple128_f32(__m128 a, __m128 b) noexcept
+{
+#    if KTM_SIMD_ENABLE(KTM_SIMD_AVX)
+    return _mm_cmp_ps(a, b, _CMP_LE_OQ);
+#    else
+    return _mm_cmple_ps(a, b);
+#    endif
+}
 
-KTM_FUNC __m128 cmpge128_f32(__m128 a, __m128 b) noexcept { return _mm_cmpge_ps(a, b); }
+KTM_FUNC __m128 cmpge128_f32(__m128 a, __m128 b) noexcept
+{
+#    if KTM_SIMD_ENABLE(KTM_SIMD_AVX)
+    return _mm_cmp_ps(a, b, _CMP_GE_OQ);
+#    else
+    return _mm_cmpge_ps(a, b);
+#    endif
+}
 
 KTM_FUNC __m128 recipl128_f32(__m128 a) noexcept { return _mm_rcp_ps(a); }
 
