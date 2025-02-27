@@ -270,6 +270,48 @@ KTM_FUNC __m128i min128_s32(__m128i a, __m128i b) noexcept { return _mm_min_epi3
 
 #endif
 
+#if KTM_SIMD_ENABLE(KTM_SIMD_AVX)
+
+KTM_FUNC __m256 load256_f32(const void* p) noexcept { return _mm256_loadu_ps(reinterpret_cast<const float*>(p)); }
+
+KTM_FUNC void store256_f32(void* p, __m256 a) noexcept { _mm256_storeu_ps(reinterpret_cast<float*>(p), a); }
+
+template <size_t N7, size_t N6, size_t N5, size_t N4, size_t N3, size_t N2, size_t N1, size_t N0>
+KTM_FUNC __m256 shuffle256_f32(__m256 a) noexcept
+{
+#    if KTM_SIMD_ENABLE(KTM_SIMD_AVX2)
+    return _mm256_permutevar8x32_ps(a, _mm256_set_epi32(N7, N6, N5, N4, N3, N2, N1, N0));
+#    endif
+}
+
+KTM_FUNC __m256 mul256_f32(__m256 a, __m256 b) noexcept { return _mm256_mul_ps(a, b); }
+
+KTM_FUNC __m256 madd256_f32(__m256 a, __m256 b, __m256 c) noexcept
+{
+#    if KTM_SIMD_ENABLE(KTM_SIMD_FMA)
+    return _mm256_fmadd_ps(b, c, a);
+#    else
+    return _mm256_add_ps(a, _mm256_mul_ps(b, c));
+#    endif
+}
+
+KTM_FUNC __m256i cast256_s32_f32(__m256 a) noexcept { return _mm256_castps_si256(a); }
+
+KTM_FUNC __m256 cast256_f32_s32(__m256i a) noexcept { return _mm256_castsi256_ps(a); }
+
+#endif
+
+#if KTM_SIMD_ENABLE(KTM_SIMD_AVX2)
+
+KTM_FUNC __m256i mul256_s32(__m256i a, __m256i b) noexcept { return _mm256_mullo_epi32(a, b); }
+
+KTM_FUNC __m256i madd256_s32(__m256i a, __m256i b, __m256i c) noexcept
+{
+    return _mm256_add_epi32(a, _mm256_mullo_epi32(b, c));
+}
+
+#endif
+
 } // namespace intrin
 
 #endif

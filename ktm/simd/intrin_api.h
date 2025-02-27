@@ -110,6 +110,30 @@
 
 #endif
 
+#if KTM_SIMD_ENABLE(KTM_SIMD_AVX)
+
+#    define _load256_f32(p) ::intrin::load256_f32(p)
+#    define _store256_f32(p, a) ::intrin::store256_f32(p, a)
+#    define _shuffo256_f32(a, n7, n6, n5, n4, n3, n2, n1, n0) \
+        ::intrin::shuffle256_f32<n7, n6, n5, n4, n3, n2, n1, n0>(a)
+#    define _mul256_f32(a, b) ::intrin::mul256_f32(a, b)
+#    define _madd256_f32(a, b, c) ::intrin::madd256_f32(a, b, c)
+
+#    define _shuffo256_s32(a, n7, n6, n5, n4, n3, n2, n1, n0) \
+        _cast256_s32_f32(_shuffo256_f32(_cast256_f32_s32(a), n7, n6, n5, n4, n3, n2, n1, n0))
+
+#    define _cast256_s32_f32(a) ::intrin::cast256_s32_f32(a)
+#    define _cast256_f32_s32(a) ::intrin::cast256_f32_s32(a)
+
+#endif
+
+#if KTM_SIMD_ENABLE(KTM_SIMD_AVX2)
+
+#    define _mul256_s32(a, b) ::intrin::mul256_s32(a, b)
+#    define _madd256_s32(a, b, c) ::intrin::madd256_s32(a, b, c)
+
+#endif
+
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON | KTM_SIMD_SSE | KTM_SIMD_WASM)
 
 #    define _load128_f32(p) ::intrin::load128_f32(p)
