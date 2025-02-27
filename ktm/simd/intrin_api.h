@@ -10,7 +10,7 @@
 
 #include "arch_def.h"
 #include "arm_intrin.h"
-#include "intel_intrin.h"
+#include "x86_intrin.h"
 #include "wasm_intrin.h"
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON)
