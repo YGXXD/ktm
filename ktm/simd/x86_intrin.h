@@ -305,10 +305,9 @@ KTM_FUNC __m256 shuffle256_f32(__m256 a) noexcept
         }
         else
         {
-            __m256i shuff = _mm256_set_epi32(N7 % 4, N6 % 4, N5 % 4, N4 % 4, N3 % 4, N2 % 4, N1 % 4, N0 % 4);
-            __m256 shuff_ra = _mm256_permute2f128_ps(a, a, 0x01);
-            __m256 shuff_a = _mm256_permutevar_ps(a, shuff);
-            shuff_ra = _mm256_permutevar_ps(shuff_ra, shuff);
+            __m256 shuff_a = _mm256_permutevar_ps(
+                a, _mm256_set_epi32(N7 % 4, N6 % 4, N5 % 4, N4 % 4, N3 % 4, N2 % 4, N1 % 4, N0 % 4));
+            __m256 shuff_ra = _mm256_permute2f128_ps(shuff_a, shuff_a, 0x01);
 
             constexpr int blend_mask = (N0 >= 4) | ((N1 >= 4) << 1) | ((N2 >= 4) << 2) | ((N3 >= 4) << 3) |
                                        ((N4 < 4) << 4) | ((N5 < 4) << 5) | ((N6 < 4) << 6) | ((N7 < 4) << 7);
