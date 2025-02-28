@@ -279,32 +279,32 @@ KTM_FUNC void store256_f32(void* p, __m256 a) noexcept { _mm256_storeu_ps(reinte
 template <size_t N7, size_t N6, size_t N5, size_t N4, size_t N3, size_t N2, size_t N1, size_t N0>
 KTM_FUNC __m256 shuffle256_f32(__m256 a) noexcept
 {
-    constexpr bool low_idx_in_range_0_3 =
-        (N0 >= 0 && N0 < 4) && (N1 >= 0 && N1 < 4) && (N2 >= 0 && N2 < 4) && (N3 >= 0 && N3 < 4);
-    constexpr bool high_idx_in_range_4_7 =
-        (N4 >= 4 && N4 < 8) && (N5 >= 4 && N5 < 8) && (N6 >= 4 && N6 < 8) && (N7 >= 4 && N7 < 8);
-    if constexpr (low_idx_in_range_0_3 && high_idx_in_range_4_7)
-    {
-        return _mm256_permutevar_ps(a, _mm256_set_epi32(N7 - 4, N6 - 4, N5 - 4, N4 - 4, N3, N2, N1, N0));
-    }
-    else
-    {
-#    if KTM_SIMD_ENABLE(KTM_SIMD_AVX2)
-        return _mm256_permutevar8x32_ps(a, _mm256_set_epi32(N7, N6, N5, N4, N3, N2, N1, N0));
-#    else
-        constexpr auto is_continue_idx_lambda = [](size_t n0, size_t n1, size_t n2, size_t n3) -> bool
-        {
-            return (n0 + 1 == n1) && (n1 + 1 == n2) && (n2 + 1 == n3);
-        };
-        constexpr bool low_idx_is_m128 = is_continue_idx_lambda(N0, N1, N2, N3) && (N0 == 0 || N0 == 4);
-        constexpr bool high_idx_is_m128 = is_continue_idx_lambda(N4, N5, N6, N7) && (N4 == 0 || N4 == 4);
-        if constexpr (low_idx_is_m128 && high_idx_is_m128)
-        {
-            constexpr int permute2f128_mask = (N0 == 0 ? 0 : 1) | ((N4 == 0 ? 0 : 1) << 4);
-            return _mm256_permute2f128_ps(a, a, permute2f128_mask);
-        }
-        else
-        {
+//     constexpr bool low_idx_in_range_0_3 =
+//         (N0 >= 0 && N0 < 4) && (N1 >= 0 && N1 < 4) && (N2 >= 0 && N2 < 4) && (N3 >= 0 && N3 < 4);
+//     constexpr bool high_idx_in_range_4_7 =
+//         (N4 >= 4 && N4 < 8) && (N5 >= 4 && N5 < 8) && (N6 >= 4 && N6 < 8) && (N7 >= 4 && N7 < 8);
+//     if constexpr (low_idx_in_range_0_3 && high_idx_in_range_4_7)
+//     {
+//         return _mm256_permutevar_ps(a, _mm256_set_epi32(N7 - 4, N6 - 4, N5 - 4, N4 - 4, N3, N2, N1, N0));
+//     }
+//     else
+//     {
+// #    if KTM_SIMD_ENABLE(KTM_SIMD_AVX2)
+//         return _mm256_permutevar8x32_ps(a, _mm256_set_epi32(N7, N6, N5, N4, N3, N2, N1, N0));
+// #    else
+//         constexpr auto is_continue_idx_lambda = [](size_t n0, size_t n1, size_t n2, size_t n3) -> bool
+//         {
+//             return (n0 + 1 == n1) && (n1 + 1 == n2) && (n2 + 1 == n3);
+//         };
+//         constexpr bool low_idx_is_m128 = is_continue_idx_lambda(N0, N1, N2, N3) && (N0 == 0 || N0 == 4);
+//         constexpr bool high_idx_is_m128 = is_continue_idx_lambda(N4, N5, N6, N7) && (N4 == 0 || N4 == 4);
+//         if constexpr (low_idx_is_m128 && high_idx_is_m128)
+//         {
+//             constexpr int permute2f128_mask = (N0 == 0 ? 0 : 1) | ((N4 == 0 ? 0 : 1) << 4);
+//             return _mm256_permute2f128_ps(a, a, permute2f128_mask);
+//         }
+//         else
+//         {
             __m256 shuff_a = _mm256_permutevar_ps(
                 a, _mm256_set_epi32(N7 % 4, N6 % 4, N5 % 4, N4 % 4, N3 % 4, N2 % 4, N1 % 4, N0 % 4));
             __m256 shuff_ra = _mm256_permute2f128_ps(shuff_a, shuff_a, 0x01);
@@ -312,9 +312,9 @@ KTM_FUNC __m256 shuffle256_f32(__m256 a) noexcept
             constexpr int blend_mask = (N0 >= 4) | ((N1 >= 4) << 1) | ((N2 >= 4) << 2) | ((N3 >= 4) << 3) |
                                        ((N4 < 4) << 4) | ((N5 < 4) << 5) | ((N6 < 4) << 6) | ((N7 < 4) << 7);
             return _mm256_blend_ps(shuff_a, shuff_ra, blend_mask);
-        }
-#    endif
-    }
+//         }
+// #    endif
+//     }
 }
 
 KTM_FUNC __m256 mul256_f32(__m256 a, __m256 b) noexcept { return _mm256_mul_ps(a, b); }
