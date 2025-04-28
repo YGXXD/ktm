@@ -23,13 +23,36 @@ if(KTM_BUILD_TESTING)
 	add_subdirectory(test)
 endif()
 
-add_executable(ktm ${CMAKE_CURRENT_SOURCE_DIR}/src/ktm.cpp) 
+add_executable(ktm-main ${CMAKE_CURRENT_SOURCE_DIR}/src/ktm.cpp) 
 
-install(DIRECTORY ktm DESTINATION include)
+add_library(ktm INTERFACE)
+target_include_directories(ktm INTERFACE
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/ktm>
+	$<INSTALL_INTERFACE:include>
+)
+install(DIRECTORY ktm/ DESTINATION include/ktm)
+install(TARGETS ktm EXPORT ktm-targets)
+install(EXPORT ktm-targets
+	FILE ktm-targets.cmake
+	NAMESPACE ktm::
+	DESTINATION lib/cmake/ktm
+)
+
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+	"${CMAKE_CURRENT_SOURCE_DIR}/cmake/ktm-config.cmake.in"
+	"${CMAKE_CURRENT_BINARY_DIR}/ktm-config.cmake"
+	INSTALL_DESTINATION lib/cmake/ktm
+)
+
+install(FILES
+	"${CMAKE_CURRENT_BINARY_DIR}/ktm-config.cmake"
+	DESTINATION lib/cmake/ktm
+)
 
 if(NOT TARGET uninstall)
 	configure_file(
-		"${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
+		"${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
 		"${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
 		IMMEDIATE @ONLY)
 
