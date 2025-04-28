@@ -8,18 +8,18 @@
 
 [![code-size](https://img.shields.io/github/languages/code-size/YGXXD/ktm?style=flat)](https://github.com/YGXXD/ktm/archive/main.zip) [![license](https://img.shields.io/github/license/YGXXD/ktm)](LICENSE) [![tag](https://img.shields.io/github/v/tag/YGXXD/ktm)](https://github.com/YGXXD/ktm/tags)
 
-### 环境
+### 环境 
 
 - 编译器：cl，clang，gcc；
 - c++版本：c++17及以上；
 
-### 特性
+### 特性 
 
 - head-only，api层次清晰，包含头文件即可接入项目；
 - 代码结构优雅，基本数学类由[模版继承组件化](#组件设计)实现静态ECS；
 - 高性能跨平台，simd指令集加速提供计算性能优化；
 
-### 构建和安装
+### 构建和安装 
 
 ```shell
 # unix
@@ -30,6 +30,16 @@ sudo make install
 # windows
 cmake -S . -B ./build
 cmake --install ./build --config Release
+```
+
+### 项目中使用 
+
+```cmake
+# CMakeLists
+add_executable(exemple main.cpp)
+
+find_package(ktm REQUIRED)
+target_link_libraries(exemple PUBLIC ktm::ktm)
 ```
 
 ### 示例 

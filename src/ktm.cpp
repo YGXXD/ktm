@@ -5,7 +5,7 @@
 //  Created by 有个小小杜
 //
 
-#include "../ktm/ktm.h"
+#include "ktm.h"
 #include <iostream>
 
 using namespace ktm;
