@@ -24,7 +24,7 @@ if(KTM_BUILD_TESTING)
 endif()
 
 add_executable(ktm-main ${CMAKE_CURRENT_SOURCE_DIR}/src/ktm.cpp) 
-target_link_libraries(ktm-main ktm)
+target_link_libraries(ktm-main PRIVATE ktm)
 
 add_library(ktm INTERFACE)
 target_include_directories(ktm INTERFACE
