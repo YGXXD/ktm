@@ -5,6 +5,9 @@
 //  Created by 有个小小杜
 //
 
+#ifndef _KTM_TEST_H_
+#define _KTM_TEST_H_
+
 #include "ktm.h"
 #include <iostream>
 #include <cassert>
@@ -35,3 +38,5 @@
     }
 #define TEST_EQUAL_QUATERNION(x, y) TEST_EQUAL(*(x), *(y))
 #define TEST_EQUAL_COMPLEX(x, y) TEST_EQUAL_QUATERNION(x, y)
+
+#endif
