@@ -90,6 +90,7 @@ int main(int argv, char* argc[])
 
 |组件|功能|
 |:-|:-|
+|[iarray_util](ktm/interface/shared/iarray_util.h)|支持std::array的特性的包装组件|
 |[iarray_add](ktm/interface/shared/iarray_calc.h)|数组和数组之间的加减运算|
 |[iarray_mul](ktm/interface/shared/iarray_calc.h)|数组和数组之间的乘除运算|
 |[iarray_madd](ktm/interface/shared/iarray_calc.h)|数组和数组之间的乘加复合运算|
@@ -97,15 +98,15 @@ int main(int argv, char* argc[])
 |[iarray_mul_scalar](ktm/interface/shared/iarray_calc.h)|数组和标量之间的乘除运算|
 |[iarray_madd_scalar](ktm/interface/shared/iarray_calc.h)|数组和标量之间的乘加复合运算|
 |[iarray_io](ktm/interface/shared/iarray_io.h)|数组的输入输出，集成std标准IO流|
-|[iarray_util](ktm/interface/shared/iarray_util.h)|支持std::array的特性的包装组件|
+|[iarray_tostring](ktm/interface/shared/iarray_tostring.h)|数组到字符串的转换功能|
 
 **向量组件** 
 
 |组件|功能|
 |:-|:-|
 |[ivec_calc](ktm/interface/vector/ivec_calc.h)|三维向量和三维向量，三位向量和标量之间的加减乘除运算|
-|[ivec_calc](ktm/interface/vector/ivec_array.h)|支持向量强制转化为数组|
-|[ivec_calc](ktm/interface/vector/ivec_data.h)|包含向量的数据，构造函数，向量混洗|
+|[ivec_array](ktm/interface/vector/ivec_array.h)|支持向量强制转化为数组|
+|[ivec_data](ktm/interface/vector/ivec_data.h)|包含向量的数据，构造函数，向量混洗|
 
 **矩阵组件** 
 
