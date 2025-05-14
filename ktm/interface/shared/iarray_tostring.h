@@ -30,9 +30,20 @@ struct iarray_tostring : Father
         else
         {
             std::string str;
-            for (auto it = child_ptr()->begin(); it != child_ptr()->end() - 1; ++it)
-                str += std::to_string(*it) + " ";
-            str += std::to_string(child_ptr()->back());
+            auto it = child_ptr()->begin();
+            using VT = typename std::decay_t<decltype(child_ptr()->to_array())>::value_type;
+            if constexpr (std::is_base_of_v<empty_child<VT>, VT>)
+            {
+                for (; it != child_ptr()->end() - 1; ++it)
+                    str += (*it).to_string() + " ";
+                str += (*it).to_string();
+            }
+            else
+            {
+                for (; it != child_ptr()->end() - 1; ++it)
+                    str += std::to_string(*it) + " ";
+                str += std::to_string(*it);
+            }
             return str;
         }
     }
@@ -46,9 +57,20 @@ struct iarray_tostring : Father
         else
         {
             std::wstring str;
-            for (auto it = child_ptr()->begin(); it != child_ptr()->end() - 1; ++it)
-                str += std::to_wstring(*it) + L" ";
-            str += std::to_wstring(child_ptr()->back());
+            auto it = child_ptr()->begin();
+            using VT = typename std::decay_t<decltype(child_ptr()->to_array())>::value_type;
+            if constexpr (std::is_base_of_v<empty_child<VT>, VT>)
+            {
+                for (; it != child_ptr()->end() - 1; ++it)
+                    str += (*it).to_wstring() + L" ";
+                str += (*it).to_wstring();
+            }
+            else
+            {
+                for (; it != child_ptr()->end() - 1; ++it)
+                    str += std::to_wstring(*it) + L" ";
+                str += std::to_wstring(*it);
+            }
             return str;
         }
     }
