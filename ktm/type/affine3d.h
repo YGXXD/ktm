@@ -34,13 +34,13 @@ struct affine3d
     {
     }
 
-    KTM_INLINE affine3d& translate(T x, T y, T z) noexcept
+    KTM_INLINE affine3d& translate(T x, T y, T z) noexcept { return translate(vec<3, T>(x, y, z)); }
+
+    KTM_INLINE affine3d& translate(const vec<3, T>& v) noexcept
     {
-        m[3] += m[0] * x + m[1] * y + m[2] * z;
+        m[3] += v;
         return *this;
     }
-
-    KTM_INLINE affine3d& translate(const vec<3, T>& v) noexcept { return translate(v[0], v[1], v[2]); }
 
     KTM_INLINE affine3d& rotate(const quat<T>& q) noexcept
     {

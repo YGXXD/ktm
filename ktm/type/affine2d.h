@@ -37,13 +37,13 @@ struct affine2d
 
     KTM_FUNC affine2d(const mat<4, 4, T>& matrix) noexcept : m(matrix[0].xy(), matrix[1].xy(), matrix[3].xy()) {}
 
-    KTM_INLINE affine2d& translate(T x, T y) noexcept
+    KTM_INLINE affine2d& translate(T x, T y) noexcept { return translate(vec<2, T>(x, y)); }
+
+    KTM_INLINE affine2d& translate(const vec<2, T>& v) noexcept
     {
-        m[2] += m[0] * x + m[1] * y;
+        m[2] += v;
         return *this;
     }
-
-    KTM_INLINE affine2d& translate(const vec<2, T>& v) noexcept { return translate(v[0], v[1]); }
 
     KTM_INLINE affine2d& rotate(const comp<T>& c) noexcept
     {
