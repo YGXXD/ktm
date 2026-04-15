@@ -86,7 +86,7 @@ private:
     KTM_FUNC std::basic_ostream<T>& stream_out_default(std::basic_ostream<T>& o) const noexcept
     {
         using VT = typename std::decay_t<decltype(child_ptr()->to_array())>::value_type;
-        using ST = std::select_if_t<std::is_character_v<VT>, int, VT>;
+        using ST = select_if_t<is_character_v<VT>, int, VT>;
         auto it = child_ptr()->begin();
         for (; it != child_ptr()->end() - 1; ++it)
             o << static_cast<ST>(*it) << " ";
@@ -100,7 +100,7 @@ private:
         using VT = typename std::decay_t<decltype(child_ptr()->to_array())>::value_type;
         for (auto it = child_ptr()->begin(); it != child_ptr()->end(); ++it)
         {
-            if constexpr (std::is_character_v<VT>)
+            if constexpr (is_character_v<VT>)
             {
                 int value;
                 i >> value;

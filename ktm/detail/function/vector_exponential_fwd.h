@@ -57,13 +57,13 @@ struct log1p;
 template <size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
 struct logb;
 
-template <size_t N, typename T, typename = std::enable_if_t<std::is_exist_same_vs<float, double, T>>>
+template <size_t N, typename T, typename = std::enable_if_t<ktm::is_exist_same_vs<float, double, T>>>
 struct fast_sqrt;
 
-template <size_t N, typename T, typename = std::enable_if_t<std::is_exist_same_vs<float, double, T>>>
+template <size_t N, typename T, typename = std::enable_if_t<ktm::is_exist_same_vs<float, double, T>>>
 struct fast_rsqrt;
 
-template <size_t N, typename T, typename = std::enable_if_t<std::is_exist_same_vs<float, double, T>>>
+template <size_t N, typename T, typename = std::enable_if_t<ktm::is_exist_same_vs<float, double, T>>>
 struct fast_recip;
 
 } // namespace vector_exponential_implement

@@ -21,7 +21,7 @@ namespace matrix_transform3d_implement
 {
 
 template <typename T, typename StartV,
-          typename = std::enable_if_t<std::is_exist_same_vs<std::decay_t<StartV>, ktm::vec<3, T>, int>>>
+          typename = std::enable_if_t<ktm::is_exist_same_vs<std::decay_t<StartV>, ktm::vec<3, T>, int>>>
 KTM_NOINLINE std::enable_if_t<std::is_floating_point_v<T>>
 rotate3d_normal(mat<4, 4, T>& out, T sin_theta, T cos_theta, const vec<3, T>& normal, StartV&& normal_start) noexcept;
 

@@ -114,7 +114,7 @@ struct is_listing_type;
 template <typename T, typename... Ts>
 struct is_listing_type<type_list<Ts...>, T>
 {
-    static inline constexpr bool value = std::is_exist_same_vs<Ts..., T>;
+    static inline constexpr bool value = is_exist_same_vs<Ts..., T>;
 };
 
 template <typename TList, typename T>

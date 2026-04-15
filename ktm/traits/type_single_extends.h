@@ -28,8 +28,8 @@ private:
     };
 
 public:
-    static inline constexpr bool is_all_same = std::is_same_vs<Ts...>;
-    static inline constexpr bool is_exist_same = std::is_exist_same_vs<Ts...>;
+    static inline constexpr bool is_all_same = is_same_vs<Ts...>;
+    static inline constexpr bool is_exist_same = is_exist_same_vs<Ts...>;
 
     template <typename... Us>
     using add_t = type_list<Ts..., Us...>;
@@ -53,8 +53,8 @@ private:
     };
 
 public:
-    static inline constexpr bool is_all_same = std::is_template_same_vs<Tps...>;
-    static inline constexpr bool is_exist_same = std::is_template_exist_same_vs<Tps...>;
+    static inline constexpr bool is_all_same = is_template_same_vs<Tps...>;
+    static inline constexpr bool is_exist_same = is_template_exist_same_vs<Tps...>;
 
     template <template <typename...> class... Ups>
     using add_t = template_list<Tps..., Ups...>;

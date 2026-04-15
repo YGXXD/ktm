@@ -42,16 +42,16 @@ struct reflect;
 template <size_t N, typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
 struct refract;
 
-template <size_t N, typename T, typename = std::enable_if_t<std::is_exist_same_vs<float, double, T>>>
+template <size_t N, typename T, typename = std::enable_if_t<ktm::is_exist_same_vs<float, double, T>>>
 struct fast_project;
 
-template <size_t N, typename T, typename = std::enable_if_t<std::is_exist_same_vs<float, double, T>>>
+template <size_t N, typename T, typename = std::enable_if_t<ktm::is_exist_same_vs<float, double, T>>>
 struct fast_length;
 
-template <size_t N, typename T, typename = std::enable_if_t<std::is_exist_same_vs<float, double, T>>>
+template <size_t N, typename T, typename = std::enable_if_t<ktm::is_exist_same_vs<float, double, T>>>
 struct fast_distance;
 
-template <size_t N, typename T, typename = std::enable_if_t<std::is_exist_same_vs<float, double, T>>>
+template <size_t N, typename T, typename = std::enable_if_t<ktm::is_exist_same_vs<float, double, T>>>
 struct fast_normalize;
 
 } // namespace geometric_implement

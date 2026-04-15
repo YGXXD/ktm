@@ -37,7 +37,7 @@ struct ktm::detail::exponential_implement::fast_sqrt
 {
     static KTM_INLINE T call(T x) noexcept
     {
-        using integral_type = std::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
+        using integral_type = ktm::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
         integral_type i = *reinterpret_cast<const integral_type*>(&x);
         if constexpr (std::is_same_v<integral_type, unsigned int>)
             i = 0x1fbd1df5 + (i >> 1);
@@ -53,7 +53,7 @@ struct ktm::detail::exponential_implement::fast_rsqrt
 {
     static KTM_INLINE T call(T x) noexcept
     {
-        using integral_type = std::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
+        using integral_type = ktm::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
         integral_type i = *reinterpret_cast<const integral_type*>(&x);
         if constexpr (std::is_same_v<integral_type, unsigned int>)
             i = 0x5f3759df - (i >> 1);
@@ -69,7 +69,7 @@ struct ktm::detail::exponential_implement::fast_recip
 {
     static KTM_INLINE T call(T x) noexcept
     {
-        using integral_type = std::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
+        using integral_type = ktm::select_if_t<std::is_same_v<T, float>, unsigned int, unsigned long long>;
         integral_type i = *reinterpret_cast<const integral_type*>(&x);
         if constexpr (std::is_same_v<integral_type, unsigned int>)
             i = 0x7ef477d5 - i;
