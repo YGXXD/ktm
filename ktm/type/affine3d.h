@@ -21,15 +21,15 @@ struct affine3d
 {
     mat<4, 3, T> m;
 
-    KTM_FUNC affine3d() noexcept
+    KTM_INLINE affine3d() noexcept
         : m(vec<3, T>(one<T>, zero<T>, zero<T>), vec<3, T>(zero<T>, one<T>, zero<T>),
             vec<3, T>(zero<T>, zero<T>, one<T>), vec<3, T>())
     {
     }
 
-    KTM_FUNC affine3d(const mat<3, 3, T>& matrix) noexcept : m(matrix[0], matrix[1], matrix[2], vec<3, T>()) {}
+    KTM_INLINE affine3d(const mat<3, 3, T>& matrix) noexcept : m(matrix[0], matrix[1], matrix[2], vec<3, T>()) {}
 
-    KTM_FUNC affine3d(const mat<4, 4, T>& matrix) noexcept
+    KTM_INLINE affine3d(const mat<4, 4, T>& matrix) noexcept
         : m(matrix[0].xyz(), matrix[1].xyz(), matrix[2].xyz(), matrix[3].xyz())
     {
     }
@@ -174,29 +174,29 @@ struct affine3d
         return *this;
     }
 
-    KTM_FUNC affine3d& operator<<(const affine3d& affine) noexcept { return concat(affine); }
+    KTM_INLINE affine3d& operator<<(const affine3d& affine) noexcept { return concat(affine); }
 
-    KTM_FUNC affine3d& operator<<(const mat<3, 3, T>& matrix) noexcept { return concat(matrix); }
+    KTM_INLINE affine3d& operator<<(const mat<3, 3, T>& matrix) noexcept { return concat(matrix); }
 
-    KTM_FUNC affine3d& operator<<(const mat<4, 4, T>& matrix) noexcept { return concat(matrix); }
+    KTM_INLINE affine3d& operator<<(const mat<4, 4, T>& matrix) noexcept { return concat(matrix); }
 
-    KTM_FUNC affine3d& operator>>(mat<3, 3, T>& out_matrix) noexcept { return matrix3x3(out_matrix); }
+    KTM_INLINE affine3d& operator>>(mat<3, 3, T>& out_matrix) noexcept { return matrix3x3(out_matrix); }
 
-    KTM_FUNC affine3d& operator>>(mat<4, 4, T>& out_matrix) noexcept { return matrix4x4(out_matrix); }
+    KTM_INLINE affine3d& operator>>(mat<4, 4, T>& out_matrix) noexcept { return matrix4x4(out_matrix); }
 
-    KTM_FUNC const affine3d& operator>>(mat<3, 3, T>& out_matrix) const noexcept { return matrix3x3(out_matrix); }
+    KTM_INLINE const affine3d& operator>>(mat<3, 3, T>& out_matrix) const noexcept { return matrix3x3(out_matrix); }
 
-    KTM_FUNC const affine3d& operator>>(mat<4, 4, T>& out_matrix) const noexcept { return matrix4x4(out_matrix); }
+    KTM_INLINE const affine3d& operator>>(mat<4, 4, T>& out_matrix) const noexcept { return matrix4x4(out_matrix); }
 
 private:
-    KTM_FUNC void out_matrix3x3(mat<3, 3, T>& out_matrix) const noexcept
+    KTM_INLINE void out_matrix3x3(mat<3, 3, T>& out_matrix) const noexcept
     {
         out_matrix[0] = m[0];
         out_matrix[1] = m[1];
         out_matrix[2] = m[2];
     }
 
-    KTM_FUNC void out_matrix4x4(mat<4, 4, T>& out_matrix) const noexcept
+    KTM_INLINE void out_matrix4x4(mat<4, 4, T>& out_matrix) const noexcept
     {
         out_matrix[0] = vec<4, T>(m[0], zero<T>);
         out_matrix[1] = vec<4, T>(m[1], zero<T>);

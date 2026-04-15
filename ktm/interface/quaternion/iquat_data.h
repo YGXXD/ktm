@@ -37,27 +37,27 @@ struct iquat_data<Father, quat<T>> : Father
         typename detail::vec_data_implement::vec_storage<4, T>::type st;
     };
 
-    KTM_FUNC constexpr iquat_data() noexcept : i(zero<T>), j(zero<T>), k(zero<T>), r(zero<T>) {};
+    KTM_INLINE constexpr iquat_data() noexcept : i(zero<T>), j(zero<T>), k(zero<T>), r(zero<T>) {};
     iquat_data(const iquat_data&) = default;
     iquat_data(iquat_data&&) = default;
     iquat_data& operator=(const iquat_data&) = default;
     iquat_data& operator=(iquat_data&&) = default;
 
-    KTM_FUNC constexpr iquat_data(T x, T y, T z, T w) noexcept : i(x), j(y), k(z), r(w) {}
+    KTM_INLINE constexpr iquat_data(T x, T y, T z, T w) noexcept : i(x), j(y), k(z), r(w) {}
 
-    KTM_FUNC constexpr iquat_data(const vec<4, T>& vec) noexcept : i(vec.x), j(vec.y), k(vec.z), r(vec.w) {}
+    KTM_INLINE constexpr iquat_data(const vec<4, T>& vec) noexcept : i(vec.x), j(vec.y), k(vec.z), r(vec.w) {}
 
-    KTM_FUNC T real() const noexcept { return r; }
+    KTM_INLINE T real() const noexcept { return r; }
 
-    KTM_FUNC vec<3, T> imag() const noexcept { return vec<3, T>(i, j, k); }
+    KTM_INLINE vec<3, T> imag() const noexcept { return vec<3, T>(i, j, k); }
 
-    KTM_FUNC T angle() const noexcept { return static_cast<T>(2) * atan2(length(imag()), real()); }
+    KTM_INLINE T angle() const noexcept { return static_cast<T>(2) * atan2(length(imag()), real()); }
 
-    KTM_FUNC vec<3, T> axis() const noexcept { return normalize(imag()); }
+    KTM_INLINE vec<3, T> axis() const noexcept { return normalize(imag()); }
 
-    KTM_FUNC vec<4, T>& operator*() noexcept { return reinterpret_cast<vec<4, T>&>(st); }
+    KTM_INLINE vec<4, T>& operator*() noexcept { return reinterpret_cast<vec<4, T>&>(st); }
 
-    KTM_FUNC const vec<4, T>& operator*() const noexcept { return reinterpret_cast<const vec<4, T>&>(st); }
+    KTM_INLINE const vec<4, T>& operator*() const noexcept { return reinterpret_cast<const vec<4, T>&>(st); }
 
     KTM_INLINE mat<3, 3, T> matrix3x3() const noexcept
     {

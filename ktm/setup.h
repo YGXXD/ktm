@@ -41,7 +41,7 @@
 #elif defined(KTM_COMPILER_MSVC)
 #    define KTM_INLINE __forceinline
 #    define KTM_NOINLINE __declspec(noinline)
-#    define KTM_FUNC __forceinline __declspec(nothrow)
+#    define KTM_FUNC __forceinline __declspec(nothrow, non_user_code)
 #endif
 
 #endif

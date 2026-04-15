@@ -23,7 +23,7 @@ struct iarray_tostring : Father
 
     KTM_CRTP_INTERFACE_REGISTER(to_string, to_string_impl)
 
-    KTM_FUNC std::string to_string() const noexcept
+    KTM_INLINE std::string to_string() const noexcept
     {
         if constexpr (KTM_CRTP_INTERFACE_IMPLEMENT(Child, to_string_impl))
             return child_ptr()->to_string_impl();
@@ -50,7 +50,7 @@ struct iarray_tostring : Father
 
     KTM_CRTP_INTERFACE_REGISTER(to_wstring, to_wstring_impl)
 
-    KTM_FUNC std::wstring to_wstring() const noexcept
+    KTM_INLINE std::wstring to_wstring() const noexcept
     {
         if constexpr (KTM_CRTP_INTERFACE_IMPLEMENT(Child, to_wstring_impl))
             return child_ptr()->to_wstring_impl();

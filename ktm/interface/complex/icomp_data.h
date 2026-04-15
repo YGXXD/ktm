@@ -36,25 +36,25 @@ struct icomp_data<Father, comp<T>> : Father
         typename detail::vec_data_implement::vec_storage<2, T>::type st;
     };
 
-    KTM_FUNC constexpr icomp_data() noexcept : i(zero<T>), r(zero<T>) {};
+    KTM_INLINE constexpr icomp_data() noexcept : i(zero<T>), r(zero<T>) {};
     icomp_data(const icomp_data&) = default;
     icomp_data(icomp_data&&) = default;
     icomp_data& operator=(const icomp_data&) = default;
     icomp_data& operator=(icomp_data&&) = default;
 
-    KTM_FUNC constexpr icomp_data(T x, T y) noexcept : i(x), r(y) {}
+    KTM_INLINE constexpr icomp_data(T x, T y) noexcept : i(x), r(y) {}
 
-    KTM_FUNC constexpr icomp_data(const vec<2, T> vec) noexcept : i(vec.x), r(vec.y) {}
+    KTM_INLINE constexpr icomp_data(const vec<2, T> vec) noexcept : i(vec.x), r(vec.y) {}
 
-    KTM_FUNC T real() const noexcept { return r; }
+    KTM_INLINE T real() const noexcept { return r; }
 
-    KTM_FUNC T imag() const noexcept { return i; }
+    KTM_INLINE T imag() const noexcept { return i; }
 
-    KTM_FUNC T angle() const noexcept { return atan2(imag(), real()); }
+    KTM_INLINE T angle() const noexcept { return atan2(imag(), real()); }
 
-    KTM_FUNC vec<2, T>& operator*() noexcept { return reinterpret_cast<vec<2, T>&>(st); }
+    KTM_INLINE vec<2, T>& operator*() noexcept { return reinterpret_cast<vec<2, T>&>(st); }
 
-    KTM_FUNC const vec<2, T>& operator*() const noexcept { return reinterpret_cast<const vec<2, T>&>(st); }
+    KTM_INLINE const vec<2, T>& operator*() const noexcept { return reinterpret_cast<const vec<2, T>&>(st); }
 
     KTM_INLINE mat<2, 2, T> matrix2x2() const noexcept { return mat<2, 2, T>(vec<2, T>(r, i), vec<2, T>(-i, r)); }
 

@@ -13,7 +13,7 @@
 #include "setup.h"
 
 template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
-KTM_FUNC T ktm_op_madd(T x, T y, T z) noexcept
+KTM_INLINE T ktm_op_madd(T x, T y, T z) noexcept
 {
     if constexpr (std::is_floating_point_v<T>)
         return std::fma(y, z, x);
@@ -21,7 +21,7 @@ KTM_FUNC T ktm_op_madd(T x, T y, T z) noexcept
 }
 
 template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
-KTM_FUNC T& ktm_op_smadd(T& x, T y, T z) noexcept
+KTM_INLINE T& ktm_op_smadd(T& x, T y, T z) noexcept
 {
     if constexpr (std::is_floating_point_v<T>)
         x = std::fma(y, z, x);
