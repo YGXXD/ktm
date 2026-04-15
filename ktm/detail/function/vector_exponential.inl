@@ -9,7 +9,7 @@
 #define _KTM_VECTOR_EXPONENTIAL_INL_
 
 #include "vector_exponential_fwd.h"
-#include "../loop_util.h"
+#include "../loop_impl.h"
 #include "../../type/vec_fwd.h"
 #include "../../function/common/exponential.h"
 
@@ -21,7 +21,7 @@ struct ktm::detail::vector_exponential_implement::sqrt
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::sqrt<T>, x);
+        loop_impl<N, V>::call(ret, ktm::sqrt<T>, x);
         return ret;
     }
 };
@@ -34,7 +34,7 @@ struct ktm::detail::vector_exponential_implement::rsqrt
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::rsqrt<T>, x);
+        loop_impl<N, V>::call(ret, ktm::rsqrt<T>, x);
         return ret;
     }
 };
@@ -47,7 +47,7 @@ struct ktm::detail::vector_exponential_implement::recip
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::recip<T>, x);
+        loop_impl<N, V>::call(ret, ktm::recip<T>, x);
         return ret;
     }
 };
@@ -60,7 +60,7 @@ struct ktm::detail::vector_exponential_implement::cbrt
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::cbrt<T>, x);
+        loop_impl<N, V>::call(ret, ktm::cbrt<T>, x);
         return ret;
     }
 };
@@ -73,7 +73,7 @@ struct ktm::detail::vector_exponential_implement::pow
     static KTM_INLINE V call(const V& x, const V& y) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::pow<T>, x, y);
+        loop_impl<N, V>::call(ret, ktm::pow<T>, x, y);
         return ret;
     }
 };
@@ -86,7 +86,7 @@ struct ktm::detail::vector_exponential_implement::exp
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::exp<T>, x);
+        loop_impl<N, V>::call(ret, ktm::exp<T>, x);
         return ret;
     }
 };
@@ -99,7 +99,7 @@ struct ktm::detail::vector_exponential_implement::exp2
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::exp2<T>, x);
+        loop_impl<N, V>::call(ret, ktm::exp2<T>, x);
         return ret;
     }
 };
@@ -112,7 +112,7 @@ struct ktm::detail::vector_exponential_implement::expm1
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::expm1<T>, x);
+        loop_impl<N, V>::call(ret, ktm::expm1<T>, x);
         return ret;
     }
 };
@@ -125,7 +125,7 @@ struct ktm::detail::vector_exponential_implement::log
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::log<T>, x);
+        loop_impl<N, V>::call(ret, ktm::log<T>, x);
         return ret;
     }
 };
@@ -138,7 +138,7 @@ struct ktm::detail::vector_exponential_implement::log10
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::log10<T>, x);
+        loop_impl<N, V>::call(ret, ktm::log10<T>, x);
         return ret;
     }
 };
@@ -151,7 +151,7 @@ struct ktm::detail::vector_exponential_implement::log2
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::log2<T>, x);
+        loop_impl<N, V>::call(ret, ktm::log2<T>, x);
         return ret;
     }
 };
@@ -164,7 +164,7 @@ struct ktm::detail::vector_exponential_implement::log1p
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::log1p<T>, x);
+        loop_impl<N, V>::call(ret, ktm::log1p<T>, x);
         return ret;
     }
 };
@@ -177,7 +177,7 @@ struct ktm::detail::vector_exponential_implement::logb
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::logb<T>, x);
+        loop_impl<N, V>::call(ret, ktm::logb<T>, x);
         return ret;
     }
 };
@@ -190,7 +190,7 @@ struct ktm::detail::vector_exponential_implement::fast_sqrt
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::fast::sqrt<T>, x);
+        loop_impl<N, V>::call(ret, ktm::fast::sqrt<T>, x);
         return ret;
     }
 };
@@ -203,7 +203,7 @@ struct ktm::detail::vector_exponential_implement::fast_rsqrt
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::fast::rsqrt<T>, x);
+        loop_impl<N, V>::call(ret, ktm::fast::rsqrt<T>, x);
         return ret;
     }
 };
@@ -216,7 +216,7 @@ struct ktm::detail::vector_exponential_implement::fast_recip
     static KTM_INLINE V call(const V& x) noexcept
     {
         V ret;
-        loop_op<N, V>::call(ret, ktm::fast::recip<T>, x);
+        loop_impl<N, V>::call(ret, ktm::fast::recip<T>, x);
         return ret;
     }
 };

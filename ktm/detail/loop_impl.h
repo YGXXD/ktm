@@ -5,8 +5,8 @@
 //  Created by 有个小小杜
 //
 
-#ifndef _KTM_LOOP_UTIL_H_
-#define _KTM_LOOP_UTIL_H_
+#ifndef _KTM_LOOP_IMPL_H_
+#define _KTM_LOOP_IMPL_H_
 
 #include <utility>
 #include <functional>
@@ -18,7 +18,7 @@ namespace detail
 {
 
 template <size_t LoopN, typename T>
-struct loop_op
+struct loop_impl
 {
     template <typename OP, typename... As>
     static KTM_INLINE void call(T& out, OP&& op, As&&... ls)
@@ -49,7 +49,7 @@ private:
 };
 
 template <size_t LoopN>
-struct loop_op<LoopN, void>
+struct loop_impl<LoopN, void>
 {
     template <typename OP, typename... As>
     static KTM_INLINE void call(OP&& op, As&&... ls)

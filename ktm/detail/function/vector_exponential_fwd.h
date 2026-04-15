@@ -9,7 +9,7 @@
 #define _KTM_VECTOR_EXPONENTIAL_FWD_H_
 
 #include <cstddef>
-#include "../../traits/type_traits_ext.h"
+#include "../../utility/type_traits_ext.h"
 
 namespace ktm
 {

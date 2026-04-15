@@ -10,7 +10,7 @@
 
 #include "vec.h"
 #include "mat.h"
-#include "../traits/type_single_extends.h"
+#include "../utility/single_extends.h"
 #include "../interface/shared/iarray_util.h"
 #include "../interface/shared/iarray_calc.h"
 #include "../interface/shared/iarray_io.h"

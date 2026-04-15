@@ -9,7 +9,7 @@
 #define _KTM_VECTOR_REDUCE_INL_
 
 #include "vector_reduce_fwd.h"
-#include "../loop_util.h"
+#include "../loop_impl.h"
 #include "../../type/vec_fwd.h"
 #include "../../function/common/arithmetic.h"
 
@@ -21,7 +21,7 @@ struct ktm::detail::vector_reduce_implement::reduce_add
     static KTM_INLINE T call(const V& x) noexcept
     {
         T ret = x[0];
-        loop_op<N - 1, void>::call([&ret](const T& x) -> void { ret += x; }, &x[1]);
+        loop_impl<N - 1, void>::call([&ret](const T& x) -> void { ret += x; }, &x[1]);
         return ret;
     }
 };
@@ -34,7 +34,7 @@ struct ktm::detail::vector_reduce_implement::reduce_min
     static KTM_INLINE T call(const V& x) noexcept
     {
         T ret = x[0];
-        loop_op<N - 1, void>::call([&ret](const T& x) -> void { ret = ktm::min<T>(ret, x); }, &x[1]);
+        loop_impl<N - 1, void>::call([&ret](const T& x) -> void { ret = ktm::min<T>(ret, x); }, &x[1]);
         return ret;
     }
 };
@@ -47,7 +47,7 @@ struct ktm::detail::vector_reduce_implement::reduce_max
     static KTM_INLINE T call(const V& x) noexcept
     {
         T ret = x[0];
-        loop_op<N - 1, void>::call([&ret](const T& x) -> void { ret = ktm::max<T>(ret, x); }, &x[1]);
+        loop_impl<N - 1, void>::call([&ret](const T& x) -> void { ret = ktm::max<T>(ret, x); }, &x[1]);
         return ret;
     }
 };

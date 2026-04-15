@@ -10,8 +10,8 @@
 
 #include "../../setup.h"
 #include "../../type/basic.h"
-#include "../../traits/type_traits_math.h"
-#include "../../traits/type_matrix_component.h"
+#include "../../utility/type_traits_math.h"
+#include "../../utility/matrix_component.h"
 #include "../common.h"
 #include "../compare.h"
 #include "../geometric.h"

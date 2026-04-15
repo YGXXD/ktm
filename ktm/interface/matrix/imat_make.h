@@ -10,7 +10,7 @@
 
 #include <utility>
 #include "../../setup.h"
-#include "../../traits/type_traits_ext.h"
+#include "../../utility/type_traits_ext.h"
 #include "../../type/basic.h"
 #include "../../type/vec_fwd.h"
 #include "../../type/mat_fwd.h"

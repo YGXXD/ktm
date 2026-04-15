@@ -8,9 +8,9 @@
 #ifndef _KTM_QUAT_MUL_FWD_H_
 #define _KTM_QUAT_MUL_FWD_H_
 
+#include "../../setup.h"
 #include "../../type/vec_fwd.h"
 #include "../../type/quat_fwd.h"
-#include "../../setup.h"
 
 namespace ktm
 {

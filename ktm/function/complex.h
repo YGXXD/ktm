@@ -10,7 +10,7 @@
 
 #include "../setup.h"
 #include "../type/comp.h"
-#include "../traits/type_traits_math.h"
+#include "../utility/type_traits_math.h"
 #include "common.h"
 #include "compare.h"
 #include "geometric.h"

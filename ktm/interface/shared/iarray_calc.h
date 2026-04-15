@@ -10,8 +10,8 @@
 
 #include <tuple>
 #include "../../setup.h"
-#include "../../traits/type_traits_math.h"
-#include "../../traits/type_single_extends.h"
+#include "../../utility/type_traits_math.h"
+#include "../../utility/single_extends.h"
 #include "../../detail/shared/array_calc_fwd.h"
 
 namespace ktm

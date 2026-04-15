@@ -10,7 +10,7 @@
 
 #include "../../setup.h"
 #include "../../type/vec.h"
-#include "../../traits/type_traits_math.h"
+#include "../../utility/type_traits_math.h"
 #include "../../detail/function/vector_reduce_fwd.h"
 
 namespace ktm

@@ -16,7 +16,7 @@ template <size_t N, typename T, typename Void>
 struct ktm::detail::vec_data_implement::vec_storage
 {
 private:
-    static KTM_INLINE constexpr size_t align() noexcept
+    static inline constexpr size_t align() noexcept
     {
         if constexpr (sizeof(T) > 8)
             return alignof(T);
@@ -38,7 +38,7 @@ struct ktm::detail::vec_data_implement::vec_swizzle
 {
 private:
     template <size_t... E>
-    static KTM_INLINE constexpr bool enable_swizzle() noexcept
+    static inline constexpr bool enable_swizzle() noexcept
     {
         return (sizeof...(E) == OSize) && ((E < ISize) && ...);
     }

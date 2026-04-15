@@ -9,7 +9,7 @@
 #define _KTM_ARRAY_CALC_SIMD_INL_
 
 #include "array_calc_fwd.h"
-#include "../loop_util.h"
+#include "../loop_impl.h"
 #include "../../simd/skv.h"
 
 #if KTM_SIMD_ENABLE(KTM_SIMD_NEON)
@@ -298,23 +298,23 @@ struct ktm::detail::array_calc_implement::madd_scalar<int, 2>
 #    define KTM_DETAIL_ARRAY_CALC_LAST_PARAMS_TERNARY_SCALAR(cast_type, index, ...) \
         KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_TERNARY_SCALAR(cast_type, index), scalar
 
-#    define KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(impl_name, type, enum)                                      \
-        template <size_t N>                                                                             \
-        struct ktm::detail::array_calc_implement::impl_name<type, N, std::enable_if_t<(N > 4)>>         \
-        {                                                                                               \
-            using A = std::array<type, N>;                                                              \
-            static KTM_INLINE void call(KTM_DETAIL_ARRAY_CALC_FUNC_PARAMS_##enum(type)) noexcept        \
-            {                                                                                           \
-                constexpr size_t K = N / 4;                                                             \
-                using AA4K = std::array<std::array<type, 4>, K>;                                        \
-                loop_op<K, void>::call(KTM_DETAIL_ARRAY_CALC_LOOP_OPERATION_##enum(impl_name, type, 4), \
-                                       KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_##enum(AA4K, 0));              \
-                if constexpr (constexpr size_t J = N % 4)                                               \
-                {                                                                                       \
-                    using ATJ = std::array<type, J>;                                                    \
-                    impl_name<type, J>::call(KTM_DETAIL_ARRAY_CALC_LAST_PARAMS_##enum(ATJ, K * 4));     \
-                }                                                                                       \
-            }                                                                                           \
+#    define KTM_DETAIL_ARRAY_CALC_SIMD_IMPL(impl_name, type, enum)                                        \
+        template <size_t N>                                                                               \
+        struct ktm::detail::array_calc_implement::impl_name<type, N, std::enable_if_t<(N > 4)>>           \
+        {                                                                                                 \
+            using A = std::array<type, N>;                                                                \
+            static KTM_INLINE void call(KTM_DETAIL_ARRAY_CALC_FUNC_PARAMS_##enum(type)) noexcept          \
+            {                                                                                             \
+                constexpr size_t K = N / 4;                                                               \
+                using AA4K = std::array<std::array<type, 4>, K>;                                          \
+                loop_impl<K, void>::call(KTM_DETAIL_ARRAY_CALC_LOOP_OPERATION_##enum(impl_name, type, 4), \
+                                         KTM_DETAIL_ARRAY_CALC_LOOP_PARAMS_##enum(AA4K, 0));              \
+                if constexpr (constexpr size_t J = N % 4)                                                 \
+                {                                                                                         \
+                    using ATJ = std::array<type, J>;                                                      \
+                    impl_name<type, J>::call(KTM_DETAIL_ARRAY_CALC_LAST_PARAMS_##enum(ATJ, K * 4));       \
+                }                                                                                         \
+            }                                                                                             \
         };
 
 template <>

@@ -8,7 +8,7 @@
 #ifndef _KTM_EXPONENTIAL_FWD_H_
 #define _KTM_EXPONENTIAL_FWD_H_
 
-#include "../../traits/type_traits_ext.h"
+#include "../../utility/type_traits_ext.h"
 
 namespace ktm
 {

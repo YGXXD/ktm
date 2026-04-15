@@ -8,8 +8,8 @@
 #ifndef _KTM_VEC_CALC_FWD_H_
 #define _KTM_VEC_CALC_FWD_H_
 
-#include "../../type/vec_fwd.h"
 #include "../../setup.h"
+#include "../../type/vec_fwd.h"
 
 namespace ktm
 {

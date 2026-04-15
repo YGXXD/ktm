@@ -11,7 +11,7 @@
 #include <cmath>
 #include "../../setup.h"
 #include "../../type/basic.h"
-#include "../../traits/type_traits_math.h"
+#include "../../utility/type_traits_math.h"
 #include "../../detail/function/exponential_fwd.h"
 
 namespace ktm

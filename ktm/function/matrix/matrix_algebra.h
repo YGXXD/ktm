@@ -10,7 +10,7 @@
 
 #include "../../setup.h"
 #include "../../type/mat.h"
-#include "../../traits/type_traits_math.h"
+#include "../../utility/type_traits_math.h"
 #include "../../detail/function/matrix_algebra_fwd.h"
 
 namespace ktm

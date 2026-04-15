@@ -10,7 +10,7 @@
 
 #include <string>
 #include "../../setup.h"
-#include "../../traits/type_single_extends.h"
+#include "../../utility/single_extends.h"
 
 namespace ktm
 {
@@ -32,7 +32,7 @@ struct iarray_tostring : Father
             std::string str;
             auto it = child_ptr()->begin();
             using VT = typename std::decay_t<decltype(child_ptr()->to_array())>::value_type;
-            if constexpr (std::is_base_of_v<empty_child<VT>, VT>)
+            if constexpr (std::is_base_of_v<empty_base<VT>, VT>)
             {
                 for (; it != child_ptr()->end() - 1; ++it)
                     str += (*it).to_string() + " ";
@@ -59,7 +59,7 @@ struct iarray_tostring : Father
             std::wstring str;
             auto it = child_ptr()->begin();
             using VT = typename std::decay_t<decltype(child_ptr()->to_array())>::value_type;
-            if constexpr (std::is_base_of_v<empty_child<VT>, VT>)
+            if constexpr (std::is_base_of_v<empty_base<VT>, VT>)
             {
                 for (; it != child_ptr()->end() - 1; ++it)
                     str += (*it).to_wstring() + L" ";

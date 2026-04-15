@@ -8,6 +8,7 @@
 #ifndef _KTM_ARRAY_CALC_FWD_H_
 #define _KTM_ARRAY_CALC_FWD_H_
 
+#include <cstddef>
 #include <array>
 
 namespace ktm

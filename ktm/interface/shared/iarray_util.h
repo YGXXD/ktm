@@ -8,8 +8,8 @@
 #ifndef _KTM_I_ARRAY_UTIL_H_
 #define _KTM_I_ARRAY_UTIL_H_
 
-#include <tuple>
 #include <cstddef>
+#include <tuple>
 #include "../../setup.h"
 
 namespace ktm
