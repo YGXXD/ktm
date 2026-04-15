@@ -9,8 +9,8 @@
 #define _KTM_I_ARRAY_UTIL_H_
 
 #include <tuple>
+#include <cstddef>
 #include "../../setup.h"
-#include "../../traits/type_traits_ext.h"
 
 namespace ktm
 {
