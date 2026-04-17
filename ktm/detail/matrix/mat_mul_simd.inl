@@ -14,7 +14,7 @@
 #if KTM_SIMD_ENABLE(KTM_SIMD_AVX)
 
 template <>
-KTM_INLINE void ktm::detail::mat_mul_implement::mat_mul_mat<4, 4, 4, float>(mat<4, 4, float>& out,
+KTM_CORE_FUNC void ktm::detail::mat_mul_implement::mat_mul_mat<4, 4, 4, float>(mat<4, 4, float>& out,
                                                                             const mat<4, 4, float>& m1,
                                                                             const mat<4, 4, float>& m2) noexcept
 {
@@ -55,7 +55,7 @@ KTM_INLINE void ktm::detail::mat_mul_implement::mat_mul_mat<4, 4, 4, float>(mat<
 #if KTM_SIMD_ENABLE(KTM_SIMD_AVX2)
 
 template <>
-KTM_INLINE void ktm::detail::mat_mul_implement::mat_mul_mat<4, 4, 4, int>(mat<4, 4, int>& out, const mat<4, 4, int>& m1,
+KTM_CORE_FUNC void ktm::detail::mat_mul_implement::mat_mul_mat<4, 4, 4, int>(mat<4, 4, int>& out, const mat<4, 4, int>& m1,
                                                                           const mat<4, 4, int>& m2) noexcept
 {
     skv::sv8 m2_01 = _cast256_s32_f32(_load256_f32(&m2[0][0]));

@@ -18,8 +18,8 @@ namespace ktm
 
 #define KTM_MATRIX_COMPONENT_ELEMENT(name, index)                                    \
     using name##_type = std::tuple_element_t<index, type>;                           \
-    KTM_INLINE name##_type& get_##name() noexcept { return std::get<index>(*this); } \
-    KTM_INLINE const name##_type& get_##name() const noexcept { return std::get<index>(*this); }
+    KTM_CORE_FUNC name##_type& get_##name() noexcept { return std::get<index>(*this); } \
+    KTM_CORE_FUNC const name##_type& get_##name() const noexcept { return std::get<index>(*this); }
 
 template <class M>
 struct reduce_component;

@@ -20,9 +20,9 @@ template <class Child>
 struct empty_base
 {
 protected:
-    KTM_INLINE constexpr Child* child_ptr() noexcept { return static_cast<Child*>(this); }
+    KTM_CORE_FUNC constexpr Child* child_ptr() noexcept { return static_cast<Child*>(this); }
 
-    KTM_INLINE constexpr const Child* child_ptr() const noexcept { return static_cast<const Child*>(this); }
+    KTM_CORE_FUNC constexpr const Child* child_ptr() const noexcept { return static_cast<const Child*>(this); }
 };
 
 // package extends's interface template

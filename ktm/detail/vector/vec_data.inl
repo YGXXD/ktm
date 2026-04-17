@@ -48,7 +48,7 @@ public:
     using RetV = vec<OSize, T>;
 
     template <size_t... E>
-    static KTM_INLINE std::enable_if_t<enable_swizzle<E...>(), RetV> call(const V& v) noexcept
+    static KTM_CORE_FUNC std::enable_if_t<enable_swizzle<E...>(), RetV> call(const V& v) noexcept
     {
         return RetV(v[E]...);
     }

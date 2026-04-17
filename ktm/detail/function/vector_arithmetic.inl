@@ -18,7 +18,7 @@ struct ktm::detail::vector_arithmetic_implement::abs
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x) noexcept
+    static KTM_CORE_FUNC V call(const V& x) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::abs<T>, x);
@@ -31,7 +31,7 @@ struct ktm::detail::vector_arithmetic_implement::min
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x, const V& y) noexcept
+    static KTM_CORE_FUNC V call(const V& x, const V& y) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::min<T>, x, y);
@@ -44,7 +44,7 @@ struct ktm::detail::vector_arithmetic_implement::max
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x, const V& y) noexcept
+    static KTM_CORE_FUNC V call(const V& x, const V& y) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::max<T>, x, y);
@@ -57,7 +57,7 @@ struct ktm::detail::vector_arithmetic_implement::clamp
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& v, const V& min, const V& max) noexcept
+    static KTM_CORE_FUNC V call(const V& v, const V& min, const V& max) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::clamp<T>, v, min, max);
@@ -70,7 +70,7 @@ struct ktm::detail::vector_arithmetic_implement::floor
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x) noexcept
+    static KTM_CORE_FUNC V call(const V& x) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::floor<T>, x);
@@ -83,7 +83,7 @@ struct ktm::detail::vector_arithmetic_implement::ceil
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x) noexcept
+    static KTM_CORE_FUNC V call(const V& x) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::ceil<T>, x);
@@ -96,7 +96,7 @@ struct ktm::detail::vector_arithmetic_implement::round
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x) noexcept
+    static KTM_CORE_FUNC V call(const V& x) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::round<T>, x);
@@ -109,7 +109,7 @@ struct ktm::detail::vector_arithmetic_implement::fract
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x) noexcept
+    static KTM_CORE_FUNC V call(const V& x) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::fract<T>, x);
@@ -122,7 +122,7 @@ struct ktm::detail::vector_arithmetic_implement::mod
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x, const V& y) noexcept
+    static KTM_CORE_FUNC V call(const V& x, const V& y) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::mod<T>, x, y);
@@ -135,7 +135,7 @@ struct ktm::detail::vector_arithmetic_implement::lerp
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x, const V& y, T t) noexcept
+    static KTM_CORE_FUNC V call(const V& x, const V& y, T t) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, [&t](const T& x, const T& y) -> T { return ktm::lerp<T>(x, y, t); }, x, y);
@@ -148,7 +148,7 @@ struct ktm::detail::vector_arithmetic_implement::mix
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x, const V& y, const V& t) noexcept
+    static KTM_CORE_FUNC V call(const V& x, const V& y, const V& t) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::lerp<T>, x, y, t);
@@ -161,7 +161,7 @@ struct ktm::detail::vector_arithmetic_implement::step
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& edge, const V& x) noexcept
+    static KTM_CORE_FUNC V call(const V& edge, const V& x) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::step<T>, edge, x);
@@ -174,7 +174,7 @@ struct ktm::detail::vector_arithmetic_implement::smoothstep
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& edge0, const V& edge1, const V& x) noexcept
+    static KTM_CORE_FUNC V call(const V& edge0, const V& edge1, const V& x) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::smoothstep<T>, edge0, edge1, x);

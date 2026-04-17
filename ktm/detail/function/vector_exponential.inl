@@ -18,7 +18,7 @@ struct ktm::detail::vector_exponential_implement::sqrt
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x) noexcept
+    static KTM_CORE_FUNC V call(const V& x) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::sqrt<T>, x);
@@ -31,7 +31,7 @@ struct ktm::detail::vector_exponential_implement::rsqrt
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x) noexcept
+    static KTM_CORE_FUNC V call(const V& x) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::rsqrt<T>, x);
@@ -44,7 +44,7 @@ struct ktm::detail::vector_exponential_implement::recip
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x) noexcept
+    static KTM_CORE_FUNC V call(const V& x) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::recip<T>, x);
@@ -57,7 +57,7 @@ struct ktm::detail::vector_exponential_implement::cbrt
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x) noexcept
+    static KTM_CORE_FUNC V call(const V& x) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::cbrt<T>, x);
@@ -70,7 +70,7 @@ struct ktm::detail::vector_exponential_implement::pow
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x, const V& y) noexcept
+    static KTM_CORE_FUNC V call(const V& x, const V& y) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::pow<T>, x, y);
@@ -83,7 +83,7 @@ struct ktm::detail::vector_exponential_implement::exp
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x) noexcept
+    static KTM_CORE_FUNC V call(const V& x) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::exp<T>, x);
@@ -96,7 +96,7 @@ struct ktm::detail::vector_exponential_implement::exp2
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x) noexcept
+    static KTM_CORE_FUNC V call(const V& x) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::exp2<T>, x);
@@ -109,7 +109,7 @@ struct ktm::detail::vector_exponential_implement::expm1
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x) noexcept
+    static KTM_CORE_FUNC V call(const V& x) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::expm1<T>, x);
@@ -122,7 +122,7 @@ struct ktm::detail::vector_exponential_implement::log
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x) noexcept
+    static KTM_CORE_FUNC V call(const V& x) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::log<T>, x);
@@ -135,7 +135,7 @@ struct ktm::detail::vector_exponential_implement::log10
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x) noexcept
+    static KTM_CORE_FUNC V call(const V& x) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::log10<T>, x);
@@ -148,7 +148,7 @@ struct ktm::detail::vector_exponential_implement::log2
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x) noexcept
+    static KTM_CORE_FUNC V call(const V& x) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::log2<T>, x);
@@ -161,7 +161,7 @@ struct ktm::detail::vector_exponential_implement::log1p
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x) noexcept
+    static KTM_CORE_FUNC V call(const V& x) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::log1p<T>, x);
@@ -174,7 +174,7 @@ struct ktm::detail::vector_exponential_implement::logb
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x) noexcept
+    static KTM_CORE_FUNC V call(const V& x) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::logb<T>, x);
@@ -187,7 +187,7 @@ struct ktm::detail::vector_exponential_implement::fast_sqrt
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x) noexcept
+    static KTM_CORE_FUNC V call(const V& x) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::fast::sqrt<T>, x);
@@ -200,7 +200,7 @@ struct ktm::detail::vector_exponential_implement::fast_rsqrt
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x) noexcept
+    static KTM_CORE_FUNC V call(const V& x) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::fast::rsqrt<T>, x);
@@ -213,7 +213,7 @@ struct ktm::detail::vector_exponential_implement::fast_recip
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE V call(const V& x) noexcept
+    static KTM_CORE_FUNC V call(const V& x) noexcept
     {
         V ret;
         loop_impl<N, V>::call(ret, ktm::fast::recip<T>, x);

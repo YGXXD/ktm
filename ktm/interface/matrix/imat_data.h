@@ -26,13 +26,13 @@ struct imat_data<Father, mat<Row, Col, T>> : Father
 {
     using Father::Father;
 
-    KTM_INLINE constexpr imat_data() noexcept : columns {} {};
+    KTM_CORE_FUNC constexpr imat_data() noexcept : columns {} {};
     imat_data(const imat_data&) = default;
     imat_data(imat_data&&) = default;
     imat_data& operator=(const imat_data&) = default;
     imat_data& operator=(imat_data&&) = default;
 
-    KTM_INLINE constexpr imat_data(std::initializer_list<vec<Col, T>> li) : columns {}
+    KTM_CORE_FUNC constexpr imat_data(std::initializer_list<vec<Col, T>> li) : columns {}
     {
         for (int i = 0; i < li.size() && i < Row; ++i)
             columns[i] = li.begin()[i];
@@ -40,7 +40,7 @@ struct imat_data<Father, mat<Row, Col, T>> : Father
 
     template <typename... ColVs,
               typename = std::enable_if_t<sizeof...(ColVs) == Row && is_same_vs<vec<Col, T>, std::decay_t<ColVs>...>>>
-    KTM_INLINE constexpr imat_data(ColVs&&... cols) noexcept : columns { std::forward<ColVs>(cols)... }
+    KTM_CORE_FUNC constexpr imat_data(ColVs&&... cols) noexcept : columns { std::forward<ColVs>(cols)... }
     {
     }
 

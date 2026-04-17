@@ -18,7 +18,7 @@ struct ktm::detail::vector_reduce_implement::reduce_add
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE T call(const V& x) noexcept
+    static KTM_CORE_FUNC T call(const V& x) noexcept
     {
         T ret = x[0];
         loop_impl<N - 1, void>::call([&ret](const T& x) -> void { ret += x; }, &x[1]);
@@ -31,7 +31,7 @@ struct ktm::detail::vector_reduce_implement::reduce_min
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE T call(const V& x) noexcept
+    static KTM_CORE_FUNC T call(const V& x) noexcept
     {
         T ret = x[0];
         loop_impl<N - 1, void>::call([&ret](const T& x) -> void { ret = ktm::min<T>(ret, x); }, &x[1]);
@@ -44,7 +44,7 @@ struct ktm::detail::vector_reduce_implement::reduce_max
 {
     using V = vec<N, T>;
 
-    static KTM_INLINE T call(const V& x) noexcept
+    static KTM_CORE_FUNC T call(const V& x) noexcept
     {
         T ret = x[0];
         loop_impl<N - 1, void>::call([&ret](const T& x) -> void { ret = ktm::max<T>(ret, x); }, &x[1]);
