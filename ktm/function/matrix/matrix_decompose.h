@@ -1,6 +1,6 @@
 //  MIT License
 //
-//  Copyright (c) 2023-2024 有个小小杜
+//  Copyright (c) 2023-2026 有个小小杜
 //
 //  Created by 有个小小杜
 //
@@ -10,8 +10,8 @@
 
 #include "../../setup.h"
 #include "../../type/basic.h"
-#include "../../traits/type_traits_math.h"
-#include "../../traits/type_matrix_component.h"
+#include "../../utility/type_traits_math.h"
+#include "../../utility/matrix_component.h"
 #include "../common.h"
 #include "../compare.h"
 #include "../geometric.h"
@@ -23,7 +23,7 @@ namespace ktm
 #define KTM_MATRIX_DECOMPOSE_ITERATION_MAX 120
 
 template <class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, reduce_component<M>>
+KTM_CORE_NI_FUNC std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, reduce_component<M>>
 reduce_hessenberg(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_v<M>;
@@ -88,7 +88,7 @@ reduce_hessenberg(const M& m) noexcept
 }
 
 template <class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, reduce_component<M>>
+KTM_CORE_NI_FUNC std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, reduce_component<M>>
 reduce_tridiagonal(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_v<M>;
@@ -166,7 +166,7 @@ reduce_tridiagonal(const M& m) noexcept
 }
 
 template <class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, lu_component<M>>
+KTM_CORE_NI_FUNC std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, lu_component<M>>
 decompose_lu_doolittle(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_v<M>;
@@ -193,7 +193,7 @@ decompose_lu_doolittle(const M& m) noexcept
 }
 
 template <class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, lu_component<M>>
+KTM_CORE_NI_FUNC std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, lu_component<M>>
 decompose_lu_crout(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_v<M>;
@@ -220,7 +220,7 @@ decompose_lu_crout(const M& m) noexcept
 }
 
 template <class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, lu_component<M>>
+KTM_CORE_NI_FUNC std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, lu_component<M>>
 decompose_lu_cholesky(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_v<M>;
@@ -254,7 +254,7 @@ decompose_lu_cholesky(const M& m) noexcept
 }
 
 template <class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>>
+KTM_CORE_NI_FUNC std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>>
 decompose_qr_householder(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_v<M>;
@@ -318,7 +318,7 @@ decompose_qr_householder(const M& m) noexcept
 }
 
 template <class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>>
+KTM_CORE_NI_FUNC std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>>
 decompose_qr_givens(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_v<M>;
@@ -351,7 +351,7 @@ decompose_qr_givens(const M& m) noexcept
 }
 
 template <class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>>
+KTM_CORE_NI_FUNC std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>>
 decompose_qr_schmitd(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_v<M>;
@@ -375,7 +375,7 @@ decompose_qr_schmitd(const M& m) noexcept
 }
 
 template <class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>>
+KTM_CORE_NI_FUNC std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>>
 decompose_qr_on_hessenberg(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_v<M>;
@@ -414,7 +414,7 @@ decompose_qr_on_hessenberg(const M& m) noexcept
 }
 
 template <class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>>
+KTM_CORE_NI_FUNC std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, qr_component<M>>
 decompose_qr_on_tridiagonal(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_v<M>;
@@ -446,7 +446,7 @@ decompose_qr_on_tridiagonal(const M& m) noexcept
 }
 
 template <class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, edv_component<M>>
+KTM_CORE_NI_FUNC std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, edv_component<M>>
 decompose_edv_shiftqr(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_v<M>;
@@ -487,7 +487,7 @@ decompose_edv_shiftqr(const M& m) noexcept
 }
 
 template <class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, edv_component<M>>
+KTM_CORE_NI_FUNC std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, edv_component<M>>
 decompose_edv_jacobi(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_v<M>;
@@ -588,7 +588,7 @@ decompose_edv_jacobi(const M& m) noexcept
 }
 
 template <class M>
-KTM_NOINLINE std::enable_if_t<is_floating_point_base_v<M>, svd_component<M>> decompose_svd(const M& m) noexcept
+KTM_CORE_NI_FUNC std::enable_if_t<is_floating_point_base_v<M>, svd_component<M>> decompose_svd(const M& m) noexcept
 {
     using u_type = typename svd_component<M>::u_type;
     using s_type = typename svd_component<M>::s_type;
@@ -646,7 +646,7 @@ KTM_NOINLINE std::enable_if_t<is_floating_point_base_v<M>, svd_component<M>> dec
 }
 
 template <class M>
-KTM_NOINLINE std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, affine_component<M>>
+KTM_CORE_NI_FUNC std::enable_if_t<is_square_matrix_v<M> && is_floating_point_base_v<M>, affine_component<M>>
 decompose_affine(const M& m) noexcept
 {
     constexpr size_t N = mat_traits_col_v<M>;
