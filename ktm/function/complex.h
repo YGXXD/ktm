@@ -79,7 +79,7 @@ KTM_CORE_NI_FUNC std::enable_if_t<is_complex_v<C>, C> log(const C& c) noexcept
 
 template <class C>
 KTM_CORE_NI_FUNC std::enable_if_t<is_complex_v<C>, C> slerp_internal(const C& x, const C& y,
-                                                                 comp_traits_base_t<C> t) noexcept
+                                                                     comp_traits_base_t<C> t) noexcept
 {
     using T = comp_traits_base_t<C>;
     T a = C::from_to(*y, *x).angle();
@@ -97,7 +97,7 @@ KTM_CORE_NI_FUNC std::enable_if_t<is_complex_v<C>, C> slerp(const C& x, const C&
 
 template <class C>
 KTM_CORE_NI_FUNC std::enable_if_t<is_complex_v<C>, C> slerp_longest(const C& x, const C& y,
-                                                                comp_traits_base_t<C> t) noexcept
+                                                                    comp_traits_base_t<C> t) noexcept
 {
     using T = comp_traits_base_t<C>;
     T a = C::from_to(*y, *x).angle();

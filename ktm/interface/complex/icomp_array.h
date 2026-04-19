@@ -30,7 +30,10 @@ private:
 
     KTM_CORE_FUNC array_type& to_array_impl() noexcept { return reinterpret_cast<array_type&>(*this); }
 
-    KTM_CORE_FUNC const array_type& to_array_impl() const noexcept { return reinterpret_cast<const array_type&>(*this); }
+    KTM_CORE_FUNC const array_type& to_array_impl() const noexcept
+    {
+        return reinterpret_cast<const array_type&>(*this);
+    }
 };
 
 } // namespace ktm

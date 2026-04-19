@@ -84,7 +84,7 @@ KTM_CORE_NI_FUNC std::enable_if_t<is_quaternion_v<Q>, Q> log(const Q& q) noexcep
 
 template <class Q>
 KTM_CORE_NI_FUNC std::enable_if_t<is_quaternion_v<Q>, Q> slerp_internal(const Q& x, const Q& y,
-                                                                    quat_traits_base_t<Q> t) noexcept
+                                                                        quat_traits_base_t<Q> t) noexcept
 {
     using T = quat_traits_base_t<Q>;
     T s = one<T> - t;
@@ -103,7 +103,7 @@ KTM_CORE_NI_FUNC std::enable_if_t<is_quaternion_v<Q>, Q> slerp(const Q& x, const
 
 template <class Q>
 KTM_CORE_NI_FUNC std::enable_if_t<is_quaternion_v<Q>, Q> slerp_longest(const Q& x, const Q& y,
-                                                                   quat_traits_base_t<Q> t) noexcept
+                                                                       quat_traits_base_t<Q> t) noexcept
 {
     if (dot(x, y) >= 0)
         return slerp_internal(x, -y, t);

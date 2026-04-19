@@ -14,7 +14,7 @@
 
 template <size_t Row, size_t Col, typename T>
 KTM_CORE_FUNC void ktm::detail::mat_mul_implement::mat_mul_vec(vec<Col, T>& out, const mat<Row, Col, T>& m,
-                                                            const vec<Row, T>& v) noexcept
+                                                               const vec<Row, T>& v) noexcept
 {
     out = m[0] * v[0];
     loop_impl<Row - 1, void>::call([&out](const vec<Col, T>& m_col, const T& v_val) -> void
@@ -23,7 +23,7 @@ KTM_CORE_FUNC void ktm::detail::mat_mul_implement::mat_mul_vec(vec<Col, T>& out,
 
 template <size_t Row, size_t Col, typename T>
 KTM_CORE_FUNC void ktm::detail::mat_mul_implement::vec_mul_mat(vec<Row, T>& out, const vec<Col, T>& v,
-                                                            const mat<Row, Col, T>& m) noexcept
+                                                               const mat<Row, Col, T>& m) noexcept
 {
     loop_impl<Row, vec<Row, T>>::call(out, [&v](const vec<Col, T>& m_col) -> T { return ktm::reduce_add(m_col * v); },
                                       m);
@@ -31,7 +31,7 @@ KTM_CORE_FUNC void ktm::detail::mat_mul_implement::vec_mul_mat(vec<Row, T>& out,
 
 template <size_t U, size_t Row, size_t Col, typename T>
 KTM_CORE_FUNC void ktm::detail::mat_mul_implement::mat_mul_mat(mat<U, Col, T>& out, const mat<Row, Col, T>& m1,
-                                                            const mat<U, Row, T>& m2) noexcept
+                                                               const mat<U, Row, T>& m2) noexcept
 {
     loop_impl<U, void>::call([&m1](vec<Col, T>& out_col, const vec<Row, T>& m2_col) -> void
     { mat_mul_vec(out_col, m1, m2_col); }, out, m2);

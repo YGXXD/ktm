@@ -303,7 +303,7 @@ struct ktm::detail::array_calc_implement::madd_scalar<int, 2>
         struct ktm::detail::array_calc_implement::impl_name<type, N, std::enable_if_t<(N > 4)>>           \
         {                                                                                                 \
             using A = std::array<type, N>;                                                                \
-            static KTM_CORE_FUNC void call(KTM_DETAIL_ARRAY_CALC_FUNC_PARAMS_##enum(type)) noexcept          \
+            static KTM_CORE_FUNC void call(KTM_DETAIL_ARRAY_CALC_FUNC_PARAMS_##enum(type)) noexcept       \
             {                                                                                             \
                 constexpr size_t K = N / 4;                                                               \
                 using AA4K = std::array<std::array<type, 4>, K>;                                          \

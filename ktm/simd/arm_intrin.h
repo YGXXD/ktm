@@ -114,15 +114,30 @@ KTM_SIMD_FUNC float32x2_t min64_f32(float32x2_t a, float32x2_t b) noexcept
 #    endif
 }
 
-KTM_SIMD_FUNC float32x2_t cmpeq64_f32(float32x2_t a, float32x2_t b) noexcept { return vreinterpret_f32_u32(vceq_f32(a, b)); }
+KTM_SIMD_FUNC float32x2_t cmpeq64_f32(float32x2_t a, float32x2_t b) noexcept
+{
+    return vreinterpret_f32_u32(vceq_f32(a, b));
+}
 
-KTM_SIMD_FUNC float32x2_t cmplt64_f32(float32x2_t a, float32x2_t b) noexcept { return vreinterpret_f32_u32(vclt_f32(a, b)); }
+KTM_SIMD_FUNC float32x2_t cmplt64_f32(float32x2_t a, float32x2_t b) noexcept
+{
+    return vreinterpret_f32_u32(vclt_f32(a, b));
+}
 
-KTM_SIMD_FUNC float32x2_t cmpgt64_f32(float32x2_t a, float32x2_t b) noexcept { return vreinterpret_f32_u32(vcgt_f32(a, b)); }
+KTM_SIMD_FUNC float32x2_t cmpgt64_f32(float32x2_t a, float32x2_t b) noexcept
+{
+    return vreinterpret_f32_u32(vcgt_f32(a, b));
+}
 
-KTM_SIMD_FUNC float32x2_t cmple64_f32(float32x2_t a, float32x2_t b) noexcept { return vreinterpret_f32_u32(vcle_f32(a, b)); }
+KTM_SIMD_FUNC float32x2_t cmple64_f32(float32x2_t a, float32x2_t b) noexcept
+{
+    return vreinterpret_f32_u32(vcle_f32(a, b));
+}
 
-KTM_SIMD_FUNC float32x2_t cmpge64_f32(float32x2_t a, float32x2_t b) noexcept { return vreinterpret_f32_u32(vcge_f32(a, b)); }
+KTM_SIMD_FUNC float32x2_t cmpge64_f32(float32x2_t a, float32x2_t b) noexcept
+{
+    return vreinterpret_f32_u32(vcge_f32(a, b));
+}
 
 KTM_SIMD_FUNC float32x2_t recipl64_f32(float32x2_t a) noexcept { return vrecpe_f32(a); }
 
@@ -397,15 +412,30 @@ KTM_SIMD_FUNC int32x4_t max128_s32(int32x4_t a, int32x4_t b) noexcept { return v
 
 KTM_SIMD_FUNC int32x4_t min128_s32(int32x4_t a, int32x4_t b) noexcept { return vminq_s32(a, b); }
 
-KTM_SIMD_FUNC int32x4_t cmpeq128_s32(int32x4_t a, int32x4_t b) noexcept { return vreinterpretq_s32_u32(vceqq_s32(a, b)); }
+KTM_SIMD_FUNC int32x4_t cmpeq128_s32(int32x4_t a, int32x4_t b) noexcept
+{
+    return vreinterpretq_s32_u32(vceqq_s32(a, b));
+}
 
-KTM_SIMD_FUNC int32x4_t cmplt128_s32(int32x4_t a, int32x4_t b) noexcept { return vreinterpretq_s32_u32(vcltq_s32(a, b)); }
+KTM_SIMD_FUNC int32x4_t cmplt128_s32(int32x4_t a, int32x4_t b) noexcept
+{
+    return vreinterpretq_s32_u32(vcltq_s32(a, b));
+}
 
-KTM_SIMD_FUNC int32x4_t cmpgt128_s32(int32x4_t a, int32x4_t b) noexcept { return vreinterpretq_s32_u32(vcgtq_s32(a, b)); }
+KTM_SIMD_FUNC int32x4_t cmpgt128_s32(int32x4_t a, int32x4_t b) noexcept
+{
+    return vreinterpretq_s32_u32(vcgtq_s32(a, b));
+}
 
-KTM_SIMD_FUNC int32x4_t cmple128_s32(int32x4_t a, int32x4_t b) noexcept { return vreinterpretq_s32_u32(vcleq_s32(a, b)); }
+KTM_SIMD_FUNC int32x4_t cmple128_s32(int32x4_t a, int32x4_t b) noexcept
+{
+    return vreinterpretq_s32_u32(vcleq_s32(a, b));
+}
 
-KTM_SIMD_FUNC int32x4_t cmpge128_s32(int32x4_t a, int32x4_t b) noexcept { return vreinterpretq_s32_u32(vcgeq_s32(a, b)); }
+KTM_SIMD_FUNC int32x4_t cmpge128_s32(int32x4_t a, int32x4_t b) noexcept
+{
+    return vreinterpretq_s32_u32(vcgeq_s32(a, b));
+}
 
 #endif
 

@@ -46,7 +46,7 @@ KTM_CORE_FUNC void ktm::detail::vec_calc_implement::mul(vec<3, T>& out, const ve
 
 template <typename T>
 KTM_CORE_FUNC void ktm::detail::vec_calc_implement::madd(vec<3, T>& out, const vec<3, T>& x, const vec<3, T>& y,
-                                                      const vec<3, T>& z) noexcept
+                                                         const vec<3, T>& z) noexcept
 {
     out.x = ktm_op_madd(x.x, y.x, z.x);
     out.y = ktm_op_madd(x.y, y.y, z.y);
@@ -100,7 +100,7 @@ KTM_CORE_FUNC void ktm::detail::vec_calc_implement::div_scalar(vec<3, T>& out, c
 
 template <typename T>
 KTM_CORE_FUNC void ktm::detail::vec_calc_implement::madd_scalar(vec<3, T>& out, const vec<3, T>& x, const vec<3, T>& y,
-                                                             T scalar) noexcept
+                                                                T scalar) noexcept
 {
     out.x = ktm_op_madd(x.x, y.x, scalar);
     out.y = ktm_op_madd(x.y, y.y, scalar);

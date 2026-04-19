@@ -53,7 +53,10 @@ KTM_SIMD_FUNC v128_t mul128_f32(v128_t a, v128_t b) noexcept { return wasm_f32x4
 
 KTM_SIMD_FUNC v128_t div128_f32(v128_t a, v128_t b) noexcept { return wasm_f32x4_div(a, b); }
 
-KTM_SIMD_FUNC v128_t madd128_f32(v128_t a, v128_t b, v128_t c) noexcept { return wasm_f32x4_add(a, wasm_f32x4_mul(b, c)); }
+KTM_SIMD_FUNC v128_t madd128_f32(v128_t a, v128_t b, v128_t c) noexcept
+{
+    return wasm_f32x4_add(a, wasm_f32x4_mul(b, c));
+}
 
 KTM_SIMD_FUNC v128_t neg128_f32(v128_t a) noexcept { return wasm_f32x4_neg(a); }
 
@@ -92,7 +95,10 @@ KTM_SIMD_FUNC v128_t rsqrtl128_f32(v128_t a) noexcept
     return ret;
 }
 
-KTM_SIMD_FUNC v128_t rsqrth128_f32(v128_t a) noexcept { return wasm_f32x4_div(wasm_f32x4_splat(1.f), wasm_f32x4_sqrt(a)); }
+KTM_SIMD_FUNC v128_t rsqrth128_f32(v128_t a) noexcept
+{
+    return wasm_f32x4_div(wasm_f32x4_splat(1.f), wasm_f32x4_sqrt(a));
+}
 
 KTM_SIMD_FUNC v128_t sqrtl128_f32(v128_t a) noexcept
 {
@@ -138,7 +144,10 @@ KTM_SIMD_FUNC v128_t cmple128_s32(v128_t a, v128_t b) noexcept { return wasm_i32
 
 KTM_SIMD_FUNC v128_t cmpge128_s32(v128_t a, v128_t b) noexcept { return wasm_i32x4_ge(a, b); }
 
-KTM_SIMD_FUNC v128_t madd128_s32(v128_t a, v128_t b, v128_t c) noexcept { return wasm_i32x4_add(a, wasm_i32x4_mul(b, c)); }
+KTM_SIMD_FUNC v128_t madd128_s32(v128_t a, v128_t b, v128_t c) noexcept
+{
+    return wasm_i32x4_add(a, wasm_i32x4_mul(b, c));
+}
 
 KTM_SIMD_FUNC v128_t max128_s32(v128_t a, v128_t b) noexcept { return wasm_i32x4_max(a, b); }
 

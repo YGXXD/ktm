@@ -18,7 +18,10 @@ struct ktm::detail::geometric_implement::dot<2, float>
 {
     using V = vec<2, float>;
 
-    static KTM_CORE_FUNC float call(const V& x, const V& y) noexcept { return _cast64to32_f32(skv::dot1_fv2(x.st, y.st)); }
+    static KTM_CORE_FUNC float call(const V& x, const V& y) noexcept
+    {
+        return _cast64to32_f32(skv::dot1_fv2(x.st, y.st));
+    }
 };
 
 template <>

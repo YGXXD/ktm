@@ -28,8 +28,8 @@ KTM_CORE_FUNC std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> rotate
 }
 
 template <typename T>
-KTM_CORE_FUNC std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> rotate2d_point(T angle,
-                                                                                      const vec<2, T>& point) noexcept
+KTM_CORE_FUNC std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>>
+rotate2d_point(T angle, const vec<2, T>& point) noexcept
 {
     T cos_theta = cos(angle);
     T sin_theta = sin(angle);
@@ -42,7 +42,7 @@ KTM_CORE_FUNC std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> rotate
 
 template <typename T>
 KTM_CORE_FUNC std::enable_if_t<std::is_floating_point_v<T>, mat<3, 3, T>> rotate2d_from_to(const vec<2, T>& from,
-                                                                                        const vec<2, T>& to) noexcept
+                                                                                           const vec<2, T>& to) noexcept
 {
     T cos_theta = dot(from, to);
     T sin_theta = from[0] * to[1] - from[1] * to[0];
