@@ -72,27 +72,28 @@ KTM_CORE_FUNC std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V>
 
 template <class V>
 KTM_CORE_FUNC std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> lerp(const V& x, const V& y,
-                                                                                   vec_traits_base_t<V> t) noexcept
+                                                                                      vec_traits_base_t<V> t) noexcept
 {
     return detail::vector_arithmetic_implement::lerp<vec_traits_len<V>, vec_traits_base_t<V>>::call(x, y, t);
 }
 
 template <class V>
 KTM_CORE_FUNC std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> mix(const V& x, const V& y,
-                                                                                  const V& t) noexcept
+                                                                                     const V& t) noexcept
 {
     return detail::vector_arithmetic_implement::mix<vec_traits_len<V>, vec_traits_base_t<V>>::call(x, y, t);
 }
 
 template <class V>
-KTM_CORE_FUNC std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> step(const V& edge, const V& x) noexcept
+KTM_CORE_FUNC std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> step(const V& edge,
+                                                                                      const V& x) noexcept
 {
     return detail::vector_arithmetic_implement::step<vec_traits_len<V>, vec_traits_base_t<V>>::call(edge, x);
 }
 
 template <class V>
-KTM_CORE_FUNC std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V> smoothstep(const V& edge0, const V& edge1,
-                                                                                         const V& x) noexcept
+KTM_CORE_FUNC std::enable_if_t<is_vector_v<V> && is_floating_point_base_v<V>, V>
+smoothstep(const V& edge0, const V& edge1, const V& x) noexcept
 {
     return detail::vector_arithmetic_implement::smoothstep<vec_traits_len<V>, vec_traits_base_t<V>>::call(edge0, edge1,
                                                                                                           x);

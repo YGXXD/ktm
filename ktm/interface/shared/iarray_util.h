@@ -49,7 +49,10 @@ struct iarray_util : Father
 
     KTM_CORE_FUNC const auto crend() const noexcept { return rend(); }
 
-    KTM_CORE_FUNC constexpr size_t size() const noexcept { return std::tuple_size_v<std::decay_t<decltype(to_array())>>; }
+    KTM_CORE_FUNC constexpr size_t size() const noexcept
+    {
+        return std::tuple_size_v<std::decay_t<decltype(to_array())>>;
+    }
 
     KTM_CORE_FUNC constexpr size_t max_size() const noexcept { return size(); }
 
@@ -75,17 +78,29 @@ struct iarray_util : Father
 
     KTM_CORE_FUNC const auto& operator[](size_t i) const noexcept { return to_array()[i]; }
 
-    friend KTM_CORE_FUNC bool operator==(const Child& x, const Child& y) noexcept { return x.to_array() == y.to_array(); }
+    friend KTM_CORE_FUNC bool operator==(const Child& x, const Child& y) noexcept
+    {
+        return x.to_array() == y.to_array();
+    }
 
-    friend KTM_CORE_FUNC bool operator!=(const Child& x, const Child& y) noexcept { return x.to_array() != y.to_array(); }
+    friend KTM_CORE_FUNC bool operator!=(const Child& x, const Child& y) noexcept
+    {
+        return x.to_array() != y.to_array();
+    }
 
     friend KTM_CORE_FUNC bool operator<(const Child& x, const Child& y) noexcept { return x.to_array() < y.to_array(); }
 
     friend KTM_CORE_FUNC bool operator>(const Child& x, const Child& y) noexcept { return x.to_array() > y.to_array(); }
 
-    friend KTM_CORE_FUNC bool operator<=(const Child& x, const Child& y) noexcept { return x.to_array() <= y.to_array(); }
+    friend KTM_CORE_FUNC bool operator<=(const Child& x, const Child& y) noexcept
+    {
+        return x.to_array() <= y.to_array();
+    }
 
-    friend KTM_CORE_FUNC bool operator>=(const Child& x, const Child& y) noexcept { return x.to_array() >= y.to_array(); }
+    friend KTM_CORE_FUNC bool operator>=(const Child& x, const Child& y) noexcept
+    {
+        return x.to_array() >= y.to_array();
+    }
 };
 
 } // namespace ktm

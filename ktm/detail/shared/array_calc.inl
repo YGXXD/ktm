@@ -133,7 +133,8 @@ struct ktm::detail::array_calc_implement::madd_scalar
     using A = std::array<T, N>;
 
     template <typename S>
-    static KTM_CORE_FUNC std::enable_if_t<std::is_arithmetic_v<S>> call(A& out, const A& x, const A& y, S scalar) noexcept
+    static KTM_CORE_FUNC std::enable_if_t<std::is_arithmetic_v<S>> call(A& out, const A& x, const A& y,
+                                                                        S scalar) noexcept
     {
         loop_impl<N, A>::call(out, [&scalar](const T& x, const T& y) -> T { return ktm_op_madd(x, y, scalar); }, x, y);
     }

@@ -31,7 +31,8 @@ struct iarray_io : Father
         return x.stream_in(in);
     }
 
-    friend KTM_CORE_FUNC std::basic_ostream<wchar_t>& operator<<(std::basic_ostream<wchar_t>& out, const Child& x) noexcept
+    friend KTM_CORE_FUNC std::basic_ostream<wchar_t>& operator<<(std::basic_ostream<wchar_t>& out,
+                                                                 const Child& x) noexcept
     {
         return x.wstream_out(out);
     }

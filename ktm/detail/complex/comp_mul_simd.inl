@@ -40,14 +40,14 @@ KTM_SIMD_FUNC skv::fv2 fc_mul_fc(skv::fv2 x, skv::fv2 y) noexcept
 
 template <>
 KTM_CORE_FUNC void ktm::detail::comp_mul_implement::mul<float>(comp<float>& out, const comp<float>& x,
-                                                            const comp<float>& y) noexcept
+                                                               const comp<float>& y) noexcept
 {
     out.st = fc_mul_fc(x.st, y.st);
 }
 
 template <>
 KTM_CORE_FUNC void ktm::detail::comp_mul_implement::act<float>(vec<2, float>& out, const comp<float>& c,
-                                                            const vec<2, float>& v) noexcept
+                                                               const vec<2, float>& v) noexcept
 {
     constexpr union
     {

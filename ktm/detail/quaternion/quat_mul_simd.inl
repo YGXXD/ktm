@@ -51,14 +51,14 @@ KTM_SIMD_FUNC skv::fv4 fq_mul_fq(skv::fv4 x, skv::fv4 y) noexcept
 
 template <>
 KTM_CORE_FUNC void ktm::detail::quat_mul_implement::mul<float>(quat<float>& out, const quat<float>& x,
-                                                            const quat<float>& y) noexcept
+                                                               const quat<float>& y) noexcept
 {
     out.st = fq_mul_fq(x.st, y.st);
 }
 
 template <>
 KTM_CORE_FUNC void ktm::detail::quat_mul_implement::act<float>(vec<3, float>& out, const quat<float>& q,
-                                                            const vec<3, float>& v) noexcept
+                                                               const vec<3, float>& v) noexcept
 {
     constexpr union
     {
