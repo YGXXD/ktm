@@ -36,15 +36,18 @@ struct icomp_data<Father, comp<T>> : Father
         typename detail::vec_data_implement::vec_storage<2, T>::type st;
     };
 
-    KTM_CORE_FUNC constexpr icomp_data() noexcept : i(zero<T>), r(zero<T>) {};
-    icomp_data(const icomp_data&) = default;
-    icomp_data(icomp_data&&) = default;
-    icomp_data& operator=(const icomp_data&) = default;
-    icomp_data& operator=(icomp_data&&) = default;
+    KTM_CORE_FUNC constexpr icomp_data() noexcept : st() {}
+
+    KTM_CORE_FUNC constexpr icomp_data(const icomp_data& other) : st(other.st) {}
+
+    KTM_CORE_FUNC constexpr icomp_data(icomp_data&& other) : st(other.st) {}
 
     KTM_CORE_FUNC constexpr icomp_data(T x, T y) noexcept : i(x), r(y) {}
 
-    KTM_CORE_FUNC constexpr icomp_data(const vec<2, T> vec) noexcept : i(vec.x), r(vec.y) {}
+    KTM_CORE_FUNC constexpr icomp_data(const vec<2, T> vec) noexcept : st(vec.st) {}
+
+    icomp_data& operator=(const icomp_data&) = default;
+    icomp_data& operator=(icomp_data&&) = default;
 
     KTM_CORE_FUNC T real() const noexcept { return r; }
 
