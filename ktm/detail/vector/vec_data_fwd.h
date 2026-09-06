@@ -25,7 +25,7 @@ template <size_t OSize, size_t ISize, typename T,
           typename = std::enable_if_t<std::is_arithmetic_v<T> && OSize <= ISize>>
 struct vec_swizzle;
 
-}; // namespace vec_data_implement
+} // namespace vec_data_implement
 } // namespace detail
 } // namespace ktm
 
