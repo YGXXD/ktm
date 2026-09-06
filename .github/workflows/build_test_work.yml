@@ -32,7 +32,7 @@ jobs:
           - os: windows-latest
             c_compiler: cl
             cpp_compiler: cl
-            cmake_project: Visual` Studio` 17` 2022
+            cmake_project: Visual` Studio` 18` 2026
           - os: windows-latest
             c_compiler: gcc
             cpp_compiler: g++
