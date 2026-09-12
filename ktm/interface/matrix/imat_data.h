@@ -26,7 +26,7 @@ struct imat_data<Father, mat<Row, Col, T>> : Father
 {
     using Father::Father;
 
-    KTM_CORE_FUNC constexpr imat_data() noexcept : columns {} {};
+    imat_data() = default;
     imat_data(const imat_data&) = default;
     imat_data(imat_data&&) = default;
     imat_data& operator=(const imat_data&) = default;
@@ -45,7 +45,7 @@ struct imat_data<Father, mat<Row, Col, T>> : Father
     }
 
 private:
-    vec<Col, T> columns[Row];
+    vec<Col, T> columns[Row] = {};
 };
 
 } // namespace ktm
