@@ -34,19 +34,16 @@ struct iquat_data<Father, quat<T>> : Father
             T i, j, k, r;
         };
 
-        typename detail::vec_data_implement::vec_storage<4, T>::type st;
+        typename detail::vec_data_implement::vec_storage<4, T>::type st = {};
     };
-
-    KTM_CORE_FUNC constexpr iquat_data() noexcept : st() {}
-
-    KTM_CORE_FUNC constexpr iquat_data(const iquat_data& other) : st(other.st) {}
-
-    KTM_CORE_FUNC constexpr iquat_data(iquat_data&& other) : st(other.st) {}
 
     KTM_CORE_FUNC constexpr iquat_data(T x, T y, T z, T w) noexcept : i(x), j(y), k(z), r(w) {}
 
     KTM_CORE_FUNC constexpr iquat_data(const vec<4, T>& vec) noexcept : st(vec.st) {}
 
+    iquat_data() = default;
+    iquat_data(const iquat_data&) = default;
+    iquat_data(iquat_data&&) = default;
     iquat_data& operator=(const iquat_data&) = default;
     iquat_data& operator=(iquat_data&&) = default;
 
