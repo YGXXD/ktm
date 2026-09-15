@@ -119,9 +119,7 @@ template <class Father, size_t N, typename T>
 struct ivec_data<Father, vec<N, T>> : Father
 {
     using Father::Father;
-    typename detail::vec_data_implement::vec_storage<N, T>::type st;
-
-    KTM_CORE_FUNC constexpr ivec_data() noexcept : st {} {};
+    typename detail::vec_data_implement::vec_storage<N, T>::type st = {};
 
     KTM_CORE_FUNC constexpr ivec_data(T x) noexcept : st {}
     {
@@ -141,6 +139,7 @@ struct ivec_data<Father, vec<N, T>> : Father
             st.e[i] = static_cast<T>(v.st.e[i]);
     }
 
+    ivec_data() = default;
     ivec_data(const ivec_data&) = default;
     ivec_data(ivec_data&&) = default;
     ivec_data& operator=(const ivec_data&) = default;
@@ -171,14 +170,10 @@ struct ivec_data<Father, vec<2, T>> : Father
             T r, g;
         };
 
-        typename detail::vec_data_implement::vec_storage<2, T>::type st;
+        typename detail::vec_data_implement::vec_storage<2, T>::type st = {};
     };
 
     KTM_CORE_FUNC constexpr ivec_data() noexcept : st() {}
-
-    KTM_CORE_FUNC constexpr ivec_data(const ivec_data& other) : st(other.st) {}
-
-    KTM_CORE_FUNC constexpr ivec_data(ivec_data&& other) : st(other.st) {}
 
     KTM_CORE_FUNC constexpr ivec_data(T xi) noexcept : x(xi), y(xi) {}
 
@@ -189,6 +184,8 @@ struct ivec_data<Father, vec<2, T>> : Father
     {
     }
 
+    ivec_data(const ivec_data&) = default;
+    ivec_data(ivec_data&&) = default;
     ivec_data& operator=(const ivec_data&) = default;
     ivec_data& operator=(ivec_data&&) = default;
 
@@ -213,14 +210,8 @@ struct ivec_data<Father, vec<3, T>> : Father
             T r, g, b;
         };
 
-        typename detail::vec_data_implement::vec_storage<3, T>::type st;
+        typename detail::vec_data_implement::vec_storage<3, T>::type st = {};
     };
-
-    KTM_CORE_FUNC constexpr ivec_data() noexcept : st() {}
-
-    KTM_CORE_FUNC constexpr ivec_data(const ivec_data& other) : st(other.st) {}
-
-    KTM_CORE_FUNC constexpr ivec_data(ivec_data&& other) : st(other.st) {}
 
     KTM_CORE_FUNC constexpr ivec_data(T xi) noexcept : x(xi), y(xi), z(xi) {}
 
@@ -234,6 +225,9 @@ struct ivec_data<Father, vec<3, T>> : Father
     {
     }
 
+    ivec_data() = default;
+    ivec_data(const ivec_data&) = default;
+    ivec_data(ivec_data&&) = default;
     ivec_data& operator=(const ivec_data&) = default;
     ivec_data& operator=(ivec_data&&) = default;
 
@@ -258,14 +252,8 @@ struct ivec_data<Father, vec<4, T>> : Father
             T r, g, b, a;
         };
 
-        typename detail::vec_data_implement::vec_storage<4, T>::type st;
+        typename detail::vec_data_implement::vec_storage<4, T>::type st = {};
     };
-
-    KTM_CORE_FUNC constexpr ivec_data() noexcept : st() {}
-
-    KTM_CORE_FUNC constexpr ivec_data(const ivec_data& other) : st(other.st) {}
-
-    KTM_CORE_FUNC constexpr ivec_data(ivec_data&& other) : st(other.st) {}
 
     KTM_CORE_FUNC constexpr ivec_data(T xi) noexcept : x(xi), y(xi), z(xi), w(xi) {}
 
@@ -279,6 +267,9 @@ struct ivec_data<Father, vec<4, T>> : Father
     {
     }
 
+    ivec_data() = default;
+    ivec_data(const ivec_data&) = default;
+    ivec_data(ivec_data&&) = default;
     ivec_data& operator=(const ivec_data&) = default;
     ivec_data& operator=(ivec_data&&) = default;
 

@@ -8,7 +8,7 @@
 #ifndef _KTM_SETUP_H_
 #define _KTM_SETUP_H_
 
-#if defined(__clang__) && defined(__GNUC__)
+#if defined(__clang__)
 #    define KTM_COMPILER_CLANG
 #elif defined(__GNUC__) || defined(__MINGW32__)
 #    define KTM_COMPILER_GCC
