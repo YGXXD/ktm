@@ -8,6 +8,7 @@
 #ifndef _KTM_MATRIX_DECOMPOSE_H_
 #define _KTM_MATRIX_DECOMPOSE_H_
 
+#include <algorithm>
 #include "../../setup.h"
 #include "../../type/basic.h"
 #include "../../utility/type_traits_math.h"
