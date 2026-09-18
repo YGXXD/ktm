@@ -28,7 +28,7 @@ template <typename T>
 KTM_CORE_FUNC std::enable_if_t<std::is_floating_point_v<T>, T> gauss_rand(T mean, T deviation) noexcept
 {
     T unit = sqrt(lerp_rand(epsilon<T>, one<T>));
-    T theta = lerp_rand(zero<T>, tow_pi<T>);
+    T theta = lerp_rand(zero<T>, two_pi<T>);
     return unit * theta * deviation * sqrt(static_cast<T>(-2) * log(unit) * recip(unit)) + mean;
 }
 
@@ -41,7 +41,7 @@ KTM_CORE_FUNC std::enable_if_t<std::is_floating_point_v<T>, T> exp_rand(T lambda
 template <typename T>
 KTM_CORE_FUNC std::enable_if_t<std::is_floating_point_v<T>, vec<2, T>> circur_rand(T radius) noexcept
 {
-    T theta = lerp_rand(zero<T>, tow_pi<T>);
+    T theta = lerp_rand(zero<T>, two_pi<T>);
     return radius * vec<2, T>(cos(theta), sin(theta));
 }
 
@@ -55,7 +55,7 @@ KTM_CORE_FUNC std::enable_if_t<std::is_floating_point_v<T>, vec<2, T>> disk_rand
 template <typename T>
 KTM_CORE_FUNC std::enable_if_t<std::is_floating_point_v<T>, vec<3, T>> sphere_rand(T radius) noexcept
 {
-    T theta = lerp_rand(zero<T>, tow_pi<T>);
+    T theta = lerp_rand(zero<T>, two_pi<T>);
     T phi = acos(lerp_rand(-one<T>, one<T>));
     T sin_phi = sin(phi);
     return radius * vec<3, T>(sin_phi * cos(theta), sin_phi * sin(theta), cos(phi));

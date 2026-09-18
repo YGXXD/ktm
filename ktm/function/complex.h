@@ -83,7 +83,7 @@ KTM_CORE_NI_FUNC std::enable_if_t<is_complex_v<C>, C> slerp_internal(const C& x,
 {
     using T = comp_traits_base_t<C>;
     T a = C::from_to(*y, *x).angle();
-    T normal = a < zero<T> ? a + tow_pi<T> : a;
+    T normal = a < zero<T> ? a + two_pi<T> : a;
     return C::from_angle(t * normal) * x;
 }
 
@@ -101,7 +101,7 @@ KTM_CORE_NI_FUNC std::enable_if_t<is_complex_v<C>, C> slerp_longest(const C& x, 
 {
     using T = comp_traits_base_t<C>;
     T a = C::from_to(*y, *x).angle();
-    T normal = a < zero<T> ? a + tow_pi<T> : a - tow_pi<T>;
+    T normal = a < zero<T> ? a + two_pi<T> : a - two_pi<T>;
     return C::from_angle(t * normal) * x;
 }
 
