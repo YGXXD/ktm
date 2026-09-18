@@ -81,7 +81,7 @@ inline constexpr bool is_exist_same_vs<Tp> = false;
 template <>
 inline constexpr bool is_exist_same_vs<> = false;
 
-// comparing tow templates
+// comparing two templates
 template <template <typename...> class Tp, template <typename...> class Up>
 struct is_template_same : std::false_type
 {

@@ -118,12 +118,12 @@ template <typename T>
 KTM_CORE_FUNC std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> frustum_lh(T left, T right, T top, T bottom,
                                                                                      T znear, T zfar) noexcept
 {
-    T tow_near = static_cast<T>(2) * znear;
+    T two_near = static_cast<T>(2) * znear;
     T dx = right - left;
     T dy = top - bottom;
     T zs = zfar / (znear - zfar);
-    return mat<4, 4, T> { { tow_near / dx, zero<T>, zero<T>, zero<T> },
-                          { zero<T>, tow_near / dy, zero<T>, zero<T> },
+    return mat<4, 4, T> { { two_near / dx, zero<T>, zero<T>, zero<T> },
+                          { zero<T>, two_near / dy, zero<T>, zero<T> },
                           { (right + left) / (-dx), (top + bottom) / (-dy), -zs, one<T> },
                           { zero<T>, zero<T>, znear * zs, zero<T> } };
 }
@@ -132,12 +132,12 @@ template <typename T>
 KTM_CORE_FUNC std::enable_if_t<std::is_floating_point_v<T>, mat<4, 4, T>> frustum_rh(T left, T right, T top, T bottom,
                                                                                      T znear, T zfar) noexcept
 {
-    T tow_near = static_cast<T>(2) * znear;
+    T two_near = static_cast<T>(2) * znear;
     T dx = right - left;
     T dy = top - bottom;
     T zs = zfar / (znear - zfar);
-    return mat<4, 4, T> { { tow_near / dx, zero<T>, zero<T>, zero<T> },
-                          { zero<T>, tow_near / dy, zero<T>, zero<T> },
+    return mat<4, 4, T> { { two_near / dx, zero<T>, zero<T>, zero<T> },
+                          { zero<T>, two_near / dy, zero<T>, zero<T> },
                           { (right + left) / dx, (top + bottom) / dy, zs, -one<T> },
                           { zero<T>, zero<T>, znear * zs, zero<T> } };
 }

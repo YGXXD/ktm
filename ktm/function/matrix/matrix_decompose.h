@@ -531,15 +531,15 @@ decompose_edv_jacobi(const M& m) noexcept
         {
             if (acr < 0)
             {
-                sin_theta = -rsqrt_tow<T>;
-                cos_theta = rsqrt_tow<T>;
+                sin_theta = -rsqrt_two<T>;
+                cos_theta = rsqrt_two<T>;
                 sin_two_theta = -one<T>;
                 cos_two_theta = zero<T>;
             }
             else
             {
-                sin_theta = rsqrt_tow<T>;
-                cos_theta = rsqrt_tow<T>;
+                sin_theta = rsqrt_two<T>;
+                cos_theta = rsqrt_two<T>;
                 sin_two_theta = one<T>;
                 cos_two_theta = zero<T>;
             }
