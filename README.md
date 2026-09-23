@@ -148,10 +148,10 @@ int main(int argv, char* argc[])
 
 |类|组成部分|
 |:-|:-|
-|[vec](ktm/type/vec.h)|ivec_data，ivec_array，ivec_calc，iarray_io，iarray_calc，iarray_util|
-|[mat](ktm/type/mat.h)|imat_data，imat_make，imat_array，imat_mul，iarray_io，iarray_add，iarray_madd_scalar，iarray_mul_scalar，iarray_util|
-|[quat](ktm/type/quat.h)|iquat_data，iquat_make，iquat_array，iquat_mul，iarray_io，iarray_add，iarray_madd_scalar，iarray_mul_scalar，iarray_util|
-|[comp](ktm/type/comp.h)|icomp_data，icomp_make，icomp_array，icomp_mul，iarray_io，iarray_add，iarray_madd_scalar，iarray_mul_scalar，iarray_util|
+|[vec](ktm/type/vec.h)|ivec_data，ivec_array，ivec_calc，iarray_tostring，iarray_io，iarray_calc，iarray_util|
+|[mat](ktm/type/mat.h)|imat_data，imat_make，imat_array，imat_mul，iarray_tostring，iarray_io，iarray_add_calc，iarray_madd_scalar，iarray_mul_scalar，iarray_util|
+|[quat](ktm/type/quat.h)|iquat_data，iquat_make，iquat_array，iquat_mul，iarray_tostring，iarray_io，iarray_add_calc，iarray_madd_scalar，iarray_mul_scalar，iarray_util|
+|[comp](ktm/type/comp.h)|icomp_data，icomp_make，icomp_array，icomp_mul，iarray_tostring，iarray_io，iarray_add_calc，iarray_madd_scalar，iarray_mul_scalar，iarray_util|
 
 ### 许可证
 
