@@ -86,6 +86,10 @@ int main(int argv, char* argc[])
 
 ### 组件设计
 
+**ECS架构图**
+
+<img src='img/ktm_ecs.svg'></img>
+
 **共享组件**
 
 |组件|功能|
