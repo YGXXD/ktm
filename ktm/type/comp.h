@@ -31,8 +31,8 @@ using comp_components =
 template <typename T>
 struct comp<T> : comp_components<comp<T>>
 {
-    using fater_type = comp_components<comp<T>>;
-    using fater_type::fater_type;
+    using father_type = comp_components<comp<T>>;
+    using father_type::father_type;
 };
 
 } // namespace ktm

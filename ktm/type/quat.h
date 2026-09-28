@@ -31,8 +31,8 @@ using quat_components =
 template <typename T>
 struct quat<T> : quat_components<quat<T>>
 {
-    using fater_type = quat_components<quat<T>>;
-    using fater_type::fater_type;
+    using father_type = quat_components<quat<T>>;
+    using father_type::father_type;
 };
 
 } // namespace ktm
