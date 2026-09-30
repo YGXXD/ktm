@@ -264,6 +264,15 @@ KTM_SIMD_FUNC float32x4_t madd128_f32(float32x4_t a, float32x4_t b, float32x4_t 
 #    endif
 }
 
+KTM_SIMD_FUNC float32x4_t msub128_f32(float32x4_t a, float32x4_t b, float32x4_t c) noexcept
+{
+#    if KTM_SIMD_ENABLE(KTM_SIMD_NEON64)
+    return vfmsq_f32(a, b, c);
+#    else
+    return vmlsq_f32(a, b, c);
+#    endif
+}
+
 KTM_SIMD_FUNC float32x4_t neg128_f32(float32x4_t a) noexcept { return vnegq_f32(a); }
 
 KTM_SIMD_FUNC float32x4_t abs128_f32(float32x4_t a) noexcept { return vabsq_f32(a); }

@@ -68,6 +68,15 @@ KTM_SIMD_FUNC __m128 madd128_f32(__m128 a, __m128 b, __m128 c) noexcept
 #    endif
 }
 
+KTM_SIMD_FUNC __m128 msub128_f32(__m128 a, __m128 b, __m128 c) noexcept
+{
+#    if KTM_SIMD_ENABLE(KTM_SIMD_FMA)
+    return _mm_fnmadd_ps(b, c, a);
+#    else
+    return _mm_sub_ps(a, _mm_mul_ps(b, c));
+#    endif
+}
+
 KTM_SIMD_FUNC __m128 neg128_f32(__m128 a) noexcept
 {
     constexpr union

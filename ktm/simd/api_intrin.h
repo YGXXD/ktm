@@ -151,6 +151,7 @@
 #    define _mul128_f32(a, b) ::intrin::mul128_f32(a, b)
 #    define _div128_f32(a, b) ::intrin::div128_f32(a, b)
 #    define _madd128_f32(a, b, c) ::intrin::madd128_f32(a, b, c)
+#    define _msub128_f32(a, b, c) ::intrin::msub128_f32(a, b, c)
 #    define _neg128_f32(a) ::intrin::neg128_f32(a)
 #    define _abs128_f32(a) ::intrin::abs128_f32(a)
 #    define _max128_f32(a, b) ::intrin::max128_f32(a, b)
