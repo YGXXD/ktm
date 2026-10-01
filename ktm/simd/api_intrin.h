@@ -212,6 +212,7 @@
 
 #    define _mul128_s32(a, b) ::intrin::mul128_s32(a, b)
 #    define _madd128_s32(a, b, c) ::intrin::madd128_s32(a, b, c)
+#    define _msub128_s32(a, b, c) ::intrin::msub128_s32(a, b, c)
 #    define _max128_s32(a, b) ::intrin::max128_s32(a, b)
 #    define _min128_s32(a, b) ::intrin::min128_s32(a, b)
 #    define _clamp128_s32(a, min, max) _min128_s32(_max128_s32(a, min), max)

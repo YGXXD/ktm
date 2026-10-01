@@ -413,6 +413,8 @@ KTM_SIMD_FUNC int32x4_t mul128_s32(int32x4_t a, int32x4_t b) noexcept { return v
 
 KTM_SIMD_FUNC int32x4_t madd128_s32(int32x4_t a, int32x4_t b, int32x4_t c) noexcept { return vmlaq_s32(a, b, c); }
 
+KTM_SIMD_FUNC int32x4_t msub128_s32(int32x4_t a, int32x4_t b, int32x4_t c) noexcept { return vmlsq_s32(a, b, c); }
+
 KTM_SIMD_FUNC int32x4_t neg128_s32(int32x4_t a) noexcept { return vnegq_s32(a); }
 
 KTM_SIMD_FUNC int32x4_t abs128_s32(int32x4_t a) noexcept { return vabsq_s32(a); }

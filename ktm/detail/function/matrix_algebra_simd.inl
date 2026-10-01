@@ -102,9 +102,8 @@ struct ktm::detail::matrix_algebra_implement::determinant<3, float>
         const skv::fv4& c_0 = m[0].st;
         const skv::fv4& c_1 = m[1].st;
         const skv::fv4& c_2 = m[2].st;
-        skv::fv4 mul_0 = _mul128_f32(_shufft128_f32(c_1, c_1, 3, 0, 2, 1), _shufft128_f32(c_2, c_2, 3, 1, 0, 2));
-        skv::fv4 msub_0 =
-            _msub128_f32(mul_0, _shufft128_f32(c_1, c_1, 3, 1, 0, 2), _shufft128_f32(c_2, c_2, 3, 0, 2, 1));
+        skv::fv4 mul_0 = _mul128_f32(_shuffo128_f32(c_1, 3, 0, 2, 1), _shuffo128_f32(c_2, 3, 1, 0, 2));
+        skv::fv4 msub_0 = _msub128_f32(mul_0, _shuffo128_f32(c_1, 3, 1, 0, 2), _shuffo128_f32(c_2, 3, 0, 2, 1));
         return skv::radd_fv3(_mul128_f32(c_0, msub_0));
     }
 };
@@ -333,10 +332,9 @@ struct ktm::detail::matrix_algebra_implement::determinant<3, int>
         const skv::sv4& c_0 = m[0].st;
         const skv::sv4& c_1 = m[1].st;
         const skv::sv4& c_2 = m[2].st;
-        skv::sv4 mul_00 = _mul128_s32(_shuffo128_s32(c_1, 3, 0, 2, 1), _shuffo128_s32(c_2, 3, 1, 0, 2));
-        skv::sv4 mul_01 = _mul128_s32(_shuffo128_s32(c_1, 3, 1, 0, 2), _shuffo128_s32(c_2, 3, 0, 2, 1));
-        skv::sv4 sub_0 = _sub128_s32(mul_00, mul_01);
-        return skv::radd_sv3(_mul128_s32(c_0, sub_0));
+        skv::sv4 mul_0 = _mul128_s32(_shuffo128_s32(c_1, 3, 0, 2, 1), _shuffo128_s32(c_2, 3, 1, 0, 2));
+        skv::sv4 msub_0 = _msub128_s32(mul_0, _shuffo128_s32(c_1, 3, 1, 0, 2), _shuffo128_s32(c_2, 3, 0, 2, 1));
+        return skv::radd_sv3(_mul128_s32(c_0, msub_0));
     }
 };
 
@@ -355,25 +353,22 @@ struct ktm::detail::matrix_algebra_implement::determinant<4, int>
         skv::sv4 mul_0;
         {
             skv::sv4 mul_00 = _mul128_s32(_shuffo128_s32(c_2, 1, 0, 3, 2), _shuffo128_s32(c_3, 2, 1, 0, 3));
-            skv::sv4 mul_01 = _mul128_s32(_shuffo128_s32(c_2, 2, 1, 0, 3), _shuffo128_s32(c_3, 1, 0, 3, 2));
-            skv::sv4 sub_0 = _sub128_s32(mul_00, mul_01);
-            mul_0 = _mul128_s32(_shuffo128_s32(c_1, 0, 3, 2, 1), sub_0);
+            skv::sv4 msub_0 = _msub128_s32(mul_00, _shuffo128_s32(c_2, 2, 1, 0, 3), _shuffo128_s32(c_3, 1, 0, 3, 2));
+            mul_0 = _mul128_s32(_shuffo128_s32(c_1, 0, 3, 2, 1), msub_0);
         }
 
         skv::sv4 mul_1;
         {
             skv::sv4 mul_00 = _mul128_s32(_shuffo128_s32(c_2, 2, 1, 0, 3), _shuffo128_s32(c_3, 0, 3, 2, 1));
-            skv::sv4 mul_01 = _mul128_s32(_shuffo128_s32(c_2, 0, 3, 2, 1), _shuffo128_s32(c_3, 2, 1, 0, 3));
-            skv::sv4 sub_0 = _sub128_s32(mul_00, mul_01);
-            mul_1 = _mul128_s32(_shuffo128_s32(c_1, 1, 0, 3, 2), sub_0);
+            skv::sv4 msub_0 = _msub128_s32(mul_00, _shuffo128_s32(c_2, 0, 3, 2, 1), _shuffo128_s32(c_3, 2, 1, 0, 3));
+            mul_1 = _mul128_s32(_shuffo128_s32(c_1, 1, 0, 3, 2), msub_0);
         }
 
         skv::sv4 mul_2;
         {
             skv::sv4 mul_00 = _mul128_s32(_shuffo128_s32(c_2, 0, 3, 2, 1), _shuffo128_s32(c_3, 1, 0, 3, 2));
-            skv::sv4 mul_01 = _mul128_s32(_shuffo128_s32(c_2, 1, 0, 3, 2), _shuffo128_s32(c_3, 0, 3, 2, 1));
-            skv::sv4 sub_0 = _sub128_s32(mul_00, mul_01);
-            mul_2 = _mul128_s32(_shuffo128_s32(c_1, 2, 1, 0, 3), sub_0);
+            skv::sv4 msub_0 = _msub128_s32(mul_00, _shuffo128_s32(c_2, 1, 0, 3, 2), _shuffo128_s32(c_3, 0, 3, 2, 1));
+            mul_2 = _mul128_s32(_shuffo128_s32(c_1, 2, 1, 0, 3), msub_0);
         }
 
         skv::sv4 mul_3 = _mul128_s32(c_0, _add128_s32(_add128_s32(mul_0, mul_1), mul_2));

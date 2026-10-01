@@ -273,6 +273,11 @@ KTM_SIMD_FUNC __m128i madd128_s32(__m128i a, __m128i b, __m128i c) noexcept
     return _mm_add_epi32(a, _mm_mullo_epi32(b, c));
 }
 
+KTM_SIMD_FUNC __m128i msub128_s32(__m128i a, __m128i b, __m128i c) noexcept
+{
+    return _mm_sub_epi32(a, _mm_mullo_epi32(b, c));
+}
+
 KTM_SIMD_FUNC __m128i max128_s32(__m128i a, __m128i b) noexcept { return _mm_max_epi32(a, b); }
 
 KTM_SIMD_FUNC __m128i min128_s32(__m128i a, __m128i b) noexcept { return _mm_min_epi32(a, b); }
