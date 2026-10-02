@@ -39,13 +39,13 @@ int main()
     for (float t = 0.0f; t <= 1.0f; t += 0.05f)
     {
         ktm::fcomp lerp_c = ktm::lerp(c2, c3, t);
-        TEST_EQUAL(*lerp_c, ktm::lerp(*c2, *c3, t));
+        TEST_EQUAL_NORMAL(*lerp_c, ktm::lerp(*c2, *c3, t));
 
         ktm::fcomp slerp_c = ktm::slerp(c2, c3, t);
-        TEST_EQUAL(slerp_c * v1, slerp_c.matrix2x2() * v1);
+        TEST_EQUAL_NORMAL(slerp_c * v1, slerp_c.matrix2x2() * v1);
 
         ktm::fcomp slerp_longest_c = ktm::slerp_longest(c2, c3, t);
-        TEST_EQUAL(slerp_longest_c * v1, slerp_longest_c.matrix2x2() * v1);
+        TEST_EQUAL_NORMAL(slerp_longest_c * v1, slerp_longest_c.matrix2x2() * v1);
     }
 
     return 0;

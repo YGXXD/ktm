@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
     ktm::fvec4 a4_vec = ktm::fvec4(5.0f, 3.0f, -9.0f, 1.0f);
     a4 >> affine_fmat;
     TEST_EQUAL_MATRIX(affine_fmat, a4_mat, 4);
-    TEST_EQUAL(affine_fmat * a4_vec, a4_mat * a4_vec);
+    TEST_EQUAL_NORMAL(affine_fmat * a4_vec, a4_mat * a4_vec);
     a4.invert().concat(affine_fmat) >> affine_fmat;
     TEST_EQUAL_MATRIX(affine_fmat, ktm::fmat4x4::from_eye(), 4);
 
@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
     a5 >> a5_mat;
     a7 >> a7_mat;
     TEST_EQUAL_MATRIX(a5_mat, a7_mat, 4);
-    TEST_EQUAL_MATRIX(a5_mat * a5_vec, a7_mat * a5_vec, 4);
+    TEST_EQUAL_NORMAL(a5_mat * a5_vec, a7_mat * a5_vec);
 
     return 0;
 }

@@ -45,13 +45,13 @@ int main()
     for (float t = 0.0f; t <= 1.0f; t += 0.05f)
     {
         ktm::fquat lerp_q = ktm::lerp(q4, q5, t);
-        TEST_EQUAL(*lerp_q, ktm::lerp(*q4, *q5, t));
+        TEST_EQUAL_NORMAL(*lerp_q, ktm::lerp(*q4, *q5, t));
 
         ktm::fquat slerp_q = ktm::slerp(q4, q5, t);
-        TEST_EQUAL(slerp_q * v1, slerp_q.matrix3x3() * v1);
+        TEST_EQUAL_NORMAL(slerp_q * v1, slerp_q.matrix3x3() * v1);
 
         ktm::fquat slerp_longest_q = ktm::slerp_longest(q4, q5, t);
-        TEST_EQUAL(slerp_longest_q * v1, slerp_longest_q.matrix3x3() * v1);
+        TEST_EQUAL_NORMAL(slerp_longest_q * v1, slerp_longest_q.matrix3x3() * v1);
     }
 
     return 0;

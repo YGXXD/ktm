@@ -24,18 +24,21 @@
             return 1;                                                                                              \
         }                                                                                                          \
     }
-#define TEST_EQUAL(x, y) TEST_EQUAL_WITH_EPSILON(x, y, 1e-5f)
-#define TEST_EQUAL_FAST(x, y) TEST_EQUAL_WITH_EPSILON(x, y, 5e-2f)
-#define TEST_EQUAL_MATRIX(x, y, row)   \
-    {                                  \
-        auto _mx = x;                  \
-        auto _my = y;                  \
-        auto _row = row;               \
-        for (int i = 0; i < _row; i++) \
-        {                              \
-            TEST_EQUAL(_mx[i], _my[i]) \
-        }                              \
+#define TEST_EQUAL_MATRIX_WITH_MACRO(x, y, row, macro) \
+    {                                                  \
+        auto _mx = x;                                  \
+        auto _my = y;                                  \
+        auto _row = row;                               \
+        for (int i = 0; i < _row; i++)                 \
+        {                                              \
+            macro(_mx[i], _my[i])                      \
+        }                                              \
     }
+#define TEST_EQUAL(x, y) TEST_EQUAL_WITH_EPSILON(x, y, 1e-6f)
+#define TEST_EQUAL_NORMAL(x, y) TEST_EQUAL_WITH_EPSILON(x, y, 1e-5f)
+#define TEST_EQUAL_FAST(x, y) TEST_EQUAL_WITH_EPSILON(x, y, 5e-2f)
+#define TEST_EQUAL_MATRIX(x, y, row) TEST_EQUAL_MATRIX_WITH_MACRO(x, y, row, TEST_EQUAL)
+#define TEST_EQUAL_MATRIX_NORMAL(x, y, row) TEST_EQUAL_MATRIX_WITH_MACRO(x, y, row, TEST_EQUAL_NORMAL)
 #define TEST_EQUAL_QUATERNION(x, y) TEST_EQUAL(*(x), *(y))
 #define TEST_EQUAL_COMPLEX(x, y) TEST_EQUAL_QUATERNION(x, y)
 
