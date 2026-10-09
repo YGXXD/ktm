@@ -14,8 +14,9 @@
 namespace ktm
 {
 
+// 本地为支持 1 维而修改：放宽 (Row > 1) && (Col > 1) 为 (Row > 0) && (Col > 0)
 template <size_t Row, size_t Col, typename T,
-          typename = std::enable_if_t<(Row > 1) && (Col > 1) && std::is_arithmetic_v<T>>>
+          typename = std::enable_if_t<(Row > 0) && (Col > 0) && std::is_arithmetic_v<T>>>
 struct mat;
 
 }

@@ -14,7 +14,8 @@
 namespace ktm
 {
 
-template <size_t N, typename T, typename = std::enable_if_t<(N > 1) && std::is_arithmetic_v<T>>>
+// 本地为支持 1 维而修改：放宽 (N > 1) 为 (N > 0)
+template <size_t N, typename T, typename = std::enable_if_t<(N > 0) && std::is_arithmetic_v<T>>>
 struct vec;
 
 }
