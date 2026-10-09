@@ -154,6 +154,41 @@ struct ivec_data<Father, vec<N, T>> : Father
 };
 
 template <class Father, typename T>
+struct ivec_data<Father, vec<1, T>> : Father
+{
+    using Father::Father;
+
+    union
+    {
+        struct
+        {
+            T x;
+        };
+
+        struct
+        {
+            T r;
+        };
+
+        typename detail::vec_data_implement::vec_storage<1, T>::type st = {};
+    };
+
+    KTM_CORE_FUNC constexpr ivec_data() noexcept : st() {}
+
+    KTM_CORE_FUNC constexpr ivec_data(T xi) noexcept : x(xi) {}
+
+    template <typename U, typename = std::enable_if_t<!std::is_same_v<U, T>>>
+    KTM_CORE_FUNC constexpr ivec_data(const vec<1, U>& v) noexcept : x(static_cast<T>(v.x))
+    {
+    }
+
+    ivec_data(const ivec_data&) = default;
+    ivec_data(ivec_data&&) = default;
+    ivec_data& operator=(const ivec_data&) = default;
+    ivec_data& operator=(ivec_data&&) = default;
+};
+
+template <class Father, typename T>
 struct ivec_data<Father, vec<2, T>> : Father
 {
     using Father::Father;
