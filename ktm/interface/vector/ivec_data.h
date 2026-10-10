@@ -173,8 +173,6 @@ struct ivec_data<Father, vec<1, T>> : Father
         typename detail::vec_data_implement::vec_storage<1, T>::type st = {};
     };
 
-    KTM_CORE_FUNC constexpr ivec_data() noexcept : st() {}
-
     KTM_CORE_FUNC constexpr ivec_data(T xi) noexcept : x(xi) {}
 
     template <typename U, typename = std::enable_if_t<!std::is_same_v<U, T>>>
@@ -182,6 +180,7 @@ struct ivec_data<Father, vec<1, T>> : Father
     {
     }
 
+    ivec_data() = default;
     ivec_data(const ivec_data&) = default;
     ivec_data(ivec_data&&) = default;
     ivec_data& operator=(const ivec_data&) = default;
@@ -208,8 +207,6 @@ struct ivec_data<Father, vec<2, T>> : Father
         typename detail::vec_data_implement::vec_storage<2, T>::type st = {};
     };
 
-    KTM_CORE_FUNC constexpr ivec_data() noexcept : st() {}
-
     KTM_CORE_FUNC constexpr ivec_data(T xi) noexcept : x(xi), y(xi) {}
 
     KTM_CORE_FUNC constexpr ivec_data(T xi, T yi) noexcept : x(xi), y(yi) {}
@@ -219,6 +216,7 @@ struct ivec_data<Father, vec<2, T>> : Father
     {
     }
 
+    ivec_data() = default;
     ivec_data(const ivec_data&) = default;
     ivec_data(ivec_data&&) = default;
     ivec_data& operator=(const ivec_data&) = default;
