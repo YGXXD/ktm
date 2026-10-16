@@ -506,89 +506,60 @@ decompose_edv_jacobi(const M& m) noexcept
 
     for (int it = 0; it < KTM_MATRIX_DECOMPOSE_ITERATION_MAX; ++it)
     {
-        // find the maximum element on a non diagonal line
-        int col = 0, row = 1;
-        T nd_max = a[0][1];
+        // check the element is zero on a non diagonal line
+        T nd_max_is_zero = true;
         for (int i = 0; i < N; ++i)
         {
             for (int j = i + 1; j < N; ++j)
             {
-                T nd_elem = abs(a[i][j]);
-                if (nd_elem > nd_max)
+                T aij = a[i][j];
+                if (equal_zero(aij))
+                    continue;
+                nd_max_is_zero = false;
+                T aii = a[i][i];
+                T ajj = a[j][j];
+
+                // calc rotation angles
+                T theta = static_cast<T>(0.5) * atan2(static_cast<T>(2) * aij, aii - ajj);
+                T sin_theta = sin(theta);
+                T cos_theta = cos(theta);
+                T sin_two_theta = static_cast<T>(2) * sin_theta * cos_theta;
+                T cos_two_theta = ktm_op_madd(-sin_theta * sin_theta, cos_theta, cos_theta);
+                T sin_theta_square = pow2(sin_theta);
+                T cos_theta_square = pow2(cos_theta);
+
+                a[i][i] = ktm_op_madd(ktm_op_madd(aij * sin_two_theta, ajj, sin_theta_square), aii, cos_theta_square);
+                a[j][j] = ktm_op_madd(ktm_op_madd(-aij * sin_two_theta, ajj, cos_theta_square), aii, sin_theta_square);
+                a[i][j] = ktm_op_madd(aij * cos_two_theta, static_cast<T>(0.5) * (ajj - aii), sin_two_theta);
+                a[j][i] = a[i][j];
+
+                // givens rotate
+                for (int k = 0; k < N; ++k)
                 {
-                    col = i;
-                    row = j;
-                    nd_max = nd_elem;
+                    if ((k != i) && (k != j))
+                    {
+                        T aik = a[i][k];
+                        T ajk = a[j][k];
+
+                        a[i][k] = ktm_op_madd(sin_theta * ajk, cos_theta, aik);
+                        a[j][k] = ktm_op_madd(-sin_theta * aik, cos_theta, ajk);
+                        a[k][i] = a[i][k];
+                        a[k][j] = a[j][k];
+                    }
+                }
+
+                for (int k = 0; k < N; ++k)
+                {
+                    T eik = eigen_vec[i][k];
+                    T ejk = eigen_vec[j][k];
+
+                    eigen_vec[i][k] = ktm_op_madd(sin_theta * ejk, cos_theta, eik);
+                    eigen_vec[j][k] = ktm_op_madd(-sin_theta * eik, cos_theta, ejk);
                 }
             }
         }
-
-        if (equal_zero(nd_max))
+        if (nd_max_is_zero)
             break;
-
-        T acc = a[col][col];
-        T arr = a[row][row];
-        T acr = a[col][row];
-
-        // calc rotation angles
-        T sin_theta, cos_theta, sin_two_theta, cos_two_theta;
-
-        if (equal(arr, acc))
-        {
-            if (acr < 0)
-            {
-                sin_theta = -rsqrt_two<T>;
-                cos_theta = rsqrt_two<T>;
-                sin_two_theta = -one<T>;
-                cos_two_theta = zero<T>;
-            }
-            else
-            {
-                sin_theta = rsqrt_two<T>;
-                cos_theta = rsqrt_two<T>;
-                sin_two_theta = one<T>;
-                cos_two_theta = zero<T>;
-            }
-        }
-        else
-        {
-            T theta = static_cast<T>(0.5) * atan2(static_cast<T>(2) * acr, acc - arr);
-            sin_theta = sin(theta);
-            cos_theta = cos(theta);
-            sin_two_theta = static_cast<T>(2) * sin_theta * cos_theta;
-            cos_two_theta = ktm_op_madd(-sin_theta * sin_theta, cos_theta, cos_theta);
-        }
-
-        T sin_theta_square = pow2(sin_theta);
-        T cos_theta_square = pow2(cos_theta);
-        a[col][col] = ktm_op_madd(ktm_op_madd(acr * sin_two_theta, arr, sin_theta_square), acc, cos_theta_square);
-        a[row][row] = ktm_op_madd(ktm_op_madd(-acr * sin_two_theta, arr, cos_theta_square), acc, sin_theta_square);
-        a[col][row] = ktm_op_madd(acr * cos_two_theta, static_cast<T>(0.5) * (arr - acc), sin_two_theta);
-        a[row][col] = a[col][row];
-
-        // givens rotate
-        for (int i = 0; i < N; ++i)
-        {
-            if ((i != col) && (i != row))
-            {
-                T aci = a[col][i];
-                T ari = a[row][i];
-
-                a[col][i] = ktm_op_madd(sin_theta * ari, cos_theta, aci);
-                a[row][i] = ktm_op_madd(-sin_theta * aci, cos_theta, ari);
-                a[i][col] = a[col][i];
-                a[i][row] = a[row][i];
-            }
-        }
-
-        for (int i = 0; i < N; ++i)
-        {
-            T eci = eigen_vec[col][i];
-            T eri = eigen_vec[row][i];
-
-            eigen_vec[col][i] = ktm_op_madd(sin_theta * eri, cos_theta, eci);
-            eigen_vec[row][i] = ktm_op_madd(-sin_theta * eci, cos_theta, eri);
-        }
     }
     eigen_value = diagonal(a);
     return { eigen_vec, eigen_value };
