@@ -14,6 +14,7 @@
 #include "../../type/basic.h"
 #include "../../type/vec_fwd.h"
 #include "../../type/mat_fwd.h"
+#include "../../function/common/arithmetic.h"
 
 template <size_t Row, size_t Col, typename T, typename Void>
 struct ktm::detail::matrix_algebra_implement::transpose
@@ -134,6 +135,26 @@ struct ktm::detail::matrix_algebra_implement::determinant<N, T,
         M a { m };
         for (int i = 0; i < N - 1; ++i)
         {
+            int pivot = i;
+            T pivot_abs = abs(a[i][i]);
+            for (int p = i + 1; p < N; ++p)
+            {
+                T cur_abs = abs(a[p][i]);
+                if (cur_abs > pivot_abs)
+                {
+                    pivot_abs = cur_abs;
+                    pivot = p;
+                }
+            }
+            if (pivot_abs == zero<T>)
+                return zero<T>;
+            if (pivot != i)
+            {
+                for (int k = i; k < N; ++k)
+                    std::swap(a[i][k], a[pivot][k]);
+                det = -det;
+            }
+
             T recip_diag = recip(a[i][i]);
             for (int j = i + 1; j < N; ++j)
             {
@@ -299,33 +320,52 @@ struct ktm::detail::matrix_algebra_implement::inverse<N, T, std::enable_if_t<(N 
 
     static KTM_CORE_NI_FUNC M call(const M& m) noexcept
     {
+        constexpr std::array<int, N> const_ci = []()
+        {
+            std::array<int, N> ret {};
+            for (int i = 0; i < N; ++i)
+                ret[i] = i;
+            return ret;
+        }();
+        std::array<int, N> ci = const_ci;
+
         M left = m;
         M right = M::from_eye();
-
         for (int i = 0; i < N; ++i)
         {
-            T recip_diag = recip(left[i][i]);
-            for (int j = 0; j < N; ++j)
+            int pivot = i;
+            T pivot_abs = abs(left[ci[i]][i]);
+            for (int p = i + 1; p < N; ++p)
             {
-                if (i != j)
+                T cur_abs = abs(left[ci[p]][i]);
+                if (cur_abs > pivot_abs)
                 {
-                    T factor = left[i][j] * recip_diag;
-                    for (int k = 0; k < N; ++k)
-                    {
-                        if (k >= i)
-                            left[k][j] -= factor * left[k][i];
-                        right[k][j] -= factor * right[k][i];
-                    }
+                    pivot_abs = cur_abs;
+                    pivot = p;
                 }
             }
-            for (int k = 0; k < N; ++k)
+            if (pivot != i)
+                std::swap(ci[i], ci[pivot]);
+
+            T recip_diag = recip(left[ci[i]][i]);
+            for (int j = 0; j < N; ++j)
             {
-                if (k >= i)
-                    left[k][i] *= recip_diag;
-                right[k][i] *= recip_diag;
+                if (j == i)
+                    continue;
+                T factor = left[ci[j]][i] * recip_diag;
+                for (int k = i; k < N; ++k)
+                    left[ci[j]][k] -= factor * left[ci[i]][k];
+                right[ci[j]] -= factor * right[ci[i]];
             }
+
+            for (int k = i + 1; k < N; ++k)
+                left[ci[i]][k] *= recip_diag;
+            right[ci[i]] *= recip_diag;
         }
-        return right;
+
+        for (int j = 0; j < N; ++j)
+            left[j] = right[ci[j]];
+        return left;
     }
 };
 
