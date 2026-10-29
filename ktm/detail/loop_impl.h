@@ -9,7 +9,6 @@
 #define _KTM_LOOP_IMPL_H_
 
 #include <utility>
-#include <functional>
 #include "../setup.h"
 
 namespace ktm
