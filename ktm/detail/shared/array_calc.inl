@@ -8,6 +8,7 @@
 #ifndef _KTM_ARRAY_CALC_INL_
 #define _KTM_ARRAY_CALC_INL_
 
+#include <functional>
 #include "array_calc_fwd.h"
 #include "../loop_impl.h"
 #include "../../type/basic.h"
